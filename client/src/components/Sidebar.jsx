@@ -19,9 +19,7 @@ function Sidebar({ isOpen }) {
 
   return (
     <div
-      className={`fixed top-16 left-0 h-[calc(100vh-4rem)] bg-gray-900 text-white transition-all duration-300 z-40 ${
-        isOpen ? "w-64" : "w-16"
-      }`}
+      className={`fixed top-16 left-0 h-[calc(100vh-4rem)] bg-gray-900 text-white transition-all duration-300 z-40 w-48`}
     >
       <ul className="mt-4 space-y-2">
         {menuItems.map((item) => (

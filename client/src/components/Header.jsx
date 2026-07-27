@@ -18,16 +18,16 @@ function Header({ onLogout, setIsLoggedIn }) {
   }, []);
 
   return (
-    <header className="fixed top-0 left-0 w-full h-16 bg-white shadow-md flex items-center justify-between px-6 z-50">
+    <header className="fixed top-0 left-0 w-full h-16 bg-white shadow-md flex items-center justify-between pl-2 pr-6 z-50">
       
       {/* Left: Logo + Name */}
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-1">
         <img
           src="/logo.png"
           alt="logo"
-          className="h-24 w-24 object-contain"
+          className="h-18 w-18 object-contain"
         />
-        <h1 className="text-xl font-bold text-gray-800">AMS IS IT</h1>
+        <h1 className="text-xl font-bold text-gray-800">AMS IS-IT</h1>
       </div>
 
       {/* Right: Time + Profile + Logout */}

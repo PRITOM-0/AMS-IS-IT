@@ -20,9 +20,7 @@ function Layout({ children, setIsLoggedIn }) {
 
         {/* 📄 Main Content */}
         <main
-          className={`flex-1 overflow-y-auto p-6 transition-all duration-300 ${
-            isSidebarOpen ? "ml-64" : "ml-16"
-          }`}
+          className={`flex-1 overflow-y-auto p-2 transition-all duration-300  ml-48 `}
         >
           {children || <Outlet />}
         </main>

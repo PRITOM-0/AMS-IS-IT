@@ -5,9 +5,20 @@ import { FaUserShield, FaUser } from "react-icons/fa";
 function RoleSelect({ onSelectRole }) {
   return (
     <div className="h-screen w-full flex flex-col items-center justify-center bg-gradient-to-br from-indigo-600 to-blue-500">
-
+      {/* Logo + Title */}
+      <h1 className="text-white text-2xl font-bold tracking-wide">
+          AMS - Asset Management System
+        </h1>
+      <div className="flex flex-col items-center animate-fadeIn">
+        <img
+          src="/logo.png"
+          alt="AMS Logo"
+          className="w-40 h-40 animate-pulse"
+        />
+        
+      </div>
       {/* Title */}
-      <h1 className="text-3xl md:text-4xl font-bold text-white mb-10">
+      <h1 className="text-xl md:text-xl font-bold text-white mb-3 animate-fadeIn">
         Select Your Role
       </h1>
 
@@ -34,7 +45,7 @@ function RoleSelect({ onSelectRole }) {
 
       {/* Footer Note */}
       <p className="text-white/80 mt-10 text-sm">
-        Asset Management System (AMS IS IT)
+        Copyright © 2026 AMS - All rights reserved.
       </p>
     </div>
   );
