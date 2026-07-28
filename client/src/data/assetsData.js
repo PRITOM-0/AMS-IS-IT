@@ -1,76 +1,63 @@
 const assetsData = [
   {
     id: 1,
+    assetCode: "AST-001",
+
     name: "Dell Laptop XPS 13",
+    brand: "Dell",
     category: "Laptop",
-    status: "Available",
-    assignedTo: "—",
+
+    quantity: 1,
+
+    status: "available", // available | assigned | maintenance | retired
+
+    assignedTo: null, // userId or null
+
+    location: "IT Room",
+
     purchaseDate: "2024-01-15",
+    warranty: {
+      start: "2024-01-15",
+      end: "2027-01-15",
+    },
+
     value: 1200,
-  },
-  {
-    id: 2,
-    name: "MacBook Pro M2",
-    category: "Laptop",
-    status: "In Use",
-    assignedTo: "John Doe",
-    purchaseDate: "2023-11-20",
-    value: 2200,
-  },
-  {
-    id: 3,
-    name: "HP LaserJet Printer",
-    category: "Printer",
-    status: "Maintenance",
-    assignedTo: "IT Department",
-    purchaseDate: "2022-06-10",
-    value: 450,
-  },
-  {
-    id: 4,
-    name: "iPhone 14",
-    category: "Mobile",
-    status: "In Use",
-    assignedTo: "Sarah Smith",
-    purchaseDate: "2023-03-05",
-    value: 999,
-  },
-  {
-    id: 5,
-    name: "Samsung Monitor 27\"",
-    category: "Monitor",
-    status: "Available",
-    assignedTo: "—",
-    purchaseDate: "2024-02-18",
-    value: 300,
-  },
-  {
-    id: 6,
-    name: "Lenovo ThinkPad",
-    category: "Laptop",
-    status: "In Use",
-    assignedTo: "Michael Lee",
-    purchaseDate: "2023-08-12",
-    value: 1500,
-  },
-  {
-    id: 7,
-    name: "Cisco Router",
-    category: "Networking",
-    status: "Available",
-    assignedTo: "—",
-    purchaseDate: "2022-12-01",
-    value: 800,
-  },
-  {
-    id: 8,
-    name: "Projector Epson X500",
-    category: "Projector",
-    status: "Maintenance",
-    assignedTo: "Conference Room",
-    purchaseDate: "2021-09-25",
-    value: 650,
-  },
+
+    description: "High-performance ultrabook for developers",
+
+    comments: [
+      {
+        text: "Initial setup complete",
+        createdBy: "admin",
+        date: "2024-01-16",
+      }
+    ],
+
+    requests: [
+      {
+        requestedBy: "user1",
+        status: "pending", // pending | approved | rejected
+        date: "2024-02-01",
+      }
+    ],
+
+    history: [
+      {
+        action: "created",
+        performedBy: "admin",
+        date: "2024-01-15",
+      },
+      {
+        action: "assigned",
+        performedBy: "admin",
+        assignedTo: "user1",
+        date: "2024-02-02",
+      }
+    ],
+
+    createdAt: "2024-01-15",
+    updatedAt: "2024-02-02",
+  }
 ];
 
 export default assetsData;

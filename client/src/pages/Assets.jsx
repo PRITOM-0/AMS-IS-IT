@@ -1,218 +1,162 @@
-import React, { useState } from "react";
-import assetsData from "../data/assetsData";
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { Search, Plus } from "lucide-react";
+import { FaBox } from "react-icons/fa";
+import AssetCard from "../components/AssetCard";
 
-function Assets() {
-  const [assets, setAssets] = useState(assetsData);
-  const [search, setSearch] = useState("");
-  const [showForm, setShowForm] = useState(false);
-  const [formType, setFormType] = useState("");
-  const [selectedAsset, setSelectedAsset] = useState(null);
+const ITEMS_PER_PAGE = 24;
 
-  const [formData, setFormData] = useState({
-    name: "",
-    category: "",
-    status: "Available",
-    assignedTo: "",
-    purchaseDate: "",
-  });
+const Assets = () => {
+  const [assets, setAssets] = useState([]);
+  const [employees, setEmployees] = useState([]);
+ const [filters, setFilters] = useState({
+  assetCode: "AS-",
+  employeeId: "EMP-",
+  status: "",
+});
+  const [currentPage, setCurrentPage] = useState(1);
 
-  // 🔍 Search Filter
-  const filteredAssets = assets.filter((a) =>
-    a.name.toLowerCase().includes(search.toLowerCase())
+  useEffect(() => {
+    const fetchData = async () => {
+      const resAssets = await fetch("http://localhost:3000/assets");
+      const resEmp = await fetch("http://localhost:3000/employees");
+
+      const assetsData = await resAssets.json();
+      const empData = await resEmp.json();
+
+      setAssets(assetsData);
+      setEmployees(empData);
+    };
+
+    fetchData();
+  }, []);
+
+
+
+  // 🔍 Filter
+ const filteredAssets = assets.filter((asset) => {
+  const matchesAssetCode =
+    filters.assetCode=="AS-" ||
+    asset.assetCode?.toLowerCase().includes(filters.assetCode.toLowerCase());
+
+  const matchesEmployee =
+    filters.employeeId=="EMP-" ||
+    asset.assignDetails?.assignedTo
+      ?.toLowerCase()
+      .includes(filters.employeeId.toLowerCase());
+
+  const matchesStatus =
+    !filters.status || asset.status === filters.status;
+
+  return matchesAssetCode && matchesEmployee && matchesStatus;
+});
+console.log("Filtered Assets:", filteredAssets); // Debugging line
+  // 📄 Pagination
+  const totalPages = Math.ceil(filteredAssets.length / ITEMS_PER_PAGE);
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const currentAssets = filteredAssets.slice(
+    startIndex,
+    startIndex + ITEMS_PER_PAGE
   );
-
-  // 🎨 Status Style
-  const getStatusStyle = (status) => {
-    switch (status) {
-      case "Available":
-        return "bg-green-100 text-green-600";
-      case "In Use":
-        return "bg-blue-100 text-blue-600";
-      case "Maintenance":
-        return "bg-yellow-100 text-yellow-600";
-      default:
-        return "bg-gray-100 text-gray-600";
-    }
-  };
-
-  // 🧩 Open Form
-  const openForm = (type, asset = null) => {
-    setFormType(type);
-    setSelectedAsset(asset);
-    setShowForm(true);
-
-    if (asset) {
-      setFormData(asset);
-    } else {
-      setFormData({
-        name: "",
-        category: "",
-        status: "Available",
-        assignedTo: "",
-        purchaseDate: "",
-      });
-    }
-  };
-
-  // ❌ Close Form
-  const closeForm = () => {
-    setShowForm(false);
-    setSelectedAsset(null);
-  };
-
-  // 📝 Handle Input
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  // ✅ Submit
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    if (formType === "add") {
-      setAssets([...assets, { ...formData, id: Date.now() }]);
-    }
-
-    if (formType === "edit") {
-      setAssets(
-        assets.map((a) =>
-          a.id === selectedAsset.id ? { ...formData } : a
-        )
-      );
-    }
-
-    if (formType === "assign") {
-      setAssets(
-        assets.map((a) =>
-          a.id === selectedAsset.id
-            ? { ...a, assignedTo: formData.assignedTo, status: "In Use" }
-            : a
-        )
-      );
-    }
-
-    if (formType === "issue") {
-      setAssets(
-        assets.map((a) =>
-          a.id === selectedAsset.id
-            ? { ...a, status: "Maintenance" }
-            : a
-        )
-      );
-    }
-
-    closeForm();
-  };
-
-  // 🗑 Delete
-  const handleDelete = (id) => {
-    setAssets(assets.filter((a) => a.id !== id));
-  };
+  console.log("Current Assets:", currentAssets); // Debugging line
 
   return (
     <div className="p-6">
-      {/* Header */}
-      <div className="flex justify-between mb-4">
+      {/* Top Bar */}
+      <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Assets</h1>
-        <button
-          onClick={() => openForm("add")}
-          className="bg-blue-600 text-white px-4 py-2 rounded"
-        >
-          + Add Asset
-        </button>
+
+        <Link to="/assets/addAsset" className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+          <Plus size={18} /> Add Asset
+        </Link>
       </div>
 
-      {/* Search */}
+      <div className="mb-6">
+  <div className="grid md:grid-cols-4 gap-4 items-end">
+    
+    {/* Asset Code */}
+    <div>
+      <label className="text-xs text-gray-500">Asset Code</label>
       <input
         type="text"
-        placeholder="Search asset..."
-        className="border p-2 mb-4 w-full rounded"
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
+        placeholder="AS-001"
+        className="w-full border rounded px-3 py-2 outline-none focus:ring-2 focus:ring-indigo-400"
+        value={filters.assetCode}
+        onChange={(e) =>
+          setFilters({ ...filters, assetCode: e.target.value })
+        }
       />
+    </div>
 
-      {/* Table */}
-      <table className="w-full bg-white shadow rounded">
-        <thead>
-          <tr className="bg-gray-100 text-left">
-            <th className="p-3">Name</th>
-            <th>Category</th>
-            <th>Status</th>
-            <th>Assigned</th>
-            <th>Date</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
+    {/* Employee ID */}
+    <div>
+      <label className="text-xs text-gray-500">Employee ID</label>
+      <input
+        type="text"
+        placeholder="EMP-101"
+        className="w-full border rounded px-3 py-2 outline-none focus:ring-2 focus:ring-blue-400"
+        value={filters.employeeId}
+        onChange={(e) =>
+          setFilters({ ...filters, employeeId: e.target.value })
+        }
+      />
+    </div>
 
-        <tbody>
-          {filteredAssets.map((asset) => (
-            <tr key={asset.id} className="border-t">
-              <td className="p-3">{asset.name}</td>
-              <td>{asset.category}</td>
-              <td>
-                <span className={`px-2 py-1 rounded ${getStatusStyle(asset.status)}`}>
-                  {asset.status}
-                </span>
-              </td>
-              <td>{asset.assignedTo || "—"}</td>
-              <td>{asset.purchaseDate}</td>
+    {/* Status */}
+    <div>
+      <label className="text-xs text-gray-500">Status</label>
+      <select
+  className="w-full border rounded px-3 py-2 outline-none focus:ring-2 focus:ring-green-400"
+  value={filters.status}
+  onChange={(e) =>
+    setFilters({ ...filters, status: e.target.value })
+  }
+>
+  <option value="">All Status</option>
+  <option value="Active">Active</option>
+  <option value="Inactive">Inactive</option>
+  <option value="Maintenance">Maintenance</option>
+  <option value="Instore">Instore</option>
+</select>
+    </div>
 
-              <td className="space-x-2">
-                <button onClick={() => openForm("edit", asset)} className="text-blue-600">Edit</button>
-                <button onClick={() => handleDelete(asset.id)} className="text-red-600">Delete</button>
-                <button onClick={() => openForm("assign", asset)} className="text-green-600">Assign</button>
-                <button onClick={() => openForm("issue", asset)} className="text-yellow-600">Issue</button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    {/* Reset Button */}
+    <button
+      onClick={() =>
+        setFilters({ assetCode: "AS-", employeeId: "EMP-", status: "" })
+      }
+      className="h-[42px] bg-gray-200 rounded px-4 hover:bg-gray-300 transition"
+    >
+      Reset
+    </button>
+  </div>
+</div>
 
-      {/* FORM MODAL */}
-      {showForm && (
-        <div className="fixed inset-0 bg-black bg-opacity-30 flex justify-center items-center">
-          <form
-            onSubmit={handleSubmit}
-            className="bg-white p-6 rounded w-96 space-y-3"
+      {/* Grid */}
+      <div className="grid grid-cols-5 gap-4">
+        {currentAssets.map((asset) => (
+          <AssetCard key={asset.id} asset={asset} />
+        ))}
+      </div>
+
+      {/* Pagination */}
+      <div className="flex justify-center mt-6 gap-2">
+        {Array.from({ length: totalPages }, (_, i) => (
+          <button
+            key={i}
+            className={`px-3 py-1 border rounded ${
+              currentPage === i + 1
+                ? "bg-blue-600 text-white"
+                : "bg-white"
+            }`}
+            onClick={() => setCurrentPage(i + 1)}
           >
-            <h2 className="text-xl font-bold capitalize">{formType} Asset</h2>
-
-            {(formType === "add" || formType === "edit") && (
-              <>
-                <input name="name" placeholder="Name" value={formData.name} onChange={handleChange} className="border p-2 w-full" />
-                <input name="category" placeholder="Category" value={formData.category} onChange={handleChange} className="border p-2 w-full" />
-                <input name="purchaseDate" type="date" value={formData.purchaseDate} onChange={handleChange} className="border p-2 w-full" />
-              </>
-            )}
-
-            {formType === "assign" && (
-              <input
-                name="assignedTo"
-                placeholder="Assign to user"
-                value={formData.assignedTo}
-                onChange={handleChange}
-                className="border p-2 w-full"
-              />
-            )}
-
-            <div className="flex justify-between">
-              <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">
-                Submit
-              </button>
-
-              <button
-                type="button"
-                onClick={closeForm}
-                className="bg-gray-400 text-white px-4 py-2 rounded"
-              >
-                Reset
-              </button>
-            </div>
-          </form>
-        </div>
-      )}
+            {i + 1}
+          </button>
+        ))}
+      </div>
     </div>
   );
-}
+};
 
 export default Assets;

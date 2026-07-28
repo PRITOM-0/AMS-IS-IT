@@ -20,7 +20,7 @@ function Layout({ children, setIsLoggedIn }) {
 
         {/* 📄 Main Content */}
         <main
-          className={`flex-1 overflow-y-auto p-2 transition-all duration-300  ml-48 `}
+          className={`flex-1 overflow-y-auto p-2 transition-all duration-300  ml-60 `}
         >
           {children || <Outlet />}
         </main>

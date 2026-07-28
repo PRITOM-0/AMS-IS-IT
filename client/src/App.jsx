@@ -10,10 +10,15 @@ import Dashboard from "./pages/Dashboard";
 import Assets from "./pages/Assets";
 import Users from "./pages/Users";
 import Requests from "./pages/Requests";
+import AssetDetails from "./pages/AssetDetails";
+import AddAsset from "./pages/AddAsset";
+import Employees from "./pages/Employees";
+import EmployeeDetails from "./pages/EmployeeDetails";
+import AddEmployee from "./pages/AddEmployee";
 
 function App() {
   const [loading, setLoading] = useState(true);
-  const [role, setRole] = useState(null);
+  const [role, setRole] = useState("user");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   // Splash screen timer
@@ -44,12 +49,17 @@ function App() {
       <Route path="/" element={<Layout setIsLoggedIn={setIsLoggedIn} />}>
         <Route index element={<Dashboard />} />
         <Route path="assets" element={<Assets />} />
+        <Route path="assets/addAsset" element={<AddAsset />} />
+        <Route path="assets/:id" element={<AssetDetails />} />
         <Route path="users" element={<Users />} />
         <Route path="requests" element={<Requests />} />
         <Route
           path="settings"
           element={<div className="p-6">Settings page coming soon.</div>}
         />
+        <Route path="employees" element={<Employees />} />
+        <Route path="/employees/add" element={<AddEmployee />} />
+        <Route path="/employees/:id" element={<EmployeeDetails />} />
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
