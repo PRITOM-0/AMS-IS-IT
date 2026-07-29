@@ -15,11 +15,12 @@ import AddAsset from "./pages/AddAsset";
 import Employees from "./pages/Employees";
 import EmployeeDetails from "./pages/EmployeeDetails";
 import AddEmployee from "./pages/AddEmployee";
+ 
 
 function App() {
-  const [loading, setLoading] = useState(true);
-  const [role, setRole] = useState("user");
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [role, setRole] = useState("admin");
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
 
   // Splash screen timer
   useEffect(() => {

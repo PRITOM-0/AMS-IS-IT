@@ -174,11 +174,11 @@
       "id": "2",
       "assetCode": "AS-002",
       "name": "MacBook Pro",
-      "brand": "Apple",
+      "brand": "Apple ",
       "category": "Laptop",
-      "status": "Active",
+      "status": "Instore",
       "assignDetails": {
-        "assignedTo": "EMP-102",
+        "assignedTo": "EMP-104",
         "assignedDate": "2025-06-18"
       },
       "location": "Branch Office",
@@ -481,6 +481,32 @@
       "prevEmployees": [],
       "createdAt": "2026-07-28",
       "updatedAt": "2026-07-28"
+    },
+    {
+      "id": "zWy-jPcFUpQ",
+      "assetCode": "AS-177",
+      "name": "Ram",
+      "brand": "AB",
+      "category": "Elce",
+      "status": "Instore",
+      "assignDetails": {
+        "assignedTo": null,
+        "assignedDate": null
+      },
+      "location": "rerge",
+      "purchaseDate": "2026-07-24",
+      "warranty": {
+        "start": "",
+        "end": ""
+      },
+      "value": "40000 Tk",
+      "description": "",
+      "assetsComments": [],
+      "issues": [],
+      "history": [],
+      "prevEmployees": [],
+      "createdAt": "2026-07-28",
+      "updatedAt": "2026-07-28"
     }
   ],
   "employees": [
@@ -489,12 +515,29 @@
       "name": "Alice Johnson",
       "employeeid": "EMP-101",
       "email": "alice@company.com",
+      "designation": "IT Officer",
+      "floor": "5th Floor",
       "location": "Head Office",
       "contact": "01700000001",
       "assetlist": [
-        "AS-001"
+        "1",
+        "3",
+        "5"
       ],
-      "assethistory": []
+      "assethistory": [
+        {
+          "assetId": "2",
+          "issue": "Screen flickering",
+          "assignedDate": "2025-06-18",
+          "returnedDate": "2025-07-01"
+        },
+        {
+          "assetId": "4",
+          "issue": "Keyboard not working",
+          "assignedDate": "2025-05-10",
+          "returnedDate": "2025-06-15"
+        }
+      ]
     },
     {
       "id": "2",
@@ -504,103 +547,35 @@
       "location": "Branch Office",
       "contact": "01700000002",
       "assetlist": [
-        "AS-002"
+        "2",
+        "6"
       ],
-      "assethistory": []
-    },
-    {
-      "id": "3",
-      "name": "Charlie Brown",
-      "employeeid": "EMP-103",
-      "email": "charlie@company.com",
-      "location": "Head Office",
-      "contact": "01700000003",
-      "assetlist": [
-        "AS-004"
-      ],
-      "assethistory": []
-    },
-    {
-      "id": "4",
-      "name": "David Wilson",
-      "employeeid": "EMP-104",
-      "email": "david@company.com",
-      "location": "Head Office",
-      "contact": "01700000004",
-      "assetlist": [
-        "AS-005"
-      ],
-      "assethistory": []
-    },
-    {
-      "id": "5",
-      "name": "Emma Davis",
-      "employeeid": "EMP-105",
-      "email": "emma@company.com",
-      "location": "Remote",
-      "contact": "01700000005",
-      "assetlist": [],
-      "assethistory": []
-    },
-    {
-      "id": "6",
-      "name": "Frank Miller",
-      "employeeid": "EMP-106",
-      "email": "frank@company.com",
-      "location": "Warehouse",
-      "contact": "01700000006",
-      "assetlist": [],
-      "assethistory": []
-    },
-    {
-      "id": "7",
-      "name": "Grace Lee",
-      "employeeid": "EMP-107",
-      "email": "grace@company.com",
-      "location": "Head Office",
-      "contact": "01700000007",
-      "assetlist": [],
-      "assethistory": []
-    },
-    {
-      "id": "8",
-      "name": "Henry Walker",
-      "employeeid": "EMP-108",
-      "email": "henry@company.com",
-      "location": "Branch Office",
-      "contact": "01700000008",
-      "assetlist": [],
-      "assethistory": []
-    },
-    {
-      "id": "9",
-      "name": "Isabella Hall",
-      "employeeid": "EMP-109",
-      "email": "isabella@company.com",
-      "location": "Head Office",
-      "contact": "01700000009",
-      "assetlist": [],
-      "assethistory": []
-    },
-    {
-      "id": "10",
-      "name": "Jack White",
-      "employeeid": "EMP-110",
-      "email": "jack@company.com",
-      "location": "Remote",
-      "contact": "01700000010",
-      "assetlist": [],
-      "assethistory": []
+      "assethistory": [
+        {
+          "assetId": "1",
+          "issue": "Screen flickering",
+          "assignedDate": "2025-07-01",
+          "returnedDate": "2025-08-01"
+        },
+        {
+          "assetId": "5",
+          "issue": "Keyboard not working",
+          "assignedDate": "2025-03-15",
+          "returnedDate": "2025-04-15"
+        }
+      ]
     },
     {
       "name": "Pritom Saha",
-      "employeeid": "EMP-333",
+      "employeeid": "EMP-202",
       "email": "pritomsahawww@gmail.com",
-      "location": "Corporate office",
-      "contact": "0177888767",
+      "designation": "Junior IT Officer",
+      "floor": "5th",
+      "location": "Corporate Office",
+      "contact": "01709090909",
       "assetlist": [],
       "assethistory": [],
-      "id": "tyIMLxM53wo"
+      "id": "_Hjg15xXq6w"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

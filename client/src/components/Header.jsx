@@ -27,8 +27,9 @@ function Header({ onLogout, setIsLoggedIn }) {
           alt="logo"
           className="h-18 w-18 object-contain"
         />
-        <h1 className="text-xl font-bold text-gray-800">AMS IS-IT</h1>
+        <h1 className="text-xl font-bold text-gray-800"> Asset Management System IS-IT</h1>
       </div>
+      
 
       {/* Right: Time + Profile + Logout */}
       <div className="flex items-center gap-6">
@@ -36,8 +37,14 @@ function Header({ onLogout, setIsLoggedIn }) {
         {/* Time */}
         <span className="text-gray-600 font-medium">{time}</span>
 
+        {/* Divider */}
+        <div className="w-px h-6 bg-gray-300"></div>
+        {/* Profile name*/}
+        <span className="text-gray-600 font-medium">John Doe</span>
+
         {/* Profile Icon */}
-        <FaUserCircle className="text-2xl text-gray-700 cursor-pointer" />
+        <FaUserCircle className="text-blue-600 text-2xl" />
+
 
         {/* Logout */}
         <button

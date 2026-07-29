@@ -1,14 +1,34 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import EmployeeCard from "../components/EmployeeCard";
 
 function Employees() {
   const [employees, setEmployees] = useState([]);
+  const [searchName, setSearchName] = useState("");
+  const [searchCode, setSearchCode] = useState("");
+  const [searchLocation, setSearchLocation] = useState("");
 
   useEffect(() => {
     fetch("http://localhost:3000/employees")
       .then((res) => res.json())
       .then((data) => setEmployees(data));
   }, []);
+
+  // 🔍 Filter logic
+  const filteredEmployees = employees.filter((emp) => {
+    return (
+      emp.name.toLowerCase().includes(searchName.toLowerCase()) &&
+      emp.employeeid.toLowerCase().includes(searchCode.toLowerCase()) &&
+      emp.location.toLowerCase().includes(searchLocation.toLowerCase())
+    );
+  });
+
+  // 🔄 Reset function
+  const handleReset = () => {
+    setSearchName("");
+    setSearchCode("");
+    setSearchLocation("");
+  };
 
   return (
     <div className="p-6">
@@ -23,41 +43,49 @@ function Employees() {
         </Link>
       </div>
 
+      {/* 🔍 Search Filters */}
+      <div className="bg-white p-4 rounded-xl shadow mb-6 grid md:grid-cols-4 gap-4">
+        
+        {/* Name Search */}
+        <input
+          type="text"
+          placeholder="Search by Name"
+          value={searchName}
+          onChange={(e) => setSearchName(e.target.value)}
+          className="border rounded px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
+        />
+
+        {/* Employee Code Search */}
+        <input
+          type="text"
+          placeholder="Search by Employee Code"
+          value={searchCode}
+          onChange={(e) => setSearchCode(e.target.value)}
+          className="border rounded px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
+        />
+
+        {/* Location Search */}
+        <input
+          type="text"
+          placeholder="Search by Location"
+          value={searchLocation}
+          onChange={(e) => setSearchLocation(e.target.value)}
+          className="border rounded px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
+        />
+
+        {/* Reset Button */}
+        <button
+          onClick={handleReset}
+          className="bg-gray-200 hover:bg-gray-300 text-gray-700 rounded px-4 py-2"
+        >
+          Reset
+        </button>
+      </div>
+
       {/* List */}
       <div className="grid gap-4">
-        {employees.map((emp) => (
-          <Link
-  key={emp.id}
-  to={`/employees/${emp.id}`}
-  className="flex items-center gap-4 p-4 bg-white border border-gray-200 
-  rounded-xl shadow-sm hover:shadow-lg hover:-translate-y-1 
-  hover:bg-gray-50 transition-all duration-300 group"
->
-  {/* Avatar */}
-  <div className="w-12 h-12 flex items-center justify-center rounded-full 
-  bg-blue-100 text-blue-600 font-semibold text-lg group-hover:scale-110 transition">
-    {emp.name.charAt(0)}
-  </div>
-
-  {/* Info */}
-  <div className="flex-1">
-    <h2 className="font-semibold text-lg text-gray-800 group-hover:text-blue-600 transition">
-      {emp.name}
-    </h2>
-
-    <p className="text-sm text-gray-500">{emp.email}</p>
-
-    <span className="inline-block mt-1 text-xs px-2 py-1 
-    bg-gray-100 text-gray-600 rounded-full">
-      {emp.employeeid}
-    </span>
-  </div>
-
-  {/* Arrow */}
-  <div className="text-gray-400 group-hover:text-blue-500 transition">
-    →
-  </div>
-</Link>
+        {filteredEmployees.map((emp) => (
+          <EmployeeCard key={emp.id} employee={emp} />
         ))}
       </div>
     </div>
