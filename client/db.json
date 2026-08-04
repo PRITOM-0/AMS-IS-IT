@@ -177,10 +177,11 @@
       "name": "Ultra Air Walton Laptop",
       "brand": "Walton",
       "category": "Laptop",
-      "status": "Instore",
+      "status": "Active",
       "assignDetails": {
-        "assignedTo": null,
-        "assignedDate": null
+        "assignedTo": "EMP-102",
+        "assignedDate": "2026-08-04",
+        "notes": ""
       },
       "location": "Corporate Office",
       "purchaseDate": "2026-08-04",
@@ -237,7 +238,9 @@
       "floor": "5th Floor",
       "location": "SRU",
       "contact": "01700000003",
-      "assetlist": [],
+      "assetlist": [
+        "z7xU2XHLghA"
+      ],
       "assethistory": [],
       "id": "VWxxOyF73OE"
     },
