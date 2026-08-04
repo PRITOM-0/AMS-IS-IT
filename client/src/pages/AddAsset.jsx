@@ -50,8 +50,8 @@ const AddAsset = () => {
       status: "Instore", // Default status to "Instore" if not provided
 
       assignDetails: {
-        assignedTo: formData.assignedTo || null,
-        assignedDate: formData.assignedDate || null
+        assignedTo:null,
+        assignedDate:null
       },
 
       location: formData.location,
@@ -181,28 +181,6 @@ const inputStyle =
 
     </div>
   </div>
-
-  {/* ASSIGNMENT */}
-  <div>
-    <h3 className="text-lg font-semibold text-purple-600 mb-4">
-      Assignment
-    </h3>
-
-    <div className="grid md:grid-cols-2 gap-5">
-
-      <div>
-        <label className="label">Assigned To</label>
-        <input className={inputStyle} name="assignedTo" placeholder="e.g. EMP-101" onChange={handleChange} />
-      </div>
-
-      <div>
-        <label className="label">Assigned Date</label>
-        <input type="date" className={inputStyle} name="assignedDate" onChange={handleChange} />
-      </div>
-
-    </div>
-  </div>
-
   {/* DATES */}
   <div>
     <h3 className="text-lg font-semibold text-green-600 mb-4">

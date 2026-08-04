@@ -145,454 +145,125 @@
   ],
   "assets": [
     {
-      "id": "1",
-      "assetCode": "AS-001",
-      "name": "Dell XPS 13",
-      "brand": "Dell",
-      "category": "Laptop",
-      "status": "Active",
-      "assignDetails": {
-        "assignedTo": "EMP-101",
-        "assignedDate": "2025-07-01"
-      },
-      "location": "Head Office",
-      "purchaseDate": "2024-01-10",
-      "warranty": {
-        "start": "2024-01-10",
-        "end": "2027-01-10"
-      },
-      "value": 1200,
-      "description": "High-performance ultrabook",
-      "assetsComments": [],
-      "issues": [],
-      "history": [],
-      "prevEmployees": [],
-      "createdAt": "2024-01-10",
-      "updatedAt": "2025-07-01"
-    },
-    {
-      "id": "2",
-      "assetCode": "AS-002",
-      "name": "MacBook Pro",
-      "brand": "Apple ",
-      "category": "Laptop",
-      "status": "Instore",
-      "assignDetails": {
-        "assignedTo": "EMP-104",
-        "assignedDate": "2025-06-18"
-      },
-      "location": "Branch Office",
-      "purchaseDate": "2024-02-14",
-      "warranty": {
-        "start": "2024-02-13",
-        "end": "2026-02-13"
-      },
-      "value": 1800,
-      "description": "Apple laptop",
-      "assetsComments": [],
-      "issues": [],
-      "history": [],
-      "prevEmployees": [],
-      "createdAt": "2024-02-01",
-      "updatedAt": "2025-06-01"
-    },
-    {
-      "id": "3",
-      "assetCode": "AS-003",
-      "name": "HP EliteBook",
-      "brand": "HP",
-      "category": "Laptop",
-      "status": "Instore",
-      "assignDetails": {
-        "assignedTo": null,
-        "assignedDate": null
-      },
-      "location": "Warehouse",
-      "purchaseDate": "2024-03-01",
-      "warranty": {
-        "start": "2024-03-01",
-        "end": "2027-03-01"
-      },
-      "value": 1100,
-      "description": "Business laptop",
-      "assetsComments": [],
-      "issues": [],
-      "history": [],
-      "prevEmployees": [],
-      "createdAt": "2024-03-01",
-      "updatedAt": "2024-03-01"
-    },
-    {
-      "id": "4",
-      "assetCode": "AS-004",
-      "name": "Lenovo ThinkPad",
-      "brand": "Lenovo",
-      "category": "Laptop",
-      "status": "Active",
-      "assignDetails": {
-        "assignedTo": "EMP-103",
-        "assignedDate": "2025-05-10"
-      },
-      "location": "Head Office",
-      "purchaseDate": "2024-04-01",
-      "warranty": {
-        "start": "2024-04-01",
-        "end": "2027-04-01"
-      },
-      "value": 1000,
-      "description": "Durable business laptop",
-      "assetsComments": [],
-      "issues": [],
-      "history": [],
-      "prevEmployees": [],
-      "createdAt": "2024-04-01",
-      "updatedAt": "2025-05-10"
-    },
-    {
-      "id": "5",
-      "assetCode": "AS-005",
-      "name": "iPhone 166",
-      "brand": "Apple",
-      "category": "Mobile",
-      "status": "Active",
-      "assignDetails": {
-        "assignedTo": "EMP-104",
-        "assignedDate": "2025-03-15"
-      },
-      "location": "Head Office",
-      "purchaseDate": "2024-05-01",
-      "warranty": {
-        "start": "2024-05-01",
-        "end": "2026-05-01"
-      },
-      "value": 999,
-      "description": "Company mobile device",
-      "assetsComments": [],
-      "issues": [],
-      "history": [],
-      "prevEmployees": [],
-      "createdAt": "2024-05-01",
-      "updatedAt": "2025-03-15"
-    },
-    {
-      "id": "6",
-      "assetCode": "AS-006",
-      "name": "Samsung Galaxy S23",
-      "brand": "Samsung",
-      "category": "Mobile",
-      "status": "Inactive",
-      "assignDetails": {
-        "assignedTo": null,
-        "assignedDate": null
-      },
-      "location": "Warehouse",
-      "purchaseDate": "2024-06-01",
-      "warranty": {
-        "start": "2024-06-01",
-        "end": "2026-06-01"
-      },
-      "value": 850,
-      "description": "Android smartphone",
-      "assetsComments": [],
-      "issues": [],
-      "history": [],
-      "prevEmployees": [],
-      "createdAt": "2024-06-01",
-      "updatedAt": "2024-06-01"
-    },
-    {
-      "id": "7",
-      "assetCode": "AS-007",
-      "name": "Office Chair",
-      "brand": "IKEA",
-      "category": "Furniture",
-      "status": "Active",
-      "assignDetails": {
-        "assignedTo": "EMP-105",
-        "assignedDate": "2025-02-01"
-      },
-      "location": "Head Office",
-      "purchaseDate": "2024-07-01",
-      "warranty": {
-        "start": "2024-07-01",
-        "end": "2026-07-01"
-      },
-      "value": 200,
-      "description": "Ergonomic chair",
-      "assetsComments": [],
-      "issues": [],
-      "history": [],
-      "prevEmployees": [],
-      "createdAt": "2024-07-01",
-      "updatedAt": "2025-02-01"
-    },
-    {
-      "id": "8",
-      "assetCode": "AS-008",
-      "name": "Monitor 24  ",
-      "brand": "LG",
-      "category": "Electronics",
+      "id": "Hf1a-RjYgVo",
+      "assetCode": "AS-101",
+      "name": "Printer S-20T",
+      "brand": "SUMSUNG",
+      "category": "Printer",
       "status": "Active",
       "assignDetails": {
         "assignedTo": "EMP-101",
         "assignedDate": "2026-08-04",
-        "notes": "First assignment test"
+        "notes": ""
       },
-      "location": "Warehouse",
-      "purchaseDate": "2024-08-01",
+      "location": "Head Office",
+      "purchaseDate": "2026-08-04",
       "warranty": {
-        "start": "2024-08-01",
-        "end": "2027-08-01"
+        "start": "2026-08-04",
+        "end": "2027-08-04"
       },
-      "value": 300,
-      "description": "Full HD Monitor",
+      "value": "20000 Tk",
+      "description": "",
       "assetsComments": [],
       "issues": [],
       "history": [],
       "prevEmployees": [],
-      "createdAt": "2024-08-01",
+      "createdAt": "2026-08-04",
       "updatedAt": "2026-08-04"
     },
     {
-      "id": "9",
-      "assetCode": "AS-009",
-      "name": "Printer",
-      "brand": "HP",
-      "category": "Electronics",
-      "status": "Active",
-      "assignDetails": {
-        "assignedTo": "EMP-106",
-        "assignedDate": "2025-01-20"
-      },
-      "location": "Branch Office",
-      "purchaseDate": "2024-09-01",
-      "warranty": {
-        "start": "2024-09-01",
-        "end": "2026-09-01"
-      },
-      "value": 400,
-      "description": "Office printer",
-      "assetsComments": [],
-      "issues": [],
-      "history": [],
-      "prevEmployees": [],
-      "createdAt": "2024-09-01",
-      "updatedAt": "2025-01-20"
-    },
-    {
-      "id": "10",
-      "assetCode": "AS-010",
-      "name": "Projector",
-      "brand": "Epson",
-      "category": "Electronics",
-      "status": "Inactive",
-      "assignDetails": {
-        "assignedTo": null,
-        "assignedDate": null
-      },
-      "location": "Conference Room",
-      "purchaseDate": "2024-10-01",
-      "warranty": {
-        "start": "2024-10-01",
-        "end": "2026-10-01"
-      },
-      "value": 700,
-      "description": "HD Projector",
-      "assetsComments": [],
-      "issues": [],
-      "history": [],
-      "prevEmployees": [],
-      "createdAt": "2024-10-01",
-      "updatedAt": "2024-10-01"
-    },
-    {
-      "assetCode": "AS-532",
-      "name": "Apple Mac",
-      "brand": "",
-      "category": "",
-      "status": "Active",
-      "assignDetails": {
-        "assignedTo": "EMP-202",
-        "assignedDate": "2026-08-04",
-        "notes": ""
-      },
-      "location": "",
-      "purchaseDate": "",
-      "warranty": {
-        "start": "",
-        "end": ""
-      },
-      "value": "400",
-      "description": "",
-      "assetsComments": [],
-      "issues": [],
-      "history": [],
-      "prevEmployees": [],
-      "createdAt": "2026-07-28",
-      "updatedAt": "2026-08-04",
-      "id": "glAe53j3pKM"
-    },
-    {
-      "id": "rO0z0TM1Kpc",
-      "assetCode": "AS-759",
-      "name": "Monitor 45",
-      "brand": "Dell",
-      "category": "Monitor",
+      "id": "z7xU2XHLghA",
+      "assetCode": "AS-201",
+      "name": "Ultra Air Walton Laptop",
+      "brand": "Walton",
+      "category": "Laptop",
       "status": "Instore",
       "assignDetails": {
         "assignedTo": null,
         "assignedDate": null
       },
-      "location": "Corporate office",
-      "purchaseDate": "2026-07-28",
+      "location": "Corporate Office",
+      "purchaseDate": "2026-08-04",
       "warranty": {
-        "start": "2026-07-28",
-        "end": "2026-12-28"
-      },
-      "value": "12000 Tk",
-      "description": "",
-      "assetsComments": [],
-      "issues": [],
-      "history": [],
-      "prevEmployees": [],
-      "createdAt": "2026-07-28",
-      "updatedAt": "2026-07-28"
-    },
-    {
-      "id": "ZS0yZYzBitc",
-      "assetCode": "AS-239",
-      "name": "Monitor 0000",
-      "brand": "Dell",
-      "category": "Monitor",
-      "status": "Active",
-      "assignDetails": {
-        "assignedTo": "EMP-202",
-        "assignedDate": "2026-08-04",
-        "notes": ""
-      },
-      "location": "Corporate office",
-      "purchaseDate": "2026-07-28",
-      "warranty": {
-        "start": "",
-        "end": ""
+        "start": "2026-08-04",
+        "end": "2030-08-04"
       },
       "value": "50000 Tk",
-      "description": "",
-      "assetsComments": [],
+      "description": "High Tech ",
+      "assetsComments": [
+        "8GB Ram",
+        "13 Gen",
+        "Core i5"
+      ],
       "issues": [],
       "history": [],
       "prevEmployees": [],
-      "createdAt": "2026-07-28",
-      "updatedAt": "2026-08-04"
-    },
-    {
-      "id": "zWy-jPcFUpQ",
-      "assetCode": "AS-177",
-      "name": "Ram",
-      "brand": "AB",
-      "category": "Elce",
-      "status": "Active",
-      "assignDetails": {
-        "assignedTo": "EMP-101",
-        "assignedDate": "2026-08-04",
-        "notes": "45ty45"
-      },
-      "location": "rerge",
-      "purchaseDate": "2026-07-24",
-      "warranty": {
-        "start": "",
-        "end": ""
-      },
-      "value": "40000 Tk",
-      "description": "",
-      "assetsComments": [],
-      "issues": [],
-      "history": [],
-      "prevEmployees": [],
-      "createdAt": "2026-07-28",
+      "createdAt": "2026-08-04",
       "updatedAt": "2026-08-04"
     }
   ],
   "employees": [
     {
-      "id": "1",
-      "name": "Alice Johnson",
+      "name": "Pritom Saha",
       "employeeid": "EMP-101",
-      "email": "alice@company.com",
-      "designation": "IT Officer",
+      "email": "pritomsahawww@gmail.com",
+      "designation": "Jr. IT Officer",
       "floor": "5th Floor",
       "location": "Head Office",
       "contact": "01700000001",
       "assetlist": [
-        "1",
-        "3",
-        "5",
-        "8",
-        "zWy-jPcFUpQ"
-      ],
-      "assethistory": [
-        {
-          "assetId": "2",
-          "issue": "Screen flickering",
-          "assignedDate": "2025-06-18",
-          "returnedDate": "2025-07-01"
-        },
-        {
-          "assetId": "4",
-          "issue": "Keyboard not working",
-          "assignedDate": "2025-05-10",
-          "returnedDate": "2025-06-15"
-        }
-      ],
-      "assetslist": [
-        "8",
-        "zWy-jPcFUpQ"
-      ]
-    },
-    {
-      "id": "2",
-      "name": "Bob Smith",
-      "employeeid": "EMP-102",
-      "email": "bob@company.com",
-      "location": "Branch Office",
-      "contact": "01700000002",
-      "assetlist": [
-        "2",
-        "6"
-      ],
-      "assethistory": [
-        {
-          "assetId": "1",
-          "issue": "Screen flickering",
-          "assignedDate": "2025-07-01",
-          "returnedDate": "2025-08-01"
-        },
-        {
-          "assetId": "5",
-          "issue": "Keyboard not working",
-          "assignedDate": "2025-03-15",
-          "returnedDate": "2025-04-15"
-        }
-      ]
-    },
-    {
-      "name": "Pritom Saha",
-      "employeeid": "EMP-202",
-      "email": "pritomsahawww@gmail.com",
-      "designation": "Junior IT Officer",
-      "floor": "5th",
-      "location": "Corporate Office",
-      "contact": "01709090909",
-      "assetlist": [
-        "ZS0yZYzBitc",
-        "glAe53j3pKM"
+        "Hf1a-RjYgVo"
       ],
       "assethistory": [],
-      "id": "_Hjg15xXq6w",
-      "assetslist": [
-        "ZS0yZYzBitc",
-        "glAe53j3pKM"
-      ]
+      "id": "vFumJsl_4PY"
+    },
+    {
+      "name": "Abdul Kader",
+      "employeeid": "EMP-001",
+      "email": "saha@gmail.com",
+      "designation": "Senior IT Officer",
+      "floor": "5th Floor",
+      "location": "Corporate Office",
+      "contact": "01700000002",
+      "assetlist": [],
+      "assethistory": [],
+      "id": "JYq5aynSO6k"
+    },
+    {
+      "name": "Ripon Mia",
+      "employeeid": "EMP-102",
+      "email": "mia@gmail.com",
+      "designation": "IT Officer",
+      "floor": "5th Floor",
+      "location": "SRU",
+      "contact": "01700000003",
+      "assetlist": [],
+      "assethistory": [],
+      "id": "VWxxOyF73OE"
+    },
+    {
+      "name": "Arifur Rahman",
+      "employeeid": "EMP-103",
+      "email": "rahman@gmail.com",
+      "designation": "Deputy Manager",
+      "floor": "5th Floor",
+      "location": "SPL",
+      "contact": "01700000004",
+      "assetlist": [],
+      "assethistory": [],
+      "id": "8N2qBxWRPYY"
+    },
+    {
+      "name": "Tanoy Sarker",
+      "employeeid": "EMP-104",
+      "email": "sarker@gmail.com",
+      "designation": "IT Officer",
+      "floor": "5th Floor",
+      "location": "SPL-Mirpur",
+      "contact": "01700000005",
+      "assetlist": [],
+      "assethistory": [],
+      "id": "yGy6JDUHibM"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

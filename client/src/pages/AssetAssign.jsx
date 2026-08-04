@@ -86,15 +86,13 @@ function AssetAssign() {
     const existingAssetList = Array.isArray(selectedEmployee.assetlist)
       ? selectedEmployee.assetlist
       : [];
-    const existingAssetsList = Array.isArray(selectedEmployee.assetslist)
-      ? selectedEmployee.assetslist
-      : [];
 
     const updatedEmployee = {
       ...selectedEmployee,
       assetlist: [...new Set([...existingAssetList, selectedAsset.id])],
-      assetslist: [...new Set([...existingAssetsList, selectedAsset.id])],
     };
+
+    delete updatedEmployee.assetslist;
 
     try {
       await Promise.all([
