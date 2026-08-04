@@ -7,11 +7,11 @@ function EmployeeDetails() {
 
   const [employee, setEmployee] = useState(null);
   const [originalEmployee, setOriginalEmployee] = useState(null);
+  const [formData, setFormData] = useState(null);
   const [assets, setAssets] = useState([]);
   const [isEdit, setIsEdit] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  // 🔹 Fetch Data
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -26,7 +26,8 @@ function EmployeeDetails() {
         const assetData = await assetRes.json();
 
         setEmployee(empData);
-        setOriginalEmployee(empData); // store original for reset
+        setOriginalEmployee(empData);
+        setFormData(empData ? { ...empData } : null);
         setAssets(assetData);
       } catch (err) {
         console.error("Error fetching data:", err);
@@ -38,19 +39,57 @@ function EmployeeDetails() {
     fetchData();
   }, [id]);
 
-  // 🔍 Helper: find asset by ID
   const getAsset = (assetId) => {
     return assets.find((a) => a.id === assetId);
   };
 
-  // 🔹 Actions
-  const handleUpdate = () => {
-    // TODO: API update call here
-    setIsEdit(false);
+  const handleEdit = () => {
+    if (employee) {
+      setFormData({ ...employee });
+      setIsEdit(true);
+    }
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => (prev ? { ...prev, [name]: value } : prev));
+  };
+
+  const handleUpdate = async () => {
+    if (!formData) return;
+
+    try {
+      const payload = {
+        ...formData,
+        assetlist: employee?.assetlist || [],
+        assethistory: employee?.assethistory || [],
+      };
+
+      const response = await fetch(`http://localhost:3000/employees/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) throw new Error("Failed to update employee");
+
+      const updatedEmployee = await response.json();
+      setEmployee(updatedEmployee);
+      setOriginalEmployee(updatedEmployee);
+      setFormData({ ...updatedEmployee });
+      setIsEdit(false);
+    } catch (err) {
+      console.error("Error updating employee:", err);
+      alert("Failed to update employee");
+    }
   };
 
   const handleReset = () => {
-    setEmployee(originalEmployee); // restore without reload
+    if (originalEmployee) {
+      setFormData({ ...originalEmployee });
+    }
     setIsEdit(false);
   };
 
@@ -64,7 +103,6 @@ function EmployeeDetails() {
 
   return (
     <div className="p-6 space-y-6">
-      {/* 🔹 Top Bar */}
       <div className="flex justify-between items-center">
         <button
           onClick={() => window.history.back()}
@@ -75,7 +113,7 @@ function EmployeeDetails() {
 
         {!isEdit ? (
           <button
-            onClick={() => setIsEdit(true)}
+            onClick={handleEdit}
             className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg"
           >
             Edit
@@ -98,9 +136,7 @@ function EmployeeDetails() {
         )}
       </div>
 
-      {/* 🔹 Card */}
-      <div className="bg-white shadow-lg rounded-2xl p-6 space-y-6">
-        {/* Header */}
+      <div className="bg-white border shadow-lg rounded-2xl p-6 space-y-6">
         <div className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl p-6">
           <div className="flex justify-between items-center">
             <div>
@@ -108,22 +144,73 @@ function EmployeeDetails() {
               <p className="text-sm text-blue-100">{employee?.email}</p>
             </div>
 
-            <span className="bg-white/20 px-4 py-1 rounded-full text-sm font-medium">
-              {employee?.employeeid}
-            </span>
+            <div className="ml-4">
+              <span className="bg-white/20 px-4 py-1 rounded-full text-sm font-medium">
+                  {employee?.employeeid}
+                </span>
+            </div>
           </div>
         </div>
 
-        {/* Info Cards */}
         <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-4">
-          <InfoCard label="Location" value={employee?.location} />
-          <InfoCard label="Contact" value={employee?.contact} />
-          <InfoCard label="Designation" value={employee?.designation} />
-          <InfoCard label="Floor" value={employee?.floor} />
+          {isEdit ? (
+            <>
+              <EditableField
+                label="Name"
+                name="name"
+                value={formData?.name || ""}
+                onChange={handleChange}
+              />
+              <EditableField
+                label="Employee ID"
+                name="employeeid"
+                value={formData?.employeeid || ""}
+                onChange={handleChange}
+              />
+              <EditableField
+                label="Email"
+                name="email"
+                value={formData?.email || ""}
+                onChange={handleChange}
+                type="email"
+              />
+              <EditableField
+                label="Contact"
+                name="contact"
+                value={formData?.contact || ""}
+                onChange={handleChange}
+              />
+              <EditableField
+                label="Designation"
+                name="designation"
+                value={formData?.designation || ""}
+                onChange={handleChange}
+              />
+              <EditableField
+                label="Floor"
+                name="floor"
+                value={formData?.floor || ""}
+                onChange={handleChange}
+              />
+              <EditableField
+                label="Location"
+                name="location"
+                value={formData?.location || ""}
+                onChange={handleChange}
+                className="sm:col-span-2 md:col-span-2"
+              />
+            </>
+          ) : (
+            <>
+              <InfoCard label="Location" value={employee?.location} />
+              <InfoCard label="Contact" value={employee?.contact} />
+              <InfoCard label="Designation" value={employee?.designation} />
+              <InfoCard label="Floor" value={employee?.floor} />
+            </>
+          )}
         </div>
       </div>
 
-      {/* Assets */}
       <div className="mt-6">
         <h2 className="font-semibold mb-3 text-lg">Assigned Assets</h2>
 
@@ -142,7 +229,6 @@ function EmployeeDetails() {
                   key={assetId}
                   className="border rounded-xl p-4 shadow-sm hover:shadow-md hover:scale-[1.02] transition flex justify-between items-center bg-white"
                 >
-                  {/* Left Info */}
                   <div>
                     <p className="font-semibold text-blue-600">
                       {asset ? asset.name : assetId}
@@ -157,7 +243,6 @@ function EmployeeDetails() {
                     </p>
                   </div>
 
-                  {/* Status Badge */}
                   <div>
                     <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded">
                       Assigned
@@ -170,7 +255,6 @@ function EmployeeDetails() {
         )}
       </div>
 
-      {/* History */}
       <div className="mt-6">
         <h2 className="font-semibold mb-3 text-lg">Asset History</h2>
 
@@ -189,9 +273,7 @@ function EmployeeDetails() {
                   key={entry.assetId}
                   className="block border rounded-xl p-4 shadow-sm bg-white hover:shadow-md hover:scale-[1.02] transition"
                 >
-                  {/* Top */}
                   <div className="flex justify-between items-start gap-2">
-                    {/* Asset Info */}
                     <div>
                       <p className="font-semibold text-blue-600">
                         {asset ? asset.name : entry.assetId}
@@ -201,7 +283,6 @@ function EmployeeDetails() {
                       </p>
                     </div>
 
-                    {/* Status */}
                     <div className="flex flex-col items-end gap-1">
                       <span className="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded">
                         {entry?.issue || "Asset"}
@@ -215,10 +296,8 @@ function EmployeeDetails() {
                     </div>
                   </div>
 
-                  {/* Divider */}
                   <div className="my-3 border-t"></div>
 
-                  {/* Dates */}
                   <div className="text-sm text-gray-600 space-y-1">
                     <p>
                       <span className="font-medium">Assigned:</span>{" "}
@@ -240,12 +319,34 @@ function EmployeeDetails() {
 }
 
 export default EmployeeDetails;
-/* 🔹 Reusable Card Component */
+
 function InfoCard({ label, value }) {
   return (
     <div className="border rounded-xl p-4 shadow-sm hover:shadow-md transition bg-gray-50">
       <p className="text-xs text-gray-500">{label}</p>
       <p className="font-semibold text-gray-800 mt-1">{value || "N/A"}</p>
     </div>
+  );
+}
+
+function EditableField({
+  label,
+  name,
+  value,
+  onChange,
+  type = "text",
+  className = "",
+}) {
+  return (
+    <label className={`flex flex-col gap-1 text-sm text-gray-700 ${className}`}>
+      <span className="font-medium">{label}</span>
+      <input
+        name={name}
+        type={type}
+        value={value}
+        onChange={onChange}
+        className="rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+      />
+    </label>
   );
 }

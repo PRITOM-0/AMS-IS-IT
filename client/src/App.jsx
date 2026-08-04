@@ -15,7 +15,7 @@ import AddAsset from "./pages/AddAsset";
 import Employees from "./pages/Employees";
 import EmployeeDetails from "./pages/EmployeeDetails";
 import AddEmployee from "./pages/AddEmployee";
- 
+import AssetAssign from "./pages/AssetAssign";
 
 function App() {
   const [loading, setLoading] = useState(false);
@@ -61,6 +61,7 @@ function App() {
         <Route path="employees" element={<Employees />} />
         <Route path="/employees/add" element={<AddEmployee />} />
         <Route path="/employees/:id" element={<EmployeeDetails />} />
+        <Route path="assign-assets" element={<AssetAssign />} />
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
