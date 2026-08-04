@@ -201,6 +201,36 @@
       "prevEmployees": [],
       "createdAt": "2026-08-04",
       "updatedAt": "2026-08-04"
+    },
+    {
+      "id": "PcRJgp7byyE",
+      "assetCode": "AS-301",
+      "name": "PC ASUS Model A",
+      "brand": "ASUS",
+      "category": "PC",
+      "status": "Instore",
+      "assignDetails": {
+        "assignedTo": null,
+        "assignedDate": null
+      },
+      "location": "SPL-Mirpur",
+      "purchaseDate": "2026-08-04",
+      "warranty": {
+        "start": "2026-08-04",
+        "end": "2028-08-04"
+      },
+      "value": "200000 Tk",
+      "description": "Desk PC",
+      "assetsComments": [
+        "8GB Ram",
+        "13 Gen",
+        "Core i3"
+      ],
+      "issues": [],
+      "history": [],
+      "prevEmployees": [],
+      "createdAt": "2026-08-04",
+      "updatedAt": "2026-08-04"
     }
   ],
   "employees": [
