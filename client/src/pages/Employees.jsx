@@ -25,7 +25,7 @@ function Employees() {
   const filteredEmployees = sortedEmployees.filter((emp) => {
     return (
       emp.name.toLowerCase().includes(searchName.toLowerCase()) &&
-      emp.employeeid.toLowerCase().includes(searchCode.toLowerCase()) &&
+      emp.employeeCode.toLowerCase().includes(searchCode.toLowerCase()) &&
       emp.location.toLowerCase().includes(searchLocation.toLowerCase())
     );
   });
