@@ -39,6 +39,8 @@ const Assets = () => {
 
   // 🔍 Filter
   const filteredAssets = sortedAssets.filter((asset) => {
+    const matchcategory =
+      !filters.category || asset.category === filters.category;
     const matchesAssetCode =
       filters.assetCode == "AS-" ||
       asset.assetCode?.toLowerCase().includes(filters.assetCode.toLowerCase());
@@ -51,7 +53,7 @@ const Assets = () => {
 
     const matchesStatus = !filters.status || asset.status === filters.status;
 
-    return matchesAssetCode && matchesEmployee && matchesStatus;
+    return matchesAssetCode && matchesEmployee && matchesStatus && matchcategory;
   });
 
   // 📄 Pagination
@@ -84,7 +86,7 @@ const Assets = () => {
           </Link>
         </div>
         <div className="mb-6">
-          <div className="grid md:grid-cols-4 gap-4 items-end">
+          <div className="grid md:grid-cols-5 gap-4 items-end">
             {/* Asset Code */}
             <div>
               <label className="text-xs text-gray-500">Asset Code</label>
@@ -112,7 +114,24 @@ const Assets = () => {
                 }
               />
             </div>
-
+            {/* Category */}
+            <div>
+              <label className="text-xs text-gray-500">Category</label>
+              <select
+                className="w-full border rounded px-3 py-2 outline-none focus:ring-2 focus:ring-purple-400"
+                value={filters.category}
+                onChange={(e) =>
+                  setFilters({ ...filters, category: e.target.value })
+                }
+              >
+                <option value="">All Categories</option>
+                {[...new Set(assets.map((asset) => asset.category))].map((category) => (
+                  <option key={category} value={category}>
+                    {category}
+                  </option>
+                ))}
+              </select>
+            </div>
             {/* Status */}
             <div>
               <label className="text-xs text-gray-500">Status</label>
@@ -134,7 +153,7 @@ const Assets = () => {
             {/* Reset Button */}
             <button
               onClick={() =>
-                setFilters({ assetCode: "AS-", employeeId: "EMP-", status: "" })
+                setFilters({ assetCode: "AS-", employeeId: "EMP-", status: "", category: "" })
               }
               className="h-[42px] text-black border border-gray-500 bg-gray-300 rounded px-4 hover:bg-gray-400 transition"
             >

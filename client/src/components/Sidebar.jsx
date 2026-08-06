@@ -19,10 +19,11 @@ function Sidebar({ isOpen }) {
   { label: "Assets", icon: <FaBoxOpen size={18} />, path: "/assets" },
   { label: "Employees", icon: <FaUserTie size={18} />, path: "/employees" },
   { label: "Assign Assets", icon: <FaShareSquare size={18} />, path: "/assign-assets" },
+  { label: "Issues", icon: <FaExclamationCircle size={18} />, path: "/issues" },
   { label: "Requests", icon: <FaClipboardList size={18} />, path: "/requests" },
-  // { label: "Issues", icon: <FaExclamationCircle size={18} />, path: "/issues" },
+  
   //  { label: "Users", icon: <FaUsers size={18} />, path: "/users" },
-  // { label: "Settings", icon: <FaCog size={18} />, path: "/settings" },
+  // { label: "Settings", icon: <FaCog size={18} />, path: "/settings" },// 
 ];
 
   return (

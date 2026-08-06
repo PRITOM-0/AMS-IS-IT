@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const AssetCard = ({ asset}) => {
+const AssetCard = ({asset}) => {
   if (!asset) return null;
 
   const {

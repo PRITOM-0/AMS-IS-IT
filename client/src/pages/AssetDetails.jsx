@@ -2,12 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { API_BASE_URL } from "../env";
+import IssueCard from "../components/IssueCard";
 
 const AssetDetail = () => {
   const { id } = useParams();
-
   const [asset, setAsset] = useState(null);
   const [employees, setEmployees] = useState([]);
+  const [issues, setIssues] = useState([]);
   const [isEdit, setIsEdit] = useState(false);
   const [formData, setFormData] = useState(null);
 
@@ -15,12 +16,15 @@ const AssetDetail = () => {
     const fetchData = async () => {
       const res = await fetch(`${API_BASE_URL}/assets/${id}`);
       const empRes = await fetch(`${API_BASE_URL}/employees`);
+      const issuesRes = await fetch(`${API_BASE_URL}/issues`);
 
       const assetData = await res.json();
       const empData = await empRes.json();
+      const issuesData = await issuesRes.json();
 
       setAsset(assetData);
       setEmployees(empData);
+      setIssues(issuesData);
       setFormData(assetData);
     };
 
@@ -74,7 +78,9 @@ const AssetDetail = () => {
   const employee = employees.find(
     (e) => e.employeeid === formData.assignDetails?.assignedTo,
   );
-
+  const assetIssues = issues
+    .filter((i) => i.assetId === asset.id)
+    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
   return (
     <div className="p-6 bg-gray-100 min-h-screen">
       <div className="max-w-7xl mx-auto space-y-6">
@@ -204,37 +210,52 @@ const AssetDetail = () => {
                 <p>{formData.description}</p>
               )}
             </Card>
+          </div>
 
+          {/* RIGHT */}
+          <div className="space-y-6">
+            <Card title="Assignment">
+              <Info
+                label="Assigned To"
+                value={formData.assignDetails?.assignedTo}
+              />
+              <InfoDate
+                label="Assigned Date"
+                value={formData.assignDetails?.assignedDate}
+              />
+            </Card>
+
+            {employee && (
+              <Card title="Employee Info">
+                <Info label="Name" value={employee.name} />
+                <Info label="Email" value={employee.email} />
+                <Info label="Location" value={employee.location} />
+                <Info label="Contact" value={employee.contact} />
+              </Card>
+            )}
+          </div>
+
+          {/*under*/}
+          <div className="w-full md:col-span-3 space-y-6">
             {/* Issues */}
-            <Card title={`Issues (${formData.issues?.length || 0})`}>
-              {formData.issues?.map((i, idx) => (
-                <div key={idx} className="border p-3 mb-2 rounded bg-red-50">
-                  <Info
-                    label="By"
-                    value={i.issueBy}
-                    isEdit={isEdit}
-                    onChange={(v) =>
-                      handleArrayChange("issues", idx, "issueBy", v)
-                    }
-                  />
-                  <Info
-                    label="Status"
-                    value={i.status}
-                    isEdit={isEdit}
-                    onChange={(v) =>
-                      handleArrayChange("issues", idx, "status", v)
-                    }
-                  />
-                  <Info
-                    label="Date"
-                    value={i.date}
-                    isEdit={isEdit}
-                    onChange={(v) =>
-                      handleArrayChange("issues", idx, "date", v)
-                    }
-                  />
-                </div>
-              ))}
+            <Card title={`Issues (${assetIssues.length})`}>
+              <div className="grid grid-cols-4 gap-2">
+                {assetIssues.map((issue) => {
+                  const employee = employees.find(
+                    (e) => e.id === issue.employeeId,
+                  );
+                  const asset = formData;
+                   // Since we're already in the context of this asset
+                  return (
+                    <IssueCard
+                      key={issue.id}
+                      issue={issue}
+                      asset={asset}
+                      employee={employee}
+                    />
+                  );
+                })}
+              </div>
             </Card>
 
             {/* Comments */}
@@ -260,29 +281,6 @@ const AssetDetail = () => {
                 </div>
               ))}
             </Card>
-          </div>
-
-          {/* RIGHT */}
-          <div className="space-y-6">
-            <Card title="Assignment">
-              <Info
-                label="Assigned To"
-                value={formData.assignDetails?.assignedTo}
-              />
-              <InfoDate
-                label="Assigned Date"
-                value={formData.assignDetails?.assignedDate}
-              />
-            </Card>
-
-            {employee && (
-              <Card title="Employee Info">
-                <Info label="Name" value={employee.name} />
-                <Info label="Email" value={employee.email} />
-                <Info label="Location" value={employee.location} />
-                <Info label="Contact" value={employee.contact} />
-              </Card>
-            )}
           </div>
         </div>
       </div>

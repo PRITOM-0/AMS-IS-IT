@@ -181,7 +181,7 @@ export default function Dashboard() {
             color="amber"
           />
           <StatCard
-            title="Total Workforce"
+            title="Total Employees"
             value={totalEmployees}
             subtext={`${totalUsers} standard users / ${totalAdmins} admins`}
             icon={<Users size={18} />}
@@ -233,11 +233,11 @@ export default function Dashboard() {
                 Distribution
               </span>
             </div>
-            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
+            <div className="grid grid-cols-5 gap-2 ">
               {Object.entries(categoryCounts).map(([category, count]) => (
                 <div
                   key={category}
-                  className="rounded-2xl border rounded-xl shadow-sm p-4 hover:shadow-md transition duration-200 border-indigo-400 text-indigo-700 bg-gradient-to-br from-indigo-200 via-white to-violet-200 shadow-sm transition-transform duration-200 hover:-translate-y-1"
+                  className="rounded-2xl border rounded-xl shadow-sm p-2 hover:shadow-md transition duration-200 border-indigo-400 text-indigo-700 bg-gradient-to-br from-indigo-200 via-white to-violet-200 shadow-sm transition-transform duration-200 hover:-translate-y-1"
                 >
                   <span className="text-[11px] font-semibold uppercase tracking-[0.24em] text-slate-500">
                     {category}

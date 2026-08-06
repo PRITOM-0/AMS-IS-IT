@@ -5,7 +5,7 @@
       "username": "admin1",
       "password": "123456",
       "email": "admin1@company.com",
-      "employeeid": "EMP-001",
+      "employeeCode": "EMP-001",
       "designation": "System Admin",
       "role": "admin",
       "approvallist": [
@@ -19,7 +19,7 @@
       "username": "admin2",
       "password": "123456",
       "email": "admin2@company.com",
-      "employeeid": "EMP-002",
+      "employeeCode": "EMP-002",
       "designation": "IT Manager",
       "role": "admin",
       "approvallist": [
@@ -34,7 +34,7 @@
       "username": "user1",
       "password": "123456",
       "email": "user1@company.com",
-      "employeeid": "EMP-101",
+      "employeeCode": "EMP-101",
       "designation": "IT Officer",
       "role": "user",
       "approverequests": [
@@ -47,7 +47,7 @@
       "username": "user2",
       "password": "123456",
       "email": "user2@company.com",
-      "employeeid": "EMP-102",
+      "employeeCode": "EMP-102",
       "designation": "HR Officer",
       "role": "user",
       "approverequests": [
@@ -59,7 +59,7 @@
       "username": "user3",
       "password": "123456",
       "email": "user3@company.com",
-      "employeeid": "EMP-103",
+      "employeeCode": "EMP-103",
       "designation": "Accountant",
       "role": "user",
       "approverequests": [
@@ -71,7 +71,7 @@
       "username": "user4",
       "password": "123456",
       "email": "user4@company.com",
-      "employeeid": "EMP-104",
+      "employeeCode": "EMP-104",
       "designation": "Engineer",
       "role": "user",
       "approverequests": []
@@ -81,7 +81,7 @@
       "username": "user5",
       "password": "123456",
       "email": "user5@company.com",
-      "employeeid": "EMP-105",
+      "employeeCode": "EMP-105",
       "designation": "Designer",
       "role": "user",
       "approverequests": [
@@ -93,7 +93,7 @@
       "username": "user6",
       "password": "123456",
       "email": "user6@company.com",
-      "employeeid": "EMP-106",
+      "employeeCode": "EMP-106",
       "designation": "Support Staff",
       "role": "user",
       "approverequests": []
@@ -103,7 +103,7 @@
       "username": "user7",
       "password": "123456",
       "email": "user7@company.com",
-      "employeeid": "EMP-107",
+      "employeeCode": "EMP-107",
       "designation": "Manager",
       "role": "user",
       "approverequests": [
@@ -115,7 +115,7 @@
       "username": "user8",
       "password": "123456",
       "email": "user8@company.com",
-      "employeeid": "EMP-108",
+      "employeeCode": "EMP-108",
       "designation": "Analyst",
       "role": "user",
       "approverequests": []
@@ -125,7 +125,7 @@
       "username": "user9",
       "password": "123456",
       "email": "user9@company.com",
-      "employeeid": "EMP-109",
+      "employeeCode": "EMP-109",
       "designation": "QA Tester",
       "role": "user",
       "approverequests": [
@@ -137,7 +137,7 @@
       "username": "user10",
       "password": "123456",
       "email": "user10@company.com",
-      "employeeid": "EMP-110",
+      "employeeCode": "EMP-110",
       "designation": "Intern",
       "role": "user",
       "approverequests": []
@@ -1079,7 +1079,7 @@
   "employees": [
     {
       "name": "Pritom Saha",
-      "employeeid": "EMP-101",
+      "employeeCode": "EMP-101",
       "email": "pritomsahawww@gmail.com",
       "designation": "Jr. IT Officer",
       "floor": "5th Floor",
@@ -1095,7 +1095,7 @@
     },
     {
       "name": "Abdul Kader",
-      "employeeid": "EMP-001",
+      "employeeCode": "EMP-001",
       "email": "kader@gmail.com",
       "designation": "Senior IT Officer",
       "floor": "5th Floor",
@@ -1113,7 +1113,7 @@
     },
     {
       "name": "Ripon Mia",
-      "employeeid": "EMP-102",
+      "employeeCode": "EMP-102",
       "email": "mia@gmail.com",
       "designation": "IT Officer",
       "floor": "5th Floor",
@@ -1129,7 +1129,7 @@
     },
     {
       "name": "Arifur Rahman",
-      "employeeid": "EMP-103",
+      "employeeCode": "EMP-103",
       "email": "rahman@gmail.com",
       "designation": "Deputy Manager",
       "floor": "5th Floor",
@@ -1145,7 +1145,7 @@
     },
     {
       "name": "Tanoy Sarker",
-      "employeeid": "EMP-104",
+      "employeeCode": "EMP-104",
       "email": "sarker@gmail.com",
       "designation": "IT Officer",
       "floor": "5th Floor",
@@ -1161,7 +1161,7 @@
     },
     {
       "name": "Rabbi Yeasir",
-      "employeeid": "EMP-903682",
+      "employeeCode": "EMP-903682",
       "email": "rabbi@gmail.com",
       "designation": "Management",
       "floor": "2th ",
@@ -1178,7 +1178,7 @@
     },
     {
       "name": "Ranjan Halder Akash",
-      "employeeid": "EMP-903815",
+      "employeeCode": "EMP-903815",
       "email": "ranjan@gmail.com",
       "designation": "Technician",
       "floor": "2nd",
@@ -1194,6 +1194,21 @@
       "createdAt": "2026-08-06T06:33:29.514Z",
       "updatedAt": "2026-08-06T07:43:21.270Z",
       "id": "p0lz7BQujWc"
+    }
+  ],
+  "issues": [
+    {
+      "id": "ISS-001",
+      "assetId": "Hf1a-RjYgVo",
+      "assetCode": "AS-101",
+      "employeeId": "vFumJsl_4PY",
+      "assignedTo": "",
+      "issueType": "Hardware",
+      "priority": "Medium",
+      "status": "Solving",
+      "description": "Laptop not turning on",
+      "createdAt": "2026-01-10",
+      "resolvedAt": ""
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
