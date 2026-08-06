@@ -131,9 +131,9 @@ function AssetAssign() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 p-6 lg:p-8">
+    <div className="min-h-screen  p-6 lg:p-8">
       <div className="mx-auto max-w-7xl space-y-6">
-        <div className="rounded-3xl border border-slate-400 bg-white/80 p-6 shadow-xl shadow-blue-100 backdrop-blur">
+        <div className="rounded-3xl border border-slate-400 border-indigo-200 text-indigo-700 bg-gradient-to-br from-indigo-100 via-white to-violet-100 p-6 shadow-xl shadow-blue-100 backdrop-blur">
           <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
             <div>
               <h1 className="text-3xl font-bold text-slate-800">
@@ -154,7 +154,7 @@ function AssetAssign() {
         )}
 
         <div className="grid gap-6 xl:grid-cols-[1.05fr_0.95fr]">
-          <div className="rounded-3xl border border-slate-400 bg-white p-6 shadow-lg shadow-slate-100">
+          <div className="rounded-3xl border border-slate-400 border-indigo-200 text-indigo-700 bg-gradient-to-br from-indigo-100 via-white to-violet-100 p-6 shadow-lg shadow-slate-100">
             <div className="mb-5 flex items-center gap-3">
               <div className="rounded-2xl bg-blue-100 p-2.5 text-blue-600">
                 <UserCheck size={20} />
@@ -164,7 +164,7 @@ function AssetAssign() {
               </h2>
             </div>
 
-            <div className="rounded-2xl border border-slate-400 bg-slate-50 p-3 shadow-inner">
+            <div className="border-indigo-200 text-indigo-700 bg-gradient-to-br from-indigo-100 via-white to-violet-100 rounded-2xl border border-slate-400 bg-slate-50 p-3 shadow-inner">
               <label className="mb-2 block text-sm font-medium text-slate-700">
                 Search by EMP code or name
               </label>
@@ -202,8 +202,8 @@ function AssetAssign() {
                     onClick={() => setSelectedEmployee(emp)}
                     className={`w-full rounded-2xl border border-slate-400  p-3.5 text-left transition ${
                       selectedEmployee?.id === emp.id
-                        ? "border-blue-600 bg-blue-600 text-white shadow-md"
-                        : "border-slate-200 bg-white text-slate-700 hover:border-blue-300 hover:shadow-sm"
+                        ? "border-blue-600 bg-blue-500 text-white shadow-md"
+                        : "border-slate-200 border-amber-200 text-amber-700 bg-gradient-to-br from-amber-100 via-white to-orange-100 text-slate-700 hover:border-blue-300 hover:shadow-sm"
                     }`}
                   >
                     <p className="font-semibold">{emp.name}</p>
@@ -231,7 +231,7 @@ function AssetAssign() {
             </div>
           </div>
 
-          <div className="rounded-3xl border border border-slate-400 bg-white p-6 shadow-lg shadow-slate-100">
+          <div className="rounded-3xl border border border-slate-400 border-indigo-200 text-indigo-700 bg-gradient-to-br from-indigo-100 via-white to-violet-100 p-6 shadow-lg shadow-slate-100">
             <div className="mb-5 flex items-center gap-3">
               <div className="rounded-2xl bg-emerald-100 p-2.5 text-emerald-600">
                 <PackagePlus size={20} />
@@ -241,7 +241,7 @@ function AssetAssign() {
               </h2>
             </div>
 
-            <div className="mb-4 rounded-2xl border border-slate-400 bg-slate-50 p-3 shadow-inner">
+            <div className="border-indigo-200 text-indigo-700 bg-gradient-to-br from-indigo-100 via-white to-violet-100 mb-4 rounded-2xl border border-slate-400 bg-slate-50 p-3 shadow-inner">
               <label className="mb-2 block text-sm font-medium text-slate-700">
                 Search Asset by Code or Name
               </label>
@@ -283,8 +283,8 @@ function AssetAssign() {
                     onClick={() => setSelectedAssetId(asset.id)}
                     className={`w-full rounded-2xl border border-slate-400 p-3.5 text-left transition ${
                       selectedAssetId === asset.id
-                        ? "border-blue-600 bg-blue-600 text-white shadow-md"
-                        : "border-slate-400 bg-white text-slate-700 hover:border-emerald-300 hover:shadow-sm"
+                        ? "border-blue-600 bg-blue-500 text-white shadow-md"
+                        : "border-slate-400 border-emerald-200 text-emerald-700 bg-gradient-to-br from-emerald-100 via-white to-teal-100 text-slate-700 hover:border-emerald-300 hover:shadow-sm"
                     }`}
                   >
                     <p className="font-semibold">{asset.name}</p>
@@ -354,7 +354,7 @@ function AssetAssign() {
               </div>
             )}
 
-            <div className="mb-4 rounded-2xl border border-slate-400 bg-slate-50 p-3 shadow-inner">
+            <div className="mb-4 rounded-2xl border border-slate-400 border-indigo-200 text-indigo-700 bg-gradient-to-br from-indigo-100 via-white to-violet-100 p-3 shadow-inner">
               <label className="mb-2 block text-sm font-medium text-slate-700">
                 Additional Notes (optional)
               </label>

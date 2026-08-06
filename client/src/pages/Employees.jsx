@@ -32,6 +32,7 @@ function Employees() {
 
   return (
     <div className="p-6">
+      
       {/* Header */}
       <div className="flex justify-between mb-6">
         <h1 className="text-2xl font-bold">Employees</h1>
@@ -42,6 +43,7 @@ function Employees() {
           + Add Employee
         </Link>
       </div>
+
 
       {/* 🔍 Search Filters */}
       <div className="bg-white p-4 rounded-xl shadow mb-6 grid md:grid-cols-4 gap-4">

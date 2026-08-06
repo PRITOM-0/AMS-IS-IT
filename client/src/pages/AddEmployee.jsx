@@ -57,6 +57,7 @@ function AddEmployee() {
 
   return (
     <div className="p-6 max-w-3xl mx-auto">
+  
       <div className="bg-white shadow-lg rounded-xl p-6">
         <h1 className="text-2xl font-bold mb-6">Add Employee</h1>
 

@@ -130,7 +130,7 @@ export default function Dashboard() {
   return (
     <div
       className="min-h-screen bg-[radial-gradient(circle_at_top_left,_rgba(129,140,248,0.28),_transparent_32%),radial-gradient(circle_at_top_right,_rgba(16,185,129,0.20),_transparent_24%),radial-gradient(circle_at_bottom_left,_rgba(244,114,182,0.16),_transparent_28%),linear-gradient(135deg,_#f8fbff_0%,_#eef4ff_45%,_#fdf2f8_100%)] text-slate-800 p-4 sm:p-6 lg:p-8"
-      style={{ fontFamily: 'Inter, "Segoe UI", sans-serif' }}
+       
     >
       <div className="max-w-7xl mx-auto space-y-6">
         {/* Header */}

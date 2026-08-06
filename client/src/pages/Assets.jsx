@@ -59,18 +59,27 @@ const Assets = () => {
   return (
     <div className="p-6">
       {/* Top Bar */}
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Assets</h1>
-
-        <Link
-          to="/assets/addAsset"
-          className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-        >
-          <Plus size={18} /> Add Asset
-        </Link>
-      </div>
-
-      <div className="mb-6">
+      <div className="rounded-[28px] border border-indigo-200 border-indigo-200 text-indigo-700 bg-gradient-to-br from-indigo-100 via-white to-violet-100 p-6 shadow-[0_20px_45px_-20px_rgba(79,70,229,0.45)] backdrop-blur-sm">
+        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between ">
+          <div>
+             
+            <h1 className="mt-2 text-3xl font-extrabold tracking-tight text-slate-900">
+              Asset Management
+            </h1>
+            <p className="mt-2 mb-5 text-sm text-slate-500">
+              Real-time status of company hardware, inventory, and staff access.
+            </p>
+          </div>
+           
+            <Link
+              to="/assets/addAsset"
+              className="flex items-center space-x-3 rounded-2xl border border-emerald-400 bg-gradient-to-r from-emerald-500 to-teal-500 px-4 py-2.5 text-sm font-semibold text-white shadow-sm"
+            >
+              <Plus size={18} /> Add Asset
+            </Link>
+          
+        </div>
+        <div className="mb-6">
         <div className="grid md:grid-cols-4 gap-4 items-end">
           {/* Asset Code */}
           <div>
@@ -123,12 +132,16 @@ const Assets = () => {
             onClick={() =>
               setFilters({ assetCode: "AS-", employeeId: "EMP-", status: "" })
             }
-            className="h-[42px] bg-gray-200 rounded px-4 hover:bg-gray-300 transition"
+            className="h-[42px] border border-gray-300 bg-gray-200 rounded px-4 hover:bg-gray-300 transition"
           >
             Reset
           </button>
         </div>
       </div>
+      </div>
+      <div className="flex justify-between items-center mb-6"></div>
+
+      
 
       {/* Grid */}
       <div className="grid grid-cols-4 gap-4">

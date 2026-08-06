@@ -231,6 +231,33 @@
       "prevEmployees": [],
       "createdAt": "2026-08-04",
       "updatedAt": "2026-08-04"
+    },
+    {
+      "id": "fzYrwF655dA",
+      "assetCode": "AS-502",
+      "name": "I phone 17 pro",
+      "brand": "Apple",
+      "category": "Smartphone",
+      "status": "Active",
+      "assignDetails": {
+        "assignedTo": "EMP-903682",
+        "assignedDate": "2026-08-06",
+        "notes": ""
+      },
+      "location": "Corporate Office",
+      "purchaseDate": "2026-08-06",
+      "warranty": {
+        "start": "2026-08-06",
+        "end": "2029-08-06"
+      },
+      "value": "150000 Tk",
+      "description": "Leatest Model",
+      "assetsComments": [],
+      "issues": [],
+      "history": [],
+      "prevEmployees": [],
+      "createdAt": "2026-08-06",
+      "updatedAt": "2026-08-06"
     }
   ],
   "employees": [
@@ -297,6 +324,20 @@
       "assetlist": [],
       "assethistory": [],
       "id": "yGy6JDUHibM"
+    },
+    {
+      "name": "Rabbi Yeasir",
+      "employeeid": "EMP-903682",
+      "email": "rabbi@gmail.com",
+      "designation": "Management",
+      "floor": "2th ",
+      "location": "Corporate Office",
+      "contact": "01733337777",
+      "assetlist": [
+        "fzYrwF655dA"
+      ],
+      "assethistory": [],
+      "id": "A2CbfgWJQOM"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

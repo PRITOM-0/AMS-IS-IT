@@ -18,7 +18,7 @@ const AssetCard = ({ asset}) => {
   return (
     <Link
       to={`/assets/${id}`}
-      className="block border rounded-xl shadow-sm p-4 hover:shadow-md transition duration-200 bg-white"
+      className="block border rounded-xl shadow-sm p-4 hover:shadow-md transition duration-200 border-indigo-200 text-indigo-700 bg-gradient-to-br from-indigo-100 via-white to-violet-100"
     >
       <div className="flex justify-between items-center mb-2">
         <h2 className="text-lg font-semibold">{name}</h2>
