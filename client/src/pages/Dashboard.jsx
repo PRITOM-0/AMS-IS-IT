@@ -52,6 +52,12 @@ export default function Dashboard() {
           adminsRes.json(),
         ]);
 
+        // Sort assets by updatedAt in descending order
+        assets.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
+        employees.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
+        users.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
+        admins.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
+
         setData({ assets, employees, users, admins });
       } catch (err) {
         setError(err.message);
@@ -190,7 +196,7 @@ export default function Dashboard() {
         {/* Middle Section: Status & Categories */}
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
           {/* Asset Status Overview */}
-          <div className="rounded-3xl border border-slate-300 bg-gradient-to-br from-white via-slate-50 to-indigo-50/60 p-6 shadow-[0_20px_45px_-25px_rgba(15,23,42,0.30)]">
+          <div className="rounded-3xl border rounded-xl shadow-sm p-4 hover:shadow-md transition duration-200 border-green-200 text-indigo-700 bg-gradient-to-br from-green-200 via-white to-violet-200 shadow-[0_20px_45px_-25px_rgba(15,23,42,0.30)]">
             <div className="mb-5 flex items-center justify-between">
               <h2 className="text-lg font-bold text-slate-900">
                 Status Overview
@@ -235,7 +241,7 @@ export default function Dashboard() {
               {Object.entries(categoryCounts).map(([category, count]) => (
                 <div
                   key={category}
-                  className="rounded-2xl border border-indigo-200 bg-gradient-to-br from-indigo-50 via-white to-violet-50 p-4 shadow-sm transition-transform duration-200 hover:-translate-y-1"
+                  className="rounded-2xl border rounded-xl shadow-sm p-4 hover:shadow-md transition duration-200 border-indigo-400 text-indigo-700 bg-gradient-to-br from-indigo-200 via-white to-violet-200 shadow-sm transition-transform duration-200 hover:-translate-y-1"
                 >
                   <span className="text-[11px] font-semibold uppercase tracking-[0.24em] text-slate-500">
                     {category}
@@ -255,8 +261,8 @@ export default function Dashboard() {
         </div>
 
         {/* Bottom Section: Recent Assets Table */}
-        <div className="overflow-hidden rounded-[24px] border border-slate-300 bg-gradient-to-br from-white via-slate-50 to-indigo-50/50 shadow-[0_20px_45px_-25px_rgba(15,23,42,0.30)]">
-          <div className="flex flex-col gap-3 border-b border-slate-200/80 px-6 py-5 sm:flex-row sm:items-center sm:justify-between">
+        <div className="overflow-hidden rounded-[24px] border border-slate-300 bg-gradient-to-br from-white via-slate-200 to-indigo-150/50 shadow-[0_20px_45px_-25px_rgba(15,23,42,0.30)]">
+          <div className="flex flex-col gap-3 border-b border-slate-200/80 px-6  py-5 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <h2 className="text-lg font-bold text-slate-900">
                 Asset Inventory List

@@ -71,13 +71,12 @@ const AssetDetail = () => {
   };
 
   const employee = employees.find(
-    (e) => e.employeeid === formData.assignDetails?.assignedTo
+    (e) => e.employeeid === formData.assignDetails?.assignedTo,
   );
 
   return (
     <div className="p-6 bg-gray-100 min-h-screen">
       <div className="max-w-7xl mx-auto space-y-6">
-
         {/* 🔹 Top Bar */}
         <div className="flex justify-between items-center">
           <button
@@ -124,46 +123,71 @@ const AssetDetail = () => {
             isEdit={isEdit}
             onChange={(v) => handleChange("assetCode", v)}
           />
-          <Editable
-            value={employee?.name || "Unassigned"}
-            isEdit={false}
-          />
+          <Editable value={employee?.name || "Unassigned"} isEdit={false} />
         </div>
 
         <div className="grid md:grid-cols-3 gap-6">
-
           {/* LEFT */}
           <div className="md:col-span-2 space-y-6">
-
             {/* Basic */}
             <Card title="Asset Information">
               <Grid>
-                <Info label="Brand" value={formData.brand} isEdit={isEdit} onChange={(v)=>handleChange("brand",v)} />
-                <Info label="Category" value={formData.category} isEdit={isEdit} onChange={(v)=>handleChange("category",v)} />
-                
-                  <InfoSelect
-  label="Status"
-  value={formData.status}
-  isEdit={isEdit}
-  onChange={(val) => handleChange("status", val)}
-  options={["Active", "Inactive", "Instore"]}
-/>
-                <Info label="Location" value={formData.location} isEdit={isEdit} onChange={(v)=>handleChange("location",v)} />
+                <Info
+                  label="Brand"
+                  value={formData.brand}
+                  isEdit={isEdit}
+                  onChange={(v) => handleChange("brand", v)}
+                />
+                <Info
+                  label="Category"
+                  value={formData.category}
+                  isEdit={isEdit}
+                  onChange={(v) => handleChange("category", v)}
+                />
+
+                <InfoSelect
+                  label="Status"
+                  value={formData.status}
+                  isEdit={isEdit}
+                  onChange={(val) => handleChange("status", val)}
+                  options={["Active", "Inactive", "Instore"]}
+                />
+                <Info
+                  label="Location"
+                  value={formData.location}
+                  isEdit={isEdit}
+                  onChange={(v) => handleChange("location", v)}
+                />
                 <InfoDate
-  label="Purchase Date"
-  value={formData.purchaseDate}
-  isEdit={isEdit}
-  onChange={(v) => handleChange("purchaseDate", v)}
-/>
-                <Info label="Value" value={formData.value} isEdit={isEdit} onChange={(v)=>handleChange("value",v)} />
+                  label="Purchase Date"
+                  value={formData.purchaseDate}
+                  isEdit={isEdit}
+                  onChange={(v) => handleChange("purchaseDate", v)}
+                />
+                <Info
+                  label="Value"
+                  value={formData.value}
+                  isEdit={isEdit}
+                  onChange={(v) => handleChange("value", v)}
+                />
               </Grid>
             </Card>
 
             {/* Warranty */}
             <Card title="Warranty">
               <Grid>
-                <InfoDate label="Start" value={formData.warranty?.start} isEdit={isEdit} onChange={(v)=>handleNestedChange("warranty","start",v)} />
-                <InfoDate label="End" value={formData.warranty?.end} isEdit={isEdit} onChange={(v)=>handleNestedChange("warranty","end",v)} />
+                <InfoDate
+                  label="Start"
+                  value={formData.warranty?.start}
+                  isEdit={isEdit}
+                  onChange={(v) => handleNestedChange("warranty", "start", v)}
+                />
+                <InfoDate
+                  label="End"
+                  value={formData.warranty?.end}
+                  isEdit={isEdit}
+                  onChange={(v) => handleNestedChange("warranty", "end", v)}
+                />
               </Grid>
             </Card>
 
@@ -173,7 +197,7 @@ const AssetDetail = () => {
                 <textarea
                   className="w-full border p-2 rounded"
                   value={formData.description || ""}
-                  onChange={(e)=>handleChange("description", e.target.value)}
+                  onChange={(e) => handleChange("description", e.target.value)}
                 />
               ) : (
                 <p>{formData.description}</p>
@@ -184,9 +208,30 @@ const AssetDetail = () => {
             <Card title={`Issues (${formData.issues?.length || 0})`}>
               {formData.issues?.map((i, idx) => (
                 <div key={idx} className="border p-3 mb-2 rounded bg-red-50">
-                  <Info label="By" value={i.issueBy} isEdit={isEdit} onChange={(v)=>handleArrayChange("issues",idx,"issueBy",v)} />
-                  <Info label="Status" value={i.status} isEdit={isEdit} onChange={(v)=>handleArrayChange("issues",idx,"status",v)} />
-                  <Info label="Date" value={i.date} isEdit={isEdit} onChange={(v)=>handleArrayChange("issues",idx,"date",v)} />
+                  <Info
+                    label="By"
+                    value={i.issueBy}
+                    isEdit={isEdit}
+                    onChange={(v) =>
+                      handleArrayChange("issues", idx, "issueBy", v)
+                    }
+                  />
+                  <Info
+                    label="Status"
+                    value={i.status}
+                    isEdit={isEdit}
+                    onChange={(v) =>
+                      handleArrayChange("issues", idx, "status", v)
+                    }
+                  />
+                  <Info
+                    label="Date"
+                    value={i.date}
+                    isEdit={isEdit}
+                    onChange={(v) =>
+                      handleArrayChange("issues", idx, "date", v)
+                    }
+                  />
                 </div>
               ))}
             </Card>
@@ -195,29 +240,38 @@ const AssetDetail = () => {
             <Card title={`Comments (${formData.assetsComments?.length || 0})`}>
               {formData.assetsComments?.map((c, idx) => (
                 <div key={idx} className="border p-3 mb-2 rounded bg-green-50">
-                  <Info label="Text" value={c.text} isEdit={isEdit} onChange={(v)=>handleArrayChange("assetsComments",idx,"text",v)} />
-                  <Info label="By" value={c.createdBy} isEdit={isEdit} onChange={(v)=>handleArrayChange("assetsComments",idx,"createdBy",v)} />
+                  <Info
+                    label="Text"
+                    value={c.text}
+                    isEdit={isEdit}
+                    onChange={(v) =>
+                      handleArrayChange("assetsComments", idx, "text", v)
+                    }
+                  />
+                  <Info
+                    label="By"
+                    value={c.createdBy}
+                    isEdit={isEdit}
+                    onChange={(v) =>
+                      handleArrayChange("assetsComments", idx, "createdBy", v)
+                    }
+                  />
                 </div>
               ))}
             </Card>
-
           </div>
 
           {/* RIGHT */}
           <div className="space-y-6">
-
             <Card title="Assignment">
               <Info
                 label="Assigned To"
                 value={formData.assignDetails?.assignedTo}
-                isEdit={isEdit}
-                onChange={(v)=>handleNestedChange("assignDetails","assignedTo",v)}
+            
               />
               <InfoDate
                 label="Assigned Date"
                 value={formData.assignDetails?.assignedDate}
-                isEdit={isEdit}
-                onChange={(v)=>handleNestedChange("assignDetails","assignedDate",v)}
               />
             </Card>
 
@@ -271,14 +325,13 @@ const Editable = ({ value, isEdit, onChange }) =>
     <input
       className="text-white border border-white font-bold px-2 py-1 rounded"
       value={value || ""}
-      onChange={(e)=>onChange(e.target.value)}
+      onChange={(e) => onChange(e.target.value)}
     />
   ) : (
     <h1 className="text-2xl font-bold">{value}</h1>
   );
 
-
-  const InfoSelect = ({ label, value, isEdit, options = [], onChange }) => {
+const InfoSelect = ({ label, value, isEdit, options = [], onChange }) => {
   return (
     <div>
       <p className="text-gray-500 text-xs">{label}</p>
@@ -302,7 +355,7 @@ const Editable = ({ value, isEdit, onChange }) =>
     </div>
   );
 };
-  
+
 const InfoDate = ({ label, value, isEdit, onChange }) => {
   return (
     <div>

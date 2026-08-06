@@ -57,6 +57,7 @@ function EmployeeDetails() {
 
   const handleUpdate = async () => {
     if (!formData) return;
+    formData.updatedAt = new Date().toISOString(); // Update the updatedAt timestamp
 
     try {
       const payload = {

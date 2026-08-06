@@ -136,7 +136,7 @@ function AssetAssign() {
         <div className="rounded-3xl border border-slate-400 border-indigo-200 text-indigo-700 bg-gradient-to-br from-indigo-100 via-white to-violet-100 p-6 shadow-xl shadow-blue-100 backdrop-blur">
           <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
             <div>
-              <h1 className="text-3xl font-bold text-slate-800">
+              <h1 className="text-3xl font-extrabold tracking-tight text-slate-900">
                 Assign Asset
               </h1>
               <p className="mt-2 text-sm text-slate-600">
@@ -168,13 +168,19 @@ function AssetAssign() {
               <label className="mb-2 block text-sm font-medium text-slate-700">
                 Search by EMP code or name
               </label>
-              <input
-                type="text"
-                value={employeeSearch}
-                onChange={(e) => setEmployeeSearch(e.target.value)}
-                placeholder="EMP-101 or Alice Johnson"
-                className="w-full rounded-xl border border-slate-400 bg-white px-3 py-2.5 text-sm outline-none transition focus:border-blue-400 focus:ring-2 focus:ring-blue-200"
-              />
+              <div className="relative">
+                <Search
+                  className="absolute left-3 top-3 text-gray-400"
+                  size={16}
+                />
+                <input
+                  type="text"
+                  value={employeeSearch}
+                  onChange={(e) => setEmployeeSearch(e.target.value)}
+                  placeholder="EMP-101 or Alice Johnson"
+                  className="w-full rounded-xl border border-slate-400 bg-white px-3 pl-9 py-2.5 text-sm outline-none transition focus:border-blue-400 focus:ring-2 focus:ring-blue-200"
+                />
+              </div>
             </div>
 
             <div className="mt-4 flex justify-end">
@@ -200,31 +206,44 @@ function AssetAssign() {
                     key={emp.id}
                     type="button"
                     onClick={() => setSelectedEmployee(emp)}
-                    className={`w-full rounded-2xl border border-slate-400  p-3.5 text-left transition ${
+                    className={`w-full rounded-2xl border border-slate-400 text-left transition ${
                       selectedEmployee?.id === emp.id
                         ? "border-blue-600 bg-blue-500 text-white shadow-md"
-                        : "border-slate-200 border-amber-200 text-amber-700 bg-gradient-to-br from-amber-100 via-white to-orange-100 text-slate-700 hover:border-blue-300 hover:shadow-sm"
+                        : "border-slate-200 border-amber-200 text-blue-600 bg-gradient-to-br from-amber-100 via-white to-orange-100 text-slate-700 hover:border-blue-300 hover:shadow-sm"
                     }`}
                   >
-                    <p className="font-semibold">{emp.name}</p>
-                    <p
-                      className={`text-sm ${
-                        selectedEmployee?.id === emp.id
-                          ? "text-blue-100"
-                          : "text-slate-500"
-                      }`}
-                    >
-                      {emp.employeeid}
-                    </p>
-                    <p
-                      className={`text-xs ${
-                        selectedEmployee?.id === emp.id
-                          ? "text-blue-100"
-                          : "text-slate-400"
-                      }`}
-                    >
-                      {emp.designation}
-                    </p>
+                    <div className="shadow-sm p-4 hover:shadow-md transition duration-200  flex justify-between items-center">
+                      {/* LEFT SECTION */}
+                      <div>
+                        <h2 className="text-lg font-semibold">
+                          {emp.name}
+                        </h2>
+                        <p className="text-sm ">{emp.email}</p>
+
+                        <div className="mt-2 text-sm  flex flex-wrap gap-x-4">
+                          <p>
+                            <strong>ID:</strong> {emp.employeeid}
+                          </p>
+                          <p>
+                            <strong>Location:</strong> {emp.location}
+                          </p>
+                          <p>
+                            <strong>Floor:</strong> {emp.floor}
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* RIGHT SECTION */}
+                      <div className="text-right flex flex-col items-end gap-2">
+                        <span className="text-xs font-bold px-2 py-1 rounded">
+                          {emp.designation}
+                        </span>
+
+                        <span className="text-xs font-bold px-2 py-1 rounded">
+                          {emp.assetlist?.length || 0} Assets
+                        </span>
+                      </div>
+                    </div>
                   </button>
                 ))
               )}

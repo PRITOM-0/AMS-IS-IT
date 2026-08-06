@@ -10,6 +10,7 @@ const AddAsset = () => {
     brand: "",
     category: "",
     status: "Instore",
+    quantity: 1,
     assignedTo: "",
     assignedDate: "",
     location: "",
@@ -34,20 +35,16 @@ const AddAsset = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const generateAssetCode = () => {
-    return "AS-" + Math.floor(100 + Math.random() * 900);
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const newAsset = {
-      id: Date.now() + Math.random(), // Simple unique ID based on timestamp
-      assetCode: formData.assetCode || generateAssetCode(),
+    const quantity = Math.max(1, Number(formData.quantity || 1));
+    const baseAsset = {
       name: formData.name,
+      assetCode: "AS-", // Base code, will be modified for each asset
       brand: formData.brand,
       category: formData.category,
-      status: "Instore", // Default status to "Instore" if not provided
+      status: formData.status || "Instore",
 
       assignDetails: {
         assignedTo: null,
@@ -72,14 +69,28 @@ const AddAsset = () => {
       history: [],
       prevEmployees: [],
 
-      createdAt: formData.createdAt || new Date().toISOString().split("T")[0],
-      updatedAt: formData.updatedAt || new Date().toISOString().split("T")[0],
+      createdAt: formData.createdAt || new Date().toISOString(),
+      updatedAt: formData.updatedAt || new Date().toISOString(),
     };
 
     try {
-      await axios.post("http://localhost:3000/assets", newAsset);
+      const assetRequests = Array.from({ length: quantity }, (_, index) => {
+        const newAsset = {
+          ...baseAsset,
+          id: `${Date.now()}-${index}`,
+          assetCode: `AS-`,
+        };
+
+        return axios.post("http://localhost:3000/assets", newAsset);
+      });
+
+      await Promise.all(assetRequests);
       setSuccess(true);
-      setMessage("Asset added successfully!");
+      setMessage(
+        quantity > 1
+          ? `Successfully added ${quantity} assets.`
+          : "Asset added successfully!",
+      );
     } catch (err) {
       setSuccess(false);
       setMessage("Error adding asset");
@@ -93,6 +104,7 @@ const AddAsset = () => {
       brand: "",
       category: "",
       status: "Instore",
+      quantity: 1,
       assignedTo: "",
       assignedDate: "",
       location: "",
@@ -117,7 +129,7 @@ const AddAsset = () => {
     <div className="min-h-screen bg-gradient-to-br from-blue-100 to-purple-200 p-6">
       <button
         onClick={() => window.history.back()}
-        className=" ml-10 my-5 flex items-center gap-2 text-blue-600 hover:underline"
+        className=" ml-10 my-5 border border-blue-600 py-2 px-4 rounded-lg flex  items-center gap-2 text-blue-600 hover:bg-blue-600 hover:text-white transition"
       >
         <ArrowLeft size={24} /> Back
       </button>
@@ -209,6 +221,19 @@ const AddAsset = () => {
                   className={inputStyle}
                   name="location"
                   placeholder="e.g. Head Office"
+                  required
+                  onChange={handleChange}
+                />
+              </div>
+
+              <div>
+                <label className="label">Quantity *</label>
+                <input
+                  type="number"
+                  min="1"
+                  className={inputStyle}
+                  name="quantity"
+                  value={formData.quantity}
                   required
                   onChange={handleChange}
                 />

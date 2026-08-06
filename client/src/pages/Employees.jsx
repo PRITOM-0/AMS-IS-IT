@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import EmployeeCard from "../components/EmployeeCard";
+import { Plus } from "lucide-react";
 
 function Employees() {
   const [employees, setEmployees] = useState([]);
@@ -14,8 +15,13 @@ function Employees() {
       .then((data) => setEmployees(data));
   }, []);
 
+  //sort employees by createdAt date, newest first
+  const sortedEmployees = [...employees].sort(
+    (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+  );
+
   // 🔍 Filter logic
-  const filteredEmployees = employees.filter((emp) => {
+  const filteredEmployees = sortedEmployees.filter((emp) => {
     return (
       emp.name.toLowerCase().includes(searchName.toLowerCase()) &&
       emp.employeeid.toLowerCase().includes(searchCode.toLowerCase()) &&
@@ -32,56 +38,62 @@ function Employees() {
 
   return (
     <div className="p-6">
-      
       {/* Header */}
-      <div className="flex justify-between mb-6">
-        <h1 className="text-2xl font-bold">Employees</h1>
-        <Link
-          to="/employees/add"
-          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-        >
-          + Add Employee
-        </Link>
-      </div>
+      <div className="rounded-[28px] mb-5 border border-indigo-200 border-indigo-200 text-indigo-700 bg-gradient-to-br from-indigo-100 via-white to-violet-100 p-6 shadow-[0_20px_45px_-20px_rgba(79,70,229,0.45)] backdrop-blur-sm">
+        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between ">
+          <div>
+            <h1 className="mt-2 text-3xl font-extrabold tracking-tight text-slate-900">
+              Employee Management
+            </h1>
+            <p className="mt-2 mb-2 text-sm text-slate-500">
+              Real-time status of company hardware, inventory, and staff access.
+            </p>
+          </div>
 
+          <Link
+            to="/employees/add"
+            className="flex items-center space-x-3 rounded-2xl border border-emerald-400 bg-gradient-to-r from-emerald-500 to-teal-500 px-4 py-2.5 text-sm font-semibold text-white shadow-sm"
+          >
+            <Plus size={18} /> Add Employee
+          </Link>
+        </div>
+        {/* 🔍 Search Filters */}
+        <div className="bg-white p-4 rounded-xl shadow grid md:grid-cols-4 gap-4 ">
+          {/* Name Search */}
+          <input
+            type="text"
+            placeholder="Search by Name"
+            value={searchName}
+            onChange={(e) => setSearchName(e.target.value)}
+            className="border rounded px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-400 placeholder:text-gray-400"
+          />
 
-      {/* 🔍 Search Filters */}
-      <div className="bg-white p-4 rounded-xl shadow mb-6 grid md:grid-cols-4 gap-4">
-        
-        {/* Name Search */}
-        <input
-          type="text"
-          placeholder="Search by Name"
-          value={searchName}
-          onChange={(e) => setSearchName(e.target.value)}
-          className="border rounded px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
-        />
+          {/* Employee Code Search */}
+          <input
+            type="text"
+            placeholder="Search by Employee Code"
+            value={searchCode}
+            onChange={(e) => setSearchCode(e.target.value)}
+            className="border rounded px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-400 placeholder:text-gray-400"
+          />
 
-        {/* Employee Code Search */}
-        <input
-          type="text"
-          placeholder="Search by Employee Code"
-          value={searchCode}
-          onChange={(e) => setSearchCode(e.target.value)}
-          className="border rounded px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
-        />
+          {/* Location Search */}
+          <input
+            type="text"
+            placeholder="Search by Location"
+            value={searchLocation}
+            onChange={(e) => setSearchLocation(e.target.value)}
+            className="border rounded px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-400 placeholder:text-gray-400"
+          />
 
-        {/* Location Search */}
-        <input
-          type="text"
-          placeholder="Search by Location"
-          value={searchLocation}
-          onChange={(e) => setSearchLocation(e.target.value)}
-          className="border rounded px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
-        />
-
-        {/* Reset Button */}
-        <button
-          onClick={handleReset}
-          className="bg-gray-200 hover:bg-gray-300 text-gray-700 rounded px-4 py-2"
-        >
-          Reset
-        </button>
+          {/* Reset Button */}
+          <button
+            onClick={handleReset}
+            className="h-[42px] text-black border border-gray-500 bg-gray-300 rounded px-4 hover:bg-gray-400 transition"
+          >
+            Reset
+          </button>
+        </div>
       </div>
 
       {/* List */}

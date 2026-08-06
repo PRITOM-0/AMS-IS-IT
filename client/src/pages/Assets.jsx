@@ -31,8 +31,13 @@ const Assets = () => {
     fetchData();
   }, []);
 
+  //sort by date added, newest first
+  const sortedAssets = [...assets].sort(
+    (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+  );
+
   // 🔍 Filter
-  const filteredAssets = assets.filter((asset) => {
+  const filteredAssets = sortedAssets.filter((asset) => {
     const matchesAssetCode =
       filters.assetCode == "AS-" ||
       asset.assetCode?.toLowerCase().includes(filters.assetCode.toLowerCase());
@@ -55,6 +60,8 @@ const Assets = () => {
     startIndex,
     startIndex + ITEMS_PER_PAGE,
   );
+
+
 
   return (
     <div className="p-6">
@@ -132,7 +139,7 @@ const Assets = () => {
             onClick={() =>
               setFilters({ assetCode: "AS-", employeeId: "EMP-", status: "" })
             }
-            className="h-[42px] border border-gray-300 bg-gray-200 rounded px-4 hover:bg-gray-300 transition"
+            className="h-[42px] text-black border border-gray-500 bg-gray-300 rounded px-4 hover:bg-gray-400 transition"
           >
             Reset
           </button>

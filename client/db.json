@@ -208,10 +208,11 @@
       "name": "PC ASUS Model A",
       "brand": "ASUS",
       "category": "PC",
-      "status": "Instore",
+      "status": "Active",
       "assignDetails": {
-        "assignedTo": null,
-        "assignedDate": null
+        "assignedTo": "EMP-903",
+        "assignedDate": "2026-08-06",
+        "notes": ""
       },
       "location": "SPL-Mirpur",
       "purchaseDate": "2026-08-04",
@@ -230,7 +231,7 @@
       "history": [],
       "prevEmployees": [],
       "createdAt": "2026-08-04",
-      "updatedAt": "2026-08-04"
+      "updatedAt": "2026-08-06"
     },
     {
       "id": "fzYrwF655dA",
@@ -258,6 +259,819 @@
       "prevEmployees": [],
       "createdAt": "2026-08-06",
       "updatedAt": "2026-08-06"
+    },
+    {
+      "name": "Ram DDR4 X",
+      "brand": "ABC",
+      "category": "Ram",
+      "status": "Active",
+      "assignDetails": {
+        "assignedTo": "EMP-903",
+        "assignedDate": "2026-08-06",
+        "notes": ""
+      },
+      "location": "Corporate Office",
+      "purchaseDate": "2026-08-06",
+      "warranty": {
+        "start": "2026-08-06",
+        "end": "2030-08-06"
+      },
+      "value": "4000 Tk",
+      "description": "",
+      "assetsComments": [],
+      "issues": [],
+      "history": [],
+      "prevEmployees": [],
+      "createdAt": "2026-08-06",
+      "updatedAt": "2026-08-06",
+      "id": "2a6O_n-75pQ",
+      "assetCode": "AS-100"
+    },
+    {
+      "name": "Ram DDR4 X",
+      "brand": "ABC",
+      "category": "Ram",
+      "status": "Active",
+      "assignDetails": {
+        "assignedTo": "EMP-001",
+        "assignedDate": "2026-08-06",
+        "notes": ""
+      },
+      "location": "Corporate Office",
+      "purchaseDate": "2026-08-06",
+      "warranty": {
+        "start": "2026-08-06",
+        "end": "2030-08-06"
+      },
+      "value": "4000 Tk",
+      "description": "",
+      "assetsComments": [],
+      "issues": [],
+      "history": [],
+      "prevEmployees": [],
+      "createdAt": "2026-08-06",
+      "updatedAt": "2026-08-06",
+      "id": "WP4SLRZtKYQ",
+      "assetCode": "AS-103"
+    },
+    {
+      "name": "Ram DDR4 X",
+      "brand": "ABC",
+      "category": "Ram",
+      "status": "Active",
+      "assignDetails": {
+        "assignedTo": "EMP-001",
+        "assignedDate": "2026-08-06",
+        "notes": ""
+      },
+      "location": "Corporate Office",
+      "purchaseDate": "2026-08-06",
+      "warranty": {
+        "start": "2026-08-06",
+        "end": "2030-08-06"
+      },
+      "value": "4000 Tk",
+      "description": "",
+      "assetsComments": [],
+      "issues": [],
+      "history": [],
+      "prevEmployees": [],
+      "createdAt": "2026-08-06",
+      "updatedAt": "2026-08-06",
+      "id": "2UGeJ1D-0T8",
+      "assetCode": "AS-101"
+    },
+    {
+      "name": "Ram DDR4 X",
+      "brand": "ABC",
+      "category": "Ram",
+      "status": "Instore",
+      "assignDetails": {
+        "assignedTo": null,
+        "assignedDate": null
+      },
+      "location": "Corporate Office",
+      "purchaseDate": "2026-08-06",
+      "warranty": {
+        "start": "2026-08-06",
+        "end": "2030-08-06"
+      },
+      "value": "4000 Tk",
+      "description": "",
+      "assetsComments": [],
+      "issues": [],
+      "history": [],
+      "prevEmployees": [],
+      "createdAt": "2026-08-06",
+      "updatedAt": "2026-08-06",
+      "id": "nVnugzal06k",
+      "assetCode": "AS-104"
+    },
+    {
+      "name": "Ram DDR4 X",
+      "brand": "ABC",
+      "category": "Ram",
+      "status": "Instore",
+      "assignDetails": {
+        "assignedTo": null,
+        "assignedDate": null
+      },
+      "location": "Corporate Office",
+      "purchaseDate": "2026-08-06",
+      "warranty": {
+        "start": "2026-08-06",
+        "end": "2030-08-06"
+      },
+      "value": "4000 Tk",
+      "description": "",
+      "assetsComments": [],
+      "issues": [],
+      "history": [],
+      "prevEmployees": [],
+      "createdAt": "2026-08-06",
+      "updatedAt": "2026-08-06",
+      "id": "4yAum3D4QvY",
+      "assetCode": "AS-102"
+    },
+    {
+      "name": "Ram DDR4 X",
+      "brand": "ABC",
+      "category": "Ram",
+      "status": "Instore",
+      "assignDetails": {
+        "assignedTo": null,
+        "assignedDate": null
+      },
+      "location": "Corporate Office",
+      "purchaseDate": "2026-08-06",
+      "warranty": {
+        "start": "2026-08-06",
+        "end": "2030-08-06"
+      },
+      "value": "4000 Tk",
+      "description": "",
+      "assetsComments": [],
+      "issues": [],
+      "history": [],
+      "prevEmployees": [],
+      "createdAt": "2026-08-06",
+      "updatedAt": "2026-08-06",
+      "id": "c3rXLtxUWy8",
+      "assetCode": "AS-105"
+    },
+    {
+      "name": "Ram DDR4 X",
+      "brand": "ABC",
+      "category": "Ram",
+      "status": "Instore",
+      "assignDetails": {
+        "assignedTo": null,
+        "assignedDate": null
+      },
+      "location": "Corporate Office",
+      "purchaseDate": "2026-08-06",
+      "warranty": {
+        "start": "2026-08-06",
+        "end": "2030-08-06"
+      },
+      "value": "4000 Tk",
+      "description": "",
+      "assetsComments": [],
+      "issues": [],
+      "history": [],
+      "prevEmployees": [],
+      "createdAt": "2026-08-06",
+      "updatedAt": "2026-08-06",
+      "id": "fnu30VH3st0",
+      "assetCode": "AS-106"
+    },
+    {
+      "name": "Ram DDR4 X",
+      "brand": "ABC",
+      "category": "Ram",
+      "status": "Instore",
+      "assignDetails": {
+        "assignedTo": null,
+        "assignedDate": null
+      },
+      "location": "Corporate Office",
+      "purchaseDate": "2026-08-06",
+      "warranty": {
+        "start": "2026-08-06",
+        "end": "2030-08-06"
+      },
+      "value": "4000 Tk",
+      "description": "",
+      "assetsComments": [],
+      "issues": [],
+      "history": [],
+      "prevEmployees": [],
+      "createdAt": "2026-08-06",
+      "updatedAt": "2026-08-06",
+      "id": "fi5LjmQ9R3o",
+      "assetCode": "AS-107"
+    },
+    {
+      "name": "Ram DDR4 X",
+      "brand": "ABC",
+      "category": "Ram",
+      "status": "Active",
+      "assignDetails": {
+        "assignedTo": "EMP-103",
+        "assignedDate": "2026-08-06",
+        "notes": ""
+      },
+      "location": "Corporate Office",
+      "purchaseDate": "2026-08-06",
+      "warranty": {
+        "start": "2026-08-06",
+        "end": "2030-08-06"
+      },
+      "value": "4000 Tk",
+      "description": "",
+      "assetsComments": [],
+      "issues": [],
+      "history": [],
+      "prevEmployees": [],
+      "createdAt": "2026-08-06",
+      "updatedAt": "2026-08-06",
+      "id": "fv5-r1yxMXs",
+      "assetCode": "AS-108"
+    },
+    {
+      "name": "Ram DDR4 X",
+      "brand": "ABC",
+      "category": "Ram",
+      "status": "Instore",
+      "assignDetails": {
+        "assignedTo": null,
+        "assignedDate": null
+      },
+      "location": "Corporate Office",
+      "purchaseDate": "2026-08-06",
+      "warranty": {
+        "start": "2026-08-06",
+        "end": "2030-08-06"
+      },
+      "value": "4000 Tk",
+      "description": "",
+      "assetsComments": [],
+      "issues": [],
+      "history": [],
+      "prevEmployees": [],
+      "createdAt": "2026-08-06",
+      "updatedAt": "2026-08-06",
+      "id": "E-rKlq79vVI",
+      "assetCode": "AS-109"
+    },
+    {
+      "name": "Monitor XP ",
+      "brand": "Dell",
+      "category": "Monitor",
+      "status": "Instore",
+      "assignDetails": {
+        "assignedTo": null,
+        "assignedDate": null
+      },
+      "location": "Corporate Office",
+      "purchaseDate": "2026-08-06",
+      "warranty": {
+        "start": "2026-08-06",
+        "end": "2029-08-06"
+      },
+      "value": "8000 Tk",
+      "description": "",
+      "assetsComments": [],
+      "issues": [],
+      "history": [],
+      "prevEmployees": [],
+      "createdAt": "2026-08-06",
+      "updatedAt": "2026-08-06",
+      "id": "y2SxR8z2gTE",
+      "assetCode": null
+    },
+    {
+      "name": "Monitor XP ",
+      "brand": "Dell",
+      "category": "Monitor",
+      "status": "Active",
+      "assignDetails": {
+        "assignedTo": "EMP-001",
+        "assignedDate": "2026-08-06",
+        "notes": ""
+      },
+      "location": "Corporate Office",
+      "purchaseDate": "2026-08-06",
+      "warranty": {
+        "start": "2026-08-06",
+        "end": "2029-08-06"
+      },
+      "value": "8000 Tk",
+      "description": "",
+      "assetsComments": [],
+      "issues": [],
+      "history": [],
+      "prevEmployees": [],
+      "createdAt": "2026-08-06",
+      "updatedAt": "2026-08-06",
+      "id": "jGK1OZldZt0",
+      "assetCode": null
+    },
+    {
+      "name": "Monitor XP ",
+      "brand": "Dell",
+      "category": "Monitor",
+      "status": "Instore",
+      "assignDetails": {
+        "assignedTo": null,
+        "assignedDate": null
+      },
+      "location": "Corporate Office",
+      "purchaseDate": "2026-08-06",
+      "warranty": {
+        "start": "2026-08-06",
+        "end": "2029-08-06"
+      },
+      "value": "8000 Tk",
+      "description": "",
+      "assetsComments": [],
+      "issues": [],
+      "history": [],
+      "prevEmployees": [],
+      "createdAt": "2026-08-06",
+      "updatedAt": "2026-08-06",
+      "id": "E4VnsTfJAaE",
+      "assetCode": null
+    },
+    {
+      "name": "Monitor XP ",
+      "brand": "Dell",
+      "category": "Monitor",
+      "status": "Instore",
+      "assignDetails": {
+        "assignedTo": null,
+        "assignedDate": null
+      },
+      "location": "Corporate Office",
+      "purchaseDate": "2026-08-06",
+      "warranty": {
+        "start": "2026-08-06",
+        "end": "2029-08-06"
+      },
+      "value": "8000 Tk",
+      "description": "",
+      "assetsComments": [],
+      "issues": [],
+      "history": [],
+      "prevEmployees": [],
+      "createdAt": "2026-08-06",
+      "updatedAt": "2026-08-06",
+      "id": "7q96y6WLRZg",
+      "assetCode": null
+    },
+    {
+      "name": "Monitor XP ",
+      "brand": "Dell",
+      "category": "Monitor",
+      "status": "Instore",
+      "assignDetails": {
+        "assignedTo": null,
+        "assignedDate": null
+      },
+      "location": "Corporate Office",
+      "purchaseDate": "2026-08-06",
+      "warranty": {
+        "start": "2026-08-06",
+        "end": "2029-08-06"
+      },
+      "value": "8000 Tk",
+      "description": "",
+      "assetsComments": [],
+      "issues": [],
+      "history": [],
+      "prevEmployees": [],
+      "createdAt": "2026-08-06",
+      "updatedAt": "2026-08-06",
+      "id": "B6RCu11Cohg",
+      "assetCode": null
+    },
+    {
+      "name": "Monitor XP ",
+      "brand": "Dell",
+      "category": "Monitor",
+      "status": "Instore",
+      "assignDetails": {
+        "assignedTo": null,
+        "assignedDate": null
+      },
+      "location": "Corporate Office",
+      "purchaseDate": "2026-08-06",
+      "warranty": {
+        "start": "2026-08-06",
+        "end": "2029-08-06"
+      },
+      "value": "8000 Tk",
+      "description": "",
+      "assetsComments": [],
+      "issues": [],
+      "history": [],
+      "prevEmployees": [],
+      "createdAt": "2026-08-06",
+      "updatedAt": "2026-08-06",
+      "id": "MPticRvVDkI",
+      "assetCode": null
+    },
+    {
+      "name": "Monitor XP ",
+      "brand": "Dell",
+      "category": "Monitor",
+      "status": "Active",
+      "assignDetails": {
+        "assignedTo": "EMP-903682",
+        "assignedDate": "2026-08-06",
+        "notes": ""
+      },
+      "location": "Corporate Office",
+      "purchaseDate": "2026-08-06",
+      "warranty": {
+        "start": "2026-08-06",
+        "end": "2029-08-06"
+      },
+      "value": "8000 Tk",
+      "description": "",
+      "assetsComments": [],
+      "issues": [],
+      "history": [],
+      "prevEmployees": [],
+      "createdAt": "2026-08-06",
+      "updatedAt": "2026-08-06",
+      "id": "TYcqEGtSswY",
+      "assetCode": null
+    },
+    {
+      "name": "Monitor XP ",
+      "brand": "Dell",
+      "category": "Monitor",
+      "status": "Inactive",
+      "assignDetails": {
+        "assignedTo": null,
+        "assignedDate": null
+      },
+      "location": "Corporate Office",
+      "purchaseDate": "2026-08-06",
+      "warranty": {
+        "start": "2026-08-06",
+        "end": "2029-08-06"
+      },
+      "value": "8000 Tk",
+      "description": "",
+      "assetsComments": [],
+      "issues": [],
+      "history": [],
+      "prevEmployees": [],
+      "createdAt": "2026-08-06",
+      "updatedAt": "2026-08-06",
+      "id": "JGhoZneAIX4",
+      "assetCode": null
+    },
+    {
+      "name": "Printer SUMSUNG",
+      "assetCode": "-1",
+      "brand": "SUMSUNG",
+      "category": "Printer",
+      "status": "Instore",
+      "assignDetails": {
+        "assignedTo": null,
+        "assignedDate": null
+      },
+      "location": "Corporate Office",
+      "purchaseDate": "2026-08-06",
+      "warranty": {
+        "start": "2026-08-06",
+        "end": "2028-08-06"
+      },
+      "value": "40000 Tk",
+      "description": "",
+      "assetsComments": [],
+      "issues": [],
+      "history": [],
+      "prevEmployees": [],
+      "createdAt": "2026-08-06",
+      "updatedAt": "2026-08-06",
+      "id": "9jvQdQFwlHE"
+    },
+    {
+      "name": "Printer SUMSUNG",
+      "assetCode": "-2",
+      "brand": "SUMSUNG",
+      "category": "Printer",
+      "status": "Instore",
+      "assignDetails": {
+        "assignedTo": null,
+        "assignedDate": null
+      },
+      "location": "Corporate Office",
+      "purchaseDate": "2026-08-06",
+      "warranty": {
+        "start": "2026-08-06",
+        "end": "2028-08-06"
+      },
+      "value": "40000 Tk",
+      "description": "",
+      "assetsComments": [],
+      "issues": [],
+      "history": [],
+      "prevEmployees": [],
+      "createdAt": "2026-08-06",
+      "updatedAt": "2026-08-06",
+      "id": "mlx2XM1PJ-4"
+    },
+    {
+      "name": "Printer SUMSUNG",
+      "assetCode": "-4",
+      "brand": "SUMSUNG",
+      "category": "Printer",
+      "status": "Instore",
+      "assignDetails": {
+        "assignedTo": null,
+        "assignedDate": null
+      },
+      "location": "Corporate Office",
+      "purchaseDate": "2026-08-06",
+      "warranty": {
+        "start": "2026-08-06",
+        "end": "2028-08-06"
+      },
+      "value": "40000 Tk",
+      "description": "",
+      "assetsComments": [],
+      "issues": [],
+      "history": [],
+      "prevEmployees": [],
+      "createdAt": "2026-08-06",
+      "updatedAt": "2026-08-06",
+      "id": "bffb_i0l-0c"
+    },
+    {
+      "name": "Printer SUMSUNG",
+      "assetCode": "-5",
+      "brand": "SUMSUNG",
+      "category": "Printer",
+      "status": "Instore",
+      "assignDetails": {
+        "assignedTo": null,
+        "assignedDate": null
+      },
+      "location": "Corporate Office",
+      "purchaseDate": "2026-08-06",
+      "warranty": {
+        "start": "2026-08-06",
+        "end": "2028-08-06"
+      },
+      "value": "40000 Tk",
+      "description": "",
+      "assetsComments": [],
+      "issues": [],
+      "history": [],
+      "prevEmployees": [],
+      "createdAt": "2026-08-06",
+      "updatedAt": "2026-08-06",
+      "id": "Kj1cu1tFLdw"
+    },
+    {
+      "name": "Printer SUMSUNG",
+      "assetCode": "-3",
+      "brand": "SUMSUNG",
+      "category": "Printer",
+      "status": "Instore",
+      "assignDetails": {
+        "assignedTo": null,
+        "assignedDate": null
+      },
+      "location": "Corporate Office",
+      "purchaseDate": "2026-08-06",
+      "warranty": {
+        "start": "2026-08-06",
+        "end": "2028-08-06"
+      },
+      "value": "40000 Tk",
+      "description": "",
+      "assetsComments": [],
+      "issues": [],
+      "history": [],
+      "prevEmployees": [],
+      "createdAt": "2026-08-06",
+      "updatedAt": "2026-08-06",
+      "id": "LFhyf-hTmHc"
+    },
+    {
+      "name": "Printer Dell",
+      "assetCode": "AS-",
+      "brand": "Dell",
+      "category": "Printer",
+      "status": "Active",
+      "assignDetails": {
+        "assignedTo": "EMP-903",
+        "assignedDate": "2026-08-06",
+        "notes": ""
+      },
+      "location": "Corporate Office",
+      "purchaseDate": "2026-08-06",
+      "warranty": {
+        "start": "2026-08-06",
+        "end": "2029-08-14"
+      },
+      "value": "50000 Tk",
+      "description": "",
+      "assetsComments": [],
+      "issues": [],
+      "history": [],
+      "prevEmployees": [],
+      "createdAt": "2026-08-06",
+      "updatedAt": "2026-08-06",
+      "id": "E4ogwy15Yxs"
+    },
+    {
+      "name": "Printer Dell",
+      "assetCode": "AS-",
+      "brand": "Dell",
+      "category": "Printer",
+      "status": "Instore",
+      "assignDetails": {
+        "assignedTo": null,
+        "assignedDate": null
+      },
+      "location": "Corporate Office",
+      "purchaseDate": "2026-08-06",
+      "warranty": {
+        "start": "2026-08-06",
+        "end": "2029-08-14"
+      },
+      "value": "50000 Tk",
+      "description": "",
+      "assetsComments": [],
+      "issues": [],
+      "history": [],
+      "prevEmployees": [],
+      "createdAt": "2026-08-06",
+      "updatedAt": "2026-08-06",
+      "id": "RRM7rj0ljBQ"
+    },
+    {
+      "name": "Printer Dell",
+      "assetCode": "AS-",
+      "brand": "Dell",
+      "category": "Printer",
+      "status": "Instore",
+      "assignDetails": {
+        "assignedTo": null,
+        "assignedDate": null
+      },
+      "location": "Corporate Office",
+      "purchaseDate": "2026-08-06",
+      "warranty": {
+        "start": "2026-08-06",
+        "end": "2029-08-14"
+      },
+      "value": "50000 Tk",
+      "description": "",
+      "assetsComments": [],
+      "issues": [],
+      "history": [],
+      "prevEmployees": [],
+      "createdAt": "2026-08-06",
+      "updatedAt": "2026-08-06",
+      "id": "PZ8aF2aopQs"
+    },
+    {
+      "name": "Printer Dell",
+      "assetCode": "AS-",
+      "brand": "Dell",
+      "category": "Printer",
+      "status": "Instore",
+      "assignDetails": {
+        "assignedTo": null,
+        "assignedDate": null
+      },
+      "location": "Corporate Office",
+      "purchaseDate": "2026-08-06",
+      "warranty": {
+        "start": "2026-08-06",
+        "end": "2029-08-14"
+      },
+      "value": "50000 Tk",
+      "description": "",
+      "assetsComments": [],
+      "issues": [],
+      "history": [],
+      "prevEmployees": [],
+      "createdAt": "2026-08-06",
+      "updatedAt": "2026-08-06",
+      "id": "9LqfSPWMQXI"
+    },
+    {
+      "name": "Monitor EPM",
+      "assetCode": "AS-",
+      "brand": "ABC",
+      "category": "Monitor",
+      "status": "Instore",
+      "assignDetails": {
+        "assignedTo": null,
+        "assignedDate": null
+      },
+      "location": "Corporate Office",
+      "purchaseDate": "2026-08-06",
+      "warranty": {
+        "start": "2026-08-06",
+        "end": "2026-08-30"
+      },
+      "value": "6000 Tk",
+      "description": "",
+      "assetsComments": [],
+      "issues": [],
+      "history": [],
+      "prevEmployees": [],
+      "createdAt": "2026-08-06",
+      "updatedAt": "2026-08-06",
+      "id": "FgVyXYfG-pg"
+    },
+    {
+      "name": "Monitor EPM",
+      "assetCode": "AS-",
+      "brand": "ABC",
+      "category": "Monitor",
+      "status": "Instore",
+      "assignDetails": {
+        "assignedTo": null,
+        "assignedDate": null
+      },
+      "location": "Corporate Office",
+      "purchaseDate": "2026-08-06",
+      "warranty": {
+        "start": "2026-08-06",
+        "end": "2026-08-30"
+      },
+      "value": "6000 Tk",
+      "description": "",
+      "assetsComments": [],
+      "issues": [],
+      "history": [],
+      "prevEmployees": [],
+      "createdAt": "2026-08-06",
+      "updatedAt": "2026-08-06",
+      "id": "f3PfXT_BGuw"
+    },
+    {
+      "name": "Monitor XPr",
+      "assetCode": "AS-",
+      "brand": "Apple",
+      "category": "Monitor",
+      "status": "Instore",
+      "assignDetails": {
+        "assignedTo": null,
+        "assignedDate": null
+      },
+      "location": "Corporate Office",
+      "purchaseDate": "2026-08-06",
+      "warranty": {
+        "start": "2026-08-06",
+        "end": "2029-08-06"
+      },
+      "value": "50000 Tk",
+      "description": "",
+      "assetsComments": [],
+      "issues": [],
+      "history": [],
+      "prevEmployees": [],
+      "createdAt": "2026-08-06T06:26:21.321Z",
+      "updatedAt": "2026-08-06T06:26:21.321Z",
+      "id": "4U1oxH3Hzfs"
+    },
+    {
+      "name": "Monitor XPr",
+      "assetCode": "AS-",
+      "brand": "Apple",
+      "category": "Monitor",
+      "status": "Instore",
+      "assignDetails": {
+        "assignedTo": null,
+        "assignedDate": null
+      },
+      "location": "Corporate Office",
+      "purchaseDate": "2026-08-06",
+      "warranty": {
+        "start": "2026-08-06",
+        "end": "2029-08-06"
+      },
+      "value": "50000 Tk",
+      "description": "",
+      "assetsComments": [],
+      "issues": [],
+      "history": [],
+      "prevEmployees": [],
+      "createdAt": "2026-08-06T06:26:21.321Z",
+      "updatedAt": "2026-08-06T06:26:21.321Z",
+      "id": "zsB1Kpy5WWc"
     }
   ],
   "employees": [
@@ -273,18 +1087,26 @@
         "Hf1a-RjYgVo"
       ],
       "assethistory": [],
+      "createdAt": "2026-07-30T06:33:29.514Z",
+      "updatedAt": "2026-07-30T06:33:29.514Z",
       "id": "vFumJsl_4PY"
     },
     {
       "name": "Abdul Kader",
       "employeeid": "EMP-001",
-      "email": "saha@gmail.com",
+      "email": "kader@gmail.com",
       "designation": "Senior IT Officer",
       "floor": "5th Floor",
       "location": "Corporate Office",
       "contact": "01700000002",
-      "assetlist": [],
+      "assetlist": [
+        "jGK1OZldZt0",
+        "WP4SLRZtKYQ",
+        "2UGeJ1D-0T8"
+      ],
       "assethistory": [],
+      "createdAt": "2026-08-01T06:33:29.514Z",
+      "updatedAt": "2026-08-06T07:07:09.748Z",
       "id": "JYq5aynSO6k"
     },
     {
@@ -299,6 +1121,8 @@
         "z7xU2XHLghA"
       ],
       "assethistory": [],
+      "createdAt": "2026-08-02T06:33:29.514Z",
+      "updatedAt": "2026-08-02T06:33:29.514Z",
       "id": "VWxxOyF73OE"
     },
     {
@@ -309,8 +1133,12 @@
       "floor": "5th Floor",
       "location": "SPL",
       "contact": "01700000004",
-      "assetlist": [],
+      "assetlist": [
+        "fv5-r1yxMXs"
+      ],
       "assethistory": [],
+      "createdAt": "2026-08-03T06:33:29.514Z",
+      "updatedAt": "2026-08-03T06:33:29.514Z",
       "id": "8N2qBxWRPYY"
     },
     {
@@ -323,6 +1151,8 @@
       "contact": "01700000005",
       "assetlist": [],
       "assethistory": [],
+      "createdAt": "2026-08-04T06:33:29.514Z",
+      "updatedAt": "2026-08-04T06:33:29.514Z",
       "id": "yGy6JDUHibM"
     },
     {
@@ -334,10 +1164,31 @@
       "location": "Corporate Office",
       "contact": "01733337777",
       "assetlist": [
-        "fzYrwF655dA"
+        "fzYrwF655dA",
+        "TYcqEGtSswY"
       ],
       "assethistory": [],
+      "createdAt": "2026-08-05T06:33:29.514Z",
+      "updatedAt": "2026-08-05T06:33:29.514Z",
       "id": "A2CbfgWJQOM"
+    },
+    {
+      "name": "Ranjan Sarker",
+      "employeeid": "EMP-903",
+      "email": "ranjan@gmail.com",
+      "designation": "Tech",
+      "floor": "2th ",
+      "location": "Corporate Office",
+      "contact": "01733334477",
+      "assetlist": [
+        "PcRJgp7byyE",
+        "2a6O_n-75pQ",
+        "E4ogwy15Yxs"
+      ],
+      "assethistory": [],
+      "createdAt": "2026-08-06T06:33:29.514Z",
+      "updatedAt": "2026-08-06T06:39:02.765Z",
+      "id": "p0lz7BQujWc"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

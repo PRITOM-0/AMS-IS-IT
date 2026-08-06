@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
 
 function AddEmployee() {
   const navigate = useNavigate();
@@ -14,6 +15,8 @@ function AddEmployee() {
     contact: "",
     assetlist: [],
     assethistory: [],
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
   });
 
   const [error, setError] = useState("");
@@ -42,6 +45,8 @@ function AddEmployee() {
       id: Date.now().toString(), // simple unique id
       assetlist: [],
       assethistory: [],
+      createdAt: formData.createdAt,
+      updatedAt: formData.updatedAt,
     };
 
     await fetch("http://localhost:3000/employees", {
@@ -57,6 +62,12 @@ function AddEmployee() {
 
   return (
     <div className="p-6 max-w-3xl mx-auto">
+      <button
+        onClick={() => window.history.back()}
+        className="my-5 border border-blue-600 py-2 px-4 rounded-lg flex  items-center gap-2 text-blue-600 hover:bg-blue-600 hover:text-white transition"
+      >
+        <ArrowLeft size={20} /> Back
+      </button>
   
       <div className="bg-white shadow-lg rounded-xl p-6">
         <h1 className="text-2xl font-bold mb-6">Add Employee</h1>
