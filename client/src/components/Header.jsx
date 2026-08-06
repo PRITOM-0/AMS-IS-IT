@@ -21,7 +21,7 @@ function Header({ onLogout, setIsLoggedIn }) {
     <header className="fixed top-0 left-0 w-full h-16 bg-white shadow-md flex items-center justify-between pl-2 pr-6 z-50">
       
       {/* Left: Logo + Name */}
-      <div className="flex items-center gap-1">
+      <div className="flex items-center gap-1 cursor-pointer" onClick={() => window.location.href = "/"}>
         <img
           src="/logo.png"
           alt="logo"

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { ArrowLeft } from "lucide-react";
+import { API_BASE_URL } from "../env";
 
 const AddAsset = () => {
   const [formData, setFormData] = useState({
@@ -81,7 +82,7 @@ const AddAsset = () => {
           assetCode: `AS-`,
         };
 
-        return axios.post("http://localhost:3000/assets", newAsset);
+        return axios.post(`${API_BASE_URL}/assets`, newAsset);
       });
 
       await Promise.all(assetRequests);

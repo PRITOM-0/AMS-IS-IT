@@ -423,10 +423,11 @@
       "name": "Ram DDR4 X",
       "brand": "ABC",
       "category": "Ram",
-      "status": "Instore",
+      "status": "Active",
       "assignDetails": {
-        "assignedTo": null,
-        "assignedDate": null
+        "assignedTo": "EMP-903815",
+        "assignedDate": "2026-08-06",
+        "notes": "yes"
       },
       "location": "Corporate Office",
       "purchaseDate": "2026-08-06",
@@ -1052,10 +1053,11 @@
       "assetCode": "AS-",
       "brand": "Apple",
       "category": "Monitor",
-      "status": "Instore",
+      "status": "Active",
       "assignDetails": {
-        "assignedTo": null,
-        "assignedDate": null
+        "assignedTo": "EMP-104",
+        "assignedDate": "2026-08-06",
+        "notes": ""
       },
       "location": "Corporate Office",
       "purchaseDate": "2026-08-06",
@@ -1070,7 +1072,7 @@
       "history": [],
       "prevEmployees": [],
       "createdAt": "2026-08-06T06:26:21.321Z",
-      "updatedAt": "2026-08-06T06:26:21.321Z",
+      "updatedAt": "2026-08-06",
       "id": "zsB1Kpy5WWc"
     }
   ],
@@ -1149,7 +1151,9 @@
       "floor": "5th Floor",
       "location": "SPL-Mirpur",
       "contact": "01700000005",
-      "assetlist": [],
+      "assetlist": [
+        "zsB1Kpy5WWc"
+      ],
       "assethistory": [],
       "createdAt": "2026-08-04T06:33:29.514Z",
       "updatedAt": "2026-08-04T06:33:29.514Z",
@@ -1173,21 +1177,22 @@
       "id": "A2CbfgWJQOM"
     },
     {
-      "name": "Ranjan Sarker",
-      "employeeid": "EMP-903",
+      "name": "Ranjan Halder Akash",
+      "employeeid": "EMP-903815",
       "email": "ranjan@gmail.com",
-      "designation": "Tech",
-      "floor": "2th ",
+      "designation": "Technician",
+      "floor": "2nd",
       "location": "Corporate Office",
-      "contact": "01733334477",
+      "contact": "01755035716",
       "assetlist": [
         "PcRJgp7byyE",
         "2a6O_n-75pQ",
-        "E4ogwy15Yxs"
+        "E4ogwy15Yxs",
+        "fnu30VH3st0"
       ],
       "assethistory": [],
       "createdAt": "2026-08-06T06:33:29.514Z",
-      "updatedAt": "2026-08-06T06:39:02.765Z",
+      "updatedAt": "2026-08-06T07:43:21.270Z",
       "id": "p0lz7BQujWc"
     }
   ],

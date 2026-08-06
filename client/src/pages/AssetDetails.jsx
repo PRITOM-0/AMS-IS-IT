@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
+import { API_BASE_URL } from "../env";
 
 const AssetDetail = () => {
   const { id } = useParams();
@@ -12,8 +13,8 @@ const AssetDetail = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const res = await fetch(`http://localhost:3000/assets/${id}`);
-      const empRes = await fetch("http://localhost:3000/employees");
+      const res = await fetch(`${API_BASE_URL}/assets/${id}`);
+      const empRes = await fetch(`${API_BASE_URL}/employees`);
 
       const assetData = await res.json();
       const empData = await empRes.json();
@@ -60,7 +61,7 @@ const AssetDetail = () => {
   };
 
   const handleUpdate = async () => {
-    await fetch(`http://localhost:3000/assets/${id}`, {
+    await fetch(`${API_BASE_URL}/assets/${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(formData),
@@ -267,7 +268,6 @@ const AssetDetail = () => {
               <Info
                 label="Assigned To"
                 value={formData.assignDetails?.assignedTo}
-            
               />
               <InfoDate
                 label="Assigned Date"

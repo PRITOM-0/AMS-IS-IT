@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Search, PackagePlus, UserCheck } from "lucide-react";
+import { API_BASE_URL } from "../env";
 
 function AssetAssign() {
   const [employees, setEmployees] = useState([]);
@@ -17,8 +18,8 @@ function AssetAssign() {
       try {
         setLoading(true);
         const [empRes, assetRes] = await Promise.all([
-          fetch("http://localhost:3000/employees"),
-          fetch("http://localhost:3000/assets"),
+          fetch(`${API_BASE_URL}/employees`),
+          fetch(`${API_BASE_URL}/assets`),
         ]);
 
         const empData = await empRes.json();
@@ -96,12 +97,12 @@ function AssetAssign() {
 
     try {
       await Promise.all([
-        fetch(`http://localhost:3000/assets/${selectedAsset.id}`, {
+        fetch(`${API_BASE_URL}/assets/${selectedAsset.id}`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(updatedAsset),
         }),
-        fetch(`http://localhost:3000/employees/${selectedEmployee.id}`, {
+        fetch(`${API_BASE_URL}/employees/${selectedEmployee.id}`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(updatedEmployee),
@@ -118,8 +119,8 @@ function AssetAssign() {
       setSelectedEmployee(null);
 
       const [empRes, assetRes] = await Promise.all([
-        fetch("http://localhost:3000/employees"),
-        fetch("http://localhost:3000/assets"),
+        fetch(`${API_BASE_URL}/employees`),
+        fetch(`${API_BASE_URL}/assets`),
       ]);
 
       setEmployees(await empRes.json());
@@ -215,9 +216,7 @@ function AssetAssign() {
                     <div className="shadow-sm p-4 hover:shadow-md transition duration-200  flex justify-between items-center">
                       {/* LEFT SECTION */}
                       <div>
-                        <h2 className="text-lg font-semibold">
-                          {emp.name}
-                        </h2>
+                        <h2 className="text-lg font-semibold">{emp.name}</h2>
                         <p className="text-sm ">{emp.email}</p>
 
                         <div className="mt-2 text-sm  flex flex-wrap gap-x-4">

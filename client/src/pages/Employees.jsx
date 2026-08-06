@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import EmployeeCard from "../components/EmployeeCard";
 import { Plus } from "lucide-react";
+import { API_BASE_URL } from "../env";
 
 function Employees() {
   const [employees, setEmployees] = useState([]);
@@ -10,14 +11,14 @@ function Employees() {
   const [searchLocation, setSearchLocation] = useState("");
 
   useEffect(() => {
-    fetch("http://localhost:3000/employees")
+    fetch(`${API_BASE_URL}/employees`)
       .then((res) => res.json())
       .then((data) => setEmployees(data));
   }, []);
 
   //sort employees by createdAt date, newest first
   const sortedEmployees = [...employees].sort(
-    (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+    (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
   );
 
   // 🔍 Filter logic

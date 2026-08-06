@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
+import { API_BASE_URL } from "../env";
 
 function AddEmployee() {
   const navigate = useNavigate();
@@ -49,7 +50,7 @@ function AddEmployee() {
       updatedAt: formData.updatedAt,
     };
 
-    await fetch("http://localhost:3000/employees", {
+    await fetch(`${API_BASE_URL}/employees`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -68,16 +69,13 @@ function AddEmployee() {
       >
         <ArrowLeft size={20} /> Back
       </button>
-  
+
       <div className="bg-white shadow-lg rounded-xl p-6">
         <h1 className="text-2xl font-bold mb-6">Add Employee</h1>
 
-        {error && (
-          <p className="text-red-500 text-sm mb-4">{error}</p>
-        )}
+        {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
 
         <form onSubmit={handleSubmit} className="grid md:grid-cols-2 gap-4">
-          
           {/* Name */}
           <input
             name="name"

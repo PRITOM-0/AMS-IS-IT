@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
+import { API_BASE_URL } from "../env";
 
 function EmployeeDetails() {
   const { id } = useParams();
@@ -18,8 +19,8 @@ function EmployeeDetails() {
         setLoading(true);
 
         const [empRes, assetRes] = await Promise.all([
-          fetch(`http://localhost:3000/employees/${id}`),
-          fetch(`http://localhost:3000/assets`),
+          fetch(`${API_BASE_URL}/employees/${id}`),
+          fetch(`${API_BASE_URL}/assets`),
         ]);
 
         const empData = await empRes.json();
@@ -66,7 +67,7 @@ function EmployeeDetails() {
         assethistory: employee?.assethistory || [],
       };
 
-      const response = await fetch(`http://localhost:3000/employees/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/employees/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -147,8 +148,8 @@ function EmployeeDetails() {
 
             <div className="ml-4">
               <span className="bg-white/20 px-4 py-1 rounded-full text-sm font-medium">
-                  {employee?.employeeid}
-                </span>
+                {employee?.employeeid}
+              </span>
             </div>
           </div>
         </div>
