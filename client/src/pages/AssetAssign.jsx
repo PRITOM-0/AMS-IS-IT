@@ -77,7 +77,9 @@ function AssetAssign() {
       status: "Active",
       assignDetails: {
         ...selectedAsset.assignDetails,
-        assignedTo: selectedEmployee.employeeid,
+        assignEmpId: selectedEmployee.id,
+        assignEmpCode: selectedEmployee.employeeCode,
+        assignedTo: selectedEmployee.name,
         assignedDate: today,
         notes: notes || selectedAsset.assignDetails?.notes || "",
       },
@@ -221,7 +223,7 @@ function AssetAssign() {
 
                         <div className="mt-2 text-sm  flex flex-wrap gap-x-4">
                           <p>
-                            <strong>ID:</strong> {emp.employeeid}
+                            <strong>ID:</strong> {emp.employeeCode}
                           </p>
                           <p>
                             <strong>Location:</strong> {emp.location}
@@ -343,7 +345,7 @@ function AssetAssign() {
                     <p className="mt-1 font-semibold text-slate-800">
                       {selectedEmployee.name}
                     </p>
-                    <p>{selectedEmployee.employeeid}</p>
+                    <p>{selectedEmployee.employeeCode}</p>
                     <p className="text-slate-500">
                       {selectedEmployee.designation || "N/A"}
                     </p>

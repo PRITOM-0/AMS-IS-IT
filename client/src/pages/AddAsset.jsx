@@ -12,7 +12,8 @@ const AddAsset = () => {
     category: "",
     status: "Instore",
     quantity: 1,
-    assignedTo: "",
+    assignEmpId: "",
+    assignEmpCode: "",
     assignedDate: "",
     location: "",
     purchaseDate: "",
@@ -20,7 +21,7 @@ const AddAsset = () => {
     warrantyEnd: "",
     value: "",
     description: "",
-    assetsComments: "",
+    assetsComments:"",
     issues: "",
     history: "",
     prevEmployees: "",
@@ -48,8 +49,10 @@ const AddAsset = () => {
       status: formData.status || "Instore",
 
       assignDetails: {
-        assignedTo: null,
+        assignEmpId: null,
+        assignEmpCode: null,
         assignedDate: null,
+        assignedTo: null,
       },
 
       location: formData.location,
@@ -63,9 +66,7 @@ const AddAsset = () => {
       value: `${Number(formData.value)} Tk`,
       description: formData.description,
 
-      assetsComments: formData.assetsComments
-        ? formData.assetsComments.split(",").map((i) => i.trim())
-        : [],
+      assetsComments: formData.assetsComments ? formData.assetsComments : "None",
       issues: [],
       history: [],
       prevEmployees: [],
@@ -106,7 +107,8 @@ const AddAsset = () => {
       category: "",
       status: "Instore",
       quantity: 1,
-      assignedTo: "",
+      assignEmpId: "",
+      assignEmpCode: "",
       assignedDate: "",
       location: "",
       purchaseDate: "",

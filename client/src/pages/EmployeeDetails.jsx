@@ -148,7 +148,7 @@ function EmployeeDetails() {
 
             <div className="ml-4">
               <span className="bg-white/20 px-4 py-1 rounded-full text-sm font-medium">
-                {employee?.employeeid}
+                {employee?.employeeCode}
               </span>
             </div>
           </div>
@@ -164,9 +164,9 @@ function EmployeeDetails() {
                 onChange={handleChange}
               />
               <EditableField
-                label="Employee ID"
-                name="employeeid"
-                value={formData?.employeeid || ""}
+                label="Employee Code"
+                name="employeeCode"
+                value={formData?.employeeCode || ""}
                 onChange={handleChange}
               />
               <EditableField
@@ -204,6 +204,7 @@ function EmployeeDetails() {
             </>
           ) : (
             <>
+              <InfoCard label="Employee Code" value={employee?.employeeCode} />
               <InfoCard label="Location" value={employee?.location} />
               <InfoCard label="Contact" value={employee?.contact} />
               <InfoCard label="Designation" value={employee?.designation} />

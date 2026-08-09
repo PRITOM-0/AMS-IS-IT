@@ -298,7 +298,7 @@ export default function Dashboard() {
               <tbody className="divide-y divide-slate-100">
                 {data.assets.map((asset) => {
                   const assignedEmployee = data.employees.find(
-                    (e) => e.employeeid === asset.assignDetails?.assignedTo,
+                    (e) => e.employeeid === asset.assignDetails?.employeeid,
                   );
                   return (
                     <tr

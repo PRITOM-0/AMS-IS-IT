@@ -50,15 +50,7 @@ const AssetDetail = () => {
     }));
   };
 
-  const handleArrayChange = (arrayName, index, field, value) => {
-    const updated = [...(formData[arrayName] || [])];
-    updated[index] = { ...updated[index], [field]: value };
-
-    setFormData((prev) => ({
-      ...prev,
-      [arrayName]: updated,
-    }));
-  };
+ 
 
   const handleReset = () => {
     setFormData(asset);
@@ -76,7 +68,7 @@ const AssetDetail = () => {
   };
 
   const employee = employees.find(
-    (e) => e.employeeid === formData.assignDetails?.assignedTo,
+    (e) => e.employeeCode === formData.assignDetails?.employeeCode,
   );
   const assetIssues = issues
     .filter((i) => i.assetId === asset.id)
@@ -217,11 +209,11 @@ const AssetDetail = () => {
             <Card title="Assignment">
               <Info
                 label="Assigned To"
-                value={formData.assignDetails?.assignedTo}
+                value={asset?.assignDetails?.assignedTo || "Unassigned"}
               />
               <InfoDate
                 label="Assigned Date"
-                value={formData.assignDetails?.assignedDate}
+                value={asset.assignDetails?.assignedDate}
               />
             </Card>
 
@@ -259,27 +251,19 @@ const AssetDetail = () => {
             </Card>
 
             {/* Comments */}
-            <Card title={`Comments (${formData.assetsComments?.length || 0})`}>
-              {formData.assetsComments?.map((c, idx) => (
-                <div key={idx} className="border p-3 mb-2 rounded bg-green-50">
+            <Card title={`Comments`}>
+             
+                <div className=" p-3 mb-2 bg-green-50">
                   <Info
-                    label="Text"
-                    value={c.text}
+                    label=""
+                    value={formData.assetsComments}
                     isEdit={isEdit}
                     onChange={(v) =>
-                      handleArrayChange("assetsComments", idx, "text", v)
-                    }
-                  />
-                  <Info
-                    label="By"
-                    value={c.createdBy}
-                    isEdit={isEdit}
-                    onChange={(v) =>
-                      handleArrayChange("assetsComments", idx, "createdBy", v)
+                      setFormData((prev) => ({ ...prev, assetsComments: v }))
                     }
                   />
                 </div>
-              ))}
+             
             </Card>
           </div>
         </div>

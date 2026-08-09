@@ -38,7 +38,7 @@ export default function IssueCard({ issue, asset, employee }) {
       {/* TOP ROW */}
       <div className="flex justify-between items-start">
         <div>
-          <h2 className="font-semibold text-lg">{issue.id}</h2>
+          <h2 className="font-semibold text-lg">{asset?.name}</h2>
           <p className="text-sm font-bold text-gray-500 line-clamp-2">
             {issue.description}
           </p>
@@ -74,7 +74,7 @@ export default function IssueCard({ issue, asset, employee }) {
         <div className="flex items-center gap-2">
           <User size={14} className="text-gray-400" />
           <div>
-            <p className="text-gray-500 text-xs">Reported</p>
+            <p className="text-gray-500 text-xs">Employee name</p>
             <p className="font-medium">
               {employee?.name || "Unassigned"}
             </p>
@@ -84,16 +84,16 @@ export default function IssueCard({ issue, asset, employee }) {
         <div className="flex items-center gap-2">
           <User size={14} className="text-gray-400" />
           <div>
-            <p className="text-gray-500 text-xs">Assigned</p>
+            <p className="text-gray-500 text-xs">Location</p>
             <p className="font-medium">
-              {employee?.name || "Unassigned"}
+              {employee?.location || "Unassigned"}
             </p>
           </div>
         </div>
       </div>
 
       {/* FOOTER */}
-      <div className="flex justify-between items-center text-xs text-gray-400 pt-2 border-t">
+      <div className="flex justify-between items-center text-xs font-bold text-black pt-2 border-t">
         <span>📅 {issue.createdAt}</span>
 
         {issue.resolvedAt ? (

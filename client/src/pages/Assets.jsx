@@ -12,7 +12,8 @@ const Assets = () => {
   const [employees, setEmployees] = useState([]);
   const [filters, setFilters] = useState({
     assetCode: "AS-",
-    employeeId: "EMP-",
+    Location: "",
+    category: "",
     status: "",
   });
   const [currentPage, setCurrentPage] = useState(1);
@@ -45,15 +46,13 @@ const Assets = () => {
       filters.assetCode == "AS-" ||
       asset.assetCode?.toLowerCase().includes(filters.assetCode.toLowerCase());
 
-    const matchesEmployee =
-      filters.employeeId == "EMP-" ||
-      asset.assignDetails?.assignedTo
-        ?.toLowerCase()
-        .includes(filters.employeeId.toLowerCase());
+    const matchesLocation =
+      filters.Location == "" ||
+      asset.location?.toLowerCase().includes(filters.Location.toLowerCase());
 
     const matchesStatus = !filters.status || asset.status === filters.status;
 
-    return matchesAssetCode && matchesEmployee && matchesStatus && matchcategory;
+    return matchesAssetCode && matchesLocation && matchesStatus && matchcategory;
   });
 
   // 📄 Pagination
@@ -101,18 +100,23 @@ const Assets = () => {
               />
             </div>
 
-            {/* Employee ID */}
+            {/* Location */}
             <div>
-              <label className="text-xs text-gray-500">Employee ID</label>
-              <input
-                type="text"
-                placeholder="EMP-101"
-                className="w-full border rounded px-3 py-2 outline-none focus:ring-2 focus:ring-blue-400"
-                value={filters.employeeId}
+              <label className="text-xs text-gray-500">Location</label>
+              <select
+                className="w-full border rounded px-3 py-2 outline-none focus:ring-2 focus:ring-purple-400"
+                value={filters.Location}
                 onChange={(e) =>
-                  setFilters({ ...filters, employeeId: e.target.value })
+                  setFilters({ ...filters, Location: e.target.value })
                 }
-              />
+              >
+                <option value="">All Locations</option>
+                {[...new Set(assets.map((asset) => asset.location))].map((location) => (
+                  <option key={location} value={location}>
+                    {location}
+                  </option>
+                ))}
+              </select>
             </div>
             {/* Category */}
             <div>
@@ -153,7 +157,7 @@ const Assets = () => {
             {/* Reset Button */}
             <button
               onClick={() =>
-                setFilters({ assetCode: "AS-", employeeId: "EMP-", status: "", category: "" })
+                setFilters({ assetCode: "AS-", Location: "", status: "", category: "" })
               }
               className="h-[42px] text-black border border-gray-500 bg-gray-300 rounded px-4 hover:bg-gray-400 transition"
             >

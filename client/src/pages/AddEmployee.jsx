@@ -8,7 +8,7 @@ function AddEmployee() {
 
   const [formData, setFormData] = useState({
     name: "",
-    employeeid: "",
+    employeeCode: "",
     email: "",
     designation: "",
     floor: "",
@@ -35,7 +35,7 @@ function AddEmployee() {
     if (
       !formData.name ||
       !formData.email ||
-      !formData.employeeid ||
+      !formData.employeeCode ||
       !formData.designation
     ) {
       return setError("Please fill all required fields (*)");
@@ -77,60 +77,80 @@ function AddEmployee() {
 
         <form onSubmit={handleSubmit} className="grid md:grid-cols-2 gap-4">
           {/* Name */}
-          <input
-            name="name"
-            placeholder="Full Name *"
-            onChange={handleChange}
-            className="border p-2 rounded focus:ring-2 focus:ring-blue-400"
-          />
+          <div className="flex flex-col">
+            <label className="text-sm font-medium text-gray-700">Full Name *</label>
+            <input
+              name="name"
+              placeholder="eg: John Doe"
+              onChange={handleChange}
+              className="border p-2 rounded focus:ring-2 focus:ring-blue-400"
+          /></div>
 
-          {/* Employee ID */}
-          <input
-            name="employeeid"
-            placeholder="Employee Code (EMP-101) *"
-            onChange={handleChange}
-            className="border p-2 rounded"
-          />
+          {/* Employee Code */}
+          <div className="flex flex-col">
+            <label className="text-sm font-medium text-gray-700">Employee Code *</label>
+            <input
+              name="employeeCode"
+              placeholder="eg: EMP-101"
+              onChange={handleChange}
+              className="border p-2 rounded"
+            />
+          </div>
 
           {/* Email */}
-          <input
-            name="email"
-            placeholder="Email *"
-            onChange={handleChange}
-            className="border p-2 rounded"
-          />
+          <div className="flex flex-col">
+            <label className="text-sm font-medium text-gray-700">Email *</label>
+            <input
+              name="email"
+              placeholder="eg: john.doe@example.com"
+              onChange={handleChange}
+              className="border p-2 rounded"
+            />
+          </div>
 
           {/* Contact */}
-          <input
-            name="contact"
-            placeholder="Contact Number"
-            onChange={handleChange}
-            className="border p-2 rounded"
-          />
+          <div className="flex flex-col">
+            <label className="text-sm font-medium text-gray-700">Contact Number</label>
+            <input
+              name="contact"
+              placeholder="eg: +1 234 567 890"
+              onChange={handleChange}
+              className="border p-2 rounded"
+            />
+          </div>
 
           {/* Designation */}
-          <input
-            name="designation"
-            placeholder="Designation *"
-            onChange={handleChange}
-            className="border p-2 rounded"
-          />
+          <div className="flex flex-col">
+            <label className="text-sm font-medium text-gray-700">Designation *</label>
+            <input
+              name="designation"
+              placeholder="eg: Software Engineer"
+              onChange={handleChange}
+              className="border p-2 rounded"
+            />
+          </div>
 
           {/* Floor */}
-          <input
-            name="floor"
-            placeholder="Floor (e.g., 5th Floor)"
-            onChange={handleChange}
-            className="border p-2 rounded"
-          />
+          <div className="flex flex-col">
+            <label className="text-sm font-medium text-gray-700">Floor</label>
+            <input
+              name="floor"
+              placeholder="eg: 5th Floor"
+              onChange={handleChange}
+              className="border p-2 rounded"
+            />
+          </div>
 
           {/* Location (Full width) */}
-          <input
-            name="location"
-            placeholder="Location"
-            onChange={handleChange}
-            className="border p-2 rounded md:col-span-2"
-          />
+          <div className="flex flex-col md:col-span-2">
+            <label className="text-sm font-medium text-gray-700">Location</label>
+            <input
+              name="location"
+              placeholder="eg: Corporate Office"
+              onChange={handleChange}
+              className="border p-2 rounded"
+            />
+          </div>
 
           {/* Buttons */}
           <div className="md:col-span-2 flex justify-between mt-4">
