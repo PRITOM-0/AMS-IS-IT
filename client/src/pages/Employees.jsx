@@ -40,7 +40,7 @@ function Employees() {
   return (
     <div className="p-6">
       {/* Header */}
-      <div className="rounded-[28px] mb-5 border border-indigo-200 border-indigo-200 text-indigo-700 bg-gradient-to-br from-indigo-100 via-white to-violet-100 p-6 shadow-[0_20px_45px_-20px_rgba(79,70,229,0.45)] backdrop-blur-sm">
+      <div className="rounded-[28px] mb-5 border border-gray-200 border-indigo-200 text-indigo-700 bg-gradient-to-br from-indigo-100 via-white to-violet-100 p-6 shadow-[0_20px_45px_-20px_rgba(79,70,229,0.45)] backdrop-blur-sm">
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between ">
           <div>
             <h1 className="mt-2 text-3xl font-extrabold tracking-tight text-slate-900">
@@ -66,7 +66,7 @@ function Employees() {
             placeholder="Search by Name"
             value={searchName}
             onChange={(e) => setSearchName(e.target.value)}
-            className="border rounded px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-400 placeholder:text-gray-400"
+            className="border rounded px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-gray-400 placeholder:text-gray-400"
           />
 
           {/* Employee Code Search */}
@@ -75,7 +75,7 @@ function Employees() {
             placeholder="Search by Employee Code"
             value={searchCode}
             onChange={(e) => setSearchCode(e.target.value)}
-            className="border rounded px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-400 placeholder:text-gray-400"
+            className="border rounded px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-gray-400 placeholder:text-gray-400"
           />
 
           {/* Location Search */}
@@ -84,7 +84,7 @@ function Employees() {
             placeholder="Search by Location"
             value={searchLocation}
             onChange={(e) => setSearchLocation(e.target.value)}
-            className="border rounded px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-400 placeholder:text-gray-400"
+            className="border rounded px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-gray-400 placeholder:text-gray-400"
           />
 
           {/* Reset Button */}

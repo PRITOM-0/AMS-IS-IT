@@ -122,7 +122,7 @@ const AssetDetail = () => {
             isEdit={isEdit}
             onChange={(v) => handleChange("assetCode", v)}
           />
-          <Editable value={employee?.name || "Unassigned"} isEdit={false} />
+          <Editable value={formData.assignDetails?.assignedTo || "Unassigned"} isEdit={false} />
         </div>
 
         <div className="grid md:grid-cols-3 gap-6">
@@ -149,7 +149,7 @@ const AssetDetail = () => {
                   value={formData.status}
                   isEdit={isEdit}
                   onChange={(val) => handleChange("status", val)}
-                  options={["Active", "Inactive", "Instore"]}
+                  options={["Active","Maintenance", "Inactive", "Instore"]}
                 />
                 <Info
                   label="Location"
@@ -228,10 +228,10 @@ const AssetDetail = () => {
           </div>
 
           {/*under*/}
-          <div className="w-full md:col-span-3 space-y-6">
+          <div className="w-full col-span-3 space-y-3">
             {/* Issues */}
             <Card title={`Issues (${assetIssues.length})`}>
-              <div className="grid grid-cols-4 gap-2">
+              <div className="grid grid-cols-3 gap-2">
                 {assetIssues.map((issue) => {
                   const employee = employees.find(
                     (e) => e.id === issue.employeeId,

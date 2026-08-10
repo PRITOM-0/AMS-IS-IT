@@ -29,6 +29,16 @@ const priorityStyles = {
 };
 
 export default function IssueCard({ issue, asset, employee }) {
+  const formattedDate = (date) => {
+    return new Date(date).toLocaleString(undefined, {
+      weekday: 'long', // e.g., "Monday"
+      month: 'short',  // e.g., "Aug"
+      day: 'numeric',  // e.g., "10"
+      hour: 'numeric', // e.g., "2"
+      minute: 'numeric', // e.g., "30"
+      hour12: true     // use 12-hour time
+    });
+  };
 
   return (
     <Link
@@ -94,7 +104,7 @@ export default function IssueCard({ issue, asset, employee }) {
 
       {/* FOOTER */}
       <div className="flex justify-between items-center text-xs font-bold text-black pt-2 border-t">
-        <span>📅 {issue.createdAt}</span>
+        <span>📅 {formattedDate(issue.createdAt)}</span>
 
         {issue.resolvedAt ? (
           <span className="text-green-500">

@@ -65,8 +65,7 @@ export default function IssueDetails() {
       .then(setEmployees);
   }, [id]);
 
-  const getEmployee = (empId) =>
-    employees.find((e) => e.employeeid === empId || e.id === empId);
+
 
   const handleUpdate = async () => {
     const res = await fetch(`${API_BASE_URL}/issues/${id}`, {
@@ -75,27 +74,39 @@ export default function IssueDetails() {
       body: JSON.stringify(form),
     });
 
+  
     const updated = await res.json();
     setIssue(updated);
     setEditMode(false);
   };
-
+const formattedDate = (date) => {
+      return new Date(date).toLocaleString(undefined, {
+        weekday: "long", // e.g., "Monday"
+        month: "short", // e.g., "Aug"
+        day: "numeric", // e.g., "10"
+        hour: "numeric", // e.g., "2"
+        minute: "numeric", // e.g., "30"
+        hour12: true, // use 12-hour time
+      });
+    };
   if (!issue) return <p className="p-6">Loading...</p>;
 
-  const reporter = getEmployee(issue.reportedBy);
-  const assigned = getEmployee(issue.assignedTo);
+  const getEmployee = (name) => {
+    return employees.find((emp) => emp.name === name);
+  }
+  const assignedEmp = getEmployee(issue.assignedTo);
 
   return (
     <div className="p-6 max-w-5xl mx-auto space-y-6">
       {/* HEADER */}
       <div className=" flex justify-between items-center justify-items-center ">
         <button
-            onClick={() => window.history.back()}
-            className="flex items-center gap-2 text-blue-600 inline-flex hover:text-blue-800 transition"
-          >
-            <ArrowLeft size={24} /> Back
-          </button><h1 className="text-2xl font-bold">
-          
+          onClick={() => window.history.back()}
+          className="flex items-center gap-2 text-blue-600 inline-flex hover:text-blue-800 transition"
+        >
+          <ArrowLeft size={24} /> Back
+        </button>
+        <h1 className="text-2xl font-bold">
           <span className="text-gray-500">Issue on - </span>{" "}
           {asset?.name || "Asset Details"}
         </h1>
@@ -205,9 +216,14 @@ export default function IssueDetails() {
           {/* Timeline */}
           <div className="pt-4 border-t">
             <h3 className="font-medium mb-2">Timeline</h3>
-            <div className="text-sm text-gray-600 space-y-1">
-              <p>📅 Created: {issue.createdAt}</p>
-              <p>✅ Resolved: {issue.resolvedAt || "Not resolved yet"}</p>
+            <div className="text-sm text-black font-bold space-y-1">
+              <p>📅 Created: {formattedDate(issue.createdAt)}</p>
+              <p>
+                ✅ Resolved:{" "}
+                {issue.resolvedAt
+                  ? formattedDate(issue.resolvedAt)
+                  : "Not resolved yet"}
+              </p>
             </div>
           </div>
         </div>
@@ -224,7 +240,7 @@ export default function IssueDetails() {
           <p className="font-medium text-lg p-2 text-right">
             Employee Information
           </p>
-          {reporter && <EmployeeCard employee={reporter} />}
+          {asset && <EmployeeCard employee={assignedEmp} />}
         </div>
       </div>
     </div>

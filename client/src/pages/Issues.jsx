@@ -63,7 +63,9 @@ function Issues() {
     const q = assetQuery.toLowerCase();
     return (
       a.assetCode?.toLowerCase().includes(q) ||
-      a.name?.toLowerCase().includes(q)
+      a.name?.toLowerCase().includes(q) ||
+      a.location?.toLowerCase().includes(q) ||
+      a.assignDetails?.assignedTo?.toLowerCase().includes(q)
     );
   });
 
@@ -71,8 +73,8 @@ function Issues() {
   // ➕ Submit Issue
   const handleSubmit = async (e) => {
     e.preventDefault();
-    form.employeeId=assetEmpId(form.assetCode);
     form.createdAt = new Date().toISOString();
+    console.log("Submitting form:", form);
     if (!form.assetId || !form.employeeId || !form.description) {
       alert("Please fill in all required fields.");
       return;
@@ -100,17 +102,14 @@ function Issues() {
 
     const matchSearch =
       i.assetCode?.toLowerCase().includes(q) ||
-      i.id?.toLowerCase().includes(q);
+      i.priority?.toLowerCase().includes(q) ||
+      i.assignedTo?.toLowerCase().includes(q);
 
     const matchFilter = filter === "All" || i.status === filter;
 
     return matchSearch && matchFilter;
   });
 
-  const assetEmpName = (empCode) => {
-    const employee = employees.find((e) => e.employeeCode === empCode);
-    return employee ? employee.name : "Unassigned";
-  };
     const assetEmpId = (assCode) => {
     const id = employees.find((e) => e.employeeCode === empCode);
     return employee ? employee.id : "";
@@ -206,17 +205,23 @@ function Issues() {
                   <div
                     key={a.id}
                     onClick={() => {
+                      console.log("before Form:", form);
                       setForm({
                         ...form,
                         assetId: a.id,
                         assetCode: a.assetCode,
+                        assignedTo: a.assignDetails?.assignedTo || "Unassigned",
+                        employeeId: a.assignDetails?.assignEmpId || "",
                       });
-                      setAssetQuery(`${a.assetCode} - ${a.name} - ${a.location} - ${assetEmpName(a.assignDetails?.assignedTo)}`);
+                      console.log("Selected Asset:", a);
+                      console.log("Updated Form:", form);
+
+                      setAssetQuery(`${a.assetCode} - ${a.name} - ${a.location} - ${a.assignDetails?.assignedTo}`);
                       setShowAssetDropdown(false);
                     }}
                     className="p-2  hover:bg-blue-100 cursor-pointer"
                   >
-                    {a.assetCode} - {a.name} - {a.location} - {assetEmpName(a.assignDetails?.assignedTo)}
+                    {a.assetCode} - {a.name} - {a.location} - {a.assignDetails?.assignedTo}
                   </div>
                 ))}
               </div>

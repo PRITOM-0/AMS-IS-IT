@@ -207,12 +207,13 @@
       "assetCode": "AS-",
       "brand": "SUMSUNG",
       "category": "Printer",
-      "status": "Instore",
+      "status": "Active",
       "assignDetails": {
-        "assignEmpId": null,
-        "assignEmpCode": null,
-        "assignedDate": null,
-        "assignedTo": null
+        "assignEmpId": "S5qFPJCSLsM",
+        "assignEmpCode": "EMP-402",
+        "assignedDate": "2026-08-10",
+        "assignedTo": "Abdul Kader",
+        "notes": ""
       },
       "location": "SRG",
       "purchaseDate": "2026-08-09",
@@ -227,8 +228,462 @@
       "history": [],
       "prevEmployees": [],
       "createdAt": "2026-08-09T11:42:29.499Z",
-      "updatedAt": "2026-08-09T11:42:29.499Z",
+      "updatedAt": "2026-08-10",
       "id": "BSYyAj7GLFw"
+    },
+    {
+      "name": "Walton XR34",
+      "assetCode": "AS-",
+      "brand": "Walton",
+      "category": "Laptop",
+      "status": "Active",
+      "assignDetails": {
+        "assignEmpId": "-htkFETu_l8",
+        "assignEmpCode": "EMP-401",
+        "assignedDate": "2026-08-10",
+        "assignedTo": "Ariful Rahman",
+        "notes": ""
+      },
+      "location": "Corporate Office",
+      "purchaseDate": "2026-08-10",
+      "warranty": {
+        "start": "2026-08-10",
+        "end": "2030-08-10"
+      },
+      "value": "79000 Tk",
+      "description": "",
+      "assetsComments": "None",
+      "issues": [],
+      "history": [],
+      "prevEmployees": [],
+      "createdAt": "2026-08-10T05:45:55.386Z",
+      "updatedAt": "2026-08-10",
+      "id": "EhugiOSZ3uI"
+    },
+    {
+      "name": "Walton XR34",
+      "assetCode": "AS-",
+      "brand": "Walton",
+      "category": "Laptop",
+      "status": "Instore",
+      "assignDetails": {
+        "assignEmpId": null,
+        "assignEmpCode": null,
+        "assignedDate": null,
+        "assignedTo": null
+      },
+      "location": "Corporate Office",
+      "purchaseDate": "2026-08-10",
+      "warranty": {
+        "start": "2026-08-10",
+        "end": "2030-08-10"
+      },
+      "value": "79000 Tk",
+      "description": "",
+      "assetsComments": "None",
+      "issues": [],
+      "history": [],
+      "prevEmployees": [],
+      "createdAt": "2026-08-10T05:45:55.386Z",
+      "updatedAt": "2026-08-10T05:45:55.386Z",
+      "id": "vttMYZye0R0"
+    },
+    {
+      "name": "Walton XR34",
+      "assetCode": "AS-",
+      "brand": "Walton",
+      "category": "Laptop",
+      "status": "Active",
+      "assignDetails": {
+        "assignEmpId": "-htkFETu_l8",
+        "assignEmpCode": "EMP-401",
+        "assignedDate": "2026-08-10",
+        "assignedTo": "Ariful Rahman",
+        "notes": ""
+      },
+      "location": "SRU",
+      "purchaseDate": "2026-08-10",
+      "warranty": {
+        "start": "2026-08-10",
+        "end": "2030-08-10"
+      },
+      "value": "79000 Tk",
+      "description": "",
+      "assetsComments": "None",
+      "issues": [],
+      "history": [],
+      "prevEmployees": [],
+      "createdAt": "2026-08-10T05:45:55.386Z",
+      "updatedAt": "2026-08-10",
+      "id": "V6QXB9sLyr0"
+    },
+    {
+      "name": "Walton XR34",
+      "assetCode": "AS-",
+      "brand": "Walton",
+      "category": "Laptop",
+      "status": "Maintenance",
+      "assignDetails": {
+        "assignEmpId": null,
+        "assignEmpCode": null,
+        "assignedDate": null,
+        "assignedTo": null
+      },
+      "location": "Corporate Office",
+      "purchaseDate": "2026-08-10",
+      "warranty": {
+        "start": "2026-08-10",
+        "end": "2030-08-10"
+      },
+      "value": "79000 Tk",
+      "description": "",
+      "assetsComments": "None",
+      "issues": [],
+      "history": [],
+      "prevEmployees": [],
+      "createdAt": "2026-08-10T05:45:55.386Z",
+      "updatedAt": "2026-08-10T05:45:55.386Z",
+      "id": "zmzy3BOtw0E"
+    },
+    {
+      "name": "Walton XR34",
+      "assetCode": "AS-",
+      "brand": "Walton",
+      "category": "Laptop",
+      "status": "Instore",
+      "assignDetails": {
+        "assignEmpId": null,
+        "assignEmpCode": null,
+        "assignedDate": null,
+        "assignedTo": null
+      },
+      "location": "Corporate Office",
+      "purchaseDate": "2026-08-10",
+      "warranty": {
+        "start": "2026-08-10",
+        "end": "2030-08-10"
+      },
+      "value": "79000 Tk",
+      "description": "",
+      "assetsComments": "None",
+      "issues": [],
+      "history": [],
+      "prevEmployees": [],
+      "createdAt": "2026-08-10T05:45:55.386Z",
+      "updatedAt": "2026-08-10T05:45:55.386Z",
+      "id": "cp8VVUbs_qY"
+    },
+    {
+      "name": "Walton XR34",
+      "assetCode": "AS-",
+      "brand": "Walton",
+      "category": "Laptop",
+      "status": "Instore",
+      "assignDetails": {
+        "assignEmpId": null,
+        "assignEmpCode": null,
+        "assignedDate": null,
+        "assignedTo": null
+      },
+      "location": "Corporate Office",
+      "purchaseDate": "2026-08-10",
+      "warranty": {
+        "start": "2026-08-10",
+        "end": "2030-08-10"
+      },
+      "value": "79000 Tk",
+      "description": "",
+      "assetsComments": "None",
+      "issues": [],
+      "history": [],
+      "prevEmployees": [],
+      "createdAt": "2026-08-10T05:45:55.386Z",
+      "updatedAt": "2026-08-10T05:45:55.386Z",
+      "id": "gDO4No3Qd3o"
+    },
+    {
+      "name": "Walton XR34",
+      "assetCode": "AS-",
+      "brand": "Walton",
+      "category": "Laptop",
+      "status": "Inactive",
+      "assignDetails": {
+        "assignEmpId": null,
+        "assignEmpCode": null,
+        "assignedDate": null,
+        "assignedTo": null
+      },
+      "location": "Corporate Office",
+      "purchaseDate": "2026-08-10",
+      "warranty": {
+        "start": "2026-08-10",
+        "end": "2030-08-10"
+      },
+      "value": "79000 Tk",
+      "description": "",
+      "assetsComments": "None",
+      "issues": [],
+      "history": [],
+      "prevEmployees": [],
+      "createdAt": "2026-08-10T05:45:55.386Z",
+      "updatedAt": "2026-08-10T05:45:55.386Z",
+      "id": "3fiTx5VxGF8"
+    },
+    {
+      "name": "Walton XR34",
+      "assetCode": "AS-",
+      "brand": "Walton",
+      "category": "Laptop",
+      "status": "Maintenance",
+      "assignDetails": {
+        "assignEmpId": null,
+        "assignEmpCode": null,
+        "assignedDate": null,
+        "assignedTo": null
+      },
+      "location": "Corporate Office",
+      "purchaseDate": "2026-08-10",
+      "warranty": {
+        "start": "2026-08-10",
+        "end": "2030-08-10"
+      },
+      "value": "79000 Tk",
+      "description": "",
+      "assetsComments": "None",
+      "issues": [],
+      "history": [],
+      "prevEmployees": [],
+      "createdAt": "2026-08-10T05:45:55.386Z",
+      "updatedAt": "2026-08-10T05:45:55.386Z",
+      "id": "vW-qWGdkJic"
+    },
+    {
+      "name": "Walton XR34",
+      "assetCode": "AS-",
+      "brand": "Walton",
+      "category": "Laptop",
+      "status": "Active",
+      "assignDetails": {
+        "assignEmpId": "hS8AiffgSEI",
+        "assignEmpCode": "EMP-703",
+        "assignedDate": "2026-08-10",
+        "assignedTo": "Ripon Mia",
+        "notes": ""
+      },
+      "location": "Corporate Office",
+      "purchaseDate": "2026-08-10",
+      "warranty": {
+        "start": "2026-08-10",
+        "end": "2030-08-10"
+      },
+      "value": "79000 Tk",
+      "description": "",
+      "assetsComments": "None",
+      "issues": [],
+      "history": [],
+      "prevEmployees": [],
+      "createdAt": "2026-08-10T05:45:55.386Z",
+      "updatedAt": "2026-08-10",
+      "id": "i09cVNxdYaM"
+    },
+    {
+      "name": "Walton XR34",
+      "assetCode": "AS-",
+      "brand": "Walton",
+      "category": "Laptop",
+      "status": "Inactive",
+      "assignDetails": {
+        "assignEmpId": null,
+        "assignEmpCode": null,
+        "assignedDate": null,
+        "assignedTo": null
+      },
+      "location": "Corporate Office",
+      "purchaseDate": "2026-08-10",
+      "warranty": {
+        "start": "2026-08-10",
+        "end": "2030-08-10"
+      },
+      "value": "79000 Tk",
+      "description": "",
+      "assetsComments": "None",
+      "issues": [],
+      "history": [],
+      "prevEmployees": [],
+      "createdAt": "2026-08-10T05:45:55.386Z",
+      "updatedAt": "2026-08-10T05:45:55.386Z",
+      "id": "fy-6Jyz7wKM"
+    },
+    {
+      "name": "PC- ASUS Elite Book",
+      "assetCode": "AS-",
+      "brand": "ASUS",
+      "category": "PC",
+      "status": "Instore",
+      "assignDetails": {
+        "assignEmpId": null,
+        "assignEmpCode": null,
+        "assignedDate": null,
+        "assignedTo": null
+      },
+      "location": "SRG",
+      "purchaseDate": "2026-08-10",
+      "warranty": {
+        "start": "2026-08-10",
+        "end": "2030-08-10"
+      },
+      "value": "150000 Tk",
+      "description": "",
+      "assetsComments": "None",
+      "issues": [],
+      "history": [],
+      "prevEmployees": [],
+      "createdAt": "2026-08-10T05:48:40.514Z",
+      "updatedAt": "2026-08-10T05:48:40.514Z",
+      "id": "lG6HubqskQA"
+    },
+    {
+      "name": "PC- ASUS Elite Book",
+      "assetCode": "AS-",
+      "brand": "ASUS",
+      "category": "PC",
+      "status": "Active",
+      "assignDetails": {
+        "assignEmpId": "hS8AiffgSEI",
+        "assignEmpCode": "EMP-703",
+        "assignedDate": "2026-08-10",
+        "assignedTo": "Ripon Mia",
+        "notes": ""
+      },
+      "location": "JRU",
+      "purchaseDate": "2026-08-10",
+      "warranty": {
+        "start": "2026-08-10",
+        "end": "2030-08-10"
+      },
+      "value": "150000 Tk",
+      "description": "",
+      "assetsComments": "None",
+      "issues": [],
+      "history": [],
+      "prevEmployees": [],
+      "createdAt": "2026-08-10T05:48:40.514Z",
+      "updatedAt": "2026-08-10",
+      "id": "lhJ8aLtYRgM"
+    },
+    {
+      "name": "PC- ASUS Elite Book",
+      "assetCode": "AS-",
+      "brand": "ASUS",
+      "category": "PC",
+      "status": "Active",
+      "assignDetails": {
+        "assignEmpId": "dRRMiK9Sm1g",
+        "assignEmpCode": "EMP-802",
+        "assignedDate": "2026-08-10",
+        "assignedTo": "Ranjan Halder",
+        "notes": ""
+      },
+      "location": "SRG",
+      "purchaseDate": "2026-08-10",
+      "warranty": {
+        "start": "2026-08-10",
+        "end": "2030-08-10"
+      },
+      "value": "150000 Tk",
+      "description": "",
+      "assetsComments": "None",
+      "issues": [],
+      "history": [],
+      "prevEmployees": [],
+      "createdAt": "2026-08-10T05:48:40.514Z",
+      "updatedAt": "2026-08-10",
+      "id": "8TCA6_XRgxg"
+    },
+    {
+      "name": "PC- ASUS Elite Book",
+      "assetCode": "AS-",
+      "brand": "ASUS",
+      "category": "PC",
+      "status": "Instore",
+      "assignDetails": {
+        "assignEmpId": null,
+        "assignEmpCode": null,
+        "assignedDate": null,
+        "assignedTo": null
+      },
+      "location": "SRG",
+      "purchaseDate": "2026-08-10",
+      "warranty": {
+        "start": "2026-08-10",
+        "end": "2030-08-10"
+      },
+      "value": "150000 Tk",
+      "description": "",
+      "assetsComments": "None",
+      "issues": [],
+      "history": [],
+      "prevEmployees": [],
+      "createdAt": "2026-08-10T05:48:40.514Z",
+      "updatedAt": "2026-08-10T05:48:40.514Z",
+      "id": "u0LDS0WB50o"
+    },
+    {
+      "name": "PC- ASUS Elite Book",
+      "assetCode": "AS-",
+      "brand": "ASUS",
+      "category": "PC",
+      "status": "Active",
+      "assignDetails": {
+        "assignEmpId": "XvTUwdVhhhI",
+        "assignEmpCode": "EMP-702",
+        "assignedDate": "2026-08-10",
+        "assignedTo": "Tanoy Sarker",
+        "notes": ""
+      },
+      "location": "SRG",
+      "purchaseDate": "2026-08-10",
+      "warranty": {
+        "start": "2026-08-10",
+        "end": "2030-08-10"
+      },
+      "value": "150000 Tk",
+      "description": "",
+      "assetsComments": "None",
+      "issues": [],
+      "history": [],
+      "prevEmployees": [],
+      "createdAt": "2026-08-10T05:48:40.514Z",
+      "updatedAt": "2026-08-10",
+      "id": "hc3CLJLw9Ak"
+    },
+    {
+      "name": "PC- ASUS Elite Book",
+      "assetCode": "AS-",
+      "brand": "ASUS",
+      "category": "PC",
+      "status": "Instore",
+      "assignDetails": {
+        "assignEmpId": null,
+        "assignEmpCode": null,
+        "assignedDate": null,
+        "assignedTo": null
+      },
+      "location": "SRG",
+      "purchaseDate": "2026-08-10",
+      "warranty": {
+        "start": "2026-08-10",
+        "end": "2030-08-10"
+      },
+      "value": "150000 Tk",
+      "description": "",
+      "assetsComments": "None",
+      "issues": [],
+      "history": [],
+      "prevEmployees": [],
+      "createdAt": "2026-08-10T05:48:40.514Z",
+      "updatedAt": "2026-08-10T05:48:40.514Z",
+      "id": "vcNRG7LFaBE"
     }
   ],
   "employees": [
@@ -248,8 +703,156 @@
       "createdAt": "2026-08-09T11:43:49.688Z",
       "updatedAt": "2026-08-09T11:43:49.688Z",
       "id": "6kq-TpMuHqs"
+    },
+    {
+      "name": "Abdul Kader",
+      "employeeCode": "EMP-402",
+      "email": "kader@gmail.com",
+      "designation": "Senior IT Officer",
+      "floor": "2th",
+      "location": "Corporate Office",
+      "contact": "017700000001",
+      "assetlist": [
+        "BSYyAj7GLFw"
+      ],
+      "assethistory": [],
+      "createdAt": "2026-08-10T04:31:05.783Z",
+      "updatedAt": "2026-08-10T04:31:05.783Z",
+      "id": "S5qFPJCSLsM"
+    },
+    {
+      "name": "Ranjan Halder",
+      "employeeCode": "EMP-802",
+      "email": "halder@gmail.com",
+      "designation": "Technician",
+      "floor": "2th",
+      "location": "Corporate Office",
+      "contact": "017700000002",
+      "assetlist": [
+        "8TCA6_XRgxg"
+      ],
+      "assethistory": [],
+      "createdAt": "2026-08-10T05:49:06.216Z",
+      "updatedAt": "2026-08-10T05:49:06.216Z",
+      "id": "dRRMiK9Sm1g"
+    },
+    {
+      "name": "Ariful Rahman",
+      "employeeCode": "EMP-401",
+      "email": "rahman@gamil.com",
+      "designation": "Deputy Manager",
+      "floor": "2th",
+      "location": "SRU",
+      "contact": "017700000003",
+      "assetlist": [
+        "EhugiOSZ3uI",
+        "V6QXB9sLyr0"
+      ],
+      "assethistory": [],
+      "createdAt": "2026-08-10T05:50:05.129Z",
+      "updatedAt": "2026-08-10T05:50:05.129Z",
+      "id": "-htkFETu_l8"
+    },
+    {
+      "name": "Ripon Mia",
+      "employeeCode": "EMP-703",
+      "email": "mia@gmail.com",
+      "designation": "IT Officer",
+      "floor": "2th",
+      "location": "JRU",
+      "contact": "017700000004",
+      "assetlist": [
+        "i09cVNxdYaM",
+        "lhJ8aLtYRgM"
+      ],
+      "assethistory": [],
+      "createdAt": "2026-08-10T05:51:11.950Z",
+      "updatedAt": "2026-08-10T05:51:11.950Z",
+      "id": "hS8AiffgSEI"
+    },
+    {
+      "name": "Tanoy Sarker",
+      "employeeCode": "EMP-702",
+      "email": "sarker@gmail.com",
+      "designation": "IT Officer",
+      "floor": "2th",
+      "location": "SRM",
+      "contact": "017700000005",
+      "assetlist": [
+        "hc3CLJLw9Ak"
+      ],
+      "assethistory": [],
+      "createdAt": "2026-08-10T05:52:20.263Z",
+      "updatedAt": "2026-08-10T05:52:20.263Z",
+      "id": "XvTUwdVhhhI"
     }
   ],
-  "issues": [],
+  "issues": [
+    {
+      "assetId": "X7zSfm834OQ",
+      "assetCode": "AS-",
+      "employeeId": "6kq-TpMuHqs",
+      "assignedTo": "Pritom Saha",
+      "issueType": "Hardware",
+      "status": "Solving",
+      "priority": "High",
+      "description": "Toner issue.",
+      "createdAt": "2026-08-10T04:59:58.506Z",
+      "resolvedAt": "",
+      "id": "XYww297zT_M"
+    },
+    {
+      "assetId": "BSYyAj7GLFw",
+      "assetCode": "AS-",
+      "employeeId": "S5qFPJCSLsM",
+      "assignedTo": "Abdul Kader",
+      "issueType": "Software",
+      "status": "Resolved",
+      "priority": "High",
+      "description": "Blank Print",
+      "createdAt": "2026-08-10T05:24:05.010Z",
+      "resolvedAt": "",
+      "id": "LdXX4pc1-s8"
+    },
+    {
+      "assetId": "8TCA6_XRgxg",
+      "assetCode": "AS-",
+      "employeeId": "dRRMiK9Sm1g",
+      "assignedTo": "Ranjan Halder",
+      "issueType": "Software",
+      "status": "Death",
+      "priority": "Medium",
+      "description": "Screen fliping",
+      "createdAt": "2026-08-10T06:20:50.074Z",
+      "resolvedAt": "",
+      "id": "WKjUKHiDs0U"
+    },
+    {
+      "assetId": "V6QXB9sLyr0",
+      "assetCode": "AS-",
+      "employeeId": "-htkFETu_l8",
+      "assignedTo": "Ariful Rahman",
+      "issueType": "Software",
+      "status": "Open",
+      "priority": "High",
+      "description": "OS not working",
+      "createdAt": "2026-08-10T06:21:24.418Z",
+      "resolvedAt": "",
+      "id": "FOnzMI1_yAo"
+    },
+    {
+      "assetId": "BSYyAj7GLFw",
+      "assetCode": "AS-",
+      "employeeId": "S5qFPJCSLsM",
+      "assignedTo": "Abdul Kader",
+      "issueType": "Software",
+      "status": "Open",
+      "priority": "High",
+      "description": "Basic Software Need",
+      "createdAt": "2026-08-10T06:22:57.586Z",
+      "resolvedAt": "",
+      "id": "_xw9kzqR33k"
+    }
+  ],
   "$schema": "./node_modules/json-server/schema.json"
 }

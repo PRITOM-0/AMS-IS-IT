@@ -75,6 +75,7 @@ function AssetAssign() {
     const updatedAsset = {
       ...selectedAsset,
       status: "Active",
+      location: selectedEmployee.location,
       assignDetails: {
         ...selectedAsset.assignDetails,
         assignEmpId: selectedEmployee.id,
