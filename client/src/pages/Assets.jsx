@@ -167,7 +167,7 @@ const Assets = () => {
                 <option value="Instore">Instore</option>
                 <option value="Active">Active</option>
                 <option value="Inactive">Inactive</option>
-                <option value="Under Repair">Under Repair</option>
+                <option value="Maintenance">Maintenance</option>
                 <option value="Death">Death</option>
               </select>
             </div>

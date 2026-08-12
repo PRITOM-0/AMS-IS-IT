@@ -1,4 +1,5 @@
 import React, { useMemo, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import * as XLSX from "xlsx";
 import {
   Upload,
@@ -7,8 +8,8 @@ import {
   Check,
   AlertCircle,
   Database,
+  ArrowLeft
 } from "lucide-react";
-
 const demoAsset = {
   id: "",
   equipment: "",
@@ -93,11 +94,16 @@ const ASSET_ALIAS_MAP = {
   brand: ["brand", "manufacturer", "make", "company"],
   model: ["model", "modelnumber", "modelname"],
   serialNumber: ["serialnumber", "serialno", "serial", "sn"],
-  specifications: ["specifications", "spec", "configuration", "description"],
+  specifications: [
+    "specifications",
+    "Configuration/Specification",
+    "configuration",
+    "description",
+  ],
   macAddress: ["macaddress", "mac", "macid"],
   department: ["department", "dept", "division"],
-  location: ["location", "site", "campus", "building", "office"],
-  floor: ["floor", "floorno", "level"],
+  location: ["location", "Location/Campus", "campus", "building", "office"],
+  floor: ["floor", "office/floor/building/Room", "level"],
   room: ["room", "roomno", "roomnumber", "roomname"],
   status: ["status", "assetstatus", "condition"],
   userId: ["userid", "currentuserid"],
@@ -117,15 +123,10 @@ const ASSET_ALIAS_MAP = {
   purchaseDate: ["purchasedate", "buydate", "dateofpurchase", "purchase"],
   purchasePrice: ["purchaseprice", "price", "cost", "amount"],
   warrantyStart: ["warrantystart", "warrantyfrom", "warrantybegin"],
-  warrantyEnd: [
-    "warrantyend",
-    "warrantyto",
-    "warrantyexpiry",
-    "warrantyexpirydate",
-  ],
+  warrantyEnd: ["warrantyend", "warrantyto", "Warranty", "warrantyexpirydate"],
   vendorName: ["vendorname", "vendor", "supplier", "suppliername"],
   remarks: ["remarks", "remark", "notes", "comment", "comments"],
-  surveyReport: ["surveyreport", "survey", "inspectionreport", "inspection"],
+  surveyReport: ["surveyreport", "survey", "IT Survey Report", "inspection"],
   createdAt: ["createdat", "createddate"],
   updatedAt: ["updatedat", "updateddate"],
 };
@@ -225,8 +226,9 @@ const convertCellValue = (value, fieldName) => {
   }
 
   if (fieldName === "purchasePrice") {
-    const numberValue = Number(String(value).replace(/[^0-9.-]/g, ""));
-    return Number.isFinite(numberValue) ? numberValue : "";
+    const isValid = /^[0-9.]*$/.test(String(value));
+
+    return isValid ? value : "";
   }
 
   return textValue;
@@ -304,6 +306,7 @@ const ImportAssets = () => {
   const [success, setSuccess] = useState(true);
   const [loading, setLoading] = useState(false);
   const [previewMode, setPreviewMode] = useState(false);
+   const navigate = useNavigate();
 
   const handleFileUpload = (event) => {
     const file = event.target.files?.[0];
@@ -465,11 +468,24 @@ const ImportAssets = () => {
     setSuccess(true);
     setPreviewMode(false);
   };
+  
 
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-7xl mx-auto">
-        <div className="mb-6 flex items-center justify-between">
+        <div className="mb-6 ">
+          <div className="mb-3 flex items-center">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            navigate("/assets", { replace: true });
+                            window.location.reload();
+                          }}
+                          className="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100"
+                        >
+                          <ArrowLeft size={16} /> Back to Assets
+                        </button>
+                      </div>
           <div>
             <h1 className="text-2xl font-semibold text-gray-900">
               Import Assets

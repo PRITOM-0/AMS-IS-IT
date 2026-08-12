@@ -113,7 +113,7 @@ const AssetDetail = () => {
           <Editable value={formData.equipment} />
           <Editable value={formData.assetCode} />
           <Editable
-            value={formData.userDetails?.userName || "---"}
+            value={formData.userName || "---"}
             isEdit={false}
           />
         </div>
@@ -196,16 +196,16 @@ const AssetDetail = () => {
                   onChange={(v) => handleChange("department", v)}
                 />
                 <Info
-                  label="Location"
-                  value={formData.location}
-                  isEdit={isEdit}
-                  onChange={(v) => handleChange("location", v)}
-                />
-                <Info
                   label="Floor"
-                  value={`${formData.floor} th`}
+                  value={`${formData.floor}`}
                   isEdit={isEdit}
                   onChange={(v) => handleChange("floor", v)}
+                />
+                <Info
+                  label="Room"
+                  value={`${formData.room}`}
+                  isEdit={isEdit}
+                  onChange={(v) => handleChange("room", v)}
                 />
               </Grid>
             </Card>
@@ -226,23 +226,23 @@ const AssetDetail = () => {
                   isEdit={isEdit}
                   onChange={(v) => handleChange("purchaseDate", v)}
                 />
-                 <InfoDate
-                  label="Vendor"
-                  value={formData.vendorName}
+                <Info
+                  label="Vendor Name"
+                  value={`${formData.vendorName}`}
                   isEdit={isEdit}
                   onChange={(v) => handleChange("vendorName", v)}
                 />
                 <InfoDate
                   label="Warranty Start"
-                  value={formData.warranty?.start}
+                  value={formData.warrantyStart}
                   isEdit={isEdit}
-                  onChange={(v) => handleNestedChange("warranty", "start", v)}
+                  onChange={(v) => handleNestedChange("warrantyStart", v)}
                 />
                 <InfoDate
                   label="Warranty End"
-                  value={formData.warranty?.end}
+                  value={formData.warrantyEnd}
                   isEdit={isEdit}
-                  onChange={(v) => handleNestedChange("warranty", "end", v)}
+                  onChange={(v) => handleNestedChange("warrantyEnd", v)}
                 />
               </Grid>
             </Card>
@@ -258,7 +258,9 @@ const AssetDetail = () => {
                 />
                 <Info
                   label="Survey Report"
-                  value="---"
+                  value={formData.surveyReport}
+                  isEdit={isEdit}
+                  onChange={(v) => handleChange("surveyReport", v)}
                 />
                 </Grid>
             </Card>
@@ -269,11 +271,11 @@ const AssetDetail = () => {
             <Card title="Asset User">
               <Info
                 label="Assigned To"
-                value={asset?.userDetails?.userName || "---"}
+                value={asset?.userName || "---"}
               />
               <InfoDate
                 label="Assigned Date"
-                value={asset.userDetails?.receivedDate}
+                value={asset.receivedDate}
               />
               {employee && (
               <Card title="Employee Info">
@@ -327,7 +329,7 @@ const Card = ({ title, children }) => (
 );
 
 const Grid = ({ children, col=3 }) => (
-  <div className="grid grid-cols-3 gap-4 text-sm">{children}</div>
+  <div className="grid grid-cols-4 gap-4 text-sm">{children}</div>
 );
 
 const Info = ({ label, value, isEdit, onChange }) => (

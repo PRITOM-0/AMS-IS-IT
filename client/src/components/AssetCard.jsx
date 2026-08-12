@@ -17,7 +17,8 @@ const AssetCard = ({ asset }) => {
     floor,
     room,
     status,
-    userDetails,
+    userName,
+    userCode,
   } = asset;
 
   return (
@@ -28,13 +29,13 @@ const AssetCard = ({ asset }) => {
       <div className="flex justify-between items-center mb-2">
         <h2 className="text-lg font-semibold">{equipment}</h2>
       </div>
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between items-center mb-2">
         <p className="text-sm text-black-900 font-bold mb-1">
           <strong className="text-gray-700 font-semibold">Code:</strong>{" "}
           {assetCode}
         </p>
         <span
-          className={`text-sm px-2 py-1 rounded-full ${
+          className={`text-sm px-2 py-2 rounded-full ${
             status === "Active"
               ? "bg-green-100 text-green-700"
               : status === "Inactive"
@@ -51,50 +52,62 @@ const AssetCard = ({ asset }) => {
           {status}
         </span>
       </div>
-
-      <p className="text-sm text-gray-600 mb-1">
-        <strong>Equipment:</strong> {equipment}
-      </p>
-
-      <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-sm text-gray-600 mb-2">
-        <span>
-          <strong>Location:</strong> {location}
-        </span>
-
-        {department && (
-          <span>
-            <strong>Dept:</strong> {department}
-          </span>
+      {(brand || model ||serialNumber||macAddress) && <hr/>}
+      <div className="grid grid-cols-2">
+        
+        {brand && (
+          <p className="text-sm text-gray-600 mb-1">
+            <strong>Brand:</strong> {brand}
+          </p>
         )}
-
-        {floor && (
-          <span>
-            <strong>Floor:</strong> {floor}th
-          </span>
+        {model && (
+          <p className="text-sm text-gray-600 mb-1">
+            <strong>Model:</strong> {model}
+          </p>
         )}
-
-        {room && (
-          <span>
-            <strong>Room:</strong> {room}
-          </span>
+        {serialNumber && (
+          <p className="text-sm text-gray-600 mb-1">
+            <strong>SerialNumber:</strong> {serialNumber}
+          </p>
+        )}
+        {macAddress && (
+          <p className="text-sm text-gray-600 mb-1">
+            <strong>MacAddress:</strong> {macAddress}
+          </p>
         )}
       </div>
-      <p className="text-sm text-gray-600 mb-1">
-        <strong>Brand:</strong> {brand}
-      </p>
-      <p className="text-sm text-gray-600 mb-1">
-        <strong>Model:</strong> {model}
-      </p>
-      <p className="text-sm text-gray-600 mb-1">
-        <strong>Serial Number:</strong> {serialNumber}
-      </p>
-      <p className="text-sm text-gray-600 mb-1">
-        <strong>MAC:</strong> {macAddress}
-      </p>
-      {userDetails && userDetails.name && (
-        <p className="text-sm text-blue-600 mb-1">
-          <strong>Assigned To:</strong> {userDetails.userCode} -{" "}
-          {userDetails.userName}
+      <strong className="text-gray-600 my-2">
+        Location: <hr />
+      </strong>
+      <div className="grid grid-cols-2">
+        {location && (
+          <p className="text-sm text-gray-600 mb-1">
+            <p >{location}</p> 
+          </p>
+        )}
+        {department && (
+          <p className="text-sm text-gray-600 mb-1">
+            <p > {department}</p>
+          </p>
+        )}
+        {floor && (
+          <p className="text-sm text-gray-600 mb-1">
+            <p>{floor}</p> 
+          </p>
+        )}
+        {room && (
+          <p className="text-sm text-gray-600 mb-1">
+            <p > {room}</p> 
+          </p>
+        )}
+      </div>
+      {userName && (
+        <p className="text-sm text-gray-600 mb-1">
+          <strong>
+            Assigned To: <hr />
+          </strong>
+          <span>{userName} - </span>
+          <span>{userCode}</span>
         </p>
       )}
     </Link>

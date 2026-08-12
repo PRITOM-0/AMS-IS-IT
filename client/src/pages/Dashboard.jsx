@@ -111,8 +111,8 @@ export default function Dashboard() {
   const inactiveAssets = data.assets.filter(
     (a) => a.status === "Inactive",
   ).length;
-  const underRepairAssets = data.assets.filter(
-    (a) => a.status === "Under Repair",
+  const maintenanceAssets = data.assets.filter(
+    (a) => a.status === "Maintenance",
   ).length;
   const deathAssets = data.assets.filter(
     (a) => a.status === "Death",
@@ -123,13 +123,21 @@ export default function Dashboard() {
   const totalAdmins = data.admins.length;
 
   // Calculate Total Financial Value
-  const totalValue = data.assets.reduce((sum, asset) => {
-    if (!asset.purchasePrice) return sum;
-    const numericVal = parseFloat(
-      String(asset.purchasePrice).replace(/[^0-9.-]+/g, ""),
-    );
-    return sum + (isNaN(numericVal) ? 0 : numericVal);
-  }, 0);
+ const totalValue = data.assets.reduce((sum, asset) => {
+  console.log(asset.purchasePrice);
+  if (!asset.purchasePrice) return sum;
+  
+  const cleanedString = String(asset.purchasePrice).replace(/[^0-9.-]+/g, "");
+  const numericVal = Number(cleanedString);
+
+  if (isNaN(numericVal) || numericVal > 100000000) { 
+    return sum;
+  }
+
+  return sum + numericVal;
+}, 0);
+
+
 
   // equipment Breakdown
   const equipmentCounts = data.assets.reduce((acc, asset) => {
@@ -181,7 +189,8 @@ export default function Dashboard() {
           />
           <StatCard
             title="Total Asset Value"
-            value={`${totalValue.toLocaleString()} Tk`}
+            value={`${totalValue} TK`}
+
             subtext="Estimated capital hardware value"
             icon={<CircleDollarSign size={18} />}
             color="amber"
@@ -227,8 +236,8 @@ export default function Dashboard() {
                 color="bg-rose-500"
               />
               <StatusProgressBar
-                label="Under Repair"
-                count={underRepairAssets}
+                label="Maintenance"
+                count={maintenanceAssets}
                 total={totalAssets}
                 color="bg-indigo-600"
               />
@@ -257,7 +266,7 @@ export default function Dashboard() {
                   key={equipment}
                   className="rounded-2xl border rounded-xl shadow-sm p-2 hover:shadow-md transition duration-200 border-indigo-400 text-indigo-700 bg-gradient-to-br from-indigo-200 via-white to-violet-200 shadow-sm transition-transform duration-200 hover:-translate-y-1"
                 >
-                  <span className="text-[11px] font-semibold uppercase tracking-[0.24em] text-slate-500">
+                  <span className="text-[11px] font-semibold uppercase   text-slate-500">
                     {equipment}
                   </span>
                   <div className="mt-3 flex items-baseline justify-between">
@@ -337,12 +346,12 @@ export default function Dashboard() {
                         {asset.department || "---"}
                       </td>
                       <td className="px-4 py-3 text-slate-700">
-                        {asset.userDetails?.userName ? (
+                        {asset.userName ? (
                           <div className="flex items-center space-x-2">
                             <span className="flex h-7 w-7 items-center justify-center rounded-full border border-indigo-200 bg-indigo-50 text-xs font-bold text-indigo-600">
-                              {asset.userDetails.userName.charAt(0)}
+                              {asset.userName.charAt(0)}
                             </span>
-                            <span>{asset.userDetails.userName}</span>
+                            <span>{asset.userName}</span>
                           </div>
                         ) : (
                           <span className="italic text-slate-400">
@@ -390,7 +399,7 @@ function StatCard({ title, value, subtext, icon, color }) {
         </span>
       </div>
       <div className="mt-4">
-        <div className="text-3xl font-extrabold text-slate-900">{value}</div>
+        <div className=" font-extrabold text-slate-900">{value}</div>
         <p className="mt-1 text-xs text-slate-500">{subtext}</p>
       </div>
     </div>

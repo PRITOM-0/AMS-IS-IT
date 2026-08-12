@@ -16,9 +16,10 @@ import Employees from "./pages/Employees";
 import EmployeeDetails from "./pages/EmployeeDetails";
 import AddEmployee from "./pages/AddEmployee";
 import AssetAssign from "./pages/AssetAssign";
-import Issues from "./pages/Issues"; 
+import Issues from "./pages/Issues";
 import IssueDetails from "./pages/IssueDetails";
-import ImportAssets from "./pages/ImportAssets"
+import ImportAssets from "./pages/ImportAssets";
+import ExportAssets from "./pages/ExportAssets";
 
 function App() {
   const [loading, setLoading] = useState(false);
@@ -50,9 +51,11 @@ function App() {
   // ✅ After Login → Routed Dashboard Layout
   return (
     <Routes>
+      <Route path="importassets" element={<ImportAssets />} />
+      <Route path="exportassets" element={<ExportAssets />} />
+
       <Route path="/" element={<Layout setIsLoggedIn={setIsLoggedIn} />}>
         <Route index element={<Dashboard />} />
-        <Route path="importassets" element={<ImportAssets />} />
         <Route path="assets" element={<Assets />} />
         <Route path="assets/addAsset" element={<AddAsset />} />
         <Route path="assets/:id" element={<AssetDetails />} />
