@@ -10,12 +10,14 @@ import {
   FaShareSquare,
   FaExclamationCircle,
 } from "react-icons/fa";
+import { LuImport } from "react-icons/lu";
 
 function Sidebar({ isOpen }) {
   const location = useLocation();
 
   const menuItems = [
   { label: "Dashboard", icon: <FaTachometerAlt size={18} />, path: "/" },
+  { label: "Import Assets", icon: <LuImport  size={18} />, path: "/importassets" },
   { label: "Assets", icon: <FaBoxOpen size={18} />, path: "/assets" },
   { label: "Employees", icon: <FaUserTie size={18} />, path: "/employees" },
   { label: "Assign Assets", icon: <FaShareSquare size={18} />, path: "/assign-assets" },

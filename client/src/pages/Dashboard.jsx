@@ -111,6 +111,12 @@ export default function Dashboard() {
   const inactiveAssets = data.assets.filter(
     (a) => a.status === "Inactive",
   ).length;
+  const underRepairAssets = data.assets.filter(
+    (a) => a.status === "Under Repair",
+  ).length;
+  const deathAssets = data.assets.filter(
+    (a) => a.status === "Death",
+  ).length;
 
   const totalEmployees = data.employees.length;
   const totalUsers = data.users.length;
@@ -118,16 +124,16 @@ export default function Dashboard() {
 
   // Calculate Total Financial Value
   const totalValue = data.assets.reduce((sum, asset) => {
-    if (!asset.value) return sum;
+    if (!asset.purchasePrice) return sum;
     const numericVal = parseFloat(
-      String(asset.value).replace(/[^0-9.-]+/g, ""),
+      String(asset.purchasePrice).replace(/[^0-9.-]+/g, ""),
     );
     return sum + (isNaN(numericVal) ? 0 : numericVal);
   }, 0);
 
-  // Category Breakdown
-  const categoryCounts = data.assets.reduce((acc, asset) => {
-    const cat = asset.category || "Uncategorized";
+  // equipment Breakdown
+  const equipmentCounts = data.assets.reduce((acc, asset) => {
+    const cat = asset.equipment || "Uncategorized";
     acc[cat] = (acc[cat] || 0) + 1;
     return acc;
   }, {});
@@ -203,22 +209,34 @@ export default function Dashboard() {
             </div>
             <div className="space-y-4">
               <StatusProgressBar
-                label="Active / Assigned"
-                count={activeAssets}
-                total={totalAssets}
-                color="bg-emerald-500"
-              />
-              <StatusProgressBar
                 label="Instore / Warehouse"
                 count={instoreAssets}
                 total={totalAssets}
                 color="bg-indigo-600"
               />
               <StatusProgressBar
+                label="Active / Assigned"
+                count={activeAssets}
+                total={totalAssets}
+                color="bg-emerald-500"
+              />
+              <StatusProgressBar
                 label="Inactive / Retired"
                 count={inactiveAssets}
                 total={totalAssets}
                 color="bg-rose-500"
+              />
+              <StatusProgressBar
+                label="Under Repair"
+                count={underRepairAssets}
+                total={totalAssets}
+                color="bg-indigo-600"
+              />
+              <StatusProgressBar
+                label="Death"
+                count={deathAssets}
+                total={totalAssets}
+                color="bg-indigo-600"
               />
             </div>
           </div>
@@ -227,20 +245,20 @@ export default function Dashboard() {
           <div className="rounded-[24px] border border-slate-300 bg-gradient-to-br from-white via-slate-50 to-indigo-50/60 p-6 shadow-[0_20px_45px_-25px_rgba(15,23,42,0.30)] lg:col-span-2">
             <div className="mb-5 flex items-center justify-between">
               <h2 className="text-lg font-bold text-slate-900">
-                Assets by Category
+                Assets by equipment
               </h2>
               <span className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">
                 Distribution
               </span>
             </div>
             <div className="grid grid-cols-5 gap-2 ">
-              {Object.entries(categoryCounts).map(([category, count]) => (
+              {Object.entries(equipmentCounts).map(([equipment, count]) => (
                 <div
-                  key={category}
+                  key={equipment}
                   className="rounded-2xl border rounded-xl shadow-sm p-2 hover:shadow-md transition duration-200 border-indigo-400 text-indigo-700 bg-gradient-to-br from-indigo-200 via-white to-violet-200 shadow-sm transition-transform duration-200 hover:-translate-y-1"
                 >
                   <span className="text-[11px] font-semibold uppercase tracking-[0.24em] text-slate-500">
-                    {category}
+                    {equipment}
                   </span>
                   <div className="mt-3 flex items-baseline justify-between">
                     <span className="text-2xl font-bold text-slate-800">
@@ -279,16 +297,16 @@ export default function Dashboard() {
                     Asset Code
                   </th>
                   <th className="px-4 py-3 text-xs font-semibold uppercase tracking-[0.2em]">
-                    Name
-                  </th>
-                  <th className="px-4 py-3 text-xs font-semibold uppercase tracking-[0.2em]">
-                    Category
+                    equipment
                   </th>
                   <th className="px-4 py-3 text-xs font-semibold uppercase tracking-[0.2em]">
                     Location
                   </th>
                   <th className="px-4 py-3 text-xs font-semibold uppercase tracking-[0.2em]">
-                    Assigned To
+                    Department
+                  </th>
+                  <th className="px-4 py-3 text-xs font-semibold uppercase tracking-[0.2em]">
+                    User
                   </th>
                   <th className="px-4 py-3 text-xs font-semibold uppercase tracking-[0.2em]">
                     Status
@@ -297,37 +315,38 @@ export default function Dashboard() {
               </thead>
               <tbody className="divide-y divide-slate-100">
                 {data.assets.map((asset) => {
-                  const assignedEmployee = data.employees.find(
-                    (e) => e.employeeid === asset.assignDetails?.employeeid,
-                  );
                   return (
                     <tr
                       key={asset.id || asset.assetCode}
-                      className="transition-colors hover:bg-slate-50/80"
+                      onClick={() => {
+                        // Navigate to asset details page
+                        window.location.href = `/assets/${asset.id}`;
+                      }}
+                      className="transition-colors hover:bg-slate-50/80 cursor-pointer"
                     >
                       <td className="px-4 py-3 font-mono text-xs font-bold text-indigo-600">
                         {asset.assetCode}
                       </td>
                       <td className="px-4 py-3 font-medium text-slate-800">
-                        {asset.name}
+                        {asset.equipment}
                       </td>
                       <td className="px-4 py-3 text-slate-500">
-                        {asset.category || "N/A"}
+                        {asset.location || "---"}
                       </td>
                       <td className="px-4 py-3 text-slate-500">
-                        {asset.location || "N/A"}
+                        {asset.department || "---"}
                       </td>
                       <td className="px-4 py-3 text-slate-700">
-                        {assignedEmployee ? (
+                        {asset.userDetails?.userName ? (
                           <div className="flex items-center space-x-2">
                             <span className="flex h-7 w-7 items-center justify-center rounded-full border border-indigo-200 bg-indigo-50 text-xs font-bold text-indigo-600">
-                              {assignedEmployee.name.charAt(0)}
+                              {asset.userDetails.userName.charAt(0)}
                             </span>
-                            <span>{assignedEmployee.name}</span>
+                            <span>{asset.userDetails.userName}</span>
                           </div>
                         ) : (
                           <span className="italic text-slate-400">
-                            Unassigned
+                            ---
                           </span>
                         )}
                       </td>

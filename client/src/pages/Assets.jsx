@@ -11,9 +11,9 @@ const Assets = () => {
   const [assets, setAssets] = useState([]);
   const [employees, setEmployees] = useState([]);
   const [filters, setFilters] = useState({
-    assetCode: "AS-",
-    Location: "",
-    category: "",
+    assetInfo: "",
+    locationInfo: "",
+    userInfo: "",
     status: "",
   });
   const [currentPage, setCurrentPage] = useState(1);
@@ -40,19 +40,48 @@ const Assets = () => {
 
   // 🔍 Filter
   const filteredAssets = sortedAssets.filter((asset) => {
-    const matchcategory =
-      !filters.category || asset.category === filters.category;
-    const matchesAssetCode =
-      filters.assetCode == "AS-" ||
-      asset.assetCode?.toLowerCase().includes(filters.assetCode.toLowerCase());
+    const matchesAssetInfo =
+      filters.assetInfo == "" ||
+      asset.assetCode
+        ?.toLowerCase()
+        .includes(filters.assetInfo.toLowerCase()) ||
+      asset.equipment
+        ?.toLowerCase()
+        .includes(filters.assetInfo.toLowerCase()) ||
+      asset.brand?.toLowerCase().includes(filters.assetInfo.toLowerCase()) ||
+      asset.model?.toLowerCase().includes(filters.assetInfo.toLowerCase()) ||
+      asset.serialNumber
+        ?.toLowerCase()
+        .includes(filters.assetInfo.toLowerCase()) ||
+      asset.macAddress?.toLowerCase().includes(filters.assetInfo.toLowerCase());
 
-    const matchesLocation =
-      filters.Location == "" ||
-      asset.location?.toLowerCase().includes(filters.Location.toLowerCase());
+    const matchesLocationInfo =
+      filters.locationInfo == "" ||
+      asset.location
+        ?.toLowerCase()
+        .includes(filters.locationInfo.toLowerCase()) ||
+      asset.department
+        ?.toLowerCase()
+        .includes(filters.locationInfo.toLowerCase()) ||
+      asset.floor?.toLowerCase().includes(filters.locationInfo.toLowerCase()) ||
+      asset.room?.toLowerCase().includes(filters.locationInfo.toLowerCase());
+    const matchesUserInfo =
+      filters.userInfo == "" ||
+      asset.userDetails?.name
+        ?.toLowerCase()
+        .includes(filters.userInfo.toLowerCase()) ||
+      asset.userDetails?.userCode
+        ?.toLowerCase()
+        .includes(filters.userInfo.toLowerCase());
 
     const matchesStatus = !filters.status || asset.status === filters.status;
 
-    return matchesAssetCode && matchesLocation && matchesStatus && matchcategory;
+    return (
+      matchesAssetInfo &&
+      matchesLocationInfo &&
+      matchesStatus &&
+      matchesUserInfo
+    );
   });
 
   // 📄 Pagination
@@ -66,7 +95,7 @@ const Assets = () => {
   return (
     <div className="p-6">
       {/* Top Bar */}
-      <div className="rounded-[28px] border border-indigo-200 border-indigo-200 text-indigo-700 bg-gradient-to-br from-indigo-100 via-white to-violet-100 p-6 shadow-[0_20px_45px_-20px_rgba(79,70,229,0.45)] backdrop-blur-sm">
+      <div className=" border border-indigo-200 border-indigo-200 text-indigo-700 bg-gradient-to-br from-indigo-100 via-white to-violet-100 p-6 shadow-[0_20px_45px_-20px_rgba(79,70,229,0.45)] backdrop-blur-sm">
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between ">
           <div>
             <h1 className="mt-2 text-3xl font-extrabold tracking-tight text-slate-900">
@@ -86,55 +115,43 @@ const Assets = () => {
         </div>
         <div className="mb-6">
           <div className="grid md:grid-cols-5 gap-4 items-end">
-            {/* Asset Code */}
+            {/* Asset info */}
             <div>
-              <label className="text-xs text-gray-500">Asset Code</label>
+              <label className="text-xs text-gray-500">Asset Info</label>
               <input
                 type="text"
-                placeholder="AS-001"
-                className="w-full border rounded px-3 py-2 outline-none focus:ring-2 focus:ring-indigo-400"
-                value={filters.assetCode}
+                placeholder="Search by Asset Code, Equipment, Brand, Model, Serial Number, MAC Address"
+                className="w-full border rounded px-3 py-2 outline-none focus:ring-2 focus:ring-green-400"
+                value={filters.assetInfo}
                 onChange={(e) =>
-                  setFilters({ ...filters, assetCode: e.target.value })
+                  setFilters({ ...filters, assetInfo: e.target.value })
                 }
               />
             </div>
 
             {/* Location */}
             <div>
-              <label className="text-xs text-gray-500">Location</label>
-              <select
-                className="w-full border rounded px-3 py-2 outline-none focus:ring-2 focus:ring-purple-400"
-                value={filters.Location}
+              <label className="text-xs text-gray-500">Location Info</label>
+              <input
+                className="w-full border rounded px-3 py-2 outline-none focus:ring-2 focus:ring-green-400"
+                value={filters.locationInfo}
+                placeholder="Search by Location, Department, Floor, Room"
                 onChange={(e) =>
-                  setFilters({ ...filters, Location: e.target.value })
+                  setFilters({ ...filters, locationInfo: e.target.value })
                 }
-              >
-                <option value="">All Locations</option>
-                {[...new Set(assets.map((asset) => asset.location))].map((location) => (
-                  <option key={location} value={location}>
-                    {location}
-                  </option>
-                ))}
-              </select>
+              />
             </div>
-            {/* Category */}
+            {/* User */}
             <div>
-              <label className="text-xs text-gray-500">Category</label>
-              <select
-                className="w-full border rounded px-3 py-2 outline-none focus:ring-2 focus:ring-purple-400"
-                value={filters.category}
+              <label className="text-xs text-gray-500">User Info</label>
+              <input
+                className="w-full border rounded px-3 py-2 outline-none focus:ring-2 focus:ring-green-400"
+                value={filters.userInfo}
+                placeholder="Search by User, Employee ID, Department"
                 onChange={(e) =>
-                  setFilters({ ...filters, category: e.target.value })
+                  setFilters({ ...filters, userInfo: e.target.value })
                 }
-              >
-                <option value="">All Categories</option>
-                {[...new Set(assets.map((asset) => asset.category))].map((category) => (
-                  <option key={category} value={category}>
-                    {category}
-                  </option>
-                ))}
-              </select>
+              />
             </div>
             {/* Status */}
             <div>
@@ -147,17 +164,23 @@ const Assets = () => {
                 }
               >
                 <option value="">All Status</option>
+                <option value="Instore">Instore</option>
                 <option value="Active">Active</option>
                 <option value="Inactive">Inactive</option>
-                <option value="Maintenance">Maintenance</option>
-                <option value="Instore">Instore</option>
+                <option value="Under Repair">Under Repair</option>
+                <option value="Death">Death</option>
               </select>
             </div>
 
             {/* Reset Button */}
             <button
               onClick={() =>
-                setFilters({ assetCode: "AS-", Location: "", status: "", category: "" })
+                setFilters({
+                  assetInfo: "",
+                  locationInfo: "",
+                  userInfo: "",
+                  status: "",
+                })
               }
               className="h-[42px] text-black border border-gray-500 bg-gray-300 rounded px-4 hover:bg-gray-400 transition"
             >

@@ -1,390 +1,672 @@
 import React, { useState } from "react";
+import * as XLSX from "xlsx";
 import axios from "axios";
-import { ArrowLeft } from "lucide-react";
 import { API_BASE_URL } from "../env";
 
-const AddAsset = () => {
-  const [formData, setFormData] = useState({
-    id: "",
-    assetCode: "",
-    name: "",
-    brand: "",
-    category: "",
-    status: "Instore",
-    quantity: 1,
-    assignEmpId: "",
-    assignEmpCode: "",
-    assignedDate: "",
-    location: "",
-    purchaseDate: "",
-    warrantyStart: "",
-    warrantyEnd: "",
-    value: "",
-    description: "",
-    assetsComments:"",
-    issues: "",
-    history: "",
-    prevEmployees: "",
-    createdAt: "",
-    updatedAt: "",
+const demoAsset = {
+  id: "",
+  equipment: "",
+  assetCode: "",
+  brand: "",
+  model: "",
+  serialNumber: "",
+  specifications: "",
+  macAddress: "",
+  department: "",
+  location: "",
+  floor: "",
+  room: "",
+  status: "Instore",
+
+  userId: "",
+  userCode: "",
+  userName: "",
+
+  oldUsers: {
+    userId: "",
+    userCode: "",
+    userName: "",
+    receivedDate: "",
+    returnedDate: "",
+    issues: [],
+  },
+
+  receivedDate: "",
+  purchaseDate: "",
+  purchasePrice: "",
+
+  warrantyStart: "",
+  warrantyEnd: "",
+
+  vendorName: "",
+  remarks: "",
+  surveyReport: "",
+
+  createdAt: "",
+  updatedAt: "",
+};
+
+
+// ==================================================
+// 1. CLEAN COLUMN NAME
+// ==================================================
+
+const cleanColumn = (column) => {
+  return String(column)
+    .trim()
+    .toLowerCase();
+};
+
+
+// ==================================================
+// 2. GET EXCEL VALUE
+// ==================================================
+
+const getValue = (row, names) => {
+  const keys = Object.keys(row);
+
+  for (const name of names) {
+    const foundKey = keys.find(
+      (key) =>
+        cleanColumn(key) === cleanColumn(name)
+    );
+
+    if (foundKey) {
+      return row[foundKey] ?? "";
+    }
+  }
+
+  return "";
+};
+
+
+// ==================================================
+// 3. CONVERT DATE
+// ==================================================
+
+const convertDate = (value) => {
+  if (!value) return "";
+
+  // Excel date object
+  if (value instanceof Date) {
+    return value.toISOString();
+  }
+
+  // Excel serial date
+  if (typeof value === "number") {
+    const date = XLSX.SSF.parse_date_code(value);
+
+    if (date) {
+      const result = new Date(
+        date.y,
+        date.m - 1,
+        date.d,
+        date.H || 0,
+        date.M || 0,
+        date.S || 0
+      );
+
+      return result.toISOString();
+    }
+  }
+
+  // Normal date string
+  const date = new Date(value);
+
+  if (!isNaN(date.getTime())) {
+    return date.toISOString();
+  }
+
+  return String(value);
+};
+
+
+// ==================================================
+// 4. REMOVE EMPTY COLUMNS
+// ==================================================
+
+const removeEmptyColumns = (rows) => {
+  if (!rows.length) return [];
+
+  const columns = Object.keys(rows[0]);
+
+  const validColumns = columns.filter((column) => {
+    return rows.some(
+      (row) =>
+        row[column] !== null &&
+        row[column] !== undefined &&
+        String(row[column]).trim() !== ""
+    );
   });
 
-  const [message, setMessage] = useState("");
-  const [success, setSuccess] = useState(true);
+  return rows.map((row) => {
+    const newRow = {};
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    validColumns.forEach((column) => {
+      newRow[column] = row[column];
+    });
+
+    return newRow;
+  });
+};
+
+
+// ==================================================
+// 5. REMOVE COMPLETELY EMPTY ROWS
+// ==================================================
+
+const removeEmptyRows = (rows) => {
+  return rows.filter((row) => {
+    return Object.values(row).some(
+      (value) =>
+        value !== null &&
+        value !== undefined &&
+        String(value).trim() !== ""
+    );
+  });
+};
+
+
+// ==================================================
+// 6. CREATE ASSET FROM ONE EXCEL ROW
+// ==================================================
+
+const createAssetFromRow = (row, index) => {
+
+  const asset = {
+    ...demoAsset,
+
+    id: `${Date.now()}-${index}`,
+
+    equipment: getValue(row, [
+      "Equipment",
+    ]),
+
+    assetCode: getValue(row, [
+      "Asset Code",
+      "AssetCode",
+      "Asset ID",
+    ]),
+
+    brand: getValue(row, [
+      "Brand",
+      "Manufacturer",
+    ]),
+
+    model: getValue(row, [
+      "Model",
+      "Model Number",
+      "Model No",
+    ]),
+
+    serialNumber: getValue(row, [
+      "Serial Number",
+      "Serial No",
+      "Serial",
+    ]),
+
+    specifications: getValue(row, [
+      "Configuration",
+      "Specification",
+      "Specifications",
+    ]),
+
+    macAddress: getValue(row, [
+      "MAC Address",
+      "MAC",
+    ]),
+
+    department: getValue(row, [
+      "Department",
+      "Dept",
+    ]),
+
+    location: getValue(row, [
+      "Location",
+      "Campus",
+    ]),
+
+    floor: getValue(row, [
+      "Office",
+      "Floor",
+      "Building",
+      "Room",
+    ]),
+
+    room: getValue(row, [
+      "Room No",
+      "Room",
+      "Room Number",
+    ]),
+
+    status:
+      getValue(row, [
+        "Status",
+        "Asset Status",
+      ]) || "Instore",
+
+    userId: "",
+
+    userCode: getValue(row, [
+      "Employee ID",
+      "Employee Code",
+      "User Code",
+    ]),
+
+    userName: getValue(row, [
+      "User Name",
+      "Employee Name",
+      "Employee",
+    ]),
+
+    receivedDate: convertDate(
+      getValue(row, [
+        "User Received Date",
+        "Received Date",
+      ])
+    ),
+
+    purchaseDate: convertDate(
+      getValue(row, [
+        "Purchase Date",
+      ])
+    ),
+
+    purchasePrice: getValue(row, [
+      "Purchase Price",
+      "Price",
+      "Cost",
+    ]),
+
+    warrantyStart: "",
+
+    warrantyEnd: convertDate(
+      getValue(row, [
+        "Warranty",
+        "Warranty End",
+      ])
+    ),
+
+    vendorName: getValue(row, [
+      "Vendor Name",
+      "Vendor",
+      "Supplier",
+    ]),
+
+    remarks: getValue(row, [
+      "Remarks",
+      "Remark",
+      "Comments",
+    ]),
+
+    surveyReport: getValue(row, [
+      "IT Survey Report",
+      "Survey Report",
+    ]),
+
+    createdAt: new Date().toISOString(),
+
+    updatedAt: "",
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  // Old user information
+  asset.oldUsers = {
+    userId: "",
 
-    const quantity = Math.max(1, Number(formData.quantity || 1));
-    const baseAsset = {
-      name: formData.name,
-      assetCode: "AS-", // Base code, will be modified for each asset
-      brand: formData.brand,
-      category: formData.category,
-      status: formData.status || "Instore",
+    userCode: getValue(row, [
+      "Old User",
+    ]),
 
-      assignDetails: {
-        assignEmpId: null,
-        assignEmpCode: null,
-        assignedDate: null,
-        assignedTo: null,
-      },
+    userName: "",
 
-      location: formData.location,
-      purchaseDate: formData.purchaseDate,
+    receivedDate: "",
 
-      warranty: {
-        start: formData.warrantyStart,
-        end: formData.warrantyEnd,
-      },
+    returnedDate: "",
 
-      value: `${Number(formData.value)} Tk`,
-      description: formData.description,
+    issues: [],
+  };
 
-      assetsComments: formData.assetsComments ? formData.assetsComments : "None",
-      issues: [],
-      history: [],
-      prevEmployees: [],
+  return asset;
+};
 
-      createdAt: formData.createdAt || new Date().toISOString(),
-      updatedAt: formData.updatedAt || new Date().toISOString(),
-    };
 
-    try {
-      const assetRequests = Array.from({ length: quantity }, (_, index) => {
-        const newAsset = {
-          ...baseAsset,
-          id: `${Date.now()}-${index}`,
-          assetCode: `AS-`,
-        };
+// ==================================================
+// COMPONENT
+// ==================================================
 
-        return axios.post(`${API_BASE_URL}/assets`, newAsset);
+const ImportAssets = () => {
+
+  const [excelRows, setExcelRows] = useState([]);
+
+  const [assets, setAssets] = useState([]);
+
+  const [fileName, setFileName] = useState("");
+
+  const [showPreview, setShowPreview] =
+    useState(false);
+
+  const [creating, setCreating] =
+    useState(false);
+
+  const [message, setMessage] =
+    useState("");
+
+
+  // ==================================================
+  // UPLOAD EXCEL
+  // ==================================================
+
+  const handleUpload = (event) => {
+
+    const file = event.target.files[0];
+
+    if (!file) return;
+
+    setFileName(file.name);
+
+    const reader = new FileReader();
+
+    reader.onload = (e) => {
+
+      const data = new Uint8Array(
+        e.target.result
+      );
+
+      const workbook = XLSX.read(data, {
+        type: "array",
+        cellDates: true,
       });
 
-      await Promise.all(assetRequests);
-      setSuccess(true);
-      setMessage(
-        quantity > 1
-          ? `Successfully added ${quantity} assets.`
-          : "Asset added successfully!",
+      const sheetName =
+        workbook.SheetNames[0];
+
+      const sheet =
+        workbook.Sheets[sheetName];
+
+      let rows =
+        XLSX.utils.sheet_to_json(sheet, {
+          defval: "",
+        });
+
+
+      // 1. Remove empty rows
+      rows = removeEmptyRows(rows);
+
+
+      // 2. Remove empty columns
+      rows = removeEmptyColumns(rows);
+
+
+      setExcelRows(rows);
+
+      // 3. Create asset objects
+      const newAssets = rows.map(
+        (row, index) =>
+          createAssetFromRow(row, index)
       );
-    } catch (err) {
-      setSuccess(false);
-      setMessage("Error adding asset");
+
+      setAssets(newAssets);
+
+      setMessage(
+        `${newAssets.length} assets prepared successfully.`
+      );
+    };
+
+    reader.readAsArrayBuffer(file);
+
+    event.target.value = "";
+  };
+
+
+  // ==================================================
+  // CREATE ASSETS
+  // ==================================================
+
+  const createAssets = async () => {
+
+    if (!assets.length) return;
+
+    setCreating(true);
+    setMessage("");
+
+    try {
+
+      await Promise.all(
+        assets.map((asset) =>
+          axios.post(
+            `${API_BASE_URL}/assets`,
+            asset
+          )
+        )
+      );
+
+      setMessage(
+        `${assets.length} assets created successfully.`
+      );
+
+    } catch (error) {
+
+      console.error(error);
+
+      setMessage(
+        "Error creating assets."
+      );
+
+    } finally {
+
+      setCreating(false);
     }
   };
-  const resetHandler = () => {
-    setFormData({
-      id: "",
-      assetCode: "",
-      name: "",
-      brand: "",
-      category: "",
-      status: "Instore",
-      quantity: 1,
-      assignEmpId: "",
-      assignEmpCode: "",
-      assignedDate: "",
-      location: "",
-      purchaseDate: "",
-      warrantyStart: "",
-      warrantyEnd: "",
-      value: "",
-      description: "",
-      assetsComments: "",
-      issues: "",
-      history: "",
-      prevEmployees: "",
-      createdAt: "",
-      updatedAt: "",
-    });
+
+
+  // ==================================================
+  // RESET
+  // ==================================================
+
+  const reset = () => {
+
+    setExcelRows([]);
+
+    setAssets([]);
+
+    setFileName("");
+
+    setShowPreview(false);
+
+    setMessage("");
   };
 
-  const inputStyle =
-    "w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-400 outline-none";
+
+  // ==================================================
+  // UI
+  // ==================================================
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-100 to-purple-200 p-6">
-      <button
-        onClick={() => window.history.back()}
-        className=" ml-10 my-5 border border-blue-600 py-2 px-4 rounded-lg flex  items-center gap-2 text-blue-600 hover:bg-blue-600 hover:text-white transition"
-      >
-        <ArrowLeft size={24} /> Back
-      </button>
-      <div className="max-w-5xl mx-auto bg-white shadow-xl rounded-xl overflow-hidden">
-        {/* Header */}
-        <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white p-4 text-center text-xl font-bold">
-          Add New Asset
-        </div>
+    <div className="p-6">
 
-        {/* Message */}
-        {message && (
-          <div
-            className={`m-4 p-3 rounded-lg text-white ${
-              success ? "bg-green-500" : "bg-red-500"
-            }`}
-          >
-            {message}
-          </div>
+      <h1 className="text-2xl font-semibold mb-2">
+        Import Assets
+      </h1>
+
+      <p className="text-gray-500 mb-6">
+        Upload Excel file and create assets.
+      </p>
+
+
+      {/* ========================================= */}
+      {/* UPLOAD */}
+      {/* ========================================= */}
+
+      <div className="border rounded-xl p-6 bg-white">
+
+        <input
+          type="file"
+          accept=".xlsx,.xls,.csv"
+          onChange={handleUpload}
+        />
+
+        {fileName && (
+          <p className="mt-3 text-sm text-gray-600">
+            File: {fileName}
+          </p>
         )}
 
-        <form onSubmit={handleSubmit} className="p-6 space-y-8">
-          {/* BASIC INFO */}
-          <div>
-            <h3 className="text-lg font-semibold text-blue-600 mb-4">
-              Basic Info
-            </h3>
-
-            <div className="grid md:grid-cols-3 gap-5">
-              <div>
-                <label className="label">Asset Code</label>
-                <input
-                  className={inputStyle}
-                  name="assetCode"
-                  placeholder="AS-011"
-                  onChange={handleChange}
-                />
-              </div>
-
-              <div>
-                <label className="label">Asset Name *</label>
-                <input
-                  className={inputStyle}
-                  name="name"
-                  placeholder="Dell XPS 13"
-                  required
-                  onChange={handleChange}
-                />
-              </div>
-
-              <div>
-                <label className="label">Brand *</label>
-                <input
-                  className={inputStyle}
-                  name="brand"
-                  placeholder="Dell, Apple"
-                  required
-                  onChange={handleChange}
-                />
-              </div>
-
-              <div>
-                <label className="label">Category *</label>
-                <input
-                  className={inputStyle}
-                  name="category"
-                  placeholder="Laptop, Mobile"
-                  required
-                  onChange={handleChange}
-                />
-              </div>
-
-              <div>
-                <label className="label">Status *</label>
-                <select
-                  className={inputStyle}
-                  name="status"
-                  required
-                  onChange={handleChange}
-                >
-                  <option value="Instore">In Store</option>
-                  <option value="Active">Active</option>
-                  <option value="Inactive">Inactive</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="label">Location *</label>
-                <input
-                  className={inputStyle}
-                  name="location"
-                  placeholder="e.g. Head Office"
-                  required
-                  onChange={handleChange}
-                />
-              </div>
-
-              <div>
-                <label className="label">Quantity *</label>
-                <input
-                  type="number"
-                  min="1"
-                  className={inputStyle}
-                  name="quantity"
-                  value={formData.quantity}
-                  required
-                  onChange={handleChange}
-                />
-              </div>
-            </div>
-          </div>
-          {/* DATES */}
-          <div>
-            <h3 className="text-lg font-semibold text-green-600 mb-4">
-              Dates & Warranty
-            </h3>
-
-            <div className="grid md:grid-cols-3 gap-5">
-              <div>
-                <label className="label">Purchase Date *</label>
-                <input
-                  type="date"
-                  className={inputStyle}
-                  name="purchaseDate"
-                  required
-                  onChange={handleChange}
-                />
-              </div>
-
-              <div>
-                <label className="label">Warranty Start</label>
-                <input
-                  type="date"
-                  className={inputStyle}
-                  name="warrantyStart"
-                  onChange={handleChange}
-                />
-              </div>
-
-              <div>
-                <label className="label">Warranty End</label>
-                <input
-                  type="date"
-                  className={inputStyle}
-                  name="warrantyEnd"
-                  onChange={handleChange}
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* VALUE */}
-          <div>
-            <h3 className="text-lg font-semibold text-yellow-600 mb-4">
-              Financial
-            </h3>
-
-            <div>
-              <label className="label">Asset Value (BDT) *</label>
-              <input
-                type="number"
-                className={inputStyle}
-                name="value"
-                placeholder="1200"
-                required
-                onChange={handleChange}
-              />
-            </div>
-          </div>
-
-          {/* DESCRIPTION */}
-          <div>
-            <h3 className="text-lg font-semibold text-pink-600 mb-4">
-              Description
-            </h3>
-
-            <div>
-              <label className="label">Description</label>
-              <textarea
-                className={inputStyle}
-                name="description"
-                placeholder="High-performance business laptop"
-                onChange={handleChange}
-              />
-            </div>
-          </div>
-
-          {/* EXTRA */}
-          <div>
-            <h3 className="text-lg font-semibold text-gray-700 mb-4">
-              Extra Data
-            </h3>
-
-            <div className="grid md:grid-cols-2 gap-5">
-              <div>
-                <label className="label">Comments</label>
-                <input
-                  className={inputStyle}
-                  name="assetsComments"
-                  placeholder="Good condition, Needs upgrade"
-                  onChange={handleChange}
-                />
-              </div>
-
-              <div>
-                <label className="label">Issues</label>
-                <input
-                  className={inputStyle}
-                  name="issues"
-                  placeholder="Battery issue, Screen flicker"
-                  onChange={handleChange}
-                />
-              </div>
-
-              <div>
-                <label className="label">History</label>
-                <input
-                  className={inputStyle}
-                  name="history"
-                  placeholder="Repaired in 2025, Reassigned"
-                  onChange={handleChange}
-                />
-              </div>
-
-              <div>
-                <label className="label">Previous Employees</label>
-                <input
-                  className={inputStyle}
-                  name="prevEmployees"
-                  placeholder="EMP-100, EMP-102"
-                  onChange={handleChange}
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* SUBMIT */}
-          <div className="text-center pt-4 gap-4 flex justify-center items-center space-x-4">
-            <button className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-8 py-2 rounded-lg shadow-md hover:scale-105 transition">
-              Add Asset
-            </button>
-            <button
-              type="reset"
-              onClick={resetHandler}
-              className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-8 py-2 rounded-lg shadow-md hover:scale-105 transition"
-            >
-              Reset
-            </button>
-          </div>
-        </form>
       </div>
+
+
+      {/* ========================================= */}
+      {/* MESSAGE */}
+      {/* ========================================= */}
+
+      {message && (
+        <div className="mt-4 p-3 bg-gray-100 rounded-lg">
+          {message}
+        </div>
+      )}
+
+
+      {/* ========================================= */}
+      {/* EXCEL DATA */}
+      {/* ========================================= */}
+
+      {excelRows.length > 0 && (
+        <div className="mt-6">
+
+          <h2 className="text-lg font-semibold mb-3">
+            Excel Data
+          </h2>
+
+          <div className="overflow-auto border rounded-xl bg-white max-h-[500px]">
+
+            <table className="min-w-full">
+
+              <thead className="bg-gray-100">
+
+                <tr>
+
+                  <th className="px-4 py-3 border">
+                    #
+                  </th>
+
+                  {Object.keys(
+                    excelRows[0]
+                  ).map((column) => (
+                    <th
+                      key={column}
+                      className="px-4 py-3 border text-left"
+                    >
+                      {column}
+                    </th>
+                  ))}
+
+                </tr>
+
+              </thead>
+
+              <tbody>
+
+                {excelRows.map(
+                  (row, index) => (
+                    <tr key={index}>
+
+                      <td className="px-4 py-3 border">
+                        {index + 1}
+                      </td>
+
+                      {Object.keys(
+                        excelRows[0]
+                      ).map((column) => (
+                        <td
+                          key={column}
+                          className="px-4 py-3 border whitespace-nowrap"
+                        >
+                          {String(
+                            row[column] ?? ""
+                          )}
+                        </td>
+                      ))}
+
+                    </tr>
+                  )
+                )}
+
+              </tbody>
+
+            </table>
+
+          </div>
+
+
+          {/* ===================================== */}
+          {/* PREVIEW BUTTON */}
+          {/* ===================================== */}
+
+          <div className="flex gap-3 mt-5">
+
+            <button
+              onClick={() =>
+                setShowPreview(true)
+              }
+              className="px-5 py-2 bg-gray-900 text-white rounded-lg"
+            >
+              Show Assets
+            </button>
+
+            <button
+              onClick={reset}
+              className="px-5 py-2 border rounded-lg"
+            >
+              Clear
+            </button>
+
+          </div>
+
+        </div>
+      )}
+
+
+      {/* ========================================= */}
+      {/* ASSET PREVIEW */}
+      {/* ========================================= */}
+
+      {showPreview && assets.length > 0 && (
+
+        <div className="mt-8">
+
+          <h2 className="text-lg font-semibold mb-3">
+            Assets Ready to Create
+          </h2>
+
+
+          <div className="border rounded-xl bg-white overflow-auto max-h-[600px]">
+
+            <pre className="p-5 text-sm">
+              {JSON.stringify(
+                assets,
+                null,
+                2
+              )}
+            </pre>
+
+          </div>
+
+
+          {/* CREATE */}
+          <button
+            onClick={createAssets}
+            disabled={creating}
+            className="mt-5 px-6 py-3 bg-green-600 text-white rounded-lg disabled:opacity-50"
+          >
+            {creating
+              ? "Creating..."
+              : `Create ${assets.length} Assets`}
+          </button>
+
+        </div>
+      )}
+
     </div>
   );
 };
 
-export default AddAsset;
+export default ImportAssets;

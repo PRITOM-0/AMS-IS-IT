@@ -50,8 +50,6 @@ const AssetDetail = () => {
     }));
   };
 
- 
-
   const handleReset = () => {
     setFormData(asset);
   };
@@ -68,7 +66,7 @@ const AssetDetail = () => {
   };
 
   const employee = employees.find(
-    (e) => e.employeeCode === formData.assignDetails?.employeeCode,
+    (e) => e.employeeCode === formData.userDetails?.userCode,
   );
   const assetIssues = issues
     .filter((i) => i.assetId === asset.id)
@@ -112,17 +110,12 @@ const AssetDetail = () => {
 
         {/* 🔹 Header */}
         <div className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white p-6 rounded-xl flex justify-between">
+          <Editable value={formData.equipment} />
+          <Editable value={formData.assetCode} />
           <Editable
-            value={formData.name}
-            isEdit={isEdit}
-            onChange={(v) => handleChange("name", v)}
+            value={formData.userDetails?.userName || "---"}
+            isEdit={false}
           />
-          <Editable
-            value={formData.assetCode}
-            isEdit={isEdit}
-            onChange={(v) => handleChange("assetCode", v)}
-          />
-          <Editable value={formData.assignDetails?.assignedTo || "Unassigned"} isEdit={false} />
         </div>
 
         <div className="grid md:grid-cols-3 gap-6">
@@ -132,24 +125,75 @@ const AssetDetail = () => {
             <Card title="Asset Information">
               <Grid>
                 <Info
+                  label="Equipment"
+                  value={formData.equipment}
+                  isEdit={isEdit}
+                  onChange={(v) => handleChange("equipment", v)}
+                />
+                <Info
+                  label="Asset Code"
+                  value={formData.assetCode}
+                  isEdit={isEdit}
+                  onChange={(v) => handleChange("assetCode", v)}
+                />
+                <Info
                   label="Brand"
                   value={formData.brand}
                   isEdit={isEdit}
                   onChange={(v) => handleChange("brand", v)}
                 />
                 <Info
-                  label="Category"
-                  value={formData.category}
+                  label="Model"
+                  value={formData.model}
                   isEdit={isEdit}
-                  onChange={(v) => handleChange("category", v)}
+                  onChange={(v) => handleChange("model", v)}
                 />
-
+                <Info
+                  label="Serial Number"
+                  value={formData.serialNumber}
+                  isEdit={isEdit}
+                  onChange={(v) => handleChange("serialNumber", v)}
+                  
+                />
+                <Info
+                  label="Specifications/Configuration"
+                  value={formData.specifications}
+                  isEdit={isEdit}
+                  onChange={(v) => handleChange("specifications", v)}
+                />
+                <Info
+                  label="MAC Address"
+                  value={formData.macAddress}
+                  isEdit={isEdit}
+                  onChange={(v) => handleChange("macAddress", v)}
+                />
                 <InfoSelect
                   label="Status"
                   value={formData.status}
                   isEdit={isEdit}
                   onChange={(val) => handleChange("status", val)}
-                  options={["Active","Maintenance", "Inactive", "Instore"]}
+                  options={["Active", "Maintenance", "Inactive", "Instore"]}
+                />
+                
+               
+              </Grid>
+            </Card>
+
+            {/* Location */}
+             
+            <Card title="Location">
+              <Grid>
+              <Info
+                  label="Location"
+                  value={formData.location}
+                  isEdit={isEdit}
+                  onChange={(v) => handleChange("location", v)}
+                />
+                <Info
+                  label="Department"
+                  value={formData.department}
+                  isEdit={isEdit}
+                  onChange={(v) => handleChange("department", v)}
                 />
                 <Info
                   label="Location"
@@ -157,32 +201,45 @@ const AssetDetail = () => {
                   isEdit={isEdit}
                   onChange={(v) => handleChange("location", v)}
                 />
-                <InfoDate
+                <Info
+                  label="Floor"
+                  value={`${formData.floor} th`}
+                  isEdit={isEdit}
+                  onChange={(v) => handleChange("floor", v)}
+                />
+              </Grid>
+            </Card>
+            
+
+            {/* Purchase & Warranty */}
+            <Card title="Purchase & Warranty">
+              <Grid>
+                <Info
+                  label="Purchase Price"
+                  value={formData.purchasePrice}
+                  isEdit={isEdit}
+                  onChange={(v) => handleChange("purchasePrice", v)}
+                />
+                 <InfoDate
                   label="Purchase Date"
                   value={formData.purchaseDate}
                   isEdit={isEdit}
                   onChange={(v) => handleChange("purchaseDate", v)}
                 />
-                <Info
-                  label="Value"
-                  value={formData.value}
+                 <InfoDate
+                  label="Vendor"
+                  value={formData.vendorName}
                   isEdit={isEdit}
-                  onChange={(v) => handleChange("value", v)}
+                  onChange={(v) => handleChange("vendorName", v)}
                 />
-              </Grid>
-            </Card>
-
-            {/* Warranty */}
-            <Card title="Warranty">
-              <Grid>
                 <InfoDate
-                  label="Start"
+                  label="Warranty Start"
                   value={formData.warranty?.start}
                   isEdit={isEdit}
                   onChange={(v) => handleNestedChange("warranty", "start", v)}
                 />
                 <InfoDate
-                  label="End"
+                  label="Warranty End"
                   value={formData.warranty?.end}
                   isEdit={isEdit}
                   onChange={(v) => handleNestedChange("warranty", "end", v)}
@@ -190,34 +247,35 @@ const AssetDetail = () => {
               </Grid>
             </Card>
 
-            {/* Description */}
-            <Card title="Description">
-              {isEdit ? (
-                <textarea
-                  className="w-full border p-2 rounded"
-                  value={formData.description || ""}
-                  onChange={(e) => handleChange("description", e.target.value)}
+            {/* Additional Details */}
+            <Card title="Additional Details">
+              <Grid>
+                <Info
+                  label="Remaks"
+                  value={formData.remarks}
+                  isEdit={isEdit}
+                  onChange={(v) => handleChange("remarks", v)}
                 />
-              ) : (
-                <p>{formData.description}</p>
-              )}
+                <Info
+                  label="Survey Report"
+                  value="---"
+                />
+                </Grid>
             </Card>
           </div>
 
           {/* RIGHT */}
           <div className="space-y-6">
-            <Card title="Assignment">
+            <Card title="Asset User">
               <Info
                 label="Assigned To"
-                value={asset?.assignDetails?.assignedTo || "Unassigned"}
+                value={asset?.userDetails?.userName || "---"}
               />
               <InfoDate
                 label="Assigned Date"
-                value={asset.assignDetails?.assignedDate}
+                value={asset.userDetails?.receivedDate}
               />
-            </Card>
-
-            {employee && (
+              {employee && (
               <Card title="Employee Info">
                 <Info label="Name" value={employee.name} />
                 <Info label="Email" value={employee.email} />
@@ -225,6 +283,7 @@ const AssetDetail = () => {
                 <Info label="Contact" value={employee.contact} />
               </Card>
             )}
+            </Card>
           </div>
 
           {/*under*/}
@@ -237,7 +296,7 @@ const AssetDetail = () => {
                     (e) => e.id === issue.employeeId,
                   );
                   const asset = formData;
-                   // Since we're already in the context of this asset
+                  // Since we're already in the context of this asset
                   return (
                     <IssueCard
                       key={issue.id}
@@ -248,22 +307,6 @@ const AssetDetail = () => {
                   );
                 })}
               </div>
-            </Card>
-
-            {/* Comments */}
-            <Card title={`Comments`}>
-             
-                <div className=" p-3 mb-2 bg-green-50">
-                  <Info
-                    label=""
-                    value={formData.assetsComments}
-                    isEdit={isEdit}
-                    onChange={(v) =>
-                      setFormData((prev) => ({ ...prev, assetsComments: v }))
-                    }
-                  />
-                </div>
-             
             </Card>
           </div>
         </div>
@@ -277,14 +320,14 @@ export default AssetDetail;
 /////////////////////////////////////////////////////
 
 const Card = ({ title, children }) => (
-  <div className="bg-white p-5 rounded-xl shadow">
+  <div className="border border-gray-400 text-black bg-gradient-to-br from-emerald-100 via-white to-teal-100 p-5 rounded-xl shadow-lg">
     <h2 className="text-lg font-semibold mb-4 text-indigo-600">{title}</h2>
     {children}
   </div>
 );
 
-const Grid = ({ children }) => (
-  <div className="grid grid-cols-2 gap-4 text-sm">{children}</div>
+const Grid = ({ children, col=3 }) => (
+  <div className="grid grid-cols-3 gap-4 text-sm">{children}</div>
 );
 
 const Info = ({ label, value, isEdit, onChange }) => (
@@ -297,7 +340,7 @@ const Info = ({ label, value, isEdit, onChange }) => (
         onChange={(e) => onChange(e.target.value)}
       />
     ) : (
-      <p className="font-medium">{value || "N/A"}</p>
+      <p className="font-medium">{value || "---"}</p>
     )}
   </div>
 );
@@ -332,7 +375,7 @@ const InfoSelect = ({ label, value, isEdit, options = [], onChange }) => {
           ))}
         </select>
       ) : (
-        <p className="font-medium">{value || "N/A"}</p>
+        <p className="font-medium">{value || "---"}</p>
       )}
     </div>
   );
@@ -352,7 +395,7 @@ const InfoDate = ({ label, value, isEdit, onChange }) => {
         />
       ) : (
         <p className="font-medium">
-          {value ? new Date(value).toLocaleDateString() : "N/A"}
+          {value ? new Date(value).toLocaleDateString() : "---"}
         </p>
       )}
     </div>

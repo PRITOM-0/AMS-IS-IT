@@ -18,6 +18,7 @@ import AddEmployee from "./pages/AddEmployee";
 import AssetAssign from "./pages/AssetAssign";
 import Issues from "./pages/Issues"; 
 import IssueDetails from "./pages/IssueDetails";
+import ImportAssets from "./pages/ImportAssets"
 
 function App() {
   const [loading, setLoading] = useState(false);
@@ -51,6 +52,7 @@ function App() {
     <Routes>
       <Route path="/" element={<Layout setIsLoggedIn={setIsLoggedIn} />}>
         <Route index element={<Dashboard />} />
+        <Route path="importassets" element={<ImportAssets />} />
         <Route path="assets" element={<Assets />} />
         <Route path="assets/addAsset" element={<AddAsset />} />
         <Route path="assets/:id" element={<AssetDetails />} />
