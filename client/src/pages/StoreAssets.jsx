@@ -21,64 +21,79 @@ const StoreAssets = () => {
   const [message, setMessage] = useState("");
   const [success, setSuccess] = useState(true);
 
-  const handleCreateAssets = async () => {
+ const handleCreateAssets = async () => {
   if (!assetsToStore.length) return;
 
   setLoading(true);
-  setMessage("Starting upload...");
+  setMessage("Starting import...");
   setSuccess(true);
-
-  // 1. Verify exact array count in memory before starting
-  console.log(`[CHECK 1] Total assets in memory to send: ${assetsToStore.length}`);
+  setImportProgress(0);
 
   const successfulResults = [];
   const failedAssets = [];
 
+  // Generate safe unique numeric ID compatible with all environments
+  const generateUniqueId = (index) => {
+    return Date.now() + index + Math.floor(Math.random() * 1000);
+  };
+
+  const saveAssetWithRetry = async (assetData, index, maxRetries = 3) => {
+    // Strip existing ID and set a fresh, universally compatible ID
+    const { id, ...cleanData } = assetData;
+    const payload = {
+      ...cleanData,
+      id: generateUniqueId(index),
+    };
+
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+      try {
+        const response = await fetch("http://localhost:3000/assets", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+
+        if (response.ok) {
+          return await response.json();
+        }
+
+        const errorText = await response.text();
+        throw new Error(`HTTP ${response.status}: ${errorText || response.statusText}`);
+      } catch (err) {
+        if (attempt === maxRetries) throw err;
+        await new Promise((res) => setTimeout(res, 200));
+      }
+    }
+  };
+
   for (let index = 0; index < assetsToStore.length; index++) {
-    // Strip pre-existing id to prevent json-server key conflicts
-    const { id, ...assetData } = assetsToStore[index];
-    const assetIdentifier = assetData.assetCode || `Row #${index + 2}`;
-    
-    setImportingAssetCode(assetIdentifier);
+    const asset = assetsToStore[index];
+    const codeLabel = asset.assetCode || `Item #${index + 1}`;
+    setImportingAssetCode(codeLabel);
 
     try {
-      const response = await fetch("http://localhost:3000/assets", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(assetData),
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status} - ${response.statusText}`);
-      }
-
-      const result = await response.json();
+      const result = await saveAssetWithRetry(asset, index);
       successfulResults.push(result);
     } catch (err) {
-      console.error(`❌ Failed item ${index + 1} (${assetIdentifier}):`, err);
-      failedAssets.push({ index: index + 1, identifier: assetIdentifier, error: err.message });
+      console.error(`❌ Detailed Error on ${codeLabel}:`, err.message);
+      failedAssets.push({ item: asset, error: err.message });
     }
 
-    // Update progress bar
     setImportProgress(Math.round(((index + 1) / assetsToStore.length) * 100));
-
-    // CRITICAL: 120ms delay gives json-server enough time to release file lock on db.json
-    await new Promise((resolve) => setTimeout(resolve, 120));
+    await new Promise((resolve) => setTimeout(resolve, 100));
   }
 
   setLoading(false);
 
-  // 2. Log final results summary
-  console.log(`[CHECK 2] Successfully saved to server: ${successfulResults.length}`);
-  console.log(`[CHECK 3] Total failed: ${failedAssets.length}`);
-
   if (failedAssets.length === 0) {
     setSuccess(true);
-    setMessage(`✓ Successfully saved all ${successfulResults.length} assets to DB!`);
+    setMessage(`✓ All ${successfulResults.length} assets successfully saved!`);
     setTimeout(() => navigate("/assets", { replace: true }), 1500);
   } else {
     setSuccess(false);
-    setMessage(`Saved ${successfulResults.length} of ${assetsToStore.length} assets. ${failedAssets.length} failed.`);
+    setMessage(
+      `Saved ${successfulResults.length} of ${assetsToStore.length}. First error: ${failedAssets[0]?.error}`
+    );
   }
 };
 
