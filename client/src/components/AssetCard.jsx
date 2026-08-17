@@ -21,94 +21,102 @@ const AssetCard = ({ asset }) => {
     userCode,
   } = asset;
 
+  let badgeStyle = "bg-slate-100 text-slate-700 border-slate-200";
+  if (status === "Active")
+    badgeStyle = "bg-emerald-100 text-emerald-800 border-emerald-300 shadow-sm";
+  else if (status === "Instore")
+    badgeStyle = "bg-indigo-100 text-indigo-800 border-indigo-300 shadow-sm";
+  else if (status === "Inactive" || status === "Death")
+    badgeStyle = "bg-rose-100 text-rose-800 border-rose-300 shadow-sm";
+  else if (status === "Under Repair")
+    badgeStyle = "bg-amber-100 text-amber-800 border-amber-300 shadow-sm";
+
   return (
     <Link
       to={`/assets/${id}`}
-      className="block border  shadow-sm p-4 hover:shadow-md transition duration-200 border-indigo-200 text-indigo-700 bg-gradient-to-br from-indigo-100 via-white to-violet-100"
+      className="block rounded-[24px] border border-indigo-200/80 bg-gradient-to-br from-white via-indigo-50/40 to-slate-50/80 p-5 text-slate-800 shadow-[0_20px_45px_-25px_rgba(15,23,42,0.25)] backdrop-blur-sm transition-all duration-200 hover:-translate-y-1 hover:border-indigo-300 hover:shadow-[0_25px_50px_-20px_rgba(79,70,229,0.35)]"
     >
-      <div className="flex justify-between items-center mb-2">
-        <h2 className="text-lg font-semibold">{equipment}</h2>
-      </div>
-      <div className="flex justify-between items-center mb-2">
-        <p className="text-sm text-black-900 font-bold mb-1">
-          <strong className="text-gray-700 font-semibold">Code:</strong>{" "}
-          {assetCode}
-        </p>
+      <div className="flex items-start justify-between gap-2 mb-3">
+        <h2 className="text-lg font-extrabold text-slate-900 tracking-tight leading-snug">
+          {equipment}
+        </h2>
         <span
-          className={`text-sm px-2 py-2 rounded-full ${
-            status === "Active"
-              ? "bg-green-100 text-green-700"
-              : status === "Inactive"
-                ? "bg-red-100 text-red-600"
-                : status === "Instore"
-                  ? "bg-yellow-100 text-blue-700"
-                  : status === "Under Repair"
-                    ? "bg-yellow-100 text-yellow-700"
-                    : status === "Death"
-                      ? "bg-gray-100 text-gray-700"
-                      : "bg-gray-100 text-gray-700"
-          }`}
+          className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold ${badgeStyle}`}
         >
-          {status}
+          {status || "Unknown"}
         </span>
       </div>
-      {(brand || model ||serialNumber||macAddress) && <hr/>}
-      <div className="grid grid-cols-2">
-        
+
+      <div className="flex items-center gap-2 mb-3">
+        <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-slate-400">
+          Code:
+        </span>
+        <span className="font-mono text-xs font-bold text-indigo-600 bg-indigo-50/80 border border-indigo-200 px-2 py-0.5 rounded-lg">
+          {assetCode}
+        </span>
+      </div>
+
+      {(brand || model || serialNumber || macAddress) && (
+        <hr className="border-slate-200/80 my-3" />
+      )}
+
+      <div className="grid grid-cols-2 gap-2 text-xs text-slate-600">
         {brand && (
-          <p className="text-sm text-gray-600 mb-1">
-            <strong>Brand:</strong> {brand}
+          <p>
+            <strong className="text-slate-700 font-semibold">Brand:</strong>{" "}
+            {brand}
           </p>
         )}
         {model && (
-          <p className="text-sm text-gray-600 mb-1">
-            <strong>Model:</strong> {model}
+          <p>
+            <strong className="text-slate-700 font-semibold">Model:</strong>{" "}
+            {model}
           </p>
         )}
         {serialNumber && (
-          <p className="text-sm text-gray-600 mb-1">
-            <strong>SerialNumber:</strong> {serialNumber}
+          <p>
+            <strong className="text-slate-700 font-semibold">SerialNumber:</strong>{" "}
+            {serialNumber}
           </p>
         )}
         {macAddress && (
-          <p className="text-sm text-gray-600 mb-1">
-            <strong>MacAddress:</strong> {macAddress}
+          <p>
+            <strong className="text-slate-700 font-semibold">MacAddress:</strong>{" "}
+            {macAddress}
           </p>
         )}
       </div>
-      <strong className="text-gray-600 my-2">
-        Location: <hr />
-      </strong>
-      <div className="grid grid-cols-2">
-        {location && (
-          <p className="text-sm text-gray-600 mb-1">
-            <p >{location}</p> 
-          </p>
-        )}
-        {department && (
-          <p className="text-sm text-gray-600 mb-1">
-            <p > {department}</p>
-          </p>
-        )}
-        {floor && (
-          <p className="text-sm text-gray-600 mb-1">
-            <p>{floor}</p> 
-          </p>
-        )}
-        {room && (
-          <p className="text-sm text-gray-600 mb-1">
-            <p > {room}</p> 
-          </p>
-        )}
-      </div>
+
+      {(location || department || floor || room) && (
+        <div className="mt-3">
+          <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-slate-400 block mb-1">
+            Location
+          </span>
+          <hr className="border-slate-200/80 mb-2" />
+          <div className="grid grid-cols-2 gap-1 text-xs text-slate-600">
+            {location && <p className="font-medium text-slate-700">{location}</p>}
+            {department && <p className="font-medium text-slate-700">{department}</p>}
+            {floor && <p className="text-slate-500">{floor}</p>}
+            {room && <p className="text-slate-500">{room}</p>}
+          </div>
+        </div>
+      )}
+
       {userName && (
-        <p className="text-sm text-gray-600 mb-1">
-          <strong>
-            Assigned To: <hr />
-          </strong>
-          <span>{userName} - </span>
-          <span>{userCode}</span>
-        </p>
+        <div className="mt-3">
+          <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-slate-400 block mb-1">
+            Assigned To
+          </span>
+          <hr className="border-slate-200/80 mb-2" />
+          <div className="flex items-center space-x-2 text-xs font-medium text-slate-700">
+            <span className="flex h-6 w-6 items-center justify-center rounded-full border border-indigo-200 bg-indigo-50 text-[10px] font-bold text-indigo-600">
+              {userName.charAt(0)}
+            </span>
+            <span>
+              {userName} {userCode ? `- ${userCode}` : ""}
+            </span>
+          </div>
+        </div>
       )}
     </Link>
   );

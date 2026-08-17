@@ -5,33 +5,32 @@ import * as XLSX from "xlsx";
 import { API_BASE_URL } from "../env";
 
 const DEFAULT_EXPORT_FIELDS = [
-  "id",
-  "assetCode",
-  "equipment",
-  "brand",
-  "model",
-  "serialNumber",
-  "specifications",
-  "macAddress",
-  "department",
-  "location",
-  "floor",
-  "room",
-  "status",
-  "userId",
-  "userCode",
-  "userName",
-  "oldUsers",
-  "receivedDate",
-  "purchaseDate",
-  "purchasePrice",
-  "warrantyStart",
-  "warrantyEnd",
-  "vendorName",
-  "remarks",
-  "surveyReport",
-  "createdAt",
-  "updatedAt",
+  // "assetCode",
+  // "equipment",
+  // "brand",
+  // "model",
+  // "serialNumber",
+  // "specifications",
+  // "macAddress",
+  // "department",
+  // "location",
+  // "floor",
+  // "room",
+  // "status",
+  // "userId",
+  // "userCode",
+  // "userName",
+  // "oldUsers",
+  // "receivedDate",
+  // "purchaseDate",
+  // "purchasePrice",
+  // "warrantyStart",
+  // "warrantyEnd",
+  // "vendorName",
+  // "remarks",
+  // "surveyReport",
+  // "createdAt",
+  // "updatedAt",
 ];
 
 const ExportAssets = () => {
@@ -47,9 +46,7 @@ const ExportAssets = () => {
   const [availableExportFields, setAvailableExportFields] = useState(
     DEFAULT_EXPORT_FIELDS,
   );
-  const [selectedExportFields, setSelectedExportFields] = useState(
-    DEFAULT_EXPORT_FIELDS,
-  );
+  const [selectedExportFields, setSelectedExportFields] = useState([]);
 
   useEffect(() => {
     const fetchAssets = async () => {
@@ -137,26 +134,24 @@ const ExportAssets = () => {
     });
 
     const sortedKeys = [...keys].sort();
+
     setAvailableExportFields(
       sortedKeys.length ? sortedKeys : DEFAULT_EXPORT_FIELDS,
     );
 
+    // Keep only previously selected fields that still exist
     setSelectedExportFields((prevSelected) => {
       const prevSet = new Set(prevSelected);
-      const nextSelection = sortedKeys.filter((key) => prevSet.has(key));
-
-      if (nextSelection.length) return nextSelection;
-      return sortedKeys.length ? sortedKeys : DEFAULT_EXPORT_FIELDS;
+      return sortedKeys.filter((key) => prevSet.has(key));
     });
   }, [filteredAssets]);
 
   const toggleExportField = (field) => {
-    setSelectedExportFields((prevSelected) => {
-      if (prevSelected.includes(field)) {
-        return prevSelected.filter((item) => item !== field);
-      }
-      return [...prevSelected, field];
-    });
+    setSelectedExportFields((prev) =>
+      prev.includes(field)
+        ? prev.filter((item) => item !== field)
+        : [...prev, field],
+    );
   };
 
   const handleExportFilteredAssets = (fields = selectedExportFields) => {
@@ -294,21 +289,21 @@ const ExportAssets = () => {
               <option value="Death">Death</option>
             </select>
           </div>
-          <div className="flex justify-end items-end"><button
-            onClick={() =>
-              setFilters({
-                assetInfo: "",
-                locationInfo: "",
-                userInfo: "",
-                status: "",
-              })
-            }
-            className=" w-full h-[60%] rounded px-4 text-black border border-gray-500 bg-gray-300 hover:bg-gray-400 transition"
-          >
-            Reset
-          </button></div>
-
-          
+          <div className="flex justify-end items-end">
+            <button
+              onClick={() =>
+                setFilters({
+                  assetInfo: "",
+                  locationInfo: "",
+                  userInfo: "",
+                  status: "",
+                })
+              }
+              className=" w-full h-[60%] rounded px-4 text-black border border-gray-500 bg-gray-300 hover:bg-gray-400 transition"
+            >
+              Reset
+            </button>
+          </div>
         </div>
       </div>
 

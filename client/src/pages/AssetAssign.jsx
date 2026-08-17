@@ -361,7 +361,7 @@ function AssetAssign() {
                     </p>
                     <hr />
                     <p className="mt-1 font-semibold text-slate-800">
-                      {selectedAsset?.name || "N/A"}
+                      {selectedAsset?.equipment || "N/A"}
                     </p>
                     <p>{selectedAsset?.assetCode || "N/A"}</p>
                     <p className="text-slate-500">
