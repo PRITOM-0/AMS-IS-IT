@@ -19,6 +19,7 @@ import AssetAssign from "./pages/AssetAssign";
 import Issues from "./pages/Issues";
 import IssueDetails from "./pages/IssueDetails";
 import ImportAssets from "./pages/ImportAssets";
+import StoreAssets from "./pages/StoreAssets";
 import ExportAssets from "./pages/ExportAssets";
 
 function App() {
@@ -52,6 +53,7 @@ function App() {
   return (
     <Routes>
       <Route path="importassets" element={<ImportAssets />} />
+      <Route path="/assets/store" element={<StoreAssets />} />
       <Route path="exportassets" element={<ExportAssets />} />
 
       <Route path="/" element={<Layout setIsLoggedIn={setIsLoggedIn} />}>

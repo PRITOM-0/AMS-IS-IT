@@ -198,48 +198,49 @@ const ExportAssets = () => {
   };
 
   return (
-    <div className="p-6">
-      <div className="mb-6 rounded-2xl border border-indigo-200 bg-gradient-to-br from-indigo-100 via-white to-violet-100 p-6 shadow-[0_20px_45px_-20px_rgba(79,70,229,0.45)]">
-        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+  <div className="min-h-screen bg-slate-50/60 p-4 sm:p-6 lg:p-8 font-sans text-slate-800">
+    <div className="max-w-7xl mx-auto space-y-6">
+      
+      {/* Control Banner & Filters */}
+      <div className="rounded-2xl border border-indigo-100 bg-gradient-to-br from-indigo-50/80 via-white to-slate-50 p-5 sm:p-6 shadow-sm">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
-            <div className="mb-3 flex items-center gap-2">
-              <button
-                type="button"
-                onClick={() => {
-                  navigate("/assets", { replace: true });
-                  window.location.reload();
-                }}
-                className="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100"
-              >
-                <ArrowLeft size={16} /> Back to Assets
-              </button>
-            </div>
-            <h1 className="text-3xl font-extrabold tracking-tight text-slate-900">
+            <button
+              type="button"
+              onClick={() => {
+                navigate("/assets", { replace: true });
+                window.location.reload();
+              }}
+              className="mb-3 inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-xs font-semibold text-slate-700 shadow-sm hover:bg-slate-100 hover:text-indigo-600 transition-all active:scale-[0.98]"
+            >
+              <ArrowLeft size={15} className="text-indigo-600" /> Back to Assets
+            </button>
+            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900">
               Export Assets
             </h1>
-            <p className="mt-2 text-sm text-slate-500">
-              Filter the asset list and choose the columns you want in the Excel
-              file.
+            <p className="mt-1 text-xs sm:text-sm text-slate-500">
+              Filter the asset list and choose the columns you want in the Excel file.
             </p>
           </div>
 
           <button
             onClick={() => setShowExportModal(true)}
             disabled={!filteredAssets.length}
-            className="flex items-center gap-2 rounded-2xl border border-blue-500 bg-gradient-to-r from-blue-600 to-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+            className="inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 px-5 py-2.5 text-xs sm:text-sm font-bold text-white shadow-md shadow-indigo-500/20 hover:from-indigo-700 hover:to-violet-700 transition-all active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none self-start md:self-auto"
           >
-            <Download size={18} /> Export Excel
+            <Download size={17} /> Export Excel
           </button>
         </div>
 
-        <div className="mt-6 grid gap-4 md:grid-cols-5 justify-center">
+        {/* Filter Bar */}
+        <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3.5 pt-5 border-t border-indigo-100/60">
           <div>
-            <label className="text-xs text-gray-500">Asset Info</label>
+            <label className="block text-xs font-semibold text-slate-600 mb-1">Asset Info</label>
             <input
               type="text"
               value={filters.assetInfo}
               placeholder="Code, equipment, brand, model"
-              className="w-full border rounded px-3 py-2 outline-none focus:ring-2 focus:ring-green-400"
+              className="w-full text-xs sm:text-sm bg-white border border-slate-200 rounded-xl px-3 py-2 text-slate-800 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all placeholder:text-slate-400"
               onChange={(e) =>
                 setFilters({ ...filters, assetInfo: e.target.value })
               }
@@ -247,12 +248,12 @@ const ExportAssets = () => {
           </div>
 
           <div>
-            <label className="text-xs text-gray-500">Location Info</label>
+            <label className="block text-xs font-semibold text-slate-600 mb-1">Location Info</label>
             <input
               type="text"
               value={filters.locationInfo}
-              placeholder="Location, department, floor, room"
-              className="w-full border rounded px-3 py-2 outline-none focus:ring-2 focus:ring-green-400"
+              placeholder="Location, department, floor..."
+              className="w-full text-xs sm:text-sm bg-white border border-slate-200 rounded-xl px-3 py-2 text-slate-800 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all placeholder:text-slate-400"
               onChange={(e) =>
                 setFilters({ ...filters, locationInfo: e.target.value })
               }
@@ -260,12 +261,12 @@ const ExportAssets = () => {
           </div>
 
           <div>
-            <label className="text-xs text-gray-500">User Info</label>
+            <label className="block text-xs font-semibold text-slate-600 mb-1">User Info</label>
             <input
               type="text"
               value={filters.userInfo}
               placeholder="User name, user code"
-              className="w-full border rounded px-3 py-2 outline-none focus:ring-2 focus:ring-green-400"
+              className="w-full text-xs sm:text-sm bg-white border border-slate-200 rounded-xl px-3 py-2 text-slate-800 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all placeholder:text-slate-400"
               onChange={(e) =>
                 setFilters({ ...filters, userInfo: e.target.value })
               }
@@ -273,15 +274,15 @@ const ExportAssets = () => {
           </div>
 
           <div>
-            <label className="text-xs text-gray-500">Status</label>
+            <label className="block text-xs font-semibold text-slate-600 mb-1">Status</label>
             <select
               value={filters.status}
               onChange={(e) =>
                 setFilters({ ...filters, status: e.target.value })
               }
-              className="w-full border rounded px-3 py-2 outline-none focus:ring-2 focus:ring-green-400"
+              className="w-full text-xs sm:text-sm bg-white border border-slate-200 rounded-xl px-3 py-2 text-slate-800 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all"
             >
-              <option value="">All Status</option>
+              <option value="">All Statuses</option>
               <option value="Instore">Instore</option>
               <option value="Active">Active</option>
               <option value="Inactive">Inactive</option>
@@ -289,7 +290,8 @@ const ExportAssets = () => {
               <option value="Death">Death</option>
             </select>
           </div>
-          <div className="flex justify-end items-end">
+
+          <div className="flex items-end">
             <button
               onClick={() =>
                 setFilters({
@@ -299,63 +301,67 @@ const ExportAssets = () => {
                   status: "",
                 })
               }
-              className=" w-full h-[60%] rounded px-4 text-black border border-gray-500 bg-gray-300 hover:bg-gray-400 transition"
+              className="w-full text-xs sm:text-sm font-semibold rounded-xl px-4 py-2 border border-slate-200 bg-white text-slate-700 hover:bg-slate-100 transition-all active:scale-[0.98] shadow-sm"
             >
-              Reset
+              Reset Filters
             </button>
           </div>
         </div>
       </div>
 
-      <div className="mt-6 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
-        <div className="mb-3 flex items-center justify-between">
-          <div className="flex items-center gap-2 text-slate-700">
-            <FileSpreadsheet size={18} className="text-blue-600" />
-            <span className="font-semibold">Filtered Assets</span>
+      {/* Table Section */}
+      <div className="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
+        
+        {/* Table Top Header */}
+        <div className="p-4 sm:px-6 border-b border-slate-100 flex items-center justify-between gap-3 bg-gradient-to-r from-slate-50 to-indigo-50/30">
+          <div className="flex items-center gap-2 text-slate-800 font-bold text-sm sm:text-base">
+            <FileSpreadsheet size={18} className="text-indigo-600" />
+            <span>Filtered Assets</span>
           </div>
-          <span className="rounded-full bg-slate-100 px-3 py-1 text-sm text-slate-600">
-            {filteredAssets.length} item(s)
+          <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-200">
+            {filteredAssets.length} Item(s)
           </span>
         </div>
 
+        {/* Data Table */}
         <div className="overflow-x-auto">
-          <table className="min-w-full border-collapse text-left text-sm">
+          <table className="w-full text-xs sm:text-sm text-left border-collapse">
             <thead>
-              <tr className="bg-slate-100 text-slate-700">
-                <th className="border border-slate-200 px-3 py-2">
-                  Asset Code
-                </th>
-                <th className="border border-slate-200 px-3 py-2">Equipment</th>
-                <th className="border border-slate-200 px-3 py-2">Brand</th>
-                <th className="border border-slate-200 px-3 py-2">Model</th>
-                <th className="border border-slate-200 px-3 py-2">Status</th>
-                <th className="border border-slate-200 px-3 py-2">Location</th>
-                <th className="border border-slate-200 px-3 py-2">User</th>
+              <tr className="bg-slate-50 border-b border-slate-200/80 text-slate-600 font-semibold">
+                <th className="px-4 py-3 border-r border-slate-200/50">Asset Code</th>
+                <th className="px-4 py-3 border-r border-slate-200/50">Equipment</th>
+                <th className="px-4 py-3 border-r border-slate-200/50">Brand</th>
+                <th className="px-4 py-3 border-r border-slate-200/50">Model</th>
+                <th className="px-4 py-3 border-r border-slate-200/50">Status</th>
+                <th className="px-4 py-3 border-r border-slate-200/50">Location</th>
+                <th className="px-4 py-3">User</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="divide-y divide-slate-100 text-slate-700">
               {filteredAssets.length > 0 ? (
                 filteredAssets.map((asset) => (
-                  <tr key={asset.id} className="odd:bg-white even:bg-slate-50">
-                    <td className="border border-slate-200 px-3 py-2">
+                  <tr key={asset.id} className="hover:bg-slate-50/80 transition-colors">
+                    <td className="px-4 py-3 border-r border-slate-100 font-mono text-indigo-600 font-semibold">
                       {asset.assetCode || "-"}
                     </td>
-                    <td className="border border-slate-200 px-3 py-2">
+                    <td className="px-4 py-3 border-r border-slate-100 font-medium text-slate-900">
                       {asset.equipment || "-"}
                     </td>
-                    <td className="border border-slate-200 px-3 py-2">
+                    <td className="px-4 py-3 border-r border-slate-100">
                       {asset.brand || "-"}
                     </td>
-                    <td className="border border-slate-200 px-3 py-2">
+                    <td className="px-4 py-3 border-r border-slate-100">
                       {asset.model || "-"}
                     </td>
-                    <td className="border border-slate-200 px-3 py-2">
-                      {asset.status || "-"}
+                    <td className="px-4 py-3 border-r border-slate-100">
+                      <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-700 border border-slate-200">
+                        {asset.status || "-"}
+                      </span>
                     </td>
-                    <td className="border border-slate-200 px-3 py-2">
+                    <td className="px-4 py-3 border-r border-slate-100">
                       {asset.location || "-"}
                     </td>
-                    <td className="border border-slate-200 px-3 py-2">
+                    <td className="px-4 py-3">
                       {asset.userName || asset.userCode || "-"}
                     </td>
                   </tr>
@@ -364,7 +370,7 @@ const ExportAssets = () => {
                 <tr>
                   <td
                     colSpan={7}
-                    className="px-3 py-8 text-center text-slate-500"
+                    className="px-4 py-12 text-center text-slate-400 font-medium"
                   >
                     No assets match the current filters.
                   </td>
@@ -375,76 +381,91 @@ const ExportAssets = () => {
         </div>
       </div>
 
+      {/* Export Field Selection Modal */}
       {showExportModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 p-4">
-          <div className="w-full max-w-4xl rounded-2xl bg-white p-6 shadow-2xl">
-            <div className="mb-5 flex items-center justify-between gap-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
+          <div className="w-full max-w-3xl rounded-2xl bg-white border border-slate-200 shadow-2xl p-6 relative overflow-hidden">
+            
+            {/* Modal Header */}
+            <div className="mb-5 flex items-start justify-between gap-4">
               <div>
-                <h2 className="text-2xl font-bold text-slate-800">
+                <h2 className="text-xl font-bold text-slate-900">
                   Select Excel Fields
                 </h2>
-                <p className="text-sm text-slate-500">
-                  Choose which asset properties should be included in the
-                  exported file.
+                <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
+                  Choose which asset properties should be included in your export.
                 </p>
               </div>
               <button
                 onClick={() => setShowExportModal(false)}
-                className="rounded-full border border-slate-300 px-3 py-1 text-sm text-slate-600 hover:bg-slate-100"
+                className="rounded-xl border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-semibold text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-all"
               >
                 Close
               </button>
             </div>
 
-            <div className="mb-4 flex items-center justify-between gap-3 rounded-xl bg-slate-50 p-3">
-              <span className="text-sm font-medium text-slate-700">
-                {selectedExportFields.length} fields selected
+            {/* Selection Counter & Quick Select */}
+            <div className="mb-4 flex items-center justify-between gap-3 rounded-xl bg-indigo-50/60 border border-indigo-100 p-3">
+              <span className="text-xs font-semibold text-indigo-900">
+                <strong className="text-indigo-600 font-bold">{selectedExportFields.length}</strong> fields selected
               </span>
               <button
                 onClick={() => setSelectedExportFields(availableExportFields)}
-                className="text-sm font-medium text-blue-600 hover:text-blue-700"
+                className="text-xs font-bold text-indigo-600 hover:text-indigo-800 transition-colors"
               >
                 Select all
               </button>
             </div>
 
-            <div className="grid max-h-[420px] grid-cols-2 gap-3 overflow-y-auto rounded-xl border border-slate-200 bg-slate-50 p-4 md:grid-cols-3">
-              {availableExportFields.map((field) => (
-                <label
-                  key={field}
-                  className="flex cursor-pointer items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 shadow-sm"
-                >
-                  <input
-                    type="checkbox"
-                    checked={selectedExportFields.includes(field)}
-                    onChange={() => toggleExportField(field)}
-                    className="h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
-                  />
-                  <span className="truncate">{field}</span>
-                </label>
-              ))}
+            {/* Field Checkbox Grid */}
+            <div className="grid max-h-[380px] grid-cols-2 sm:grid-cols-3 gap-2.5 overflow-y-auto rounded-xl border border-slate-200 bg-slate-50/50 p-3">
+              {availableExportFields.map((field) => {
+                const isSelected = selectedExportFields.includes(field);
+                return (
+                  <label
+                    key={field}
+                    className={`flex cursor-pointer items-center gap-2.5 rounded-xl border px-3 py-2 text-xs font-medium transition-all ${
+                      isSelected
+                        ? "border-indigo-200 bg-indigo-50/40 text-indigo-900 shadow-sm"
+                        : "border-slate-200 bg-white text-slate-700 hover:bg-slate-50"
+                    }`}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={isSelected}
+                      onChange={() => toggleExportField(field)}
+                      className="h-4 w-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500"
+                    />
+                    <span className="truncate">{field}</span>
+                  </label>
+                );
+              })}
             </div>
 
-            <div className="mt-6 flex items-center justify-end gap-3">
+            {/* Modal Actions */}
+            <div className="mt-6 flex items-center justify-end gap-3 pt-4 border-t border-slate-100">
               <button
                 onClick={() => setShowExportModal(false)}
-                className="rounded-xl border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100"
+                className="rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-xs sm:text-sm font-semibold text-slate-700 hover:bg-slate-100 transition-all active:scale-[0.98]"
               >
                 Cancel
               </button>
               <button
                 onClick={() => handleExportFilteredAssets()}
                 disabled={!selectedExportFields.length}
-                className="rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+                className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 px-5 py-2.5 text-xs sm:text-sm font-bold text-white shadow-md shadow-indigo-500/20 hover:from-indigo-700 hover:to-violet-700 transition-all active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none"
               >
-                Download Excel
+                <Download size={16} /> Download Excel
               </button>
             </div>
+
           </div>
         </div>
       )}
+
     </div>
-  );
+  </div>
+);
 };
 
 export default ExportAssets;
