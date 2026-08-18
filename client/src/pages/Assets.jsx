@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo, useCallback } from "react";
 import { Link } from "react-router-dom";
-import { Plus } from "lucide-react";
+import { Plus, X } from "lucide-react";
 import AssetCard from "../components/AssetCard";
 import { API_BASE_URL } from "../env";
 
@@ -8,8 +8,10 @@ const ITEMS_PER_PAGE = 24;
 
 const INITIAL_FILTERS = {
   assetInfo: "",
-  locationInfo: "",
-  userInfo: "",
+  location: "",
+  department: "",
+  equipment: "",
+  surveyReport: "",
   status: "",
 };
 
@@ -27,24 +29,21 @@ const filterStrategies = {
       asset.model,
       asset.serialNumber,
       asset.macAddress,
+      asset.userName,
+      asset.userCode,
     ].some((field) => field?.toLowerCase().includes(q));
   },
 
-  matchesLocationInfo: (asset, query) => {
-    if (!query) return true;
-    const q = query.toLowerCase();
-    return [asset.location, asset.department, asset.floor, asset.room].some(
-      (field) => field?.toLowerCase().includes(q)
-    );
-  },
+  matchesLocation: (asset, location) => !location || asset.location === location,
 
-  matchesUserInfo: (asset, query) => {
-    if (!query) return true;
-    const q = query.toLowerCase();
-    return [asset.userName, asset.userCode].some(
-      (field) => field?.toLowerCase().includes(q)
-    );
-  },
+  matchesDepartment: (asset, department) =>
+    !department || asset.department === department,
+
+  matchesEquipment: (asset, equipment) =>
+    !equipment || asset.equipment === equipment,
+
+  matchesSurveyReport: (asset, surveyReport) =>
+    !surveyReport || asset.surveyReport === surveyReport,
 
   matchesStatus: (asset, status) => !status || asset.status === status,
 };
@@ -91,6 +90,27 @@ export const useAssets = () => {
     };
   }, []);
 
+  // Extract unique dynamic options for select fields
+  const filterOptions = useMemo(() => {
+    const locations = Array.from(
+      new Set(assets.map((a) => a.location).filter(Boolean))
+    );
+    const departments = Array.from(
+      new Set(assets.map((a) => a.department).filter(Boolean))
+    );
+    const equipments = Array.from(
+      new Set(assets.map((a) => a.equipment).filter(Boolean))
+    );
+    const surveyReports = Array.from(
+      new Set(assets.map((a) => a.surveyReport).filter(Boolean))
+    );
+    const statuses = Array.from(
+      new Set(assets.map((a) => a.status).filter(Boolean))
+    );
+
+    return { locations, departments, equipments, surveyReports, statuses };
+  }, [assets]);
+
   // Filter and Sort Pipeline
   const filteredAssets = useMemo(() => {
     return [...assets]
@@ -98,8 +118,10 @@ export const useAssets = () => {
       .filter(
         (asset) =>
           filterStrategies.matchesAssetInfo(asset, filters.assetInfo) &&
-          filterStrategies.matchesLocationInfo(asset, filters.locationInfo) &&
-          filterStrategies.matchesUserInfo(asset, filters.userInfo) &&
+          filterStrategies.matchesLocation(asset, filters.location) &&
+          filterStrategies.matchesDepartment(asset, filters.department) &&
+          filterStrategies.matchesEquipment(asset, filters.equipment) &&
+          filterStrategies.matchesSurveyReport(asset, filters.surveyReport) &&
           filterStrategies.matchesStatus(asset, filters.status)
       );
   }, [assets, filters]);
@@ -123,10 +145,13 @@ export const useAssets = () => {
 
   return {
     assets: paginatedAssets,
+    totalCount: assets.length,
+    filteredCount: filteredAssets.length,
     totalPages,
     currentPage,
     setCurrentPage,
     filters,
+    filterOptions,
     handleFilterChange,
     resetFilters,
     loading,
@@ -137,63 +162,166 @@ export const useAssets = () => {
 // 3. PRESENTATIONAL SUB-COMPONENTS
 // ==========================================
 
-const AssetFilterBar = ({ filters, onFilterChange, onReset }) => (
-  <div className="grid md:grid-cols-5 gap-4 items-end mb-6">
-    <div>
-      <label className="text-xs text-gray-500">Asset Info</label>
-      <input
-        type="text"
-        placeholder="Search by Code, Equipment, Brand, Serial..."
-        className="w-full border rounded px-3 py-2 outline-none focus:ring-2 focus:ring-green-400"
-        value={filters.assetInfo}
-        onChange={(e) => onFilterChange("assetInfo", e.target.value)}
-      />
+const ActiveFilterBadges = ({ filters, onFilterChange }) => {
+  const activeEntries = Object.entries(filters).filter(([_, value]) => Boolean(value));
+
+  if (activeEntries.length === 0) return null;
+
+  return (
+    <div className="flex flex-wrap items-center gap-2 mt-4 pt-3 border-t border-indigo-200/60">
+      <span className="text-xs font-semibold text-slate-500">Active Filters:</span>
+      {activeEntries.map(([key, value]) => (
+        <span
+          key={key}
+          className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-indigo-50 text-indigo-700 border border-indigo-200"
+        >
+          <strong className="capitalize">{key.replace(/([A-Z])/g, " $1")}:</strong> {value}
+          <button
+            onClick={() => onFilterChange(key, "")}
+            className="hover:text-indigo-900 transition-colors"
+          >
+            <X size={12} />
+          </button>
+        </span>
+      ))}
+    </div>
+  );
+};
+
+const AssetFilterBar = ({ filters, filterOptions, onFilterChange, onReset }) => (
+  <div className="mb-2">
+    <div className="grid grid-cols-1 md:grid-cols-4 gap-3 items-end">
+      {/* Asset Info Input */}
+      <div className="md:col-span-1">
+        <label className="text-xs font-semibold text-gray-600 block mb-1">
+          Asset / User Info
+        </label>
+        <input
+          type="text"
+          placeholder="Search Code, Name, User Code, Serial..."
+          className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-indigo-400 bg-white"
+          value={filters.assetInfo}
+          onChange={(e) => onFilterChange("assetInfo", e.target.value)}
+        />
+      </div>
+
+      {/* Location Dropdown */}
+      <div>
+        <label className="text-xs font-semibold text-gray-600 block mb-1">
+          Location
+        </label>
+        <select
+          className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-indigo-400 bg-white"
+          value={filters.location}
+          onChange={(e) => onFilterChange("location", e.target.value)}
+        >
+          <option value="">All Location</option>
+          {filterOptions.locations.map((loc) => (
+            <option key={loc} value={loc}>
+              {loc}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      {/* Department Dropdown */}
+      <div>
+        <label className="text-xs font-semibold text-gray-600 block mb-1">
+          Department
+        </label>
+        <select
+          className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-indigo-400 bg-white"
+          value={filters.department}
+          onChange={(e) => onFilterChange("department", e.target.value)}
+        >
+          <option value="">All Department</option>
+          {filterOptions.departments.map((dept) => (
+            <option key={dept} value={dept}>
+              {dept}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      {/* Equipment Dropdown */}
+      <div>
+        <label className="text-xs font-semibold text-gray-600 block mb-1">
+          Equipment
+        </label>
+        <select
+          className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-indigo-400 bg-white"
+          value={filters.equipment}
+          onChange={(e) => onFilterChange("equipment", e.target.value)}
+        >
+          <option value="">All Equipment</option>
+          {filterOptions.equipments.map((eq) => (
+            <option key={eq} value={eq}>
+              {eq}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      {/* Survey Report Dropdown */}
+      <div>
+        <label className="text-xs font-semibold text-gray-600 block mb-1">
+          Survey Report
+        </label>
+        <select
+          className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-indigo-400 bg-white"
+          value={filters.surveyReport}
+          onChange={(e) => onFilterChange("surveyReport", e.target.value)}
+        >
+          <option value="">All Surveys</option>
+          {filterOptions.surveyReports.map((sr) => (
+            <option key={sr} value={sr}>
+              {sr}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      {/* Status Dropdown */}
+      <div>
+        <label className="text-xs font-semibold text-gray-600 block mb-1">
+          Status
+        </label>
+        <select
+          className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-indigo-400 bg-white"
+          value={filters.status}
+          onChange={(e) => onFilterChange("status", e.target.value)}
+        >
+          <option value="">All Status</option>
+          {filterOptions.statuses.length > 0 ? (
+            filterOptions.statuses.map((st) => (
+              <option key={st} value={st}>
+                {st}
+              </option>
+            ))
+          ) : (
+            <>
+              <option value="Instore">Instore</option>
+              <option value="Active">Active</option>
+              <option value="Inactive">Inactive</option>
+              <option value="Maintenance">Maintenance</option>
+              <option value="Death">Death</option>
+            </>
+          )}
+        </select>
+      </div>
+
+      {/* Reset Button */}
+      <div>
+        <button
+          onClick={onReset}
+          className="w-full h-[38px] text-xs font-bold text-gray-700 border border-gray-700 bg-gray-300 rounded-lg hover:bg-gray-200 transition"
+        >
+          Reset
+        </button>
+      </div>
     </div>
 
-    <div>
-      <label className="text-xs text-gray-500">Location Info</label>
-      <input
-        type="text"
-        placeholder="Search by Location, Dept, Room..."
-        className="w-full border rounded px-3 py-2 outline-none focus:ring-2 focus:ring-green-400"
-        value={filters.locationInfo}
-        onChange={(e) => onFilterChange("locationInfo", e.target.value)}
-      />
-    </div>
-
-    <div>
-      <label className="text-xs text-gray-500">User Info</label>
-      <input
-        type="text"
-        placeholder="Search by User, Employee ID..."
-        className="w-full border rounded px-3 py-2 outline-none focus:ring-2 focus:ring-green-400"
-        value={filters.userInfo}
-        onChange={(e) => onFilterChange("userInfo", e.target.value)}
-      />
-    </div>
-
-    <div>
-      <label className="text-xs text-gray-500">Status</label>
-      <select
-        className="w-full border rounded px-3 py-2 outline-none focus:ring-2 focus:ring-green-400"
-        value={filters.status}
-        onChange={(e) => onFilterChange("status", e.target.value)}
-      >
-        <option value="">All Status</option>
-        <option value="Instore">Instore</option>
-        <option value="Active">Active</option>
-        <option value="Inactive">Inactive</option>
-        <option value="Maintenance">Maintenance</option>
-        <option value="Death">Death</option>
-      </select>
-    </div>
-
-    <button
-      onClick={onReset}
-      className="h-[42px] text-black border border-gray-500 bg-gray-300 rounded px-4 hover:bg-gray-400 transition"
-    >
-      Reset
-    </button>
+    <ActiveFilterBadges filters={filters} onFilterChange={onFilterChange} />
   </div>
 );
 
@@ -203,13 +331,17 @@ const AssetGrid = ({ assets, loading }) => {
   }
 
   if (assets.length === 0) {
-    return <p className="p-6 text-center text-gray-500">No assets found matching your criteria.</p>;
+    return (
+      <p className="p-6 text-center text-gray-500">
+        No assets found matching your criteria.
+      </p>
+    );
   }
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
       {assets.map((asset) => (
-        <AssetCard key={asset.id} asset={asset} />
+        <AssetCard key={asset.id || asset._id} asset={asset} />
       ))}
     </div>
   );
@@ -246,10 +378,13 @@ const Pagination = ({ totalPages, currentPage, onPageChange }) => {
 const Assets = () => {
   const {
     assets,
+    totalCount,
+    filteredCount,
     totalPages,
     currentPage,
     setCurrentPage,
     filters,
+    filterOptions,
     handleFilterChange,
     resetFilters,
     loading,
@@ -260,9 +395,21 @@ const Assets = () => {
       <div className="border border-indigo-200 text-indigo-700 bg-gradient-to-br from-indigo-100 via-white to-violet-100 p-6 shadow-[0_20px_45px_-20px_rgba(79,70,229,0.45)] backdrop-blur-sm rounded-xl mb-6">
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between mb-6">
           <div>
-            <h1 className="mt-2 text-3xl font-extrabold tracking-tight text-slate-900">
-              Asset Management
-            </h1>
+            <div className="flex items-center gap-3">
+              <h1 className="mt-2 text-3xl font-extrabold tracking-tight text-slate-900">
+                Asset Management
+              </h1>
+              {!loading && (
+                <div className="mt-2 flex items-center gap-2">
+                  <span className="bg-indigo-600 text-white text-xs font-bold px-2.5 py-1 rounded-full">
+                    {filteredCount} Shown
+                  </span>
+                  <span className="bg-slate-200 text-slate-700 text-xs font-medium px-2.5 py-1 rounded-full">
+                    {totalCount} Total
+                  </span>
+                </div>
+              )}
+            </div>
             <p className="mt-2 text-sm text-slate-500">
               Real-time status of company hardware, inventory, and staff access.
             </p>
@@ -278,6 +425,7 @@ const Assets = () => {
 
         <AssetFilterBar
           filters={filters}
+          filterOptions={filterOptions}
           onFilterChange={handleFilterChange}
           onReset={resetFilters}
         />

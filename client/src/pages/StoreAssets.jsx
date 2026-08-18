@@ -6,6 +6,8 @@ import {
   RefreshCw,
   AlertCircle,
   CheckCircle,
+  RotateCcw,
+  Check,
 } from "lucide-react";
 
 const StoreAssets = () => {
@@ -20,94 +22,145 @@ const StoreAssets = () => {
   const [importingAssetCode, setImportingAssetCode] = useState("");
   const [message, setMessage] = useState("");
   const [success, setSuccess] = useState(true);
+  const [isRollingBack, setIsRollingBack] = useState(false);
+  const [rollbackProgress, setRollbackProgress] = useState(0);
 
- const handleCreateAssets = async () => {
-  if (!assetsToStore.length) return;
+  // Modal and Tracking State
+  const [showResultModal, setShowResultModal] = useState(false);
+  const [storedCount, setStoredCount] = useState(0);
+  const [createdAssetIds, setCreatedAssetIds] = useState([]);
 
-  setLoading(true);
-  setMessage("Starting import...");
-  setSuccess(true);
-  setImportProgress(0);
-
-  const successfulResults = [];
-  const failedAssets = [];
-
-  // Generate safe unique numeric ID compatible with all environments
-  const generateUniqueId = (index) => {
-    return Date.now() + index + Math.floor(Math.random() * 1000);
-  };
-
-  const saveAssetWithRetry = async (assetData, index, maxRetries = 3) => {
-    // Strip existing ID and set a fresh, universally compatible ID
-    const { id, ...cleanData } = assetData;
-    const payload = {
-      ...cleanData,
-      id: generateUniqueId(index),
-    };
-
+  // Single asset delete with retry logic
+  const deleteAssetWithRetry = async (id, maxRetries = 3) => {
     for (let attempt = 1; attempt <= maxRetries; attempt++) {
       try {
-        const response = await fetch("http://localhost:3000/assets", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
+        const response = await fetch(`http://localhost:3000/assets/${id}`, {
+          method: "DELETE",
         });
 
-        if (response.ok) {
-          return await response.json();
+        if (response.ok || response.status === 404) {
+          // 404 means it's already deleted/gone, which counts as success for rollback
+          return true;
         }
-
-        const errorText = await response.text();
-        throw new Error(`HTTP ${response.status}: ${errorText || response.statusText}`);
       } catch (err) {
-        if (attempt === maxRetries) throw err;
-        await new Promise((res) => setTimeout(res, 200));
+        console.warn(`Retry ${attempt}/${maxRetries} failed for deleting asset ID ${id}:`, err.message);
       }
+      
+      // Wait 150ms before retrying
+      await new Promise((res) => setTimeout(res, 150));
+    }
+    return false;
+  };
+
+  // Rollback function with retry and throttle
+  const rollbackCreatedAssets = async () => {
+    if (!createdAssetIds.length) return;
+
+    setIsRollingBack(true);
+    setRollbackProgress(0);
+    let deletedCount = 0;
+    let failedCount = 0;
+
+    for (let i = 0; i < createdAssetIds.length; i++) {
+      const id = createdAssetIds[i];
+      const isDeleted = await deleteAssetWithRetry(id);
+
+      if (isDeleted) {
+        deletedCount++;
+      } else {
+        console.error(`Failed to delete asset ID ${id} after retries.`);
+        failedCount++;
+      }
+
+      setRollbackProgress(Math.round(((i + 1) / createdAssetIds.length) * 100));
+      // Micro-delay to avoid overwhelming backend/file system locks
+      await new Promise((res) => setTimeout(res, 30));
+    }
+
+    setIsRollingBack(false);
+    setShowResultModal(false);
+    setCreatedAssetIds([]);
+    setStoredCount(0);
+
+    if (failedCount === 0) {
+      setMessage(`↩️ Rollback completed successfully! Removed all ${deletedCount} assets from DB.`);
+      setSuccess(true);
+    } else {
+      setMessage(`⚠️ Rollback completed: ${deletedCount} removed, ${failedCount} could not be deleted.`);
+      setSuccess(false);
     }
   };
 
-  for (let index = 0; index < assetsToStore.length; index++) {
-    const asset = assetsToStore[index];
-    const codeLabel = asset.assetCode || `Item #${index + 1}`;
-    setImportingAssetCode(codeLabel);
+  const handleCreateAssets = async () => {
+    if (!assetsToStore.length) return;
 
-    try {
-      const result = await saveAssetWithRetry(asset, index);
-      successfulResults.push(result);
-    } catch (err) {
-      console.error(`❌ Detailed Error on ${codeLabel}:`, err.message);
-      failedAssets.push({ item: asset, error: err.message });
+    setLoading(true);
+    setMessage("");
+    setSuccess(true);
+    setImportProgress(0);
+
+    const successfulResults = [];
+    const actualCreatedIds = [];
+
+    const saveAssetWithRetry = async (assetData, maxRetries = 3) => {
+      const { id, ...cleanData } = assetData;
+
+      for (let attempt = 1; attempt <= maxRetries; attempt++) {
+        try {
+          const response = await fetch("http://localhost:3000/assets", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(cleanData),
+          });
+
+          if (response.ok) {
+            const data = await response.json();
+            return data;
+          }
+
+          const errorText = await response.text();
+          throw new Error(`HTTP ${response.status}: ${errorText || response.statusText}`);
+        } catch (err) {
+          if (attempt === maxRetries) throw err;
+          await new Promise((res) => setTimeout(res, 200));
+        }
+      }
+    };
+
+    for (let index = 0; index < assetsToStore.length; index++) {
+      const asset = assetsToStore[index];
+      const codeLabel = asset.assetCode || `Item #${index + 1}`;
+      setImportingAssetCode(codeLabel);
+
+      try {
+        const savedData = await saveAssetWithRetry(asset);
+        successfulResults.push(savedData);
+
+        if (savedData && savedData.id !== undefined) {
+          actualCreatedIds.push(savedData.id);
+        }
+      } catch (err) {
+        console.error(`❌ Detailed Error on ${codeLabel}:`, err.message);
+      }
+
+      setImportProgress(Math.round(((index + 1) / assetsToStore.length) * 100));
+      await new Promise((resolve) => setTimeout(resolve, 50));
     }
 
-    setImportProgress(Math.round(((index + 1) / assetsToStore.length) * 100));
-    await new Promise((resolve) => setTimeout(resolve, 100));
-  }
-
-  setLoading(false);
-
-  if (failedAssets.length === 0) {
-    setSuccess(true);
-    setMessage(`✓ All ${successfulResults.length} assets successfully saved!`);
-    setTimeout(() => navigate("/assets", { replace: true }), 1500);
-  } else {
-    setSuccess(false);
-    setMessage(
-      `Saved ${successfulResults.length} of ${assetsToStore.length}. First error: ${failedAssets[0]?.error}`
-    );
-  }
-};
+    setLoading(false);
+    setStoredCount(successfulResults.length);
+    setCreatedAssetIds(actualCreatedIds);
+    setShowResultModal(true);
+  };
 
   if (!assetsToStore.length) {
     return (
       <div className="min-h-screen bg-slate-50 p-6 flex items-center justify-center font-sans">
         <div className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm max-w-md w-full text-center">
           <AlertCircle size={40} className="mx-auto text-amber-500 mb-4" />
-          <h2 className="text-xl font-bold text-slate-900 mb-2">
-            No Assets Received
-          </h2>
+          <h2 className="text-xl font-bold text-slate-900 mb-2">No Assets Received</h2>
           <p className="text-xs sm:text-sm text-slate-500 mb-6">
-            Please upload and map an Excel file first before accessing this
-            page.
+            Please upload and map an Excel file first before accessing this page.
           </p>
           <button
             onClick={() => navigate("/import-assets")}
@@ -131,8 +184,7 @@ const StoreAssets = () => {
               onClick={() => navigate(-1)}
               className="mb-3 inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-xs font-semibold text-slate-700 shadow-sm hover:bg-slate-100 hover:text-indigo-600 transition-all active:scale-[0.98]"
             >
-              <ArrowLeft size={15} className="text-indigo-600" /> Back to
-              Mapping
+              <ArrowLeft size={15} className="text-indigo-600" /> Back to Mapping
             </button>
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-600 flex items-center justify-center text-white shadow-md shadow-indigo-500/20">
@@ -144,76 +196,38 @@ const StoreAssets = () => {
                 </h1>
                 <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
                   Source File:{" "}
-                  <strong className="text-indigo-600 font-semibold">
-                    {fileName}
-                  </strong>{" "}
-                  • Ready to commit{" "}
-                  <span className="font-bold text-slate-700">
-                    {assetsToStore.length}
-                  </span>{" "}
-                  objects to JSON server
+                  <strong className="text-indigo-600 font-semibold">{fileName}</strong> • Ready to commit{" "}
+                  <span className="font-bold text-slate-700">{assetsToStore.length}</span> objects to JSON server
                 </p>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Alert Banner */}
-        {message && (
-          <div
-            className={`p-4 rounded-xl border flex items-start sm:items-center gap-3 shadow-sm transition-all ${
-              success
-                ? "bg-emerald-50 border-emerald-200 text-emerald-800"
-                : "bg-rose-50 border-rose-200 text-rose-800"
-            }`}
-          >
-            {success ? (
-              <CheckCircle
-                size={18}
-                className="text-emerald-600 shrink-0 mt-0.5 sm:mt-0"
-              />
-            ) : (
-              <AlertCircle
-                size={18}
-                className="text-rose-600 shrink-0 mt-0.5 sm:mt-0"
-              />
-            )}
-            <p className="text-xs sm:text-sm font-medium">{message}</p>
-          </div>
-        )}
-
-        {/* Modal Loader */}
+        {/* Loading Overlay */}
         {loading && (
           <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
             <div className="bg-white border border-slate-200 rounded-2xl shadow-2xl p-8 max-w-md w-full relative overflow-hidden text-center">
               <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"></div>
-
               <div className="flex items-center justify-center mb-6">
                 <div className="relative w-20 h-20">
                   <div className="absolute inset-0 rounded-full border-4 border-indigo-100"></div>
-                  <div
-                    className="absolute inset-0 rounded-full border-4 border-transparent border-t-indigo-600 border-r-indigo-600 animate-spin"
-                    style={{ animationDuration: "1s" }}
-                  ></div>
+                  <div className="absolute inset-0 rounded-full border-4 border-transparent border-t-indigo-600 border-r-indigo-600 animate-spin"></div>
                   <div className="absolute inset-0 flex items-center justify-center text-base font-extrabold text-indigo-600">
                     {importProgress}%
                   </div>
                 </div>
               </div>
-
-              <h2 className="text-lg font-bold text-slate-900 mb-1">
-                Posting Assets to Database
-              </h2>
+              <h2 className="text-lg font-bold text-slate-900 mb-1">Posting Assets to Database</h2>
               <p className="text-xs text-slate-500 mb-5">
                 Processing:{" "}
                 <span className="font-mono bg-indigo-50 text-indigo-700 px-2 py-0.5 rounded border border-indigo-100 font-semibold">
                   {importingAssetCode}
                 </span>
               </p>
-
               <div className="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden border border-slate-200/60">
                 <div
-                  className="bg-gradient-to-r from-indigo-600 to-violet-600 h-full transition-all duration-300 ease-out"
+                  className="h-full bg-gradient-to-r from-indigo-600 to-violet-600 transition-all duration-300 ease-out"
                   style={{ width: `${importProgress}%` }}
                 ></div>
               </div>
@@ -221,55 +235,100 @@ const StoreAssets = () => {
           </div>
         )}
 
-        {/* Table Preview Container */}
+        {/* Result Modal */}
+        {showResultModal && (
+          <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+            <div className="bg-white border border-slate-200 rounded-2xl shadow-2xl p-6 sm:p-8 max-w-md w-full relative overflow-hidden text-center">
+              {isRollingBack ? (
+                <div className="py-6 space-y-4">
+                  <RotateCcw size={40} className="mx-auto text-rose-500 animate-spin" />
+                  <h3 className="text-lg font-bold text-slate-900">Rolling Back Stored Assets... ({rollbackProgress}%)</h3>
+                  <p className="text-xs text-slate-500">
+                    Deleting stored entries from the server. Please wait...
+                  </p>
+                  <div className="w-full bg-slate-100 rounded-full h-2 overflow-hidden border border-slate-200">
+                    <div
+                      className="h-full bg-rose-500 transition-all duration-200"
+                      style={{ width: `${rollbackProgress}%` }}
+                    ></div>
+                  </div>
+                </div>
+              ) : (
+                <>
+                  <div className="w-14 h-14 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto mb-4">
+                    <CheckCircle size={32} />
+                  </div>
+
+                  <h2 className="text-xl font-bold text-slate-900 mb-1">Store Operation Finished</h2>
+                  <p className="text-xs sm:text-sm text-slate-500 mb-6">
+                    Here is the result of your bulk import operation:
+                  </p>
+
+                  <div className="bg-slate-50 rounded-xl p-4 border border-slate-200/80 mb-6 space-y-2 text-left">
+                    <div className="flex justify-between items-center text-xs sm:text-sm">
+                      <span className="text-slate-600">Total Processed:</span>
+                      <span className="font-bold text-slate-900">{assetsToStore.length}</span>
+                    </div>
+                    <div className="flex justify-between items-center text-xs sm:text-sm">
+                      <span className="text-slate-600">Successfully Stored:</span>
+                      <span className="font-bold text-emerald-600">{storedCount}</span>
+                    </div>
+                    <div className="flex justify-between items-center text-xs sm:text-sm">
+                      <span className="text-slate-600">Failed / Skipped:</span>
+                      <span className="font-bold text-rose-600">{assetsToStore.length - storedCount}</span>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-3">
+                    <button
+                      type="button"
+                      onClick={rollbackCreatedAssets}
+                      className="flex-1 inline-flex items-center justify-center gap-1.5 px-4 py-2.5 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-xs sm:text-sm font-bold rounded-xl transition-all active:scale-[0.98]"
+                    >
+                      <RotateCcw size={16} /> Undone (Rollback)
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => navigate("/assets", { replace: true })}
+                      className="flex-1 inline-flex items-center justify-center gap-1.5 px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs sm:text-sm font-bold rounded-xl shadow-md shadow-indigo-500/20 transition-all active:scale-[0.98]"
+                    >
+                      <Check size={16} /> Done
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* Preview Table */}
         <div className="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
-          {/* Table Header */}
           <div className="p-5 sm:px-6 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-gradient-to-r from-slate-50 to-indigo-50/30">
             <div>
-              <h2 className="text-base font-bold text-slate-900">
-                Asset Objects Table
-              </h2>
-              <p className="text-xs text-slate-500 mt-0.5">
-                Review mapped data rows before committing
-              </p>
+              <h2 className="text-base font-bold text-slate-900">Asset Objects Table</h2>
+              <p className="text-xs text-slate-500 mt-0.5">Review mapped data rows before committing</p>
             </div>
             <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-200 self-start sm:self-auto">
               {assetsToStore.length} Objects
             </span>
           </div>
 
-          {/* Data Table */}
           <div className="overflow-x-auto">
             <table className="w-full text-xs sm:text-sm text-left border-collapse">
               <thead>
                 <tr className="bg-slate-50 border-b border-slate-200/80 text-slate-600 font-semibold">
-                  <th className="px-4 py-3 text-center w-12 border-r border-slate-200/50">
-                    #
-                  </th>
-                  <th className="px-4 py-3 border-r border-slate-200/50">
-                    Asset Code
-                  </th>
-                  <th className="px-4 py-3 border-r border-slate-200/50">
-                    Equipment
-                  </th>
-                  <th className="px-4 py-3 border-r border-slate-200/50">
-                    Brand
-                  </th>
-                  <th className="px-4 py-3 border-r border-slate-200/50">
-                    Model
-                  </th>
-                  <th className="px-4 py-3 border-r border-slate-200/50">
-                    Department
-                  </th>
+                  <th className="px-4 py-3 text-center w-12 border-r border-slate-200/50">#</th>
+                  <th className="px-4 py-3 border-r border-slate-200/50">Asset Code</th>
+                  <th className="px-4 py-3 border-r border-slate-200/50">Equipment</th>
+                  <th className="px-4 py-3 border-r border-slate-200/50">Brand</th>
+                  <th className="px-4 py-3 border-r border-slate-200/50">Model</th>
+                  <th className="px-4 py-3 border-r border-slate-200/50">Department</th>
                   <th className="px-4 py-3">Status</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100 text-slate-700">
                 {assetsToStore.map((asset, index) => (
-                  <tr
-                    key={asset.id || index}
-                    className="hover:bg-slate-50/80 transition-colors"
-                  >
+                  <tr key={index} className="hover:bg-slate-50/80 transition-colors">
                     <td className="px-4 py-3 text-center text-slate-400 font-medium border-r border-slate-100">
                       {index + 1}
                     </td>
@@ -279,15 +338,9 @@ const StoreAssets = () => {
                     <td className="px-4 py-3 border-r border-slate-100 font-medium text-slate-900">
                       {asset.equipment || "-"}
                     </td>
-                    <td className="px-4 py-3 border-r border-slate-100">
-                      {asset.brand || "-"}
-                    </td>
-                    <td className="px-4 py-3 border-r border-slate-100">
-                      {asset.model || "-"}
-                    </td>
-                    <td className="px-4 py-3 border-r border-slate-100">
-                      {asset.department || "-"}
-                    </td>
+                    <td className="px-4 py-3 border-r border-slate-100">{asset.brand || "-"}</td>
+                    <td className="px-4 py-3 border-r border-slate-100">{asset.model || "-"}</td>
+                    <td className="px-4 py-3 border-r border-slate-100">{asset.department || "-"}</td>
                     <td className="px-4 py-3">
                       <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-700 border border-slate-200">
                         {asset.status || "N/A"}
@@ -299,20 +352,23 @@ const StoreAssets = () => {
             </table>
           </div>
 
-          {/* Payload Sample Block */}
-          <div className="p-5 border-t border-slate-100 bg-slate-50/50">
-            <div className="flex items-center gap-2 mb-2.5">
-              <Database size={16} className="text-indigo-600" />
-              <h3 className="text-xs font-bold text-slate-800 uppercase tracking-wider">
-                Payload Sample (First 2 Records)
-              </h3>
+          {message && (
+            <div
+              className={`p-4 mx-5 my-4 rounded-xl border flex items-start sm:items-center gap-3 shadow-sm transition-all ${
+                success
+                  ? "bg-emerald-50 border-emerald-200 text-emerald-800"
+                  : "bg-rose-50 border-rose-200 text-rose-800"
+              }`}
+            >
+              {success ? (
+                <CheckCircle size={18} className="text-emerald-600 shrink-0 mt-0.5 sm:mt-0" />
+              ) : (
+                <AlertCircle size={18} className="text-rose-600 shrink-0 mt-0.5 sm:mt-0" />
+              )}
+              <p className="text-xs sm:text-sm font-medium">{message}</p>
             </div>
-            <pre className="bg-slate-900 text-slate-100 rounded-xl p-4 text-xs font-mono overflow-auto max-h-[300px] shadow-inner border border-slate-800">
-              {JSON.stringify(assetsToStore.slice(0, 2), null, 2)}
-            </pre>
-          </div>
+          )}
 
-          {/* Action Footer */}
           <div className="p-4 sm:px-6 border-t border-slate-100 bg-white flex justify-end">
             <button
               onClick={handleCreateAssets}
@@ -321,13 +377,11 @@ const StoreAssets = () => {
             >
               {loading ? (
                 <>
-                  <RefreshCw size={17} className="animate-spin" /> Saving to
-                  Server...
+                  <RefreshCw size={17} className="animate-spin" /> Saving to Server...
                 </>
               ) : (
                 <>
-                  <Database size={17} /> Save {assetsToStore.length} Assets to
-                  DB
+                  <Database size={17} /> Save {assetsToStore.length} Assets to DB
                 </>
               )}
             </button>

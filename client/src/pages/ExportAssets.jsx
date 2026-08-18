@@ -15,6 +15,7 @@ const DEFAULT_EXPORT_FIELDS = [
   "location",
   "floor",
   "status",
+  "purchaseDate",
   "purchasePrice",
   "warrantyStart",
   "warrantyEnd",
