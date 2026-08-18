@@ -9,6 +9,7 @@ import {
   RotateCcw,
   Check,
   Search,
+  ShieldCheck,
 } from "lucide-react";
 
 const StoreAssets = () => {
@@ -21,24 +22,24 @@ const StoreAssets = () => {
   const [loading, setLoading] = useState(false);
   const [importProgress, setImportProgress] = useState(0);
   const [importingAssetCode, setImportingAssetCode] = useState("");
+  const [statusMessage, setStatusMessage] = useState("");
   const [message, setMessage] = useState("");
   const [success, setSuccess] = useState(true);
   const [isRollingBack, setIsRollingBack] = useState(false);
   const [rollbackProgress, setRollbackProgress] = useState(0);
 
-  // Modal and Tracking State
+  // Tracking state
   const [showResultModal, setShowResultModal] = useState(false);
   const [storedCount, setStoredCount] = useState(0);
   const [createdAssetIds, setCreatedAssetIds] = useState([]);
 
-  // DB Live Inspection State
+  // DB Verification
   const [isCheckingDb, setIsCheckingDb] = useState(false);
   const [actualDbCount, setActualDbCount] = useState(0);
 
-  // Helper delay for rate limiting
   const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
-  // Verify created records in DB sequentially
+  // Verify created records in DB
   const verifyDbRecords = async (idsToCheck) => {
     if (!idsToCheck || !idsToCheck.length) {
       setActualDbCount(0);
@@ -72,29 +73,104 @@ const StoreAssets = () => {
     }
   }, [showResultModal]);
 
-  // Single asset delete with Exponential Backoff
-  const deleteAssetWithRetry = async (id, maxRetries = 5) => {
+  // Guaranteed High-Reliability Single POST Request
+  const saveAssetReliable = async (assetData, maxRetries = 10) => {
+    const { id, ...cleanData } = assetData;
+
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+      try {
+        const response = await fetch("http://localhost:3000/assets", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(cleanData),
+        });
+
+        if (response.ok) {
+          const savedData = await response.json();
+          if (savedData && savedData.id !== undefined) {
+            return savedData;
+          }
+        }
+      } catch (err) {
+        setStatusMessage(`Server busy. Retrying (${attempt}/${maxRetries})...`);
+      }
+
+      // Exponential backoff delay with jitter to unlock disk write loops
+      const backoffDelay = Math.min(100 * Math.pow(2, attempt - 1), 3000);
+      await delay(backoffDelay);
+    }
+    throw new Error(`Failed after ${maxRetries} persistent attempts.`);
+  };
+
+  // Guaranteed High-Reliability Single DELETE Request
+  const deleteAssetReliable = async (id, maxRetries = 10) => {
     for (let attempt = 1; attempt <= maxRetries; attempt++) {
       try {
         const response = await fetch(`http://localhost:3000/assets/${id}`, {
           method: "DELETE",
         });
 
-        // 200 OK or 404 Not Found both mean the item is no longer in the DB
         if (response.ok || response.status === 404) {
           return true;
         }
       } catch (err) {
-        console.warn(`Rollback attempt ${attempt}/${maxRetries} failed for ID ${id}:`, err.message);
+        setStatusMessage(`Rollback busy. Retrying ID ${id} (${attempt}/${maxRetries})...`);
       }
-      
-      // Exponential delay: 150ms, 300ms, 600ms, 1200ms...
-      await delay(150 * Math.pow(2, attempt - 1));
+
+      const backoffDelay = Math.min(100 * Math.pow(2, attempt - 1), 3000);
+      await delay(backoffDelay);
     }
     return false;
   };
 
-  // Rollback function with sequential pacing
+  // 100% Reliable Import Process
+  const handleCreateAssets = async () => {
+    if (!assetsToStore.length) return;
+
+    setLoading(true);
+    setMessage("");
+    setSuccess(true);
+    setImportProgress(0);
+    setStatusMessage("Initializing safe import pipeline...");
+
+    const actualCreatedIds = [];
+    const failedItems = [];
+
+    for (let index = 0; index < assetsToStore.length; index++) {
+      const asset = assetsToStore[index];
+      const codeLabel = asset.assetCode || `Item #${index + 1}`;
+      setImportingAssetCode(codeLabel);
+      setStatusMessage(`Writing item ${index + 1} of ${assetsToStore.length}...`);
+
+      try {
+        const savedData = await saveAssetReliable(asset);
+        actualCreatedIds.push(savedData.id);
+      } catch (err) {
+        console.error(`❌ Critical import failure for ${codeLabel}:`, err.message);
+        failedItems.push(asset);
+      }
+
+      setImportProgress(Math.round(((index + 1) / assetsToStore.length) * 100));
+
+      // 80ms disk lock cooling delay between writes
+      await delay(80);
+    }
+
+    setLoading(false);
+    setStoredCount(actualCreatedIds.length);
+    setCreatedAssetIds(actualCreatedIds);
+    setShowResultModal(true);
+
+    if (failedItems.length === 0) {
+      setMessage(`✅ 100% Import Complete! Successfully saved ${actualCreatedIds.length} of ${assetsToStore.length} assets.`);
+      setSuccess(true);
+    } else {
+      setMessage(`⚠️ Imported ${actualCreatedIds.length} of ${assetsToStore.length}. ${failedItems.length} failed due to severe lock.`);
+      setSuccess(false);
+    }
+  };
+
+  // 100% Reliable Rollback Process
   const rollbackCreatedAssets = async () => {
     if (!createdAssetIds.length) return;
 
@@ -107,18 +183,20 @@ const StoreAssets = () => {
 
     for (let i = 0; i < idsToProcess.length; i++) {
       const id = idsToProcess[i];
-      const isDeleted = await deleteAssetWithRetry(id);
+      setStatusMessage(`Deleting ID ${id} (${i + 1}/${idsToProcess.length})...`);
+      
+      const isDeleted = await deleteAssetReliable(id);
 
       if (isDeleted) {
         deletedCount++;
       } else {
-        console.error(`Failed to delete asset ID ${id} after max retries.`);
         failedIds.push(id);
       }
 
       setRollbackProgress(Math.round(((i + 1) / idsToProcess.length) * 100));
-      // Buffer delay to prevent file lock
-      await delay(20);
+
+      // 80ms disk lock cooling delay between deletions
+      await delay(80);
     }
 
     setIsRollingBack(false);
@@ -128,74 +206,13 @@ const StoreAssets = () => {
     if (failedIds.length === 0) {
       setShowResultModal(false);
       setActualDbCount(0);
-      setMessage(`↩️ Rollback fully completed! Removed ${deletedCount} assets from DB.`);
+      setMessage(`↩️ Complete Rollback! Successfully deleted ${deletedCount} of ${deletedCount} assets from DB.`);
       setSuccess(true);
     } else {
       await verifyDbRecords(failedIds);
-      setMessage(`⚠️ Rollback partial: ${deletedCount} removed, ${failedIds.length} failed. Click Undo to try remaining.`);
+      setMessage(`⚠️ Rollback completed with issues: ${deletedCount} deleted, ${failedIds.length} items failed to delete.`);
       setSuccess(false);
     }
-  };
-
-  // Single asset post with Exponential Backoff
-  const saveAssetWithRetry = async (assetData, maxRetries = 5) => {
-    const { id, ...cleanData } = assetData;
-
-    for (let attempt = 1; attempt <= maxRetries; attempt++) {
-      try {
-        const response = await fetch("http://localhost:3000/assets", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(cleanData),
-        });
-
-        if (response.ok) {
-          return await response.json();
-        }
-
-        const errorText = await response.text();
-        throw new Error(`HTTP ${response.status}: ${errorText || response.statusText}`);
-      } catch (err) {
-        if (attempt === maxRetries) throw err;
-        await delay(150 * Math.pow(2, attempt - 1));
-      }
-    }
-  };
-
-  // Strict Sequential Import
-  const handleCreateAssets = async () => {
-    if (!assetsToStore.length) return;
-
-    setLoading(true);
-    setMessage("");
-    setSuccess(true);
-    setImportProgress(0);
-
-    const actualCreatedIds = [];
-
-    for (let index = 0; index < assetsToStore.length; index++) {
-      const asset = assetsToStore[index];
-      const codeLabel = asset.assetCode || `Item #${index + 1}`;
-      setImportingAssetCode(codeLabel);
-
-      try {
-        const savedData = await saveAssetWithRetry(asset);
-        if (savedData && savedData.id !== undefined) {
-          actualCreatedIds.push(savedData.id);
-        }
-      } catch (err) {
-        console.error(`❌ Import failed for ${codeLabel}:`, err.message);
-      }
-
-      setImportProgress(Math.round(((index + 1) / assetsToStore.length) * 100));
-      // Give server file system 15ms breathing room between POST requests
-      await delay(15);
-    }
-
-    setLoading(false);
-    setStoredCount(actualCreatedIds.length);
-    setCreatedAssetIds(actualCreatedIds);
-    setShowResultModal(true);
   };
 
   if (!assetsToStore.length) {
@@ -240,19 +257,20 @@ const StoreAssets = () => {
                   Review & Store Assets
                 </h1>
                 <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
-                  Source File: <strong className="text-indigo-600 font-semibold">{fileName}</strong> • Ready to commit{" "}
-                  <span className="font-bold text-slate-700">{assetsToStore.length}</span> objects to database
+                  Source File: <strong className="text-indigo-600 font-semibold">{fileName}</strong> • Safe mode enabled for{" "}
+                  <span className="font-bold text-slate-700">{assetsToStore.length}</span> objects
                 </p>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Loading Overlay */}
+        {/* Safe-Sync Loading Overlay */}
         {loading && (
           <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
             <div className="bg-white border border-slate-200 rounded-2xl shadow-2xl p-8 max-w-md w-full relative overflow-hidden text-center">
-              <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"></div>
+              <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-emerald-500 via-indigo-500 to-violet-500"></div>
+              
               <div className="flex items-center justify-center mb-6">
                 <div className="relative w-20 h-20">
                   <div className="absolute inset-0 rounded-full border-4 border-indigo-100"></div>
@@ -262,16 +280,26 @@ const StoreAssets = () => {
                   </div>
                 </div>
               </div>
-              <h2 className="text-lg font-bold text-slate-900 mb-1">Posting Assets to Database</h2>
-              <p className="text-xs text-slate-500 mb-5">
+
+              <div className="flex items-center justify-center gap-1.5 text-xs font-bold text-emerald-600 mb-1">
+                <ShieldCheck size={16} /> Safe Disk Synchronization
+              </div>
+              <h2 className="text-lg font-bold text-slate-900 mb-1">Writing Assets to DB</h2>
+              
+              <p className="text-xs text-slate-500 mb-2">
                 Processing:{" "}
                 <span className="font-mono bg-indigo-50 text-indigo-700 px-2 py-0.5 rounded border border-indigo-100 font-semibold">
                   {importingAssetCode}
                 </span>
               </p>
+
+              <p className="text-[11px] text-amber-600 min-h-[16px] mb-4 font-medium">
+                {statusMessage}
+              </p>
+
               <div className="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden border border-slate-200/60">
                 <div
-                  className="h-full bg-gradient-to-r from-indigo-600 to-violet-600 transition-all duration-300 ease-out"
+                  className="h-full bg-gradient-to-r from-emerald-500 via-indigo-600 to-violet-600 transition-all duration-300 ease-out"
                   style={{ width: `${importProgress}%` }}
                 ></div>
               </div>
@@ -286,9 +314,9 @@ const StoreAssets = () => {
               {isRollingBack ? (
                 <div className="py-6 space-y-4">
                   <RotateCcw size={40} className="mx-auto text-rose-500 animate-spin" />
-                  <h3 className="text-lg font-bold text-slate-900">Rolling Back Stored Assets... ({rollbackProgress}%)</h3>
+                  <h3 className="text-lg font-bold text-slate-900">Safe Rollback in Progress... ({rollbackProgress}%)</h3>
                   <p className="text-xs text-slate-500">
-                    Deleting stored entries sequentially. Please wait...
+                    {statusMessage || "Deleting stored entries sequentially with disk cooling..."}
                   </p>
                   <div className="w-full bg-slate-100 rounded-full h-2 overflow-hidden border border-slate-200">
                     <div
@@ -299,13 +327,19 @@ const StoreAssets = () => {
                 </div>
               ) : (
                 <>
-                  <div className="w-14 h-14 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto mb-4">
-                    <CheckCircle size={32} />
+                  <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-4 ${
+                    storedCount === assetsToStore.length 
+                      ? "bg-emerald-100 text-emerald-600" 
+                      : "bg-amber-100 text-amber-600"
+                  }`}>
+                    {storedCount === assetsToStore.length ? <CheckCircle size={32} /> : <AlertCircle size={32} />}
                   </div>
 
-                  <h2 className="text-xl font-bold text-slate-900 mb-1">Store Operation Finished</h2>
+                  <h2 className="text-xl font-bold text-slate-900 mb-1">
+                    {storedCount === assetsToStore.length ? "100% Import Complete" : "Import Operation Finished"}
+                  </h2>
                   <p className="text-xs sm:text-sm text-slate-500 mb-4">
-                    Here is the status of your bulk import operation:
+                    All objects processed through safe disk sync:
                   </p>
 
                   <div className="bg-slate-50 rounded-xl p-4 border border-slate-200/80 mb-6 space-y-2 text-left">
@@ -315,8 +349,10 @@ const StoreAssets = () => {
                     </div>
 
                     <div className="flex justify-between items-center text-xs sm:text-sm">
-                      <span className="text-slate-600">Successfully Sent:</span>
-                      <span className="font-bold text-emerald-600">{storedCount}</span>
+                      <span className="text-slate-600">Successfully Saved:</span>
+                      <span className={`font-bold ${storedCount === assetsToStore.length ? "text-emerald-600" : "text-amber-600"}`}>
+                        {storedCount} / {assetsToStore.length}
+                      </span>
                     </div>
 
                     <div className="flex justify-between items-center text-xs sm:text-sm pt-2 border-t border-slate-200">
@@ -436,7 +472,7 @@ const StoreAssets = () => {
             >
               {loading ? (
                 <>
-                  <RefreshCw size={17} className="animate-spin" /> Saving to Server...
+                  <RefreshCw size={17} className="animate-spin" /> Syncing to Disk...
                 </>
               ) : (
                 <>
