@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
   Database,
@@ -8,6 +8,7 @@ import {
   CheckCircle,
   RotateCcw,
   Check,
+  Search,
 } from "lucide-react";
 
 const StoreAssets = () => {
@@ -30,67 +31,138 @@ const StoreAssets = () => {
   const [storedCount, setStoredCount] = useState(0);
   const [createdAssetIds, setCreatedAssetIds] = useState([]);
 
-  // Single asset delete with retry logic
-  const deleteAssetWithRetry = async (id, maxRetries = 3) => {
+  // DB Live Inspection State
+  const [isCheckingDb, setIsCheckingDb] = useState(false);
+  const [actualDbCount, setActualDbCount] = useState(0);
+
+  // Helper delay for rate limiting
+  const delay = (ms) => new Promise((res) => setTimeout(res, ms));
+
+  // Verify created records in DB sequentially
+  const verifyDbRecords = async (idsToCheck) => {
+    if (!idsToCheck || !idsToCheck.length) {
+      setActualDbCount(0);
+      return 0;
+    }
+
+    setIsCheckingDb(true);
+    let existCount = 0;
+
+    for (let id of idsToCheck) {
+      try {
+        const response = await fetch(`http://localhost:3000/assets/${id}`, {
+          method: "GET",
+        });
+        if (response.ok) {
+          existCount++;
+        }
+      } catch (err) {
+        console.warn(`Verification check failed for ID ${id}:`, err);
+      }
+    }
+
+    setActualDbCount(existCount);
+    setIsCheckingDb(false);
+    return existCount;
+  };
+
+  useEffect(() => {
+    if (showResultModal && createdAssetIds.length > 0) {
+      verifyDbRecords(createdAssetIds);
+    }
+  }, [showResultModal]);
+
+  // Single asset delete with Exponential Backoff
+  const deleteAssetWithRetry = async (id, maxRetries = 5) => {
     for (let attempt = 1; attempt <= maxRetries; attempt++) {
       try {
         const response = await fetch(`http://localhost:3000/assets/${id}`, {
           method: "DELETE",
         });
 
+        // 200 OK or 404 Not Found both mean the item is no longer in the DB
         if (response.ok || response.status === 404) {
-          // 404 means it's already deleted/gone, which counts as success for rollback
           return true;
         }
       } catch (err) {
-        console.warn(`Retry ${attempt}/${maxRetries} failed for deleting asset ID ${id}:`, err.message);
+        console.warn(`Rollback attempt ${attempt}/${maxRetries} failed for ID ${id}:`, err.message);
       }
       
-      // Wait 150ms before retrying
-      await new Promise((res) => setTimeout(res, 150));
+      // Exponential delay: 150ms, 300ms, 600ms, 1200ms...
+      await delay(150 * Math.pow(2, attempt - 1));
     }
     return false;
   };
 
-  // Rollback function with retry and throttle
+  // Rollback function with sequential pacing
   const rollbackCreatedAssets = async () => {
     if (!createdAssetIds.length) return;
 
     setIsRollingBack(true);
     setRollbackProgress(0);
-    let deletedCount = 0;
-    let failedCount = 0;
 
-    for (let i = 0; i < createdAssetIds.length; i++) {
-      const id = createdAssetIds[i];
+    const idsToProcess = [...createdAssetIds];
+    const failedIds = [];
+    let deletedCount = 0;
+
+    for (let i = 0; i < idsToProcess.length; i++) {
+      const id = idsToProcess[i];
       const isDeleted = await deleteAssetWithRetry(id);
 
       if (isDeleted) {
         deletedCount++;
       } else {
-        console.error(`Failed to delete asset ID ${id} after retries.`);
-        failedCount++;
+        console.error(`Failed to delete asset ID ${id} after max retries.`);
+        failedIds.push(id);
       }
 
-      setRollbackProgress(Math.round(((i + 1) / createdAssetIds.length) * 100));
-      // Micro-delay to avoid overwhelming backend/file system locks
-      await new Promise((res) => setTimeout(res, 30));
+      setRollbackProgress(Math.round(((i + 1) / idsToProcess.length) * 100));
+      // Buffer delay to prevent file lock
+      await delay(20);
     }
 
     setIsRollingBack(false);
-    setShowResultModal(false);
-    setCreatedAssetIds([]);
-    setStoredCount(0);
+    setCreatedAssetIds(failedIds);
+    setStoredCount(failedIds.length);
 
-    if (failedCount === 0) {
-      setMessage(`↩️ Rollback completed successfully! Removed all ${deletedCount} assets from DB.`);
+    if (failedIds.length === 0) {
+      setShowResultModal(false);
+      setActualDbCount(0);
+      setMessage(`↩️ Rollback fully completed! Removed ${deletedCount} assets from DB.`);
       setSuccess(true);
     } else {
-      setMessage(`⚠️ Rollback completed: ${deletedCount} removed, ${failedCount} could not be deleted.`);
+      await verifyDbRecords(failedIds);
+      setMessage(`⚠️ Rollback partial: ${deletedCount} removed, ${failedIds.length} failed. Click Undo to try remaining.`);
       setSuccess(false);
     }
   };
 
+  // Single asset post with Exponential Backoff
+  const saveAssetWithRetry = async (assetData, maxRetries = 5) => {
+    const { id, ...cleanData } = assetData;
+
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+      try {
+        const response = await fetch("http://localhost:3000/assets", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(cleanData),
+        });
+
+        if (response.ok) {
+          return await response.json();
+        }
+
+        const errorText = await response.text();
+        throw new Error(`HTTP ${response.status}: ${errorText || response.statusText}`);
+      } catch (err) {
+        if (attempt === maxRetries) throw err;
+        await delay(150 * Math.pow(2, attempt - 1));
+      }
+    }
+  };
+
+  // Strict Sequential Import
   const handleCreateAssets = async () => {
     if (!assetsToStore.length) return;
 
@@ -99,33 +171,7 @@ const StoreAssets = () => {
     setSuccess(true);
     setImportProgress(0);
 
-    const successfulResults = [];
     const actualCreatedIds = [];
-
-    const saveAssetWithRetry = async (assetData, maxRetries = 3) => {
-      const { id, ...cleanData } = assetData;
-
-      for (let attempt = 1; attempt <= maxRetries; attempt++) {
-        try {
-          const response = await fetch("http://localhost:3000/assets", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(cleanData),
-          });
-
-          if (response.ok) {
-            const data = await response.json();
-            return data;
-          }
-
-          const errorText = await response.text();
-          throw new Error(`HTTP ${response.status}: ${errorText || response.statusText}`);
-        } catch (err) {
-          if (attempt === maxRetries) throw err;
-          await new Promise((res) => setTimeout(res, 200));
-        }
-      }
-    };
 
     for (let index = 0; index < assetsToStore.length; index++) {
       const asset = assetsToStore[index];
@@ -134,21 +180,20 @@ const StoreAssets = () => {
 
       try {
         const savedData = await saveAssetWithRetry(asset);
-        successfulResults.push(savedData);
-
         if (savedData && savedData.id !== undefined) {
           actualCreatedIds.push(savedData.id);
         }
       } catch (err) {
-        console.error(`❌ Detailed Error on ${codeLabel}:`, err.message);
+        console.error(`❌ Import failed for ${codeLabel}:`, err.message);
       }
 
       setImportProgress(Math.round(((index + 1) / assetsToStore.length) * 100));
-      await new Promise((resolve) => setTimeout(resolve, 50));
+      // Give server file system 15ms breathing room between POST requests
+      await delay(15);
     }
 
     setLoading(false);
-    setStoredCount(successfulResults.length);
+    setStoredCount(actualCreatedIds.length);
     setCreatedAssetIds(actualCreatedIds);
     setShowResultModal(true);
   };
@@ -195,9 +240,8 @@ const StoreAssets = () => {
                   Review & Store Assets
                 </h1>
                 <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
-                  Source File:{" "}
-                  <strong className="text-indigo-600 font-semibold">{fileName}</strong> • Ready to commit{" "}
-                  <span className="font-bold text-slate-700">{assetsToStore.length}</span> objects to JSON server
+                  Source File: <strong className="text-indigo-600 font-semibold">{fileName}</strong> • Ready to commit{" "}
+                  <span className="font-bold text-slate-700">{assetsToStore.length}</span> objects to database
                 </p>
               </div>
             </div>
@@ -244,7 +288,7 @@ const StoreAssets = () => {
                   <RotateCcw size={40} className="mx-auto text-rose-500 animate-spin" />
                   <h3 className="text-lg font-bold text-slate-900">Rolling Back Stored Assets... ({rollbackProgress}%)</h3>
                   <p className="text-xs text-slate-500">
-                    Deleting stored entries from the server. Please wait...
+                    Deleting stored entries sequentially. Please wait...
                   </p>
                   <div className="w-full bg-slate-100 rounded-full h-2 overflow-hidden border border-slate-200">
                     <div
@@ -260,22 +304,35 @@ const StoreAssets = () => {
                   </div>
 
                   <h2 className="text-xl font-bold text-slate-900 mb-1">Store Operation Finished</h2>
-                  <p className="text-xs sm:text-sm text-slate-500 mb-6">
-                    Here is the result of your bulk import operation:
+                  <p className="text-xs sm:text-sm text-slate-500 mb-4">
+                    Here is the status of your bulk import operation:
                   </p>
 
                   <div className="bg-slate-50 rounded-xl p-4 border border-slate-200/80 mb-6 space-y-2 text-left">
                     <div className="flex justify-between items-center text-xs sm:text-sm">
-                      <span className="text-slate-600">Total Processed:</span>
+                      <span className="text-slate-600">Total File Items:</span>
                       <span className="font-bold text-slate-900">{assetsToStore.length}</span>
                     </div>
+
                     <div className="flex justify-between items-center text-xs sm:text-sm">
-                      <span className="text-slate-600">Successfully Stored:</span>
+                      <span className="text-slate-600">Successfully Sent:</span>
                       <span className="font-bold text-emerald-600">{storedCount}</span>
                     </div>
-                    <div className="flex justify-between items-center text-xs sm:text-sm">
-                      <span className="text-slate-600">Failed / Skipped:</span>
-                      <span className="font-bold text-rose-600">{assetsToStore.length - storedCount}</span>
+
+                    <div className="flex justify-between items-center text-xs sm:text-sm pt-2 border-t border-slate-200">
+                      <span className="text-slate-700 font-semibold flex items-center gap-1.5">
+                        <Search size={14} className="text-indigo-600" />
+                        Verified In Database:
+                      </span>
+                      {isCheckingDb ? (
+                        <span className="inline-flex items-center gap-1 text-indigo-600 text-xs font-semibold animate-pulse">
+                          <RefreshCw size={12} className="animate-spin" /> Checking DB...
+                        </span>
+                      ) : (
+                        <span className="font-bold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-100">
+                          {actualDbCount} assets
+                        </span>
+                      )}
                     </div>
                   </div>
 
@@ -283,14 +340,16 @@ const StoreAssets = () => {
                     <button
                       type="button"
                       onClick={rollbackCreatedAssets}
-                      className="flex-1 inline-flex items-center justify-center gap-1.5 px-4 py-2.5 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-xs sm:text-sm font-bold rounded-xl transition-all active:scale-[0.98]"
+                      disabled={isCheckingDb}
+                      className="flex-1 inline-flex items-center justify-center gap-1.5 px-4 py-2.5 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-xs sm:text-sm font-bold rounded-xl transition-all active:scale-[0.98] disabled:opacity-50"
                     >
-                      <RotateCcw size={16} /> Undone (Rollback)
+                      <RotateCcw size={16} /> Undo ({actualDbCount} in DB)
                     </button>
                     <button
                       type="button"
                       onClick={() => navigate("/assets", { replace: true })}
-                      className="flex-1 inline-flex items-center justify-center gap-1.5 px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs sm:text-sm font-bold rounded-xl shadow-md shadow-indigo-500/20 transition-all active:scale-[0.98]"
+                      disabled={isCheckingDb}
+                      className="flex-1 inline-flex items-center justify-center gap-1.5 px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs sm:text-sm font-bold rounded-xl shadow-md shadow-indigo-500/20 transition-all active:scale-[0.98] disabled:opacity-50"
                     >
                       <Check size={16} /> Done
                     </button>
@@ -301,7 +360,7 @@ const StoreAssets = () => {
           </div>
         )}
 
-        {/* Preview Table */}
+        {/* Table & controls */}
         <div className="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
           <div className="p-5 sm:px-6 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-gradient-to-r from-slate-50 to-indigo-50/30">
             <div>
