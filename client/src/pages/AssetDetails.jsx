@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Trash2, AlertTriangle } from "lucide-react";
 import { API_BASE_URL } from "../env";
 import IssueCard from "../components/IssueCard";
 
@@ -14,6 +14,10 @@ const AssetDetail = () => {
   const [isEdit, setIsEdit] = useState(false);
   const [formData, setFormData] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  // Modal State for Deletion
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
     let isMounted = true;
@@ -83,8 +87,27 @@ const AssetDetail = () => {
     }
   };
 
+  // Handle Delete Asset
+  const handleDelete = async () => {
+    try {
+      setDeleting(true);
+      const res = await fetch(`${API_BASE_URL}/assets/${id}`, {
+        method: "DELETE",
+      });
+
+      if (res.ok) {
+        setIsDeleteModalOpen(false);
+        navigate(-1);
+      }
+    } catch (error) {
+      console.error("Failed to delete asset:", error);
+    } finally {
+      setDeleting(false);
+    }
+  };
+
   const employee = employees.find(
-    (e) => e.employeeCode === formData.userDetails?.userCode,
+    (e) => e.employeeCode === formData.userDetails?.userCode
   );
 
   const assetIssues = issues
@@ -94,7 +117,7 @@ const AssetDetail = () => {
   return (
     <div className="p-6 bg-gray-100 min-h-screen">
       <div className="max-w-7xl mx-auto space-y-6">
-        {/* 🔹 Top Bar */}
+        {/* Top Bar */}
         <div className="flex justify-between items-center">
           <button
             onClick={() => navigate(-1)}
@@ -103,32 +126,44 @@ const AssetDetail = () => {
             <ArrowLeft size={24} /> Back
           </button>
 
-          {!isEdit ? (
-            <button
-              onClick={() => setIsEdit(true)}
-              className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded"
-            >
-              Edit
-            </button>
-          ) : (
-            <div className="flex gap-2">
-              <button
-                onClick={handleUpdate}
-                className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded"
-              >
-                Update
-              </button>
-              <button
-                onClick={handleReset}
-                className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded"
-              >
-                Reset
-              </button>
-            </div>
-          )}
+          <div className="flex items-center gap-2">
+            {!isEdit ? (
+              <>
+                <button
+                  onClick={() => setIsEdit(true)}
+                  className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded"
+                >
+                  Edit
+                </button>
+
+                {/* Delete Button */}
+                <button
+                  onClick={() => setIsDeleteModalOpen(true)}
+                  className="flex items-center gap-1.5 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded transition"
+                >
+                  <Trash2 size={16} /> Delete
+                </button>
+              </>
+            ) : (
+              <div className="flex gap-2">
+                <button
+                  onClick={handleUpdate}
+                  className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded"
+                >
+                  Update
+                </button>
+                <button
+                  onClick={handleReset}
+                  className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded"
+                >
+                  Reset
+                </button>
+              </div>
+            )}
+          </div>
         </div>
 
-        {/* 🔹 Header */}
+        {/* Header */}
         <div className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white p-6 rounded-xl flex justify-between items-center">
           <Editable
             value={formData.equipment}
@@ -333,6 +368,48 @@ const AssetDetail = () => {
           </div>
         </div>
       </div>
+
+      {/* Delete Confirmation Modal */}
+      {isDeleteModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-xs">
+          <div className="w-full max-w-sm rounded-xl bg-white p-6 shadow-xl">
+            <div className="flex items-center gap-3">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-red-100 text-red-600">
+                <AlertTriangle size={20} />
+              </div>
+              <div>
+                <h3 className="text-base font-semibold text-gray-900">
+                  Delete Asset
+                </h3>
+                <p className="text-xs text-gray-500 mt-1">
+                  Are you sure you want to delete{" "}
+                  <span className="font-semibold text-gray-800">
+                    "{asset?.equipment || asset?.assetCode}"
+                  </span>
+                  ? This action cannot be undone.
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-6 flex justify-end gap-2">
+              <button
+                onClick={() => setIsDeleteModalOpen(false)}
+                disabled={deleting}
+                className="px-4 py-2 text-xs font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleDelete}
+                disabled={deleting}
+                className="px-4 py-2 text-xs font-medium text-white bg-red-600 hover:bg-red-700 rounded-lg shadow-xs"
+              >
+                {deleting ? "Deleting..." : "Delete"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

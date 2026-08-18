@@ -275,37 +275,6 @@ export default function Dashboard() {
           </div>
           {/* Place the tree component directly inside your layout */}
           <DashboardCategoryTree equipmentTree={equipmentTree} />
-          {/* Categories Breakdown */}
-          <div className=" mt-5 rounded-[24px] border border-slate-300 bg-gradient-to-br from-white via-slate-50 to-indigo-50/60 p-6 shadow-[0_20px_45px_-25px_rgba(15,23,42,0.30)] lg:col-span-2">
-            <div className="mb-5 flex items-center justify-between">
-              <h2 className="text-lg font-bold text-slate-900">
-                Assets by Category
-              </h2>
-              <span className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">
-                Distribution
-              </span>
-            </div>
-            <div className="grid grid-cols-8 gap-2 ">
-              {Object.entries(equipmentCounts).map(([equipment, count]) => (
-                <div
-                  key={equipment}
-                  className="rounded-xl border rounded-xl shadow-sm p-2 hover:shadow-md transition duration-200 border-indigo-400 text-indigo-700 bg-gradient-to-br from-indigo-200 via-white to-violet-200 shadow-sm transition-transform duration-200 hover:-translate-y-1"
-                >
-                  <span className="text-sm font-bold   text-slate-700 h-[50%]">
-                    {equipment}
-                  </span>
-                  <div className="h-[50%] mt-3 flex items-baseline justify-between">
-                    <span className="text-2xl font-bold text-slate-800">
-                      {count}
-                    </span>
-                    <span className="text-xs font-medium text-slate-400">
-                      {Math.round((count / totalAssets) * 100)}%
-                    </span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
         </div>
       </div>
     </div>
