@@ -10,8 +10,11 @@ import {
   CircleAlert,
   Boxes,
   Wrench,
+  MapPin,
+  Building2,
 } from "lucide-react";
 import { API_BASE_URL } from "../env";
+import { DashboardCategoryTree } from "../components/DashboardCategoryTree";
 
 export default function Dashboard() {
   const [data, setData] = useState({
@@ -22,6 +25,9 @@ export default function Dashboard() {
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [zoom, setZoom] = useState(1);
+  const [pos, setPos] = useState({ x: 0, y: 0 });
+  const [drag, setDrag] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -114,30 +120,25 @@ export default function Dashboard() {
   const maintenanceAssets = data.assets.filter(
     (a) => a.status === "Maintenance",
   ).length;
-  const deathAssets = data.assets.filter(
-    (a) => a.status === "Death",
-  ).length;
+  const deathAssets = data.assets.filter((a) => a.status === "Death").length;
 
   const totalEmployees = data.employees.length;
   const totalUsers = data.users.length;
   const totalAdmins = data.admins.length;
 
   // Calculate Total Financial Value
- const totalValue = data.assets.reduce((sum, asset) => {
-  console.log(asset.purchasePrice);
-  if (!asset.purchasePrice) return sum;
-  
-  const cleanedString = String(asset.purchasePrice).replace(/[^0-9.-]+/g, "");
-  const numericVal = Number(cleanedString);
+  const totalValue = data.assets.reduce((sum, asset) => {
+    if (!asset.purchasePrice) return sum;
 
-  if (isNaN(numericVal) || numericVal > 100000000) { 
-    return sum;
-  }
+    const cleanedString = String(asset.purchasePrice).replace(/[^0-9.-]+/g, "");
+    const numericVal = Number(cleanedString);
 
-  return sum + numericVal;
-}, 0);
+    if (isNaN(numericVal) || numericVal > 100000000) {
+      return sum;
+    }
 
-
+    return sum + numericVal;
+  }, 0);
 
   // equipment Breakdown
   const equipmentCounts = data.assets.reduce((acc, asset) => {
@@ -145,6 +146,30 @@ export default function Dashboard() {
     acc[cat] = (acc[cat] || 0) + 1;
     return acc;
   }, {});
+
+  // treee
+
+  const getEquipmentTree = () => {
+    const tree = {};
+
+    data.assets.forEach((asset) => {
+      const location = asset.location || "Unknown";
+      const department = asset.department || "Unknown";
+      const equipment = asset.equipment || "Unknown";
+
+      tree[location] ??= {};
+      tree[location][department] ??= {};
+      tree[location][department][equipment] =
+        (tree[location][department][equipment] || 0) +
+        Number(asset.quantity || 1);
+    });
+
+    return tree;
+  };
+
+  const equipmentTree = getEquipmentTree();
+
+  const handleUp = () => setDrag(null);
 
   return (
     <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,_rgba(129,140,248,0.28),_transparent_32%),radial-gradient(circle_at_top_right,_rgba(16,185,129,0.20),_transparent_24%),radial-gradient(circle_at_bottom_left,_rgba(244,114,182,0.16),_transparent_28%),linear-gradient(135deg,_#f8fbff_0%,_#eef4ff_45%,_#fdf2f8_100%)] text-slate-800 p-4 sm:p-6 lg:p-8">
@@ -181,7 +206,7 @@ export default function Dashboard() {
             color="indigo"
           />
           <StatCard
-            title="Active Assignments"
+            title="Active Assets"
             value={activeAssets}
             subtext={`${Math.round((activeAssets / (totalAssets || 1)) * 100)}% utilization rate`}
             icon={<Sparkles size={18} />}
@@ -190,13 +215,12 @@ export default function Dashboard() {
           <StatCard
             title="Total Asset Value"
             value={`${totalValue} TK`}
-
             subtext="Estimated capital hardware value"
             icon={<CircleDollarSign size={18} />}
             color="amber"
           />
           <StatCard
-            title="Total Employees"
+            title="Total User"
             value={totalEmployees}
             subtext={`${totalUsers} standard users / ${totalAdmins} admins`}
             icon={<Users size={18} />}
@@ -205,9 +229,9 @@ export default function Dashboard() {
         </div>
 
         {/* Middle Section: Status & Categories */}
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+        <div className="">
           {/* Asset Status Overview */}
-          <div className="rounded-3xl border rounded-xl shadow-sm p-4 hover:shadow-md transition duration-200 border-green-200 text-indigo-700 bg-gradient-to-br from-green-200 via-white to-violet-200 shadow-[0_20px_45px_-25px_rgba(15,23,42,0.30)]">
+          <div className="my-5 rounded-3xl border rounded-xl shadow-sm p-4 hover:shadow-md transition duration-200 border-green-200 text-indigo-700 bg-gradient-to-br from-green-200 via-white to-violet-200 shadow-[0_20px_45px_-25px_rgba(15,23,42,0.30)]">
             <div className="mb-5 flex items-center justify-between">
               <h2 className="text-lg font-bold text-slate-900">
                 Status Overview
@@ -235,7 +259,7 @@ export default function Dashboard() {
                 total={totalAssets}
                 color="bg-rose-500"
               />
-              <StatusProgressBar
+              {/* <StatusProgressBar
                 label="Maintenance"
                 count={maintenanceAssets}
                 total={totalAssets}
@@ -246,30 +270,31 @@ export default function Dashboard() {
                 count={deathAssets}
                 total={totalAssets}
                 color="bg-indigo-600"
-              />
+              /> */}
             </div>
           </div>
-
+          {/* Place the tree component directly inside your layout */}
+          <DashboardCategoryTree equipmentTree={equipmentTree} />
           {/* Categories Breakdown */}
-          <div className="rounded-[24px] border border-slate-300 bg-gradient-to-br from-white via-slate-50 to-indigo-50/60 p-6 shadow-[0_20px_45px_-25px_rgba(15,23,42,0.30)] lg:col-span-2">
+          <div className=" mt-5 rounded-[24px] border border-slate-300 bg-gradient-to-br from-white via-slate-50 to-indigo-50/60 p-6 shadow-[0_20px_45px_-25px_rgba(15,23,42,0.30)] lg:col-span-2">
             <div className="mb-5 flex items-center justify-between">
               <h2 className="text-lg font-bold text-slate-900">
-                Assets by equipment
+                Assets by Category
               </h2>
               <span className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">
                 Distribution
               </span>
             </div>
-            <div className="grid grid-cols-5 gap-2 ">
+            <div className="grid grid-cols-8 gap-2 ">
               {Object.entries(equipmentCounts).map(([equipment, count]) => (
                 <div
                   key={equipment}
-                  className="rounded-2xl border rounded-xl shadow-sm p-2 hover:shadow-md transition duration-200 border-indigo-400 text-indigo-700 bg-gradient-to-br from-indigo-200 via-white to-violet-200 shadow-sm transition-transform duration-200 hover:-translate-y-1"
+                  className="rounded-xl border rounded-xl shadow-sm p-2 hover:shadow-md transition duration-200 border-indigo-400 text-indigo-700 bg-gradient-to-br from-indigo-200 via-white to-violet-200 shadow-sm transition-transform duration-200 hover:-translate-y-1"
                 >
-                  <span className="text-[11px] font-semibold uppercase   text-slate-500">
+                  <span className="text-sm font-bold   text-slate-700 h-[50%]">
                     {equipment}
                   </span>
-                  <div className="mt-3 flex items-baseline justify-between">
+                  <div className="h-[50%] mt-3 flex items-baseline justify-between">
                     <span className="text-2xl font-bold text-slate-800">
                       {count}
                     </span>
@@ -280,93 +305,6 @@ export default function Dashboard() {
                 </div>
               ))}
             </div>
-          </div>
-        </div>
-
-        {/* Bottom Section: Recent Assets Table */}
-        <div className="overflow-hidden rounded-[24px] border border-slate-300 bg-gradient-to-br from-white via-slate-200 to-indigo-150/50 shadow-[0_20px_45px_-25px_rgba(15,23,42,0.30)]">
-          <div className="flex flex-col gap-3 border-b border-slate-200/80 px-6  py-5 sm:flex-row sm:items-center sm:justify-between">
-            <div>
-              <h2 className="text-lg font-bold text-slate-900">
-                Asset Inventory List
-              </h2>
-              <p className="mt-1 text-sm text-slate-500">
-                Showing {data.assets.length} total entries
-              </p>
-            </div>
-            <div className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
-              Live inventory
-            </div>
-          </div>
-          <div className="overflow-x-auto">
-            <table className="min-w-full text-left text-sm">
-              <thead>
-                <tr className="border-b border-slate-200 bg-slate-50/70 text-slate-400">
-                  <th className="px-4 py-3 text-xs font-semibold uppercase tracking-[0.2em]">
-                    Asset Code
-                  </th>
-                  <th className="px-4 py-3 text-xs font-semibold uppercase tracking-[0.2em]">
-                    equipment
-                  </th>
-                  <th className="px-4 py-3 text-xs font-semibold uppercase tracking-[0.2em]">
-                    Location
-                  </th>
-                  <th className="px-4 py-3 text-xs font-semibold uppercase tracking-[0.2em]">
-                    Department
-                  </th>
-                  <th className="px-4 py-3 text-xs font-semibold uppercase tracking-[0.2em]">
-                    User
-                  </th>
-                  <th className="px-4 py-3 text-xs font-semibold uppercase tracking-[0.2em]">
-                    Status
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-100">
-                {data.assets.map((asset) => {
-                  return (
-                    <tr
-                      key={asset.id || asset.assetCode}
-                      onClick={() => {
-                        // Navigate to asset details page
-                        window.location.href = `/assets/${asset.id}`;
-                      }}
-                      className="transition-colors hover:bg-slate-50/80 cursor-pointer"
-                    >
-                      <td className="px-4 py-3 font-mono text-xs font-bold text-indigo-600">
-                        {asset.assetCode}
-                      </td>
-                      <td className="px-4 py-3 font-medium text-slate-800">
-                        {asset.equipment}
-                      </td>
-                      <td className="px-4 py-3 text-slate-500">
-                        {asset.location || "---"}
-                      </td>
-                      <td className="px-4 py-3 text-slate-500">
-                        {asset.department || "---"}
-                      </td>
-                      <td className="px-4 py-3 text-slate-700">
-                        {asset.userName ? (
-                          <div className="flex items-center space-x-2">
-                            <span className="flex h-7 w-7 items-center justify-center rounded-full border border-indigo-200 bg-indigo-50 text-xs font-bold text-indigo-600">
-                              {asset.userName.charAt(0)}
-                            </span>
-                            <span>{asset.userName}</span>
-                          </div>
-                        ) : (
-                          <span className="italic text-slate-400">
-                            ---
-                          </span>
-                        )}
-                      </td>
-                      <td className="px-4 py-3">
-                        <StatusBadge status={asset.status} />
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
           </div>
         </div>
       </div>

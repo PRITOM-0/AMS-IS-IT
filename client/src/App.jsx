@@ -21,6 +21,7 @@ import IssueDetails from "./pages/IssueDetails";
 import ImportAssets from "./pages/ImportAssets";
 import StoreAssets from "./pages/StoreAssets";
 import ExportAssets from "./pages/ExportAssets";
+import CategorySearch from "./pages/CategorySearch";
 
 function App() {
   const [loading, setLoading] = useState(false);
@@ -58,6 +59,7 @@ function App() {
 
       <Route path="/" element={<Layout setIsLoggedIn={setIsLoggedIn} />}>
         <Route index element={<Dashboard />} />
+        <Route path="/category-search" element={<CategorySearch />} />
         <Route path="assets" element={<Assets />} />
         <Route path="assets/addAsset" element={<AddAsset />} />
         <Route path="assets/:id" element={<AssetDetails />} />
