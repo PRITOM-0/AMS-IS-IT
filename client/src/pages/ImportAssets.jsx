@@ -23,18 +23,11 @@ const demoAsset = {
   location: "",
   floor: "",
   room: "",
-  status: "Instore",
+  status: "",
   userId: "",
   userCode: "",
   userName: "",
-  oldUsers: {
-    userId: "",
-    userCode: "",
-    userName: "",
-    receivedDate: "",
-    returnedDate: "",
-    issues: [],
-  },
+  oldUsers: "",
   receivedDate: "",
   purchaseDate: "",
   purchasePrice: "",
@@ -42,6 +35,7 @@ const demoAsset = {
   warrantyEnd: "",
   vendorName: "",
   remarks: "",
+  upgradeEquipments:"",
   surveyReport: "",
   createdAt: "",
   updatedAt: "",
@@ -63,11 +57,7 @@ const ASSET_FIELDS = [
   { value: "userId", label: "User ID", type: "string" },
   { value: "userCode", label: "User Code", type: "string" },
   { value: "userName", label: "User Name", type: "string" },
-  { value: "oldUsers.userId", label: "Old User ID", type: "string" },
-  { value: "oldUsers.userCode", label: "Old User Code", type: "string" },
-  { value: "oldUsers.userName", label: "Old User Name", type: "string" },
-  { value: "oldUsers.receivedDate", label: "Old User Received Date", type: "date" },
-  { value: "oldUsers.returnedDate", label: "Old User Returned Date", type: "date" },
+  { value: "oldUsers", label: "Old User", type: "string" },
   { value: "receivedDate", label: "Received Date", type: "date" },
   { value: "purchaseDate", label: "Purchase Date", type: "date" },
   { value: "purchasePrice", label: "Purchase Price", type: "number" },
@@ -75,6 +65,7 @@ const ASSET_FIELDS = [
   { value: "warrantyEnd", label: "Warranty End", type: "date" },
   { value: "vendorName", label: "Vendor Name", type: "string" },
   { value: "remarks", label: "Remarks", type: "string" },
+  { value: "upgradeEquipments", label: "Upgrade Equipments", type: "string" },
   { value: "surveyReport", label: "Survey Report", type: "string" },
   { value: "createdAt", label: "Created At", type: "datetime" },
   { value: "updatedAt", label: "Updated At", type: "datetime" },
@@ -96,19 +87,16 @@ const ASSET_ALIAS_MAP = {
   userId: ["userid", "currentuserid"],
   userCode: ["usercode", "employeeid", "employeecode", "empid"],
   userName: ["username", "employeename", "assignedto", "user"],
-  "oldUsers.userId": ["olduserid", "previoususerid", "formeruserid"],
-  "oldUsers.userCode": ["oldusercode", "previoususercode", "formerusercode"],
-  "oldUsers.userName": ["oldusername", "previoususername", "formerusername"],
-  "oldUsers.receivedDate": ["oldreceiveddate", "previousreceiveddate"],
-  "oldUsers.returnedDate": ["returneddate", "returndate", "oldreturneddate"],
-  receivedDate: ["receiveddate", "assigneddate", "issueddate", "userreceiveddate"],
+  oldUsers: ["olduser", "Old User Name", "Old User"],
+  receivedDate: ["User Received Date", ],
   purchaseDate: ["purchasedate", "buydate", "dateofpurchase", "purchase"],
   purchasePrice: ["purchaseprice", "price", "cost", "amount"],
   warrantyStart: ["warrantystart", "warrantyfrom", "warrantybegin"],
   warrantyEnd: ["warrantyend", "warrantyto", "warranty", "warrantyexpirydate"],
   vendorName: ["vendorname", "vendor", "supplier", "suppliername"],
   remarks: ["remarks", "remark", "notes", "comment", "comments"],
-  surveyReport: ["surveyreport", "survey", "it survey report", "inspection"],
+  surveyReport: ["surveyreport", "survey", "it survey report", "inspection"], 
+  upgradeEquipments: ["upgradeEquipments", "Upgrade Equipment"],
   createdAt: ["createdat", "createddate"],
   updatedAt: ["updatedat", "updateddate"],
 };
@@ -165,8 +153,7 @@ const formatDateTime = (value) => {
 const convertCellValue = (value, fieldName) => {
   if (value === null || value === undefined || String(value).trim() === "") return "";
   const dateFields = [
-    "purchaseDate", "receivedDate", "oldUsers.receivedDate",
-    "oldUsers.returnedDate", "warrantyStart", "warrantyEnd", "createdAt", "updatedAt",
+    "purchaseDate", "receivedDate", "warrantyStart", "warrantyEnd", "createdAt", "updatedAt",
   ];
   if (dateFields.includes(fieldName)) return formatDateTime(value);
   if (fieldName === "purchasePrice") return /^[0-9.]*$/.test(String(value)) ? value : "";
@@ -190,7 +177,6 @@ const buildAssetFromRow = (row, rowIndex, mapping) => {
   const asset = {
     ...demoAsset,
     id: `${Date.now()}-${rowIndex}`,
-    status: "Instore",
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   };
@@ -206,12 +192,7 @@ const buildAssetFromRow = (row, rowIndex, mapping) => {
       asset[assetField] = convertedValue;
     }
   });
-
-  if (!asset.assetCode) asset.assetCode = `ASSET-${rowIndex + 1}`;
   if (!asset.status) asset.status = "Instore";
-  if (!asset.oldUsers) {
-    asset.oldUsers = { userId: "", userCode: "", userName: "", receivedDate: "", returnedDate: "", issues: [] };
-  }
   return asset;
 };
 
@@ -285,11 +266,6 @@ const ImportAssets = () => {
   const validateAndProceed = () => {
     const values = Object.values(mapping).filter(Boolean);
 
-    if (!values.includes("assetCode")) {
-      setSuccess(false);
-      setMessage("Map one column to Asset Code before proceeding.");
-      return;
-    }
 
     const seen = new Set();
     const duplicates = new Set();

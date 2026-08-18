@@ -112,7 +112,7 @@ export default function Dashboard() {
   const totalAssets = data.assets.length;
   const activeAssets = data.assets.filter((a) => a.status === "Active").length;
   const instoreAssets = data.assets.filter(
-    (a) => a.status === "Instore",
+    (a) => a.status === "Instore" || a.status === "",
   ).length;
   const inactiveAssets = data.assets.filter(
     (a) => a.status === "Inactive",
