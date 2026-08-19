@@ -13,6 +13,28 @@ const INITIAL_FILTERS = {
   equipment: "",
   surveyReport: "",
   status: "",
+  ageYears: "",
+  ageMonths: "",
+};
+
+// Helper function to calculate asset age in total months
+const calculateAssetAgeInMonths = (asset) => {
+  const dateString = asset.purchaseDate || asset.acquisitionDate || asset.createdAt;
+  if (!dateString) return null;
+
+  const date = new Date(dateString);
+  if (isNaN(date.getTime())) return null;
+
+  const now = new Date();
+  let years = now.getFullYear() - date.getFullYear();
+  let months = now.getMonth() - date.getMonth();
+
+  if (months < 0) {
+    years -= 1;
+    months += 12;
+  }
+
+  return years * 12 + months;
 };
 
 // ==========================================
@@ -46,6 +68,20 @@ const filterStrategies = {
     !surveyReport || asset.surveyReport === surveyReport,
 
   matchesStatus: (asset, status) => !status || asset.status === status,
+
+  matchesAge: (asset, ageYears, ageMonths) => {
+    if (!ageYears && !ageMonths) return true;
+
+    const targetYears = parseInt(ageYears, 10) || 0;
+    const targetMonths = parseInt(ageMonths, 10) || 0;
+    const targetTotalMonths = targetYears * 12 + targetMonths;
+
+    const assetTotalMonths = calculateAssetAgeInMonths(asset);
+    if (assetTotalMonths === null) return false;
+
+    // Returns assets that are at least as old as the target duration
+    return assetTotalMonths >= targetTotalMonths;
+  },
 };
 
 // ==========================================
@@ -122,7 +158,8 @@ export const useAssets = () => {
           filterStrategies.matchesDepartment(asset, filters.department) &&
           filterStrategies.matchesEquipment(asset, filters.equipment) &&
           filterStrategies.matchesSurveyReport(asset, filters.surveyReport) &&
-          filterStrategies.matchesStatus(asset, filters.status)
+          filterStrategies.matchesStatus(asset, filters.status) &&
+          filterStrategies.matchesAge(asset, filters.ageYears, filters.ageMonths)
       );
   }, [assets, filters]);
 
@@ -163,13 +200,35 @@ export const useAssets = () => {
 // ==========================================
 
 const ActiveFilterBadges = ({ filters, onFilterChange }) => {
-  const activeEntries = Object.entries(filters).filter(([_, value]) => Boolean(value));
+  const activeEntries = Object.entries(filters).filter(
+    ([key, value]) => Boolean(value) && key !== "ageYears" && key !== "ageMonths"
+  );
 
-  if (activeEntries.length === 0) return null;
+  const hasAgeFilter = Boolean(filters.ageYears || filters.ageMonths);
+
+  if (activeEntries.length === 0 && !hasAgeFilter) return null;
 
   return (
     <div className="flex flex-wrap items-center gap-2 mt-4 pt-3 border-t border-indigo-200/60">
       <span className="text-xs font-semibold text-slate-500">Active Filters:</span>
+      
+      {/* Age Filter Badge */}
+      {hasAgeFilter && (
+        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-indigo-50 text-indigo-700 border border-indigo-200">
+          <strong>Min Age:</strong> {filters.ageYears || 0} yrs {filters.ageMonths || 0} mos
+          <button
+            onClick={() => {
+              onFilterChange("ageYears", "");
+              onFilterChange("ageMonths", "");
+            }}
+            className="hover:text-indigo-900 transition-colors ml-1"
+          >
+            <X size={12} />
+          </button>
+        </span>
+      )}
+
+      {/* Standard Field Badges */}
       {activeEntries.map(([key, value]) => (
         <span
           key={key}
@@ -190,9 +249,9 @@ const ActiveFilterBadges = ({ filters, onFilterChange }) => {
 
 const AssetFilterBar = ({ filters, filterOptions, onFilterChange, onReset }) => (
   <div className="mb-2">
-    <div className="grid grid-cols-1 md:grid-cols-4 gap-3 items-end">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-3 items-end">
       {/* Asset Info Input */}
-      <div className="md:col-span-1">
+      <div className="lg:col-span-2">
         <label className="text-xs font-semibold text-gray-600 block mb-1">
           Asset / User Info
         </label>
@@ -203,6 +262,32 @@ const AssetFilterBar = ({ filters, filterOptions, onFilterChange, onReset }) => 
           value={filters.assetInfo}
           onChange={(e) => onFilterChange("assetInfo", e.target.value)}
         />
+      </div>
+
+      {/* Min Asset Age (Years & Months) */}
+      <div>
+        <label className="text-xs font-semibold text-gray-600 block mb-1">
+          Min Age (Yrs / Mos)
+        </label>
+        <div className="flex gap-1">
+          <input
+            type="number"
+            min="0"
+            placeholder="Yrs"
+            className="w-1/2 border border-gray-300 rounded-lg px-2 py-2 text-sm outline-none focus:ring-2 focus:ring-indigo-400 bg-white"
+            value={filters.ageYears}
+            onChange={(e) => onFilterChange("ageYears", e.target.value)}
+          />
+          <input
+            type="number"
+            min="0"
+            max="11"
+            placeholder="Mos"
+            className="w-1/2 border border-gray-300 rounded-lg px-2 py-2 text-sm outline-none focus:ring-2 focus:ring-indigo-400 bg-white"
+            value={filters.ageMonths}
+            onChange={(e) => onFilterChange("ageMonths", e.target.value)}
+          />
+        </div>
       </div>
 
       {/* Location Dropdown */}
