@@ -285,7 +285,7 @@ const AssetFilterBar = ({
   onReset,
 }) => (
   <div className="mb-2">
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-3 items-end">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3 items-end">
       {/* Asset Info Input */}
       <div className="lg:col-span-2">
         <label className="text-xs font-semibold text-gray-600 block mb-1">
@@ -300,40 +300,24 @@ const AssetFilterBar = ({
         />
       </div>
 
-      {/* Min Asset Age (Years) & Invalid Date Option */}
+      {/* Equipment Dropdown */}
       <div>
-  <label className="text-xs font-semibold text-gray-600 block mb-1">
-    Min Age (Years)
-  </label>
-  <div className="relative flex items-center">
-    <input
-      type="number"
-      min="0"
-      placeholder="Years"
-      disabled={filters.invalidDateOnly}
-      className="w-full border border-gray-300 rounded-lg pl-3 pr-20 py-2 text-sm outline-none focus:ring-2 focus:ring-indigo-400 bg-white disabled:bg-gray-100 disabled:text-gray-400"
-      value={filters.ageYears}
-      onChange={(e) => onFilterChange("ageYears", e.target.value)}
-    />
-    <label
-      className={`absolute right-1 px-2 py-1 rounded text-[10px] font-semibold cursor-pointer select-none transition ${
-        filters.invalidDateOnly
-          ? "bg-rose-100 text-rose-700 border border-rose-300"
-          : "bg-gray-100 text-gray-600 border border-gray-200 hover:bg-gray-300"
-      }`}
-    >
-      <input
-        type="checkbox"
-        className="sr-only"
-        checked={filters.invalidDateOnly}
-        onChange={(e) =>
-          onFilterChange("invalidDateOnly", e.target.checked)
-        }
-      />
-      Invalid Date
-    </label>
-  </div>
-</div>
+        <label className="text-xs font-semibold text-gray-600 block mb-1">
+          Equipment
+        </label>
+        <select
+          className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-indigo-400 bg-white"
+          value={filters.equipment}
+          onChange={(e) => onFilterChange("equipment", e.target.value)}
+        >
+          <option value="">All Equipment</option>
+          {filterOptions.equipments.map((eq) => (
+            <option key={eq} value={eq}>
+              {eq}
+            </option>
+          ))}
+        </select>
+      </div>
 
       {/* Location Dropdown */}
       <div>
@@ -372,24 +356,39 @@ const AssetFilterBar = ({
           ))}
         </select>
       </div>
-
-      {/* Equipment Dropdown */}
+      {/* Min Asset Age (Years) & Invalid Date Option */}
       <div>
         <label className="text-xs font-semibold text-gray-600 block mb-1">
-          Equipment
+          Min Age (Years)
         </label>
-        <select
-          className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-indigo-400 bg-white"
-          value={filters.equipment}
-          onChange={(e) => onFilterChange("equipment", e.target.value)}
-        >
-          <option value="">All Equipment</option>
-          {filterOptions.equipments.map((eq) => (
-            <option key={eq} value={eq}>
-              {eq}
-            </option>
-          ))}
-        </select>
+        <div className="relative flex items-center">
+          <input
+            type="number"
+            min="0"
+            placeholder="Years"
+            disabled={filters.invalidDateOnly}
+            className="w-full border border-gray-300 rounded-lg pl-3 pr-20 py-2 text-sm outline-none focus:ring-2 focus:ring-indigo-400 bg-white disabled:bg-gray-100 disabled:text-gray-400"
+            value={filters.ageYears}
+            onChange={(e) => onFilterChange("ageYears", e.target.value)}
+          />
+          <label
+            className={`absolute right-1 px-2 py-1 rounded text-[10px] font-semibold cursor-pointer select-none transition ${
+              filters.invalidDateOnly
+                ? "bg-rose-100 text-rose-700 border border-rose-300"
+                : "bg-gray-100 text-gray-600 border border-gray-200 hover:bg-gray-300"
+            }`}
+          >
+            <input
+              type="checkbox"
+              className="sr-only"
+              checked={filters.invalidDateOnly}
+              onChange={(e) =>
+                onFilterChange("invalidDateOnly", e.target.checked)
+              }
+            />
+            Invalid Date
+          </label>
+        </div>
       </div>
 
       {/* Survey Report Dropdown */}

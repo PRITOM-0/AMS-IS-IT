@@ -4,6 +4,40 @@ import { ArrowLeft, HardDrive, MapPin, Building2, Search, X, Filter, RotateCcw }
 import { API_BASE_URL } from "../env";
 import AssetCard from "../components/AssetCard";
 
+// Helper to check if a purchaseDate string is a valid date
+const isValidDate = (dateStr) => {
+  if (!dateStr || (typeof dateStr !== "string" && typeof dateStr !== "number")) return false;
+  const d = new Date(dateStr);
+  return !isNaN(d.getTime());
+};
+
+// Age filter logic (checks if asset age in full years >= required years)
+const matchesAge = (purchaseDate, reqYearsStr) => {
+  if (reqYearsStr === "" || reqYearsStr === undefined || reqYearsStr === null) {
+    return true;
+  }
+
+  const reqYears = parseFloat(reqYearsStr);
+  if (isNaN(reqYears)) return true;
+
+  if (!isValidDate(purchaseDate)) {
+    return false;
+  }
+
+  const pDate = new Date(purchaseDate);
+  const now = new Date();
+
+  let diffYears = now.getFullYear() - pDate.getFullYear();
+  const monthDiff = now.getMonth() - pDate.getMonth();
+  const dayDiff = now.getDate() - pDate.getDate();
+
+  if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+    diffYears--;
+  }
+
+  return diffYears >= reqYears;
+};
+
 export default function CategorySearch() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -20,36 +54,20 @@ export default function CategorySearch() {
   // Dynamic filter state
   const [selectedFilters, setSelectedFilters] = useState({
     status: "",
-    brand: "",
-    vendorName: "",
+    equipment: "",
+    department: "",
     surveyReport: "",
+    showInvalidDatesOnly: false, // Checkbox toggle
     ageYears: "",
   });
 
   // Unique dropdown options collected from DB
   const [filterOptions, setFilterOptions] = useState({
     statuses: [],
-    brands: [],
-    vendors: [],
+    equipments: [],
+    departments: [],
     surveyReports: [],
-    ageYearsList: [],
   });
-
-  // Helper function to calculate exact asset age in full completed years
-  const getAssetAgeInYears = (purchaseDate) => {
-    if (!purchaseDate) return null;
-    const purchase = new Date(purchaseDate);
-    if (isNaN(purchase.getTime())) return null;
-    
-    const today = new Date();
-    let years = today.getFullYear() - purchase.getFullYear();
-    const monthDiff = today.getMonth() - purchase.getMonth();
-    
-    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < purchase.getDate())) {
-      years--;
-    }
-    return years >= 0 ? years : 0;
-  };
 
   useEffect(() => {
     const fetchAndFilterAssets = async () => {
@@ -73,21 +91,11 @@ export default function CategorySearch() {
             )
           ).sort();
 
-        // Extract unique ages present across all records
-        const uniqueAges = Array.from(
-          new Set(
-            allAssets
-              .map((asset) => getAssetAgeInYears(asset.purchaseDate))
-              .filter((age) => age !== null)
-          )
-        ).sort((a, b) => a - b);
-
         setFilterOptions({
           statuses: getUniqueValues(allAssets, "status"),
-          brands: getUniqueValues(allAssets, "brand"),
-          vendors: getUniqueValues(allAssets, "vendorName"),
+          equipments: getUniqueValues(allAssets, "equipment"),
+          departments: getUniqueValues(allAssets, "department"),
           surveyReports: getUniqueValues(allAssets, "surveyReport"),
-          ageYearsList: uniqueAges,
         });
 
         // Apply primary URL hierarchical filters
@@ -126,16 +134,23 @@ export default function CategorySearch() {
   const handleResetFilters = () => {
     setSelectedFilters({
       status: "",
-      brand: "",
-      vendorName: "",
+      equipment: "",
+      department: "",
       surveyReport: "",
+      showInvalidDatesOnly: false,
       ageYears: "",
     });
     setSearchTerm("");
   };
 
   const hasActiveCustomFilters =
-    Object.values(selectedFilters).some((val) => val !== "") || searchTerm !== "";
+    selectedFilters.status !== "" ||
+    selectedFilters.equipment !== "" ||
+    selectedFilters.department !== "" ||
+    selectedFilters.surveyReport !== "" ||
+    selectedFilters.showInvalidDatesOnly ||
+    selectedFilters.ageYears !== "" ||
+    searchTerm !== "";
 
   // Multi-field dropdown filtering + client-side general text search
   const visibleAssets = useMemo(() => {
@@ -144,25 +159,38 @@ export default function CategorySearch() {
       const matchStatus = selectedFilters.status
         ? String(asset.status || "").toLowerCase() === selectedFilters.status.toLowerCase()
         : true;
-      const matchBrand = selectedFilters.brand
-        ? String(asset.brand || "").toLowerCase() === selectedFilters.brand.toLowerCase()
+      const matchEquipment = selectedFilters.equipment
+        ? String(asset.equipment || "").toLowerCase() === selectedFilters.equipment.toLowerCase()
         : true;
-      const matchVendor = selectedFilters.vendorName
-        ? String(asset.vendorName || "").toLowerCase() === selectedFilters.vendorName.toLowerCase()
+      const matchDepartment = selectedFilters.department
+        ? String(asset.department || "").toLowerCase() === selectedFilters.department.toLowerCase()
         : true;
       const matchSurvey = selectedFilters.surveyReport
         ? String(asset.surveyReport || "").toLowerCase() === selectedFilters.surveyReport.toLowerCase()
         : true;
 
-      // Single Year Exact Age Match
-      let matchAge = true;
-      if (selectedFilters.ageYears !== "") {
-        const calculatedAge = getAssetAgeInYears(asset.purchaseDate);
-        matchAge = calculatedAge !== null && calculatedAge === Number(selectedFilters.ageYears);
+      // Date Status & Age Filter Checks
+      const hasValidDate = isValidDate(asset.purchaseDate);
+      let matchDateCondition = true;
+
+      if (selectedFilters.showInvalidDatesOnly) {
+        // Show ONLY assets with missing or invalid dates
+        matchDateCondition = !hasValidDate;
+      } else {
+        // Regular mode: Check age filter if input provided
+        if (selectedFilters.ageYears !== "") {
+          matchDateCondition = hasValidDate && matchesAge(asset.purchaseDate, selectedFilters.ageYears);
+        } else {
+          matchDateCondition = true;
+        }
       }
 
       const passesDropdowns =
-        matchStatus && matchBrand && matchVendor && matchSurvey && matchAge;
+        matchStatus &&
+        matchEquipment &&
+        matchDepartment &&
+        matchSurvey &&
+        matchDateCondition;
 
       if (!passesDropdowns) return false;
 
@@ -180,15 +208,6 @@ export default function CategorySearch() {
 
   return (
     <div className="min-h-screen bg-slate-50 p-4 sm:p-6 lg:p-8">
-      {/* DATALIST FOR SINGLE YEAR AGE SUGGESTIONS */}
-      <datalist id="age-year-suggestions">
-        {filterOptions.ageYearsList.map((years) => (
-          <option key={years} value={years}>
-            {years} {years === 1 ? "Year" : "Years"}
-          </option>
-        ))}
-      </datalist>
-
       <div className="mx-auto max-w-7xl space-y-6">
         {/* Navigation & Active URL Badges */}
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -268,7 +287,7 @@ export default function CategorySearch() {
             )}
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 items-end">
             {/* Status Filter */}
             <div>
               <label className="block text-[11px] font-semibold text-slate-500 mb-1">Status</label>
@@ -284,31 +303,31 @@ export default function CategorySearch() {
               </select>
             </div>
 
-            {/* Brand Filter */}
+            {/* Equipment Filter */}
             <div>
-              <label className="block text-[11px] font-semibold text-slate-500 mb-1">Brand</label>
+              <label className="block text-[11px] font-semibold text-slate-500 mb-1">Equipment</label>
               <select
-                value={selectedFilters.brand}
-                onChange={(e) => handleFilterChange("brand", e.target.value)}
+                value={selectedFilters.equipment}
+                onChange={(e) => handleFilterChange("equipment", e.target.value)}
                 className="w-full rounded-lg border border-slate-200 bg-slate-50 px-2.5 py-1.5 text-xs text-slate-800 focus:border-indigo-500 focus:bg-white focus:outline-none"
               >
-                <option value="">All Brands</option>
-                {filterOptions.brands.map((item, idx) => (
+                <option value="">All Equipments</option>
+                {filterOptions.equipments.map((item, idx) => (
                   <option key={idx} value={item}>{item}</option>
                 ))}
               </select>
             </div>
 
-            {/* Vendor Filter */}
+            {/* Department Filter */}
             <div>
-              <label className="block text-[11px] font-semibold text-slate-500 mb-1">Vendor</label>
+              <label className="block text-[11px] font-semibold text-slate-500 mb-1">Department</label>
               <select
-                value={selectedFilters.vendorName}
-                onChange={(e) => handleFilterChange("vendorName", e.target.value)}
+                value={selectedFilters.department}
+                onChange={(e) => handleFilterChange("department", e.target.value)}
                 className="w-full rounded-lg border border-slate-200 bg-slate-50 px-2.5 py-1.5 text-xs text-slate-800 focus:border-indigo-500 focus:bg-white focus:outline-none"
               >
-                <option value="">All Vendors</option>
-                {filterOptions.vendors.map((item, idx) => (
+                <option value="">All Departments</option>
+                {filterOptions.departments.map((item, idx) => (
                   <option key={idx} value={item}>{item}</option>
                 ))}
               </select>
@@ -329,31 +348,45 @@ export default function CategorySearch() {
               </select>
             </div>
 
-            {/* Typeable Age Field with Single-Year Suggestions */}
+            {/* Number Input Age Filter */}
             <div>
               <label className="block text-[11px] font-semibold text-slate-500 mb-1">
-                Age (Years)
+                Age (Years+)
               </label>
               <div className="relative">
                 <input
                   type="number"
                   min="0"
-                  list="age-year-suggestions"
-                  placeholder="e.g. 2"
+                  step="any"
+                  disabled={selectedFilters.showInvalidDatesOnly}
+                  placeholder={
+                    selectedFilters.showInvalidDatesOnly
+                      ? "Disabled"
+                      : "Min age (e.g. 1)"
+                  }
                   value={selectedFilters.ageYears}
                   onChange={(e) => handleFilterChange("ageYears", e.target.value)}
-                  className="w-full rounded-lg border border-slate-200 bg-slate-50 px-2.5 py-1.5 text-xs text-slate-800 focus:border-indigo-500 focus:bg-white focus:outline-none"
+                  className="w-full rounded-lg border border-slate-200 bg-slate-50 px-2.5 py-1.5 text-xs text-slate-800 focus:border-indigo-500 focus:bg-white focus:outline-none disabled:bg-slate-100 disabled:text-slate-400 disabled:cursor-not-allowed"
                 />
-                {selectedFilters.ageYears !== "" && (
-                  <button
-                    onClick={() => handleFilterChange("ageYears", "")}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
-                  >
-                    <X size={12} />
-                  </button>
-                )}
+                 
               </div>
             </div>
+
+            {/* Checkbox for Invalid Purchase Dates */}
+            <div className="flex items-center h-[34px] px-1">
+              <label className="inline-flex items-center gap-2 cursor-pointer select-none">
+                <input
+                  type="checkbox"
+                  checked={selectedFilters.showInvalidDatesOnly}
+                  onChange={(e) => handleFilterChange("showInvalidDatesOnly", e.target.checked)}
+                  className="h-4 w-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500 transition cursor-pointer"
+                />
+                <span className="text-xs font-semibold text-slate-700">
+                  Invalid Dates Only
+                </span>
+              </label>
+            </div>
+
           </div>
         </div>
 
