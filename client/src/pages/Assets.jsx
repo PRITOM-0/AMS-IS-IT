@@ -13,13 +13,14 @@ const INITIAL_FILTERS = {
   equipment: "",
   surveyReport: "",
   status: "",
-  ageYears: "",
-  ageMonths: "",
+  ageYears: 0,
+  invalidDateOnly: false,
 };
 
-// Helper function to calculate asset age in total months
-const calculateAssetAgeInMonths = (asset) => {
-  const dateString = asset.purchaseDate || asset.acquisitionDate || asset.createdAt;
+// Helper function to calculate asset age in full years
+const calculateAssetAgeInYears = (asset) => {
+  const dateString =
+    asset.purchaseDate || asset.acquisitionDate || asset.createdAt;
   if (!dateString) return null;
 
   const date = new Date(dateString);
@@ -27,14 +28,13 @@ const calculateAssetAgeInMonths = (asset) => {
 
   const now = new Date();
   let years = now.getFullYear() - date.getFullYear();
-  let months = now.getMonth() - date.getMonth();
+  const monthDiff = now.getMonth() - date.getMonth();
 
-  if (months < 0) {
+  if (monthDiff < 0 || (monthDiff === 0 && now.getDate() < date.getDate())) {
     years -= 1;
-    months += 12;
   }
 
-  return years * 12 + months;
+  return years;
 };
 
 // ==========================================
@@ -56,7 +56,8 @@ const filterStrategies = {
     ].some((field) => field?.toLowerCase().includes(q));
   },
 
-  matchesLocation: (asset, location) => !location || asset.location === location,
+  matchesLocation: (asset, location) =>
+    !location || asset.location === location,
 
   matchesDepartment: (asset, department) =>
     !department || asset.department === department,
@@ -69,18 +70,23 @@ const filterStrategies = {
 
   matchesStatus: (asset, status) => !status || asset.status === status,
 
-  matchesAge: (asset, ageYears, ageMonths) => {
-    if (!ageYears && !ageMonths) return true;
+  matchesAge: (asset, ageYears, invalidDateOnly) => {
+    const assetAge = calculateAssetAgeInYears(asset);
 
-    const targetYears = parseInt(ageYears, 10) || 0;
-    const targetMonths = parseInt(ageMonths, 10) || 0;
-    const targetTotalMonths = targetYears * 12 + targetMonths;
+    // Filter exclusively for invalid/missing dates if toggled
+    if (invalidDateOnly) {
+      return assetAge === null;
+    }
 
-    const assetTotalMonths = calculateAssetAgeInMonths(asset);
-    if (assetTotalMonths === null) return false;
+    if (!ageYears) return true;
 
-    // Returns assets that are at least as old as the target duration
-    return assetTotalMonths >= targetTotalMonths;
+    const targetYears = parseInt(ageYears, 10);
+    if (isNaN(targetYears)) return true;
+
+    if (assetAge === null) return false;
+
+    // Returns assets that are at least as old as target years
+    return assetAge >= targetYears;
   },
 };
 
@@ -129,19 +135,19 @@ export const useAssets = () => {
   // Extract unique dynamic options for select fields
   const filterOptions = useMemo(() => {
     const locations = Array.from(
-      new Set(assets.map((a) => a.location).filter(Boolean))
+      new Set(assets.map((a) => a.location).filter(Boolean)),
     );
     const departments = Array.from(
-      new Set(assets.map((a) => a.department).filter(Boolean))
+      new Set(assets.map((a) => a.department).filter(Boolean)),
     );
     const equipments = Array.from(
-      new Set(assets.map((a) => a.equipment).filter(Boolean))
+      new Set(assets.map((a) => a.equipment).filter(Boolean)),
     );
     const surveyReports = Array.from(
-      new Set(assets.map((a) => a.surveyReport).filter(Boolean))
+      new Set(assets.map((a) => a.surveyReport).filter(Boolean)),
     );
     const statuses = Array.from(
-      new Set(assets.map((a) => a.status).filter(Boolean))
+      new Set(assets.map((a) => a.status).filter(Boolean)),
     );
 
     return { locations, departments, equipments, surveyReports, statuses };
@@ -159,12 +165,19 @@ export const useAssets = () => {
           filterStrategies.matchesEquipment(asset, filters.equipment) &&
           filterStrategies.matchesSurveyReport(asset, filters.surveyReport) &&
           filterStrategies.matchesStatus(asset, filters.status) &&
-          filterStrategies.matchesAge(asset, filters.ageYears, filters.ageMonths)
+          filterStrategies.matchesAge(
+            asset,
+            filters.ageYears,
+            filters.invalidDateOnly,
+          ),
       );
   }, [assets, filters]);
 
   // Pagination Calculations
-  const totalPages = Math.max(1, Math.ceil(filteredAssets.length / ITEMS_PER_PAGE));
+  const totalPages = Math.max(
+    1,
+    Math.ceil(filteredAssets.length / ITEMS_PER_PAGE),
+  );
   const paginatedAssets = useMemo(() => {
     const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
     return filteredAssets.slice(startIndex, startIndex + ITEMS_PER_PAGE);
@@ -201,27 +214,42 @@ export const useAssets = () => {
 
 const ActiveFilterBadges = ({ filters, onFilterChange }) => {
   const activeEntries = Object.entries(filters).filter(
-    ([key, value]) => Boolean(value) && key !== "ageYears" && key !== "ageMonths"
+    ([key, value]) =>
+      Boolean(value) && key !== "ageYears" && key !== "invalidDateOnly",
   );
 
-  const hasAgeFilter = Boolean(filters.ageYears || filters.ageMonths);
+  const hasAgeFilter = Boolean(filters.ageYears);
+  const hasInvalidDateFilter = Boolean(filters.invalidDateOnly);
 
-  if (activeEntries.length === 0 && !hasAgeFilter) return null;
+  if (activeEntries.length === 0 && !hasAgeFilter && !hasInvalidDateFilter)
+    return null;
 
   return (
     <div className="flex flex-wrap items-center gap-2 mt-4 pt-3 border-t border-indigo-200/60">
-      <span className="text-xs font-semibold text-slate-500">Active Filters:</span>
-      
+      <span className="text-xs font-semibold text-slate-500">
+        Active Filters:
+      </span>
+
       {/* Age Filter Badge */}
-      {hasAgeFilter && (
+      {hasAgeFilter && !hasInvalidDateFilter && (
         <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-indigo-50 text-indigo-700 border border-indigo-200">
-          <strong>Min Age:</strong> {filters.ageYears || 0} yrs {filters.ageMonths || 0} mos
+          <strong>Min Age:</strong> {filters.ageYears}+ yrs
           <button
-            onClick={() => {
-              onFilterChange("ageYears", "");
-              onFilterChange("ageMonths", "");
-            }}
+            onClick={() => onFilterChange("ageYears", "")}
             className="hover:text-indigo-900 transition-colors ml-1"
+          >
+            <X size={12} />
+          </button>
+        </span>
+      )}
+
+      {/* Invalid Date Badge */}
+      {hasInvalidDateFilter && (
+        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-rose-50 text-rose-700 border border-rose-200">
+          <strong>Date Status:</strong> Invalid / Missing Date
+          <button
+            onClick={() => onFilterChange("invalidDateOnly", false)}
+            className="hover:text-rose-900 transition-colors ml-1"
           >
             <X size={12} />
           </button>
@@ -234,7 +262,10 @@ const ActiveFilterBadges = ({ filters, onFilterChange }) => {
           key={key}
           className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-indigo-50 text-indigo-700 border border-indigo-200"
         >
-          <strong className="capitalize">{key.replace(/([A-Z])/g, " $1")}:</strong> {value}
+          <strong className="capitalize">
+            {key.replace(/([A-Z])/g, " $1")}:
+          </strong>{" "}
+          {value}
           <button
             onClick={() => onFilterChange(key, "")}
             className="hover:text-indigo-900 transition-colors"
@@ -247,48 +278,62 @@ const ActiveFilterBadges = ({ filters, onFilterChange }) => {
   );
 };
 
-const AssetFilterBar = ({ filters, filterOptions, onFilterChange, onReset }) => (
+const AssetFilterBar = ({
+  filters,
+  filterOptions,
+  onFilterChange,
+  onReset,
+}) => (
   <div className="mb-2">
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-3 items-end">
       {/* Asset Info Input */}
       <div className="lg:col-span-2">
         <label className="text-xs font-semibold text-gray-600 block mb-1">
-          Asset / User Info
+          Search Code, Name, User Code, Serial...
         </label>
         <input
           type="text"
-          placeholder="Search Code, Name, User Code, Serial..."
+          placeholder="Type here"
           className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-indigo-400 bg-white"
           value={filters.assetInfo}
           onChange={(e) => onFilterChange("assetInfo", e.target.value)}
         />
       </div>
 
-      {/* Min Asset Age (Years & Months) */}
+      {/* Min Asset Age (Years) & Invalid Date Option */}
       <div>
-        <label className="text-xs font-semibold text-gray-600 block mb-1">
-          Min Age (Yrs / Mos)
-        </label>
-        <div className="flex gap-1">
-          <input
-            type="number"
-            min="0"
-            placeholder="Yrs"
-            className="w-1/2 border border-gray-300 rounded-lg px-2 py-2 text-sm outline-none focus:ring-2 focus:ring-indigo-400 bg-white"
-            value={filters.ageYears}
-            onChange={(e) => onFilterChange("ageYears", e.target.value)}
-          />
-          <input
-            type="number"
-            min="0"
-            max="11"
-            placeholder="Mos"
-            className="w-1/2 border border-gray-300 rounded-lg px-2 py-2 text-sm outline-none focus:ring-2 focus:ring-indigo-400 bg-white"
-            value={filters.ageMonths}
-            onChange={(e) => onFilterChange("ageMonths", e.target.value)}
-          />
-        </div>
-      </div>
+  <label className="text-xs font-semibold text-gray-600 block mb-1">
+    Min Age (Years)
+  </label>
+  <div className="relative flex items-center">
+    <input
+      type="number"
+      min="0"
+      placeholder="Years"
+      disabled={filters.invalidDateOnly}
+      className="w-full border border-gray-300 rounded-lg pl-3 pr-20 py-2 text-sm outline-none focus:ring-2 focus:ring-indigo-400 bg-white disabled:bg-gray-100 disabled:text-gray-400"
+      value={filters.ageYears}
+      onChange={(e) => onFilterChange("ageYears", e.target.value)}
+    />
+    <label
+      className={`absolute right-1 px-2 py-1 rounded text-[10px] font-semibold cursor-pointer select-none transition ${
+        filters.invalidDateOnly
+          ? "bg-rose-100 text-rose-700 border border-rose-300"
+          : "bg-gray-100 text-gray-600 border border-gray-200 hover:bg-gray-300"
+      }`}
+    >
+      <input
+        type="checkbox"
+        className="sr-only"
+        checked={filters.invalidDateOnly}
+        onChange={(e) =>
+          onFilterChange("invalidDateOnly", e.target.checked)
+        }
+      />
+      Invalid Date
+    </label>
+  </div>
+</div>
 
       {/* Location Dropdown */}
       <div>
@@ -377,21 +422,10 @@ const AssetFilterBar = ({ filters, filterOptions, onFilterChange, onReset }) => 
           onChange={(e) => onFilterChange("status", e.target.value)}
         >
           <option value="">All Status</option>
-          {filterOptions.statuses.length > 0 ? (
-            filterOptions.statuses.map((st) => (
-              <option key={st} value={st}>
-                {st}
-              </option>
-            ))
-          ) : (
-            <>
-              <option value="Instore">Instore</option>
-              <option value="Active">Active</option>
-              <option value="Inactive">Inactive</option>
-              <option value="Maintenance">Maintenance</option>
-              <option value="Death">Death</option>
-            </>
-          )}
+          <option value="Instock">Instock</option>
+          <option value="Active">Active</option>
+          <option value="Inactive">Inactive</option>
+          <option value="Removal">Removal</option>
         </select>
       </div>
 
@@ -399,7 +433,7 @@ const AssetFilterBar = ({ filters, filterOptions, onFilterChange, onReset }) => 
       <div>
         <button
           onClick={onReset}
-          className="w-full h-[38px] text-xs font-bold text-gray-700 border border-gray-700 bg-gray-300 rounded-lg hover:bg-gray-200 transition"
+          className="w-full h-[38px] text-xs font-bold text-red-700 border border-red-700   rounded-lg hover:bg-red-300 transition"
         >
           Reset
         </button>

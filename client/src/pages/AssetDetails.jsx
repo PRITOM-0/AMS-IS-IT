@@ -1,6 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { ArrowLeft, Trash2, AlertTriangle, Save, RotateCcw, Edit, UserCheck } from "lucide-react";
+import {
+  ArrowLeft,
+  Trash2,
+  AlertTriangle,
+  Save,
+  RotateCcw,
+  Edit,
+  UserCheck,
+} from "lucide-react";
 import { API_BASE_URL } from "../env";
 import IssueCard from "../components/IssueCard";
 
@@ -24,9 +32,7 @@ const AssetDetail = () => {
     locations: [],
     floors: [],
     rooms: [],
-    statuses: [],
     vendors: [],
-    surveyReports: [],
     userNames: [],
     userCodes: [],
     userIds: [],
@@ -49,12 +55,13 @@ const AssetDetail = () => {
           fetch(`${API_BASE_URL}/assets`),
         ]);
 
-        const [assetData, empData, issuesData, allAssetsData] = await Promise.all([
-          res.json(),
-          empRes.json(),
-          issuesRes.json(),
-          assetsRes.json(),
-        ]);
+        const [assetData, empData, issuesData, allAssetsData] =
+          await Promise.all([
+            res.json(),
+            empRes.json(),
+            issuesRes.json(),
+            assetsRes.json(),
+          ]);
 
         if (isMounted) {
           setAsset(assetData);
@@ -65,14 +72,14 @@ const AssetDetail = () => {
 
           // Build dynamic options from existing DB records
           const assets = Array.isArray(allAssetsData) ? allAssetsData : [];
-          
+
           const getUnique = (arr, key) =>
             Array.from(
               new Set(
                 arr
                   .map((item) => (item[key] ? String(item[key]).trim() : ""))
-                  .filter((val) => val !== "")
-              )
+                  .filter((val) => val !== ""),
+              ),
             );
 
           setDropdownOptions({
@@ -82,12 +89,27 @@ const AssetDetail = () => {
             locations: getUnique(assets, "location"),
             floors: getUnique(assets, "floor"),
             rooms: getUnique(assets, "room"),
-            statuses: getUnique(assets, "status"),
+         
             vendors: getUnique(assets, "vendorName"),
-            surveyReports: getUnique(assets, "surveyReport"),
-            userNames: Array.from(new Set([...getUnique(assets, "userName"), ...getUnique(empList, "name")])),
-            userCodes: Array.from(new Set([...getUnique(assets, "userCode"), ...getUnique(empList, "employeeCode")])),
-            userIds: Array.from(new Set([...getUnique(assets, "userId"), ...getUnique(empList, "id")])),
+         
+            userNames: Array.from(
+              new Set([
+                ...getUnique(assets, "userName"),
+                ...getUnique(empList, "name"),
+              ]),
+            ),
+            userCodes: Array.from(
+              new Set([
+                ...getUnique(assets, "userCode"),
+                ...getUnique(empList, "employeeCode"),
+              ]),
+            ),
+            userIds: Array.from(
+              new Set([
+                ...getUnique(assets, "userId"),
+                ...getUnique(empList, "id"),
+              ]),
+            ),
           });
         }
       } catch (error) {
@@ -105,7 +127,9 @@ const AssetDetail = () => {
   }, [id]);
 
   if (loading || !asset || !formData) {
-    return <p className="p-6 text-gray-600 font-medium">Loading asset details...</p>;
+    return (
+      <p className="p-6 text-gray-600 font-medium">Loading asset details...</p>
+    );
   }
 
   const handleChange = (field, value) => {
@@ -188,7 +212,7 @@ const AssetDetail = () => {
   const employee = employees.find(
     (e) =>
       (formData.userCode && e.employeeCode === formData.userCode) ||
-      (formData.userId && e.id === formData.userId)
+      (formData.userId && e.id === formData.userId),
   );
 
   const assetIssues = issues
@@ -206,12 +230,6 @@ const AssetDetail = () => {
 
       <datalist id="brand-options">
         {dropdownOptions.brands.map((opt, i) => (
-          <option key={i} value={opt} />
-        ))}
-      </datalist>
-
-      <datalist id="status-options">
-        {dropdownOptions.statuses.map((opt, i) => (
           <option key={i} value={opt} />
         ))}
       </datalist>
@@ -242,12 +260,6 @@ const AssetDetail = () => {
 
       <datalist id="vendor-options">
         {dropdownOptions.vendors.map((opt, i) => (
-          <option key={i} value={opt} />
-        ))}
-      </datalist>
-
-      <datalist id="survey-options">
-        {dropdownOptions.surveyReports.map((opt, i) => (
           <option key={i} value={opt} />
         ))}
       </datalist>
@@ -390,12 +402,17 @@ const AssetDetail = () => {
                   isEdit={isEdit}
                   onChange={(v) => handleChange("macAddress", v)}
                 />
-                <Info
+                <InfoSelect
                   label="Status"
                   value={formData.status}
                   isEdit={isEdit}
-                  list="status-options"
-                  onChange={(v) => handleChange("status", v)}
+                  onChange={(value) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      status: value,
+                    }))
+                  }
+                  options={["Instock", "Active", "Inactive", "Removal"]}
                 />
                 <Info
                   colSpan="col-span-2"
@@ -481,12 +498,17 @@ const AssetDetail = () => {
             {/* Remarks, Upgrades & Reports */}
             <Card title="Remarks, Upgrades & Reports">
               <Grid col={3}>
-                <Info
+                <InfoSelect
                   label="Survey Report"
                   value={formData.surveyReport}
                   isEdit={isEdit}
-                  list="survey-options"
-                  onChange={(v) => handleChange("surveyReport", v)}
+                  onChange={(value) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      surveyReport: value,
+                    }))
+                  }
+                  options={["OK", "Update", "Replace", "Repair/Service"]}
                 />
                 <Info
                   label="Upgrade Equipments"
@@ -539,18 +561,11 @@ const AssetDetail = () => {
                   onChange={(v) => handleChange("userName", v)}
                 />
                 <Info
-                  label="User Code"
+                  label="Employee ID"
                   value={formData.userCode}
                   isEdit={isEdit}
                   list="usercode-options"
                   onChange={(v) => handleChange("userCode", v)}
-                />
-                <Info
-                  label="User ID"
-                  value={formData.userId}
-                  isEdit={isEdit}
-                  list="userid-options"
-                  onChange={(v) => handleChange("userId", v)}
                 />
                 <Info
                   label="Old Users"
@@ -587,11 +602,15 @@ const AssetDetail = () => {
           <div className="w-full col-span-1 md:col-span-3 space-y-3">
             <Card title={`Logged Issues (${assetIssues.length})`}>
               {assetIssues.length === 0 ? (
-                <p className="text-sm text-gray-500">No issues logged for this asset.</p>
+                <p className="text-sm text-gray-500">
+                  No issues logged for this asset.
+                </p>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   {assetIssues.map((issue) => {
-                    const emp = employees.find((e) => e.id === issue.employeeId);
+                    const emp = employees.find(
+                      (e) => e.id === issue.employeeId,
+                    );
                     return (
                       <IssueCard
                         key={issue.id}
@@ -702,7 +721,39 @@ const Info = ({
         onChange={(e) => onChange(e.target.value)}
       />
     ) : (
-      <p className="font-semibold text-gray-800 break-words">{value || "---"}</p>
+      <p className="font-semibold text-gray-800 break-words">
+        {value || "---"}
+      </p>
+    )}
+  </div>
+);
+const InfoSelect = ({
+  label,
+  value,
+  isEdit,
+  onChange,
+  options = [],
+  colSpan = "",
+}) => (
+  <div className={colSpan}>
+    <p className="text-gray-500 text-xs mb-1 font-medium">{label}</p>
+
+    {isEdit ? (
+      <select
+        className="w-full border border-gray-300 rounded-lg px-2.5 py-1.5 text-black text-sm   focus:ring-2 focus:ring-blue-500 outline-none"
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+      >
+        {options.map((option) => (
+          <option key={option} value={option}>
+            {option}
+          </option>
+        ))}
+      </select>
+    ) : (
+      <p className="font-semibold text-gray-800 break-words">
+        {value || "---"}
+      </p>
     )}
   </div>
 );

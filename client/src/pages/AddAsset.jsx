@@ -64,8 +64,8 @@ const AddAsset = () => {
             new Set(
               assets
                 .map((item) => (item[key] ? String(item[key]).trim() : ""))
-                .filter((val) => val !== "")
-            )
+                .filter((val) => val !== ""),
+            ),
           );
 
         setDropdownOptions({
@@ -134,7 +134,9 @@ const AddAsset = () => {
       oldUsers: formData.oldUsers || "", // Kept as pure string
       receivedDate: formData.receivedDate || null,
       purchaseDate: formData.purchaseDate,
-      purchasePrice: formData.purchasePrice ? String(Number(formData.purchasePrice)) : "0",
+      purchasePrice: formData.purchasePrice
+        ? String(Number(formData.purchasePrice))
+        : "0",
       warrantyStart: formData.warrantyStart || formData.purchaseDate,
       warrantyEnd: formData.warrantyEnd || "",
       vendorName: formData.vendorName,
@@ -209,12 +211,6 @@ const AddAsset = () => {
 
             <datalist id="brand-db-options">
               {dropdownOptions.brands.map((opt, i) => (
-                <option key={i} value={opt} />
-              ))}
-            </datalist>
-
-            <datalist id="status-db-options">
-              {dropdownOptions.statuses.map((opt, i) => (
                 <option key={i} value={opt} />
               ))}
             </datalist>
@@ -337,15 +333,20 @@ const AddAsset = () => {
                   <label className="block text-sm font-semibold text-gray-700 mb-1">
                     Status <span className="text-red-500">*</span>
                   </label>
-                  <input
+                  <select
                     className={inputStyle}
                     name="status"
-                    list="status-db-options"
-                    placeholder="Type or select status"
-                    value={formData.status}
+                    placeholder="Select status"
                     required
+                    value={formData.status}
                     onChange={handleChange}
-                  />
+                  >
+                    <option value="">All Status</option>
+                    <option value="Instock">Instock</option>
+                    <option value="Active">Active</option>
+                    <option value="Inactive">Inactive</option>
+                    <option value="removal">Removal</option>
+                  </select>
                 </div>
 
                 <div className="md:col-span-2">
@@ -596,14 +597,19 @@ const AddAsset = () => {
                   <label className="block text-sm font-semibold text-gray-700 mb-1">
                     Survey Report
                   </label>
-                  <input
+                  <select
                     className={inputStyle}
                     name="surveyReport"
-                    list="survey-db-options"
-                    placeholder="Type or select survey status"
+                    placeholder="Select survey status"
+                    required
                     value={formData.surveyReport}
                     onChange={handleChange}
-                  />
+                  >
+                    <option value="OK">OK</option>
+                    <option value="Update">Update</option>
+                    <option value="Replace">Replace</option>
+                    <option value="Repair/Service">Repair/Service</option>
+                  </select>
                 </div>
 
                 <div>

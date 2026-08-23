@@ -231,7 +231,7 @@
       "upgradeEquipments": "need to upgrade 8GB DDR3",
       "surveyReport": "Upgrade",
       "createdAt": "2026-08-18T12:01:37.223Z",
-      "updatedAt": "2026-08-18T12:01:37.223Z",
+      "updatedAt": "2026-08-19T07:49:24.256Z",
       "id": "z6p1uF7U57E"
     },
     {
@@ -529,9 +529,9 @@
       "vendorName": "Walton Digitech Industries Ltd",
       "remarks": "",
       "upgradeEquipments": "",
-      "surveyReport": "Ok",
+      "surveyReport": "OK",
       "createdAt": "2026-08-18T12:01:37.223Z",
-      "updatedAt": "2026-08-18T12:01:37.223Z",
+      "updatedAt": "2026-08-23T09:17:47.767Z",
       "id": "mtY82fiZLns"
     },
     {
@@ -2631,7 +2631,7 @@
       "upgradeEquipments": "",
       "surveyReport": "OK",
       "createdAt": "2026-08-18T12:01:37.225Z",
-      "updatedAt": "2026-08-18T12:01:37.225Z",
+      "updatedAt": "2026-08-19T07:40:40.688Z",
       "id": "y0udkqc3XBk"
     },
     {
@@ -3711,7 +3711,7 @@
       "upgradeEquipments": "",
       "surveyReport": "",
       "createdAt": "2026-08-18T12:01:37.225Z",
-      "updatedAt": "2026-08-18T12:01:37.225Z",
+      "updatedAt": "2026-08-23T08:13:58.961Z",
       "id": "7cyrEQwoMjk"
     },
     {
@@ -4416,7 +4416,7 @@
       "location": "New Corporate",
       "floor": "7th Floor",
       "room": "SP",
-      "status": "Active",
+      "status": "Removal",
       "userId": "",
       "userCode": "",
       "userName": "Ashiqur Rahman Evan",
@@ -4429,9 +4429,9 @@
       "vendorName": "Walton DIGI Tech",
       "remarks": "",
       "upgradeEquipments": "",
-      "surveyReport": "Ok",
+      "surveyReport": "OK",
       "createdAt": "2026-08-18T12:01:37.225Z",
-      "updatedAt": "2026-08-18T12:01:37.225Z",
+      "updatedAt": "2026-08-23T09:17:14.119Z",
       "id": "n0N99zgbszc"
     },
     {
@@ -11706,7 +11706,7 @@
       "location": "JRU-03",
       "floor": "2nd Floor",
       "room": "",
-      "status": "Active",
+      "status": "Inactive",
       "userId": "",
       "userCode": "902840",
       "userName": "Ozaifa Simran Ishita",
@@ -11719,9 +11719,9 @@
       "vendorName": "Global Brand",
       "remarks": "",
       "upgradeEquipments": "",
-      "surveyReport": "",
+      "surveyReport": "Repair/Service",
       "createdAt": "2026-08-19T05:06:26.740Z",
-      "updatedAt": "2026-08-19T06:31:12.252Z",
+      "updatedAt": "2026-08-23T09:11:37.487Z",
       "id": "J-bL_9lHIts"
     },
     {
@@ -11736,7 +11736,7 @@
       "location": "JRU-03",
       "floor": "2nd Floor",
       "room": "",
-      "status": "Active",
+      "status": "Inactive",
       "userId": "",
       "userCode": "902840",
       "userName": "Ozaifa Simran Ishita",
@@ -11751,7 +11751,7 @@
       "upgradeEquipments": "",
       "surveyReport": "",
       "createdAt": "2026-08-19T05:06:26.740Z",
-      "updatedAt": "2026-08-19T05:06:26.740Z",
+      "updatedAt": "2026-08-23T09:20:35.151Z",
       "id": "x2Vka7jGA_c"
     },
     {
@@ -11796,7 +11796,7 @@
       "location": "JRU-03",
       "floor": "Ground Floor",
       "room": "",
-      "status": "Active",
+      "status": "Instock",
       "userId": "",
       "userCode": "900981",
       "userName": "Mahfuza Akter Runu",
@@ -11811,7 +11811,7 @@
       "upgradeEquipments": "",
       "surveyReport": "Upgrade",
       "createdAt": "2026-08-19T05:06:26.740Z",
-      "updatedAt": "2026-08-19T05:06:26.740Z",
+      "updatedAt": "2026-08-23T08:16:54.377Z",
       "id": "A4Fw_nvTMoA"
     },
     {

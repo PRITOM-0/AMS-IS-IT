@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Download, FileSpreadsheet, ArrowLeft, Filter, AlertCircle } from "lucide-react";
 import * as XLSX from "xlsx";
 import { API_BASE_URL } from "../env";
@@ -26,23 +26,50 @@ const DEFAULT_EXPORT_FIELDS = [
 
 // Helper to check if a purchaseDate string is a valid date
 const isValidDate = (dateStr) => {
-  if (!dateStr || typeof dateStr !== "string" && typeof dateStr !== "number") return false;
+  if (!dateStr || (typeof dateStr !== "string" && typeof dateStr !== "number")) return false;
   const d = new Date(dateStr);
   return !isNaN(d.getTime());
+};
+
+// Age filter logic
+const matchesAge = (asset, AgeYears) => {
+  if (AgeYears === "" ||AgeYears === "0" || AgeYears === undefined || AgeYears === null) {
+    return true;
+  }
+
+  const reqYears = parseFloat(AgeYears);
+  if (isNaN(reqYears)) return true;
+
+  // Invalid or missing dates don't match standard age calculations
+  if (!isValidDate(asset.purchaseDate)) {
+    return false;
+  }
+
+  const pDate = new Date(asset.purchaseDate);
+  const now = new Date();
+
+  let diffYears = now.getFullYear() - pDate.getFullYear();
+  const monthDiff = now.getMonth() - pDate.getMonth();
+  const dayDiff = now.getDate() - pDate.getDate();
+
+  if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+    diffYears--;
+  }
+
+  // At 0 or higher, check if asset age is >= input
+  return diffYears >= reqYears;
 };
 
 const ExportAssets = () => {
   const navigate = useNavigate();
   const [assets, setAssets] = useState([]);
-  
-  // Updated filter state
+
+  // Filter state
   const [filters, setFilters] = useState({
     assetInfo: "",
     userInfo: "",
-    minAgeYears: "",
-    minAgeMonths: "",
-    includeMissingDateInAge: false,
-    purchaseDateFilter: "", // "", "valid", "missing_invalid"
+    AgeYears: "",
+    purchaseDateMode: "all", // "all", "valid", "invalid"
     location: "",
     department: "",
     equipment: "",
@@ -70,7 +97,6 @@ const ExportAssets = () => {
     fetchAssets();
   }, []);
 
-  // Extract unique dropdown options from loaded assets
   const dropdownOptions = useMemo(() => {
     const locations = new Set();
     const departments = new Set();
@@ -126,32 +152,22 @@ const ExportAssets = () => {
       const matchesSurveyReport = !filters.surveyReport || asset.surveyReport === filters.surveyReport;
       const matchesStatus = !filters.status || asset.status === filters.status;
 
-      // 4. Purchase Date Status Filter (Valid vs Missing/Invalid text)
+      // 4. Date Status & Age Filter Logic
       const hasValidDate = isValidDate(asset.purchaseDate);
-      let matchesPurchaseDateFilter = true;
-      if (filters.purchaseDateFilter === "valid") {
-        matchesPurchaseDateFilter = hasValidDate;
-      } else if (filters.purchaseDateFilter === "missing_invalid") {
-        matchesPurchaseDateFilter = !hasValidDate;
-      }
+      let matchesDateCondition = true;
 
-      // 5. Min Age Calculation from Purchase Date
-      let matchesMinAge = true;
-      if (filters.minAgeYears || filters.minAgeMonths) {
-        if (!hasValidDate) {
-          // If date is invalid or missing, decide based on user checkbox preference
-          matchesMinAge = filters.includeMissingDateInAge;
+      if (filters.purchaseDateMode === "invalid") {
+        // Mode: Invalid/Missing dates only -> Ignores age filter completely
+        matchesDateCondition = !hasValidDate;
+      } else if (filters.purchaseDateMode === "valid") {
+        // Mode: Valid dates only -> Checks age filter
+        matchesDateCondition = hasValidDate && matchesAge(asset, filters.AgeYears);
+      } else {
+        // Mode: All -> Checks age filter if entered
+        if (filters.AgeYears !== "") {
+          matchesDateCondition = matchesAge(asset, filters.AgeYears);
         } else {
-          const pDate = new Date(asset.purchaseDate);
-          const now = new Date();
-          const diffTime = Math.max(0, now - pDate);
-          const diffDays = diffTime / (1000 * 60 * 60 * 24);
-
-          const reqYears = parseFloat(filters.minAgeYears) || 0;
-          const reqMonths = parseFloat(filters.minAgeMonths) || 0;
-          const reqTotalDays = reqYears * 365.25 + reqMonths * 30.4375;
-
-          matchesMinAge = diffDays >= reqTotalDays;
+          matchesDateCondition = true;
         }
       }
 
@@ -163,13 +179,11 @@ const ExportAssets = () => {
         matchesEquipment &&
         matchesSurveyReport &&
         matchesStatus &&
-        matchesPurchaseDateFilter &&
-        matchesMinAge
+        matchesDateCondition
       );
     });
   }, [sortedAssets, filters]);
 
-  // Sync export fields with loaded assets
   useEffect(() => {
     if (!filteredAssets.length) return;
 
@@ -193,7 +207,7 @@ const ExportAssets = () => {
       const prevSet = new Set(prevSelected);
       return sortedKeys.filter((key) => prevSet.has(key));
     });
-  }, [filteredAssets]);
+  }, [filteredAssets, isInitialized]);
 
   const toggleExportField = (field) => {
     setSelectedExportFields((prev) =>
@@ -250,10 +264,8 @@ const ExportAssets = () => {
     setFilters({
       assetInfo: "",
       userInfo: "",
-      minAgeYears: "",
-      minAgeMonths: "",
-      includeMissingDateInAge: false,
-      purchaseDateFilter: "",
+      AgeYears: "",
+      purchaseDateMode: "all",
       location: "",
       department: "",
       equipment: "",
@@ -287,14 +299,13 @@ const ExportAssets = () => {
                   Export Assets
                 </h1>
                 
-                {/* FILTER ASSET COUNT BADGE */}
                 <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-indigo-100 text-indigo-800 border border-indigo-300 shadow-sm">
                   <Filter size={13} className="text-indigo-600" />
                   Showing {filteredAssets.length} of {assets.length} Assets
                 </span>
               </div>
               <p className="mt-1 text-xs sm:text-sm text-slate-500">
-                Filter assets by specifications, location, purchase date, or age, then pick columns for Excel export.
+                Filter assets by specifications, location, purchase date status, or age, then pick columns for Excel export.
               </p>
             </div>
 
@@ -307,8 +318,8 @@ const ExportAssets = () => {
             </button>
           </div>
 
-          {/* Filter Grid with Darker Visible Input Borders */}
-          <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-5 border-t border-slate-200">
+          {/* Filter Grid */}
+          <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4 pt-5 border-t border-slate-200">
             
             {/* Asset Info */}
             <div>
@@ -318,7 +329,7 @@ const ExportAssets = () => {
                 value={filters.assetInfo}
                 placeholder="Code, brand, model, serial..."
                 className="w-full text-xs sm:text-sm bg-white border border-slate-400 rounded-xl px-3 py-2 text-slate-900 outline-none focus:border-indigo-600 focus:ring-2 focus:ring-indigo-500/20 transition-all placeholder:text-slate-400 font-medium"
-                onChange={(e) => setFilters({ ...filters, assetInfo: e.target.value })}
+                onChange={(e) => setFilters((prev) => ({ ...prev, assetInfo: e.target.value }))}
               />
             </div>
 
@@ -330,7 +341,7 @@ const ExportAssets = () => {
                 value={filters.userInfo}
                 placeholder="User name, code, ID..."
                 className="w-full text-xs sm:text-sm bg-white border border-slate-400 rounded-xl px-3 py-2 text-slate-900 outline-none focus:border-indigo-600 focus:ring-2 focus:ring-indigo-500/20 transition-all placeholder:text-slate-400 font-medium"
-                onChange={(e) => setFilters({ ...filters, userInfo: e.target.value })}
+                onChange={(e) => setFilters((prev) => ({ ...prev, userInfo: e.target.value }))}
               />
             </div>
 
@@ -339,7 +350,7 @@ const ExportAssets = () => {
               <label className="block text-xs font-bold text-slate-700 mb-1">Equipment</label>
               <select
                 value={filters.equipment}
-                onChange={(e) => setFilters({ ...filters, equipment: e.target.value })}
+                onChange={(e) => setFilters((prev) => ({ ...prev, equipment: e.target.value }))}
                 className="w-full text-xs sm:text-sm bg-white border border-slate-400 rounded-xl px-3 py-2 text-slate-900 outline-none focus:border-indigo-600 focus:ring-2 focus:ring-indigo-500/20 transition-all font-medium"
               >
                 <option value="">All Equipments</option>
@@ -354,7 +365,7 @@ const ExportAssets = () => {
               <label className="block text-xs font-bold text-slate-700 mb-1">Location</label>
               <select
                 value={filters.location}
-                onChange={(e) => setFilters({ ...filters, location: e.target.value })}
+                onChange={(e) => setFilters((prev) => ({ ...prev, location: e.target.value }))}
                 className="w-full text-xs sm:text-sm bg-white border border-slate-400 rounded-xl px-3 py-2 text-slate-900 outline-none focus:border-indigo-600 focus:ring-2 focus:ring-indigo-500/20 transition-all font-medium"
               >
                 <option value="">All Locations</option>
@@ -369,7 +380,7 @@ const ExportAssets = () => {
               <label className="block text-xs font-bold text-slate-700 mb-1">Department</label>
               <select
                 value={filters.department}
-                onChange={(e) => setFilters({ ...filters, department: e.target.value })}
+                onChange={(e) => setFilters((prev) => ({ ...prev, department: e.target.value }))}
                 className="w-full text-xs sm:text-sm bg-white border border-slate-400 rounded-xl px-3 py-2 text-slate-900 outline-none focus:border-indigo-600 focus:ring-2 focus:ring-indigo-500/20 transition-all font-medium"
               >
                 <option value="">All Departments</option>
@@ -384,7 +395,7 @@ const ExportAssets = () => {
               <label className="block text-xs font-bold text-slate-700 mb-1">Survey Report</label>
               <select
                 value={filters.surveyReport}
-                onChange={(e) => setFilters({ ...filters, surveyReport: e.target.value })}
+                onChange={(e) => setFilters((prev) => ({ ...prev, surveyReport: e.target.value }))}
                 className="w-full text-xs sm:text-sm bg-white border border-slate-400 rounded-xl px-3 py-2 text-slate-900 outline-none focus:border-indigo-600 focus:ring-2 focus:ring-indigo-500/20 transition-all font-medium"
               >
                 <option value="">All Survey Reports</option>
@@ -399,7 +410,7 @@ const ExportAssets = () => {
               <label className="block text-xs font-bold text-slate-700 mb-1">Status</label>
               <select
                 value={filters.status}
-                onChange={(e) => setFilters({ ...filters, status: e.target.value })}
+                onChange={(e) => setFilters((prev) => ({ ...prev, status: e.target.value }))}
                 className="w-full text-xs sm:text-sm bg-white border border-slate-400 rounded-xl px-3 py-2 text-slate-900 outline-none focus:border-indigo-600 focus:ring-2 focus:ring-indigo-500/20 transition-all font-medium"
               >
                 <option value="">All Statuses</option>
@@ -409,71 +420,50 @@ const ExportAssets = () => {
               </select>
             </div>
 
-            {/* Purchase Date Field Condition Filter */}
+            {/* Purchase Date Filter Mode */}
             <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1">Purchase Date Field</label>
+              <label className="block text-xs font-bold text-slate-700 mb-1">Date Status</label>
               <select
-                value={filters.purchaseDateFilter}
-                onChange={(e) => setFilters({ ...filters, purchaseDateFilter: e.target.value })}
+                value={filters.purchaseDateMode}
+                onChange={(e) => setFilters((prev) => ({ ...prev, purchaseDateMode: e.target.value }))}
                 className="w-full text-xs sm:text-sm bg-white border border-slate-400 rounded-xl px-3 py-2 text-slate-900 outline-none focus:border-indigo-600 focus:ring-2 focus:ring-indigo-500/20 transition-all font-medium"
               >
-                <option value="">All (Valid & Invalid)</option>
-                <option value="valid">Valid Date Only</option>
-                <option value="missing_invalid">Missing / Text / Invalid Date Only</option>
+                <option value="all">All Dates</option>
+                <option value="valid">Valid Dates Only</option>
+                <option value="invalid">Invalid / Missing Dates Only</option>
               </select>
             </div>
 
-            {/* Min Age (Yrs / Mos) Filter */}
-            <div className="sm:col-span-2">
+            {/* Age Filter Input */}
+            <div className="">
               <label className="block text-xs font-bold text-slate-700 mb-1">
-                Min Age from Purchase Date (Years & Months)
+                Age from Purchase Date (Years+)
               </label>
-              <div className="flex flex-col sm:flex-row gap-2">
-                <div className="flex gap-2 flex-1">
-                  <input
-                    type="number"
-                    min="0"
-                    value={filters.minAgeYears}
-                    placeholder="Yrs (e.g. 2)"
-                    className="w-1/2 text-xs sm:text-sm bg-white border border-slate-400 rounded-xl px-3 py-2 text-slate-900 outline-none focus:border-indigo-600 focus:ring-2 focus:ring-indigo-500/20 transition-all placeholder:text-slate-400 font-medium"
-                    onChange={(e) => setFilters({ ...filters, minAgeYears: e.target.value })}
-                  />
-                  <input
-                    type="number"
-                    min="0"
-                    max="11"
-                    value={filters.minAgeMonths}
-                    placeholder="Mos (e.g. 6)"
-                    className="w-1/2 text-xs sm:text-sm bg-white border border-slate-400 rounded-xl px-3 py-2 text-slate-900 outline-none focus:border-indigo-600 focus:ring-2 focus:ring-indigo-500/20 transition-all placeholder:text-slate-400 font-medium"
-                    onChange={(e) => setFilters({ ...filters, minAgeMonths: e.target.value })}
-                  />
-                </div>
-
-                {(filters.minAgeYears || filters.minAgeMonths) && (
-                  <label className="flex items-center gap-2 cursor-pointer text-xs text-slate-700 font-semibold bg-slate-100 px-3 py-2 rounded-xl border border-slate-300 hover:bg-slate-200 transition-colors">
-                    <input
-                      type="checkbox"
-                      checked={filters.includeMissingDateInAge}
-                      onChange={(e) =>
-                        setFilters({ ...filters, includeMissingDateInAge: e.target.checked })
-                      }
-                      className="h-4 w-4 rounded border-slate-400 text-indigo-600 focus:ring-indigo-500"
-                    />
-                    <span>Include missing/text date assets</span>
-                  </label>
-                )}
-              </div>
+              <input
+                type="number"
+                min="0"
+                step="any"
+                disabled={filters.purchaseDateMode === "invalid"}
+                value={filters.AgeYears}
+                placeholder={
+                  filters.purchaseDateMode === "invalid"
+                    ? "Disabled (Viewing Invalid Dates)"
+                    : "Age in years"
+                }
+                className="w-full text-xs sm:text-sm bg-white border border-slate-400 rounded-xl px-3 py-2 text-slate-900 outline-none focus:border-indigo-600 focus:ring-2 focus:ring-indigo-500/20 transition-all placeholder:text-slate-400 font-medium disabled:bg-slate-100 disabled:text-slate-400 disabled:cursor-not-allowed"
+                onChange={(e) => setFilters((prev) => ({ ...prev, AgeYears: e.target.value }))}
+              />
             </div>
 
-            {/* Filter Action Bar (Reset + Live Count display) */}
+            {/* Filter Action Bar */}
             <div className="sm:col-span-2 lg:col-span-2 flex items-center justify-between gap-3 pt-2">
-              <span className="text-xs font-bold text-slate-600 bg-slate-100 px-3 py-2 rounded-xl border border-slate-300">
+              <span className="text-xs font-bold text-green-600 bg-green-100 px-3 py-2 rounded-xl border border-green-300">
                 Filtered: <strong className="text-indigo-600 font-extrabold">{filteredAssets.length}</strong> / {assets.length} items
               </span>
 
               <button
                 onClick={handleResetFilters}
-                className="text-xs sm:text-sm font-semibold rounded-xl px-5 py-2 border border-slate-400 bg-white text-slate-800 hover:bg-slate-100 transition-all active:scale-[0.98] shadow-sm"
+                className="text-xs sm:text-sm font-semibold rounded-xl px-5 py-2 border border-red-400  text-red-800 hover:bg-red-300 transition-all active:scale-[0.98] shadow-sm"
               >
                 Reset All Filters
               </button>
@@ -492,7 +482,6 @@ const ExportAssets = () => {
               <span>Filtered Assets Preview</span>
             </div>
             
-            {/* Asset Count Badge */}
             <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-300">
               {filteredAssets.length} Item(s) Match
             </span>
