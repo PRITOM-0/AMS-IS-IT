@@ -524,9 +524,9 @@
       "room": "",
       "status": "Active",
       "userId": "",
-      "userCode": "0000005",
-      "userName": "Teacher PC 2",
-      "oldUsers": "Teacher PC 4, Teacher PC 1-0000000",
+      "userCode": "55555",
+      "userName": "Teacher PC 7",
+      "oldUsers": "Teacher PC 4, Teacher PC 1-0000000, Teacher PC 2-0000005",
       "receivedDate": "",
       "purchaseDate": "",
       "purchasePrice": "",
@@ -537,7 +537,7 @@
       "upgradeEquipments": "",
       "surveyReport": "Replace",
       "createdAt": "2026-08-24T03:21:00.834Z",
-      "updatedAt": "2026-08-24T08:05:52.415Z",
+      "updatedAt": "2026-08-24T08:30:08.940Z",
       "id": "kbJfqZkfJoY"
     },
     {
