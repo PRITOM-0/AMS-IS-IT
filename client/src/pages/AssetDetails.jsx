@@ -89,9 +89,7 @@ const AssetDetail = () => {
             locations: getUnique(assets, "location"),
             floors: getUnique(assets, "floor"),
             rooms: getUnique(assets, "room"),
-         
             vendors: getUnique(assets, "vendorName"),
-         
             userNames: Array.from(
               new Set([
                 ...getUnique(assets, "userName"),
@@ -132,9 +130,39 @@ const AssetDetail = () => {
     );
   }
 
+  // Helper function to append previous user to oldUsers string
+  const getUpdatedOldUsers = (currentFormData, newUserName, newUserCode) => {
+    const prevUserName = asset?.userName;
+    const prevUserCode = asset?.userCode;
+
+    // Only update oldUsers if there was a previous user and it is changing to a different user
+    if (prevUserName && prevUserName !== newUserName) {
+      const prevEntry = prevUserCode
+        ? `${prevUserName}-${prevUserCode}`
+        : prevUserName;
+      const currentOldUsers = currentFormData.oldUsers
+        ? currentFormData.oldUsers.trim()
+        : "";
+
+      if (!currentOldUsers) {
+        return prevEntry;
+      }
+
+      // Avoid adding duplicate entry if it's already recorded at the end
+      if (!currentOldUsers.endsWith(prevEntry)) {
+        return `${currentOldUsers}, ${prevEntry}`;
+      }
+    }
+    return currentFormData.oldUsers;
+  };
+
   const handleChange = (field, value) => {
     setFormData((prev) => {
-      const updated = { ...prev, [field]: value };
+      let updated = { ...prev, [field]: value };
+
+      if (field === "userName") {
+        updated.oldUsers = getUpdatedOldUsers(prev, value, prev.userCode);
+      }
 
       if (field === "purchaseDate") {
         updated.warrantyStart = value;
@@ -148,12 +176,23 @@ const AssetDetail = () => {
   const handleSelectEmployee = (employeeId) => {
     const selectedEmp = employees.find((e) => e.id === employeeId);
     if (selectedEmp) {
-      setFormData((prev) => ({
-        ...prev,
-        userId: selectedEmp.id || "",
-        userCode: selectedEmp.employeeCode || "",
-        userName: selectedEmp.name || "",
-      }));
+      setFormData((prev) => {
+        const newUserName = selectedEmp.name || "";
+        const newUserCode = selectedEmp.employeeCode || "";
+        const updatedOldUsers = getUpdatedOldUsers(
+          prev,
+          newUserName,
+          newUserCode,
+        );
+
+        return {
+          ...prev,
+          userId: selectedEmp.id || "",
+          userCode: newUserCode,
+          userName: newUserName,
+          oldUsers: updatedOldUsers,
+        };
+      });
     }
   };
 
@@ -717,9 +756,25 @@ const Info = ({
         list={list}
         placeholder={placeholder}
         className="w-full border border-gray-300 rounded-lg px-2.5 py-1.5 text-sm bg-white focus:ring-2 focus:ring-blue-500 outline-none"
-        value={value ?? ""}
+        value={typeof value === "string" ? value : (value ?? "")}
         onChange={(e) => onChange(e.target.value)}
       />
+    ) : label === "Old Users" && typeof value === "string" && value ? (
+      <div className="flex flex-col gap-1.5 mt-2">
+        {value
+          .split(",")
+          .map((user) => user.trim())
+          .filter(Boolean)
+          .reverse()
+          .map((user, index) => (
+            <span
+              key={index}
+              className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-slate-100 text-slate-700 border border-slate-200 w-fit"
+            >
+              {user}
+            </span>
+          ))}
+      </div>
     ) : (
       <p className="font-semibold text-gray-800 break-words">
         {value || "---"}
@@ -744,7 +799,6 @@ const InfoSelect = ({
         value={value}
         onChange={(e) => onChange(e.target.value)}
       >
-
         {options.map((option) => (
           <option key={option} value={option}>
             {option}

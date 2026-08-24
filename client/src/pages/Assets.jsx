@@ -19,12 +19,19 @@ const INITIAL_FILTERS = {
 
 // Helper function to calculate asset age in full years
 const calculateAssetAgeInYears = (asset) => {
-  const dateString =
-    asset.purchaseDate || asset.acquisitionDate || asset.createdAt;
-  if (!dateString) return null;
+  const dateString = asset.purchaseDate;
+  
+  // 1. Treats empty, missing, null, undefined, or non-string values as invalid
+  if (!dateString || typeof dateString !== "string" || !dateString.trim()) {
+    return null;
+  }
 
   const date = new Date(dateString);
-  if (isNaN(date.getTime())) return null;
+  
+  // 2. Treats non-date text (e.g., "N/A", "TBD", "pending") as invalid
+  if (isNaN(date.getTime())) {
+    return null;
+  }
 
   const now = new Date();
   let years = now.getFullYear() - date.getFullYear();
@@ -75,23 +82,23 @@ const filterStrategies = {
 },
 
   matchesAge: (asset, ageYears, invalidDateOnly) => {
-    const assetAge = calculateAssetAgeInYears(asset);
+  const assetAge = calculateAssetAgeInYears(asset);
 
-    // Filter exclusively for invalid/missing dates if toggled
-    if (invalidDateOnly) {
-      return assetAge === null;
-    }
+  // Filter exclusively for invalid/missing dates if toggled
+  if (invalidDateOnly) {
+    return assetAge === null;
+  }
 
-    if (!ageYears) return true;
+  if (!ageYears) return true;
 
-    const targetYears = parseInt(ageYears, 10);
-    if (isNaN(targetYears)) return true;
+  const targetYears = parseInt(ageYears, 10);
+  if (isNaN(targetYears)) return true;
 
-    if (assetAge === null) return false;
+  if (assetAge === null) return false;
 
-    // Returns assets that are at least as old as target years
-    return assetAge >= targetYears;
-  },
+  // Returns assets that are at least as old as target years
+  return assetAge >= targetYears;
+},
 };
 
 // ==========================================
