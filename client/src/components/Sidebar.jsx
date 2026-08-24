@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import {
   FaTachometerAlt,
   FaBoxOpen,
+  FaPlusCircle,
   FaFileExport,
   FaUsers,
   FaClipboardList,
@@ -12,6 +13,7 @@ import {
   FaExclamationCircle,
 } from "react-icons/fa";
 import { LuImport } from "react-icons/lu";
+import { LayoutDashboard } from 'lucide-react';
 
 function Sidebar() {
   const location = useLocation();
@@ -20,8 +22,9 @@ function Sidebar() {
     {
       title: "Main",
       items: [
-        { label: "Dashboard", icon: <FaTachometerAlt size={17} />, path: "/" },
+        { label: "Dashboard", icon: <LayoutDashboard size={17} strokeWidth={3} />, path: "/" },
         { label: "Assets", icon: <FaBoxOpen size={17} />, path: "/assets" },
+        { label: "Add Asset", icon: <FaPlusCircle size={17} />, path: "/assets/addAsset" },
       ],
     },
     {
@@ -93,7 +96,7 @@ function Sidebar() {
                       <span
                         className={`transition-colors duration-900 ${
                           isActive
-                            ? "text-white animate-[spin_0.5s_ease-in-out_1]" // শুধু ১ বার ৩৬০ ডিগ্রি ঘুরবে, উল্টো ঘুরবে না
+                            ? "text-white animate-[spin_0.5s_ease-in-out_1]"
                             : "text-slate-400 group-hover:text-slate-200"
                         }`}
                       >
