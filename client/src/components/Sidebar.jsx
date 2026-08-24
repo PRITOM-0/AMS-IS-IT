@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import {
   FaTachometerAlt,
   FaBoxOpen,
+  FaFileExport,
   FaUsers,
   FaClipboardList,
   FaCog,
@@ -12,106 +13,105 @@ import {
 } from "react-icons/fa";
 import { LuImport } from "react-icons/lu";
 
-function Sidebar({ isOpen }) {
+function Sidebar() {
   const location = useLocation();
 
-  const menuItems = [
-    { label: "Dashboard", icon: <FaTachometerAlt size={18} />, path: "/" },
+  const menuSections = [
     {
-      label: "Import Assets",
-      icon: <LuImport size={18} />,
-      path: "/importassets",
+      title: "Main",
+      items: [
+        { label: "Dashboard", icon: <FaTachometerAlt size={17} />, path: "/" },
+        { label: "Assets", icon: <FaBoxOpen size={17} />, path: "/assets" },
+      ],
     },
     {
-      label: "Export Assets",
-      icon: <FaBoxOpen size={18} />,
-      path: "/exportassets",
+      title: "Management",
+      items: [
+        { label: "Import Assets", icon: <LuImport size={17} />, path: "/importassets" },
+        { label: "Export Assets", icon: <FaFileExport size={17} />, path: "/exportassets" },
+        // { label: "Assign Assets", icon: <FaShareSquare size={17} />, path: "/assign-assets" },
+        // { label: "Issues", icon: <FaExclamationCircle size={17} />, path: "/issues" },
+        // { label: "Requests", icon: <FaClipboardList size={17} />, path: "/requests" },
+      ],
     },
-    { label: "Assets", icon: <FaBoxOpen size={18} />, path: "/assets" },
-    // { label: "Employees", icon: <FaUserTie size={18} />, path: "/employees" },
     // {
-    //   label: "Assign Assets",
-    //   icon: <FaShareSquare size={18} />,
-    //   path: "/assign-assets",
+    //   title: "System",
+    //   items: [
+    //     { label: "Employees", icon: <FaUserTie size={17} />, path: "/employees" },
+    //     { label: "Users", icon: <FaUsers size={17} />, path: "/users" },
+    //     { label: "Settings", icon: <FaCog size={17} />, path: "/settings" },
+    //   ],
     // },
-    // {
-    //   label: "Issues",
-    //   icon: <FaExclamationCircle size={18} />,
-    //   path: "/issues",
-    // },
-    // {
-    //   label: "Requests",
-    //   icon: <FaClipboardList size={18} />,
-    //   path: "/requests",
-    // },
-
-    //  { label: "Users", icon: <FaUsers size={18} />, path: "/users" },
-    // { label: "Settings", icon: <FaCog size={18} />, path: "/settings" },//
   ];
 
   return (
-    <div
-      className={`fixed top-16 left-0 h-[calc(100vh-4rem)] 
-      bg-gradient-to-b from-gray-600 via-gray-500 to-gray-600
-      text-white transition-all duration-300 z-40
-      ${isOpen ? "w-56" : "w-16"} shadow-xl`}
+    <aside
+      aria-label="Sidebar Navigation"
+      className="fixed top-16 left-0 h-[calc(100vh-4rem)] w-50
+      bg-slate-950/80 backdrop-blur-md border-r border-slate-800/60
+      text-slate-300 z-40 flex flex-col justify-between select-none shadow-2xl"
     >
-      <ul className="mt-4 space-y-2 px-2">
-        {menuItems.map((item) => {
-          const isActive = location.pathname === item.path;
+      {/* Navigation Links */}
+      <div className="mt-5 px-3 space-y-6 overflow-y-auto scrollbar-none">
+        {menuSections.map((section, idx) => (
+          <div key={idx} className="space-y-1.5">
+            {section.title && (
+              <h3 className="px-3 text-[11px] font-bold tracking-wider text-slate-500 uppercase">
+                {section.title}
+              </h3>
+            )}
 
-          return (
-            <li key={item.label} className="relative group">
-              <Link
-                to={item.path}
-                className={`flex items-center gap-4 px-3 py-3 rounded-lg
-                transition-all duration-300
-                ${
-                  isActive
-                    ? "bg-blue-600 shadow-md"
-                    : "hover:bg-gray-700 hover:scale-[1.02]"
-                }`}
-              >
-                {/* Icon */}
-                <span
-                  className={`transition-transform duration-300 ${
-                    isActive ? "scale-110" : "group-hover:scale-110"
-                  }`}
-                >
-                  {item.icon}
-                </span>
+            <ul className="space-y-1">
+              {section.items.map((item) => {
+                const isActive = location.pathname === item.path;
 
-                {/* Label */}
-                {isOpen && (
-                  <span className="text-sm font-medium tracking-wide">
-                    {item.label}
-                  </span>
-                )}
-              </Link>
+                return (
+                  <li key={item.label}>
+                    <Link
+                      to={item.path}
+                      className={`relative flex items-center gap-3 px-3.5 py-2.5 rounded-xl
+                      text-sm font-medium transition-all duration-200 group
+                      ${
+                        isActive
+                          ? "bg-indigo-600/15 text-indigo-400 font-semibold"
+                          : "text-slate-400 hover:bg-slate-800/50 hover:text-slate-200"
+                      }`}
+                    >
+                      {/* Active Indicator Bar & Glow */}
+                      {isActive && (
+                        <span className="absolute left-0 top-2 bottom-2 w-1 bg-indigo-500 rounded-r-full shadow-[0_0_10px_rgba(99,102,241,0.7)]" />
+                      )}
 
-              {/* Tooltip when collapsed */}
-              {!isOpen && (
-                <span
-                  className="absolute left-16 top-1/2 -translate-y-1/2
-                  bg-black text-white text-xs px-2 py-1 rounded
-                  opacity-0 group-hover:opacity-100
-                  transition whitespace-nowrap"
-                >
-                  {item.label}
-                </span>
-              )}
-            </li>
-          );
-        })}
-      </ul>
+                      {/* Icon */}
+                      <span
+                        className={`transition-colors duration-200 ${
+                          isActive ? "text-indigo-400" : "text-slate-400 group-hover:text-slate-200"
+                        }`}
+                      >
+                        {item.icon}
+                      </span>
 
-      {/* Bottom Section */}
-      <div className="absolute bottom-4 w-full px-2">
-        <div className="bg-gray-800 rounded-lg p-3 text-xs text-gray-400 text-center">
-          {isOpen ? "Asset Manager v1.0" : "v1"}
+                      {/* Label */}
+                      <span className="truncate">{item.label}</span>
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        ))}
+      </div>
+
+      {/* Footer Badge */}
+      <div className="p-3 m-3 rounded-xl bg-slate-900/60 border border-slate-800/80">
+        <div className="flex items-center justify-between text-xs text-slate-400 font-mono">
+          <span>Asset Manager</span>
+          <span className="px-1.5 py-0.5 rounded bg-indigo-500/10 text-indigo-400 font-semibold border border-indigo-500/20">
+            v1.0
+          </span>
         </div>
       </div>
-    </div>
+    </aside>
   );
 }
 

@@ -53,9 +53,7 @@ function App() {
   // ✅ After Login → Routed Dashboard Layout
   return (
     <Routes>
-      <Route path="importassets" element={<ImportAssets />} />
-      <Route path="/assets/store" element={<StoreAssets />} />
-      <Route path="exportassets" element={<ExportAssets />} />
+      
 
       <Route path="/" element={<Layout setIsLoggedIn={setIsLoggedIn} />}>
         <Route index element={<Dashboard />} />
@@ -75,6 +73,11 @@ function App() {
         <Route path="assign-assets" element={<AssetAssign />} />
         <Route path="issues" element={<Issues />} />
         <Route path="/issues/:id" element={<IssueDetails />} />
+
+
+        <Route path="importassets" element={<ImportAssets />} />
+      <Route path="/assets/store" element={<StoreAssets />} />
+      <Route path="exportassets" element={<ExportAssets />} />
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>

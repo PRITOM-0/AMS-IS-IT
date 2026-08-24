@@ -68,7 +68,11 @@ const filterStrategies = {
   matchesSurveyReport: (asset, surveyReport) =>
     !surveyReport || asset.surveyReport === surveyReport,
 
-  matchesStatus: (asset, status) => !status || asset.status === status,
+  matchesStatus: (asset, status) => {
+  if (status === "") return true;
+  if (status === "None") return !asset.status || asset.status.trim() === "";
+  return asset.status === status;
+},
 
   matchesAge: (asset, ageYears, invalidDateOnly) => {
     const assetAge = calculateAssetAgeInYears(asset);
@@ -146,9 +150,7 @@ export const useAssets = () => {
     const surveyReports = Array.from(
       new Set(assets.map((a) => a.surveyReport).filter(Boolean)),
     );
-    const statuses = Array.from(
-      new Set(assets.map((a) => a.status).filter(Boolean)),
-    );
+    const statuses = Array.from(new Set(assets.map((a) => a.status)));
 
     return { locations, departments, equipments, surveyReports, statuses };
   }, [assets]);
@@ -416,16 +418,30 @@ const AssetFilterBar = ({
           Status
         </label>
         <select
-          className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-indigo-400 bg-white"
-          value={filters.status}
-          onChange={(e) => onFilterChange("status", e.target.value)}
-        >
-          <option value="">All Status</option>
-          <option value="Instock">Instock</option>
-          <option value="Active">Active</option>
-          <option value="Inactive">Inactive</option>
-          <option value="Removal">Removal</option>
-        </select>
+  className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-indigo-400 bg-white"
+  value={filters.status}
+  onChange={(e) => onFilterChange("status", e.target.value)}
+>
+  <option value="">All Status</option>
+  {filterOptions.statuses.length > 0 ? (
+    filterOptions.statuses.map((st) => {
+      const isNone = st === "" || !st || !st.trim();
+      return (
+        <option key={st || "None"} value={isNone ? "None" : st}>
+          {isNone ? "None" : st}
+        </option>
+      );
+    })
+  ) : (
+    <>
+      <option value="Instock">Instock</option>
+      <option value="Active">Active</option>
+      <option value="Inactive">Inactive</option>
+      <option value="Removal">Removal</option>
+      <option value="None">None</option>
+    </>
+  )}
+</select>
       </div>
 
       {/* Reset Button */}

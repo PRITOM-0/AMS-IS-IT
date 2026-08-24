@@ -20,7 +20,7 @@ function Layout({ children, setIsLoggedIn }) {
 
         {/* 📄 Main Content */}
         <main
-          className={`flex-1 bg-[radial-gradient(circle_at_top_left,_rgba(129,140,248,0.28),_transparent_50%),radial-gradient(circle_at_top_right,_rgba(16,185,129,0.20),_transparent_50%),radial-gradient(circle_at_bottom_left,_rgba(244,114,182,0.16),_transparent_50%),linear-gradient(135deg,_#f8fbff_0%,_#eef4ff_50%,_#fdf2f8_100%)] overflow-y-auto transition-all duration-300  ml-56 `}
+          className={`flex-1 bg-gradient-to-br from-indigo-100 via-white to-violet-100 p-6 shadow-[0_20px_45px_-20px_rgba(79,70,229,0.45)] overflow-y-auto transition-all duration-300  ml-50 `}
         >
           {children || <Outlet />}
         </main>

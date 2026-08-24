@@ -172,7 +172,7 @@ export default function Dashboard() {
   const handleUp = () => setDrag(null);
 
   return (
-    <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,_rgba(129,140,248,0.28),_transparent_32%),radial-gradient(circle_at_top_right,_rgba(16,185,129,0.20),_transparent_24%),radial-gradient(circle_at_bottom_left,_rgba(244,114,182,0.16),_transparent_28%),linear-gradient(135deg,_#f8fbff_0%,_#eef4ff_45%,_#fdf2f8_100%)] text-slate-800 p-4 sm:p-6 lg:p-8">
+    <div className="min-h-screen   text-slate-800 p-4 sm:p-6 lg:p-8">
       <div className="max-w-7xl mx-auto space-y-6">
         {/* Header */}
         <div className="rounded-[28px] border border-indigo-200 bg-gradient-to-r from-white via-indigo-50/80 to-emerald-50/80 p-6 shadow-[0_20px_45px_-20px_rgba(79,70,229,0.45)] backdrop-blur-sm">
@@ -182,7 +182,7 @@ export default function Dashboard() {
                 Overview
               </p>
               <h1 className="mt-2 text-3xl font-extrabold tracking-tight text-slate-900">
-                Asset Management Overview
+                Asset Overview
               </h1>
               <p className="mt-2 text-sm text-slate-500">
                 Real-time status of company hardware, inventory, and staff

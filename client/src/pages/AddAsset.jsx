@@ -497,12 +497,13 @@ const AddAsset = () => {
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-1">
+                  <label className="block text-sm font-semibold text-gray-700 mb-1 ">
                     Purchase Price (BDT)
                   </label>
                   <input
                     type="number"
                     min="0"
+
                     className={inputStyle}
                     name="purchasePrice"
                     placeholder="e.g. 45000"
@@ -539,7 +540,7 @@ const AddAsset = () => {
                   />
                 </div>
 
-                <div>
+                <div className="hidden">
                   <label className="block text-sm font-semibold text-gray-700 mb-1">
                     Warranty Start
                   </label>

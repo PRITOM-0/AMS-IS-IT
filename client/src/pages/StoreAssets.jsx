@@ -73,12 +73,25 @@ const StoreAssets = () => {
     }
   }, [showResultModal]);
 
-  // Guaranteed High-Reliability Single POST Request
-  const saveAssetReliable = async (assetData, maxRetries = 10) => {
+  // Check if single asset exists in DB by ID
+  const checkAssetExists = async (id) => {
+    try {
+      const response = await fetch(`http://localhost:3000/assets/${id}`, {
+        method: "GET",
+      });
+      return response.ok;
+    } catch (err) {
+      return false;
+    }
+  };
+
+  // Guaranteed High-Reliability Single POST Request with Immediate ID Verification & Retry
+  const saveAndVerifyAssetReliable = async (assetData, maxRetries = 10) => {
     const { id, ...cleanData } = assetData;
 
     for (let attempt = 1; attempt <= maxRetries; attempt++) {
       try {
+        setStatusMessage(`Attempting save (Attempt ${attempt}/${maxRetries})...`);
         const response = await fetch("http://localhost:3000/assets", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -88,18 +101,26 @@ const StoreAssets = () => {
         if (response.ok) {
           const savedData = await response.json();
           if (savedData && savedData.id !== undefined) {
-            return savedData;
+            setStatusMessage(`Verifying DB write for ID ${savedData.id}...`);
+            const exists = await checkAssetExists(savedData.id);
+
+            if (exists) {
+              setStatusMessage(`✅ Verified ID ${savedData.id} in DB!`);
+              return savedData;
+            } else {
+              setStatusMessage(`⚠️ DB check failed for ID ${savedData.id}. Retrying...`);
+            }
           }
         }
       } catch (err) {
-        setStatusMessage(`Server busy. Retrying (${attempt}/${maxRetries})...`);
+        setStatusMessage(`Server busy/error. Retrying (${attempt}/${maxRetries})...`);
       }
 
       // Exponential backoff delay with jitter to unlock disk write loops
       const backoffDelay = Math.min(100 * Math.pow(2, attempt - 1), 3000);
       await delay(backoffDelay);
     }
-    throw new Error(`Failed after ${maxRetries} persistent attempts.`);
+    throw new Error(`Failed after ${maxRetries} persistent attempts and DB verifications.`);
   };
 
   // Guaranteed High-Reliability Single DELETE Request
@@ -123,7 +144,7 @@ const StoreAssets = () => {
     return false;
   };
 
-  // 100% Reliable Import Process
+  // 100% Reliable Sequential Store & Verify Import Process
   const handleCreateAssets = async () => {
     if (!assetsToStore.length) return;
 
@@ -140,10 +161,10 @@ const StoreAssets = () => {
       const asset = assetsToStore[index];
       const codeLabel = asset.assetCode || `Item #${index + 1}`;
       setImportingAssetCode(codeLabel);
-      setStatusMessage(`Writing item ${index + 1} of ${assetsToStore.length}...`);
+      setStatusMessage(`Storing item ${index + 1} of ${assetsToStore.length}...`);
 
       try {
-        const savedData = await saveAssetReliable(asset);
+        const savedData = await saveAndVerifyAssetReliable(asset);
         actualCreatedIds.push(savedData.id);
       } catch (err) {
         console.error(`❌ Critical import failure for ${codeLabel}:`, err.message);
@@ -165,7 +186,7 @@ const StoreAssets = () => {
       setMessage(`✅ 100% Import Complete! Successfully saved ${actualCreatedIds.length} of ${assetsToStore.length} assets.`);
       setSuccess(true);
     } else {
-      setMessage(`⚠️ Imported ${actualCreatedIds.length} of ${assetsToStore.length}. ${failedItems.length} failed due to severe lock.`);
+      setMessage(`⚠️ Imported ${actualCreatedIds.length} of ${assetsToStore.length}. ${failedItems.length} failed due to persistent lock.`);
       setSuccess(false);
     }
   };

@@ -321,7 +321,7 @@ const ImportAssets = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50/60 p-4 sm:p-6 lg:p-8 font-sans text-slate-800">
+    <div className="min-h-screen rounded p-4 sm:p-6 lg:p-8 font-sans text-slate-800">
       <div className="max-w-6xl mx-auto space-y-6">
 
         {/* Header */}
