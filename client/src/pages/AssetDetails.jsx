@@ -259,7 +259,7 @@ const AssetDetail = () => {
     .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4 md:p-8">
+    <div className="min-h-screen bg-gradient-to-br rounded-xl from-blue-50 to-indigo-100 p-4 md:p-8">
       {/* DATALISTS FOR EDIT MODE DROPDOWN SUGGESTIONS FROM EXISTING DB DATA */}
       <datalist id="equipment-options">
         {dropdownOptions.equipments.map((opt, i) => (

@@ -21,7 +21,7 @@ const AssetCard = ({ asset }) => {
     userCode,
   } = asset;
 
-  let badgeStyle = "bg-slate-100 text-slate-700 border-slate-200";
+  let badgeStyle = "bg-slate-100 text-slate-700 border-slate-500";
   if (status === "Active")
     badgeStyle = "bg-emerald-100 text-emerald-800 border-emerald-300 shadow-sm";
   else if (status === "Instock")
@@ -36,7 +36,7 @@ const AssetCard = ({ asset }) => {
   return (
     <Link
       to={`/assets/${id}`}
-      className="block rounded-[24px] border border-indigo-200/80 bg-gradient-to-br from-white via-indigo-50/40 to-slate-50/80 p-5 text-slate-800 shadow-[0_20px_45px_-25px_rgba(15,23,42,0.25)] backdrop-blur-sm transition-all duration-200 hover:-translate-y-1 hover:border-indigo-300 hover:shadow-[0_25px_50px_-20px_rgba(79,70,229,0.35)] min-w-0"
+      className="block rounded-[24px] border border-indigo-300 bg-gradient-to-br from-white via-indigo-50/40 to-slate-50/80 p-5 text-slate-800 shadow-[0_20px_45px_-25px_rgba(15,23,42,0.25)] backdrop-blur-sm transition-all duration-200 hover:-translate-y-1 hover:border-indigo-300 hover:shadow-[0_25px_50px_-20px_rgba(79,70,229,0.35)] min-w-0"
     >
       <div className="flex items-start justify-between gap-2 mb-3 min-w-0">
         <h2 className="text-lg font-extrabold text-slate-900 tracking-tight leading-snug truncate min-w-0 flex-1" title={equipment}>
@@ -59,7 +59,7 @@ const AssetCard = ({ asset }) => {
       </div>
 
       {(brand || model || serialNumber || macAddress) && (
-        <hr className="border-slate-200/80 my-3" />
+        <hr className="border-slate-500/80 my-3" />
       )}
 
       <div className="grid grid-cols-2 gap-2 text-xs text-slate-600">
@@ -94,7 +94,7 @@ const AssetCard = ({ asset }) => {
           <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-slate-400 block mb-1">
             Location
           </span>
-          <hr className="border-slate-200/80 mb-2" />
+          <hr className="border-slate-500/80 mb-2" />
           <div className="grid grid-cols-2 gap-1 text-xs text-slate-600">
             {location && <p className="font-medium text-slate-700 truncate" title={location}>{location}</p>}
             {department && <p className="font-medium text-slate-700 truncate" title={department}>{department}</p>}
@@ -109,7 +109,7 @@ const AssetCard = ({ asset }) => {
           <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-slate-400 block mb-1">
             Assigned To
           </span>
-          <hr className="border-slate-200/80 mb-2" />
+          <hr className="border-slate-500/80 mb-2" />
           <div className="flex items-center space-x-2 text-xs font-medium text-slate-700 min-w-0">
             <span className="flex h-6 w-6 items-center justify-center rounded-full border border-indigo-200 bg-indigo-50 text-[10px] font-bold text-indigo-600 shrink-0">
               {userName.charAt(0)}
