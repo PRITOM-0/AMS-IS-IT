@@ -84,7 +84,7 @@ function Sidebar() {
                       ${
                         isActive
                           ? "bg-indigo-600 text-white font-semibold scale-105"
-                          : "text-black hover:bg-slate-900 hover:text-slate-200 hover:scale-105"
+                          : "text-black hover:bg-slate-900 hover:text-slate-200"
                       }`}
                     >
                       {/* Active Indicator Bar & Glow */}
