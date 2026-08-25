@@ -177,8 +177,8 @@ const AddAsset = () => {
     "w-full p-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition text-gray-700 bg-white";
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4 md:p-8">
-      <div className="max-w-5xl mx-auto">
+    <div className="min-h-screen  p-4 md:p-8 ">
+      <div className="max-w-5xl mx-auto ">
         <button
           onClick={() => window.history.back()}
           className="mb-6 bg-white border border-blue-600 text-blue-600 px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-blue-600 hover:text-white transition shadow-sm font-medium"
@@ -186,8 +186,8 @@ const AddAsset = () => {
           <ArrowLeft size={20} /> Back
         </button>
 
-        <div className="bg-white shadow-xl rounded-2xl overflow-hidden border border-gray-100">
-          <div className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-5 px-6 text-center text-2xl font-bold tracking-wide">
+        <div className="bg-white shadow-xl rounded-2xl overflow-hidden  border border-blue-600">
+          <div className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-5 px-6 text-center text-3xl font-bold tracking-wide">
             Add New Asset
           </div>
 

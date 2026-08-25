@@ -6625,9 +6625,9 @@
       "vendorName": "Walton DIGI Tech",
       "remarks": "",
       "upgradeEquipments": "",
-      "surveyReport": "Ok",
+      "surveyReport": "OK",
       "createdAt": "2026-08-24T10:57:31.624Z",
-      "updatedAt": "2026-08-24T10:57:31.624Z",
+      "updatedAt": "2026-08-25T04:03:49.076Z",
       "id": "mOrMuJoGulw"
     },
     {
@@ -7605,8 +7605,8 @@
       "status": "Active",
       "userId": "",
       "userCode": "",
-      "userName": "Maher Sir",
-      "oldUsers": "",
+      "userName": "Mr. Maher ",
+      "oldUsers": "Maher Sir",
       "receivedDate": "",
       "purchaseDate": "",
       "purchasePrice": "",
@@ -7617,7 +7617,7 @@
       "upgradeEquipments": "",
       "surveyReport": "",
       "createdAt": "2026-08-24T10:57:31.624Z",
-      "updatedAt": "2026-08-24T10:57:31.624Z",
+      "updatedAt": "2026-08-25T05:21:32.739Z",
       "id": "lI-SKP86vyI"
     },
     {
@@ -9541,17 +9541,16 @@
       "id": "gVI7MmA-bMw"
     }
   ],
-  "employees": [],
-  "issues": [
+  "tasks": [
     {
       "assetId": "X7zSfm834OQ",
       "assetCode": "AS-",
       "employeeId": "6kq-TpMuHqs",
       "assignedTo": "Pritom Saha",
-      "issueType": "Hardware",
+      "taskType": "Hardware",
       "status": "Resolved",
       "priority": "High",
-      "description": "Toner issue.",
+      "description": "Toner task.",
       "createdAt": "2026-08-10T04:59:58.506Z",
       "resolvedAt": "",
       "id": "XYww297zT_M"
@@ -9561,7 +9560,7 @@
       "assetCode": "AS-",
       "employeeId": "S5qFPJCSLsM",
       "assignedTo": "Abdul Kader",
-      "issueType": "Software",
+      "taskType": "Software",
       "status": "Resolved",
       "priority": "High",
       "description": "Blank Print",
@@ -9574,7 +9573,7 @@
       "assetCode": "AS-",
       "employeeId": "dRRMiK9Sm1g",
       "assignedTo": "Ranjan Halder",
-      "issueType": "Software",
+      "taskType": "Software",
       "status": "Death",
       "priority": "Medium",
       "description": "Screen fliping",
@@ -9587,7 +9586,7 @@
       "assetCode": "AS-",
       "employeeId": "-htkFETu_l8",
       "assignedTo": "Ariful Rahman",
-      "issueType": "Software",
+      "taskType": "Software",
       "status": "Open",
       "priority": "High",
       "description": "OS not working",
@@ -9600,7 +9599,7 @@
       "assetCode": "AS-",
       "employeeId": "S5qFPJCSLsM",
       "assignedTo": "Abdul Kader",
-      "issueType": "Software",
+      "taskType": "Software",
       "status": "Open",
       "priority": "High",
       "description": "Basic Software Need",
@@ -9613,7 +9612,7 @@
       "assetCode": "06-01-04-0007",
       "employeeId": "S5qFPJCSLsM",
       "assignedTo": "Abdul Kader",
-      "issueType": "Unknown",
+      "taskType": "Unknown",
       "status": "Resolved",
       "priority": "Medium",
       "description": "Monitor Display Flickering. ..",
@@ -9622,6 +9621,7 @@
       "id": "jXA0oivb8x0"
     }
   ],
+  "employees": [],
   "admins": [
     {
       "id": "ADM-001",

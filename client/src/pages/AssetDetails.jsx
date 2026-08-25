@@ -10,7 +10,7 @@ import {
   UserCheck,
 } from "lucide-react";
 import { API_BASE_URL } from "../env";
-import IssueCard from "../components/IssueCard";
+import IssueCard from "../components/TaskCard";
 
 const AssetDetail = () => {
   const { id } = useParams();
@@ -771,7 +771,7 @@ const Info = ({
               key={index}
               className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-slate-100 text-slate-700 border border-blue-500 w-fit"
             >
-              {index+1}. {user}
+              {index + 1}. {user}
             </span>
           ))}
       </div>

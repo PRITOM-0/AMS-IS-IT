@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { UserRoundCheck } from 'lucide-react';
 
 const AssetCard = ({ asset }) => {
   if (!asset) return null;
@@ -111,8 +112,8 @@ const AssetCard = ({ asset }) => {
           </span>
           <hr className="border-slate-500/80 mb-2" />
           <div className="flex items-center space-x-2 text-xs font-medium text-slate-700 min-w-0">
-            <span className="flex h-6 w-6 items-center justify-center rounded-full border border-indigo-200 bg-indigo-50 text-[10px] font-bold text-indigo-600 shrink-0">
-              {userName.charAt(0)}
+            <span className="flex h-6 w-6 items-center justify-center rounded-full  bg-indigo-50 text-[10px] font-bold text-indigo-600 shrink-0">
+               <UserRoundCheck size={17} strokeWidth={3}  />
             </span>
             <span className="truncate min-w-0" title={`${userName} ${userCode ? `- ${userCode}` : ""}`}>
               {userName} {userCode ? `- ${userCode}` : ""}

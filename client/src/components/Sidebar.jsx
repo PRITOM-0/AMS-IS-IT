@@ -13,7 +13,8 @@ import {
   FaExclamationCircle,
 } from "react-icons/fa";
 import { LuImport } from "react-icons/lu";
-import { LayoutDashboard } from 'lucide-react';
+import { LayoutDashboard,AlarmClockCheck } from 'lucide-react';
+ 
 
 function Sidebar() {
   const location = useLocation();
@@ -25,6 +26,7 @@ function Sidebar() {
         { label: "Dashboard", icon: <LayoutDashboard size={17} strokeWidth={3} />, path: "/" },
         { label: "Assets", icon: <FaBoxOpen size={17} />, path: "/assets" },
         { label: "Add Asset", icon: <FaPlusCircle size={17} />, path: "/assets/addAsset" },
+        { label: "Tasks", icon: <AlarmClockCheck size={17} strokeWidth={3} />, path: "/tasks" },
       ],
     },
     {
@@ -41,7 +43,7 @@ function Sidebar() {
           path: "/exportassets",
         },
         // { label: "Assign Assets", icon: <FaShareSquare size={17} />, path: "/assign-assets" },
-        // { label: "Issues", icon: <FaExclamationCircle size={17} />, path: "/issues" },
+        
         // { label: "Requests", icon: <FaClipboardList size={17} />, path: "/requests" },
       ],
     },
@@ -84,7 +86,7 @@ function Sidebar() {
                       ${
                         isActive
                           ? "bg-indigo-600 text-white font-semibold scale-105"
-                          : "text-black hover:bg-slate-900 hover:text-slate-200"
+                          : "text-black hover:bg-slate-900 hover:text-slate-200 hover:scale-105"
                       }`}
                     >
                       {/* Active Indicator Bar & Glow */}

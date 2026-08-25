@@ -28,7 +28,7 @@ const priorityStyles = {
   Low: "text-green-600",
 };
 
-export default function IssueCard({ issue, asset, employee }) {
+export default function TaskCard({ task, asset, employee }) {
   const formattedDate = (date) => {
     return new Date(date).toLocaleString(undefined, {
       weekday: 'long', // e.g., "Monday"
@@ -42,7 +42,7 @@ export default function IssueCard({ issue, asset, employee }) {
 
   return (
     <Link
-      to={`/issues/${issue.id}`}
+      to={`/tasks/${task.id}`}
       className="block bg-white rounded-xl shadow-sm border hover:shadow-lg hover:-translate-y-1 transition p-5 space-y-4"
     >
       {/* TOP ROW */}
@@ -50,26 +50,26 @@ export default function IssueCard({ issue, asset, employee }) {
         <div>
           <h2 className="font-semibold text-lg">{asset?.name}</h2>
           <p className="text-sm font-bold text-gray-500 line-clamp-2">
-            {issue.description}
+            {task.description}
           </p>
         </div>
 
         <span
-          className={`flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${statusStyles[issue.status]}`}
+          className={`flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${statusStyles[task.status]}`}
         >
-          {statusIcons[issue.status]}
-          {issue.status}
+          {statusIcons[task.status]}
+          {task.status}
         </span>
       </div>
 
       {/* PRIORITY + TYPE */}
       <div className="flex justify-between text-sm">
-        <span className={`font-medium ${priorityStyles[issue.priority]}`}>
-          {issue.priority} Priority
+        <span className={`font-medium ${priorityStyles[task.priority]}`}>
+          {task.priority} Priority
         </span>
 
         <span className="text-gray-500">
-          {issue.issueType}
+          {task.taskType}
         </span>
       </div>
 
@@ -104,9 +104,9 @@ export default function IssueCard({ issue, asset, employee }) {
 
       {/* FOOTER */}
       <div className="flex justify-between items-center text-xs font-bold text-black pt-2 border-t">
-        <span>📅 {formattedDate(issue.createdAt)}</span>
+        <span>📅 {formattedDate(task.createdAt)}</span>
 
-        {issue.resolvedAt ? (
+        {task.resolvedAt ? (
           <span className="text-green-500">
             ✔ Resolved
           </span>

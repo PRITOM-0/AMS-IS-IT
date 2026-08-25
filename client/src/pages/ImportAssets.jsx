@@ -321,7 +321,7 @@ const ImportAssets = () => {
   };
 
   return (
-    <div className="min-h-screen rounded p-4 sm:p-6 lg:p-8 font-sans text-slate-800">
+    <div className="min-h-screen rounded-2xl border border-indigo-400 shadow-2xl bg-white p-4 sm:p-6 lg:p-8 font-sans text-slate-800">
       <div className="max-w-6xl mx-auto space-y-6">
 
         {/* Header */}
@@ -330,7 +330,7 @@ const ImportAssets = () => {
             <button
               type="button"
               onClick={() => navigate("/assets", { replace: true })}
-              className="mb-3 inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-xs font-semibold text-slate-700 shadow-sm hover:bg-slate-100 hover:text-indigo-600 transition-all duration-150 active:scale-[0.98]"
+              className="mb-3 inline-flex items-center gap-2 rounded-xl border border-indigo-400 bg-white px-3.5 py-2 text-xs font-semibold text-slate-700 shadow-sm hover:bg-slate-100 hover:text-indigo-600 transition-all duration-150 active:scale-[0.98]"
             >
               <ArrowLeft size={15} className="text-indigo-600" /> Back to Assets
             </button>
@@ -350,7 +350,7 @@ const ImportAssets = () => {
           {excelData.length > 0 && (
             <button
               onClick={resetImport}
-              className="inline-flex items-center gap-2 px-4 py-2.5 border border-slate-200 rounded-xl bg-white hover:bg-slate-50 text-xs font-semibold text-slate-700 shadow-sm transition-all active:scale-[0.98]"
+              className="inline-flex items-center gap-2 px-4 py-2.5 border border-indigo-400 rounded-xl bg-white hover:bg-slate-50 text-xs font-semibold text-slate-700 shadow-sm transition-all active:scale-[0.98]"
             >
               <RefreshCw size={15} className="text-indigo-600" /> Upload Another File
             </button>
@@ -377,11 +377,11 @@ const ImportAssets = () => {
 
         {/* File Upload State */}
         {excelData.length === 0 ? (
-          <div className="bg-white border border-slate-200 rounded-2xl p-8 sm:p-14 shadow-sm relative overflow-hidden">
+          <div className="bg-white border border-indigo-400 rounded-2xl p-8 sm:p-14 shadow-sm relative overflow-hidden">
             <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"></div>
 
             <div className="max-w-md mx-auto text-center">
-              <div className="w-20 h-20 mx-auto rounded-2xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 shadow-inner mb-5">
+              <div className="w-20 h-20 mx-auto rounded-2xl bg-indigo-50 border border-indigo-500 flex items-center justify-center text-indigo-600 shadow-inner mb-5">
                 <Upload size={32} />
               </div>
               <h2 className="text-xl font-bold text-slate-900">Upload Excel Spreadsheet</h2>

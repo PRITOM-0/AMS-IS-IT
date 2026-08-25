@@ -36,21 +36,21 @@ const statusIcons = {
   Death: <X size={16} />,
 };
 
-export default function IssueDetails() {
+export default function TaskDetails() {
   const { id } = useParams();
 
-  const [issue, setIssue] = useState(null);
+  const [task, setTask] = useState(null);
   const [asset, setAsset] = useState(null);
   const [employees, setEmployees] = useState([]);
   const [form, setForm] = useState({});
   const [editMode, setEditMode] = useState(false);
 
   useEffect(() => {
-    // fetch issue
-    fetch(`${API_BASE_URL}/issues/${id}`)
+    // fetch task
+    fetch(`${API_BASE_URL}/tasks/${id}`)
       .then((res) => res.json())
       .then((data) => {
-        setIssue(data);
+        setTask(data);
         setForm(data);
 
         // fetch asset
@@ -68,7 +68,7 @@ export default function IssueDetails() {
 
 
   const handleUpdate = async () => {
-    const res = await fetch(`${API_BASE_URL}/issues/${id}`, {
+    const res = await fetch(`${API_BASE_URL}/tasks/${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(form),
@@ -76,7 +76,7 @@ export default function IssueDetails() {
 
   
     const updated = await res.json();
-    setIssue(updated);
+    setTask(updated);
     setEditMode(false);
   };
 const formattedDate = (date) => {
@@ -89,12 +89,12 @@ const formattedDate = (date) => {
         hour12: true, // use 12-hour time
       });
     };
-  if (!issue) return <p className="p-6">Loading...</p>;
+  if (!task) return <p className="p-6">Loading...</p>;
 
   const getEmployee = (name) => {
     return employees.find((emp) => emp.name === name);
   }
-  const assignedEmp = getEmployee(issue.assignedTo);
+  const assignedEmp = getEmployee(task.assignedTo);
 
   return (
     <div className="p-6 max-w-5xl mx-auto space-y-6">
@@ -107,7 +107,7 @@ const formattedDate = (date) => {
           <ArrowLeft size={24} /> Back
         </button>
         <h1 className="text-2xl font-bold">
-          <span className="text-gray-500">Issue on - </span>{" "}
+          <span className="text-gray-500">Task on - </span>{" "}
           {asset?.name || "Asset Details"}
         </h1>
 
@@ -129,7 +129,7 @@ const formattedDate = (date) => {
             <button
               onClick={() => {
                 setEditMode(false);
-                setForm(issue);
+                setForm(task);
               }}
               className="flex items-center gap-2 bg-gray-400 text-white px-4 py-2 rounded-lg"
             >
@@ -143,24 +143,24 @@ const formattedDate = (date) => {
       <div className="flex items-center gap-4">
         <span
           className={`flex items-center gap-2 px-3 py-1 border rounded-full text-sm font-medium ${
-            statusStyles[issue.status]
+            statusStyles[task.status]
           }`}
         >
-          {statusIcons[issue.status]} {issue.status}
+          {statusIcons[task.status]} {task.status}
         </span>
 
-        <span className={`font-semibold ${priorityStyles[issue.priority]}`}>
-          {issue.priority} Priority
+        <span className={`font-semibold ${priorityStyles[task.priority]}`}>
+          {task.priority} Priority
         </span>
 
-        <span className="text-gray-500 text-sm">Type: {issue.issueType}</span>
+        <span className="text-gray-500 text-sm">Type: {task.taskType}</span>
       </div>
 
       {/* MAIN GRID */}
       <div className="grid grid-cols-4 gap-6">
-        {/* LEFT - ISSUE INFO */}
+        {/* LEFT - Task INFO */}
         <div className="col-span-2 bg-white p-6 rounded-xl shadow space-y-4 border">
-          <h2 className="font-semibold text-lg">Issue Details</h2>
+          <h2 className="font-semibold text-lg">Task Details</h2>
 
           {/* Description */}
           <div>
@@ -174,7 +174,7 @@ const formattedDate = (date) => {
                 }
               />
             ) : (
-              <p className="mt-1">{issue.description}</p>
+              <p className="mt-1">{task.description}</p>
             )}
           </div>
           {/* Priority + Status Edit (Same Row) */}
@@ -217,11 +217,11 @@ const formattedDate = (date) => {
           <div className="pt-4 border-t">
             <h3 className="font-medium mb-2">Timeline</h3>
             <div className="text-sm text-black font-bold space-y-1">
-              <p>📅 Created: {formattedDate(issue.createdAt)}</p>
+              <p>📅 Created: {formattedDate(task.createdAt)}</p>
               <p>
                 ✅ Resolved:{" "}
-                {issue.resolvedAt
-                  ? formattedDate(issue.resolvedAt)
+                {task.resolvedAt
+                  ? formattedDate(task.resolvedAt)
                   : "Not resolved yet"}
               </p>
             </div>
