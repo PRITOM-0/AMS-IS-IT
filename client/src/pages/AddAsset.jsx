@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { API_BASE_URL } from "../env";
 import { ArrowLeft, Save, RotateCcw } from "lucide-react";
-
+import { FaPlus } from "react-icons/fa";
 const getTodayDate = () => new Date().toISOString().split("T")[0];
 
 const initialFormState = {
@@ -503,7 +503,6 @@ const AddAsset = () => {
                   <input
                     type="number"
                     min="0"
-
                     className={inputStyle}
                     name="purchasePrice"
                     placeholder="e.g. 45000"
@@ -516,14 +515,22 @@ const AddAsset = () => {
                   <label className="block text-sm font-semibold text-gray-700 mb-1">
                     Vendor Name
                   </label>
-                  <input
-                    className={inputStyle}
-                    name="vendorName"
-                    list="vendor-db-options"
-                    placeholder="Type or select vendor"
-                    value={formData.vendorName}
-                    onChange={handleChange}
-                  />
+                  <div className="flex items-center justify-center">
+                    <input
+                      className={inputStyle}
+                      name="vendorName"
+                      list="vendor-db-options"
+                      placeholder="Type or select vendor"
+                      value={formData.vendorName}
+                      onChange={handleChange}
+                    />
+                    <button
+                      type="button"
+                      className="h-full p-2 mx-1 border border-green-300 rounded-full  flex items-center justify-center text-green-500 hover:text-green-600 hover:scale-110 active:scale-95 transition-all duration-150 ease-in-out cursor-pointer focus:outline-none"
+                    >
+                      <FaPlus className="w-4 h-4" />
+                    </button>
+                  </div>
                 </div>
 
                 <div>
@@ -606,6 +613,7 @@ const AddAsset = () => {
                     value={formData.surveyReport}
                     onChange={handleChange}
                   >
+                     <option >Select...</option>
                     <option value="OK">OK</option>
                     <option value="Update">Update</option>
                     <option value="Replace">Replace</option>

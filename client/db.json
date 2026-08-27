@@ -2889,7 +2889,7 @@
       "specifications": "Corei3 2.40 GHz, 4 GB DDR3 1600 RAM, 240 GB SSD",
       "macAddress": "48:5d:60:71:b3:cf",
       "department": "HR",
-      "location": "Old Corporate",
+      "location": "New Corporate",
       "floor": "5th Floor",
       "room": "Near Board Room",
       "status": "Active",
@@ -2907,7 +2907,7 @@
       "upgradeEquipments": "Need to upgrade 4 GB DDR3ram 1600Mhz",
       "surveyReport": "Upgrade",
       "createdAt": "2026-08-24T10:57:31.622Z",
-      "updatedAt": "2026-08-24T10:57:31.622Z",
+      "updatedAt": "2026-08-27T06:05:34.892Z",
       "id": "40VMsznY8o4"
     },
     {
@@ -5559,7 +5559,7 @@
       "specifications": "MB: Acer H-81, Processor: Intel Core i3-4150, RAM: 4GB DDR3 1600MHz, 240 GB SSD",
       "macAddress": "d8:97:ba:c6:27:77",
       "department": "Finance",
-      "location": "Old Corporate",
+      "location": "New Corporate",
       "floor": "6th Floor",
       "room": "FCB",
       "status": "Active",
@@ -5577,7 +5577,7 @@
       "upgradeEquipments": "Need to upgrade 4GB Ram DDR3 1600mhz",
       "surveyReport": "Upgrade",
       "createdAt": "2026-08-24T10:57:31.624Z",
-      "updatedAt": "2026-08-24T10:57:31.624Z",
+      "updatedAt": "2026-08-27T06:06:09.660Z",
       "id": "TSWc6pnSOYU"
     },
     {
@@ -5589,7 +5589,7 @@
       "specifications": "Acer 19.5\" Monitor",
       "macAddress": "",
       "department": "Finance",
-      "location": "Old Corporate",
+      "location": "New Corporate",
       "floor": "6th Floor",
       "room": "FCB",
       "status": "Active",
@@ -5607,7 +5607,7 @@
       "upgradeEquipments": "",
       "surveyReport": "",
       "createdAt": "2026-08-24T10:57:31.624Z",
-      "updatedAt": "2026-08-24T10:57:31.624Z",
+      "updatedAt": "2026-08-27T06:07:12.596Z",
       "id": "3lawFQGpmd0"
     },
     {
@@ -5619,7 +5619,7 @@
       "specifications": "650VA",
       "macAddress": "",
       "department": "Finance",
-      "location": "Old Corporate",
+      "location": "New Corporate",
       "floor": "6th Floor",
       "room": "FCB",
       "status": "Active",
@@ -5637,7 +5637,7 @@
       "upgradeEquipments": "",
       "surveyReport": "",
       "createdAt": "2026-08-24T10:57:31.624Z",
-      "updatedAt": "2026-08-24T10:57:31.624Z",
+      "updatedAt": "2026-08-27T06:06:54.292Z",
       "id": "XW5yM7FZopo"
     },
     {
@@ -5649,7 +5649,7 @@
       "specifications": "",
       "macAddress": "",
       "department": "Finance",
-      "location": "Old Corporate",
+      "location": "New Corporate",
       "floor": "6th Floor",
       "room": "FCB",
       "status": "Active",
@@ -5667,7 +5667,7 @@
       "upgradeEquipments": "",
       "surveyReport": "",
       "createdAt": "2026-08-24T10:57:31.624Z",
-      "updatedAt": "2026-08-24T10:57:31.624Z",
+      "updatedAt": "2026-08-27T06:07:26.124Z",
       "id": "d-1hOhxlG68"
     },
     {
@@ -5679,7 +5679,7 @@
       "specifications": "Canon Lide 120 Scanner",
       "macAddress": "",
       "department": "Finance",
-      "location": "Old Corporate",
+      "location": "New Corporate",
       "floor": "6th Floor",
       "room": "FCB",
       "status": "Active",
@@ -5697,7 +5697,7 @@
       "upgradeEquipments": "",
       "surveyReport": "",
       "createdAt": "2026-08-24T10:57:31.624Z",
-      "updatedAt": "2026-08-24T10:57:31.624Z",
+      "updatedAt": "2026-08-27T06:06:33.148Z",
       "id": "0c6eHgZoYL8"
     },
     {

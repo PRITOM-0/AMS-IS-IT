@@ -172,7 +172,7 @@ export default function Dashboard() {
   const handleUp = () => setDrag(null);
 
   return (
-    <div className="min-h-screen   text-slate-800 p-4 sm:p-6 lg:p-8">
+    <div className="min-h-screen text-slate-800 p-4 sm:p-6 lg:p-8">
       <div className="max-w-7xl mx-auto space-y-6">
         {/* Header */}
         <div className="rounded-[28px] border border-indigo-200 bg-gradient-to-r from-white via-indigo-50/80 to-emerald-50/80 p-6 shadow-[0_20px_45px_-20px_rgba(79,70,229,0.45)] backdrop-blur-sm">
