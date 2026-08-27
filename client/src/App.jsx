@@ -16,7 +16,8 @@ import Employees from "./pages/Employees";
 import EmployeeDetails from "./pages/EmployeeDetails";
 import AddEmployee from "./pages/AddEmployee";
 import AssetAssign from "./pages/AssetAssign";
-import Tasks from "./pages/Tasks";
+import Task from "./pages/Tasks";
+import AddTask from "./pages/AddTask"
 import TaskDetails from "./pages/TaskDetails";
 import ImportAssets from "./pages/ImportAssets";
 import StoreAssets from "./pages/StoreAssets";
@@ -71,7 +72,8 @@ function App() {
         <Route path="/employees/add" element={<AddEmployee />} />
         <Route path="/employees/:id" element={<EmployeeDetails />} />
         <Route path="assign-assets" element={<AssetAssign />} />
-        <Route path="tasks" element={<Tasks />} />
+        <Route path="/tasks" element={<Task />} />
+        <Route path="/tasks/add" element={<AddTask />} />
         <Route path="/tasks/:id" element={<TaskDetails />} />
 
 

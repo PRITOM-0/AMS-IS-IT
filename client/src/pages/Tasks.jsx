@@ -1,126 +1,40 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { API_BASE_URL } from "../env";
 import TaskCard from "../components/TaskCard";
-import { Plus, Search, User, X } from "lucide-react";
+import { Plus, Search } from "lucide-react";
 
-function Tasks() {
+export default function Task() {
+  const navigate = useNavigate();
   const [tasks, setTasks] = useState([]);
-  const [assets, setAssets] = useState([]);
-  const [employees, setEmployees] = useState([]);
-
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("All");
-  const [showForm, setShowForm] = useState(false);
-
-  // 🔍 Search states
-  const [assetQuery, setAssetQuery] = useState("");
-  const [employeeQuery, setEmployeeQuery] = useState("");
-
-  const [showAssetDropdown, setShowAssetDropdown] = useState(false);
-  const [showEmployeeDropdown, setShowEmployeeDropdown] = useState(false);
-
-  const initialForm = {
-    assetId: "",
-    assetCode: "",
-    employeeId: "",
-    assignedTo: "",
-    taskType: "Unknown",
-    status: "Open",
-    priority: "Medium",
-    description: "",
-    createdAt: "",
-    resolvedAt: "",
-  };
-
-  const [form, setForm] = useState(initialForm);
-
-  // 🔄 Fetch Data
-  const fetchTasks = async () => {
-    const res = await fetch(`${API_BASE_URL}/tasks`);
-    const resAssets = await fetch(`${API_BASE_URL}/assets`);
-    const resEmployees = await fetch(`${API_BASE_URL}/employees`);
-
-    const data = await res.json();
-    const assetsData = await resAssets.json();
-    const employeesData = await resEmployees.json();
-
-    setTasks(data);
-    setAssets(assetsData);
-    setEmployees(employeesData);
-  };
 
   useEffect(() => {
-    fetchTasks();
+    fetch(`${API_BASE_URL}/tasks`)
+      .then((res) => res.json())
+      .then((data) => setTasks(data))
+      .catch((err) => console.error("Failed to load tasks:", err));
   }, []);
 
-  // ✍️ Input Change
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
-
-  // 🔍 Filter Assets
-  const filteredAssets = assets.filter((a) => {
-    const q = assetQuery.toLowerCase();
-    return (
-      a.assetCode?.toLowerCase().includes(q) ||
-      a.name?.toLowerCase().includes(q) ||
-      a.location?.toLowerCase().includes(q) ||
-      a.assignDetails?.assignedTo?.toLowerCase().includes(q)
-    );
-  });
-
-  // ➕ Submit Task
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    form.createdAt = new Date().toISOString();
-    console.log("Submitting form:", form);
-    if (!form.assetId || !form.employeeId || !form.description) {
-      alert("Please fill in all required fields.");
-      return;
-    }
-
-    await fetch(`${API_BASE_URL}/tasks`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        ...form,
-        id: "" + Date.now(),
-      }),
-    });
-
-    setForm(initialForm);
-    setAssetQuery("");
-    setEmployeeQuery("");
-    setShowForm(false);
-    fetchTasks();
-  };
-
-  // 🔍 Main Filter
-  const filteredTasks = tasks.filter((i) => {
-    const q = search.toLowerCase();
+  const filteredTasks = tasks
+  .filter((t) => {
+    const q = search.toLowerCase(); // Convert search input string to lowercase
 
     const matchSearch =
-      i.assetCode?.toLowerCase().includes(q) ||
-      i.priority?.toLowerCase().includes(q) ||
-      i.assignedTo?.toLowerCase().includes(q);
+      t.taskName?.toLowerCase().includes(q) ||
+      t.taskCode?.toLowerCase().includes(q) ||
+      t.assetCode?.toLowerCase().includes(q) ||
+      t.username?.toLowerCase().includes(q) ||
+      t.itPersonName?.toLowerCase().includes(q);
 
-    const matchFilter = filter === "All" || i.status === filter;
+    const matchFilter = filter === "All" || t.progress === filter;
 
     return matchSearch && matchFilter;
-  });
+  })
+  .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)); // Sort filtered items (Newest first)
 
-  const assetEmpId = (assCode) => {
-    const id = employees.find((e) => e.employeeCode === empCode);
-    return employee ? employee.id : "";
-  };
-
-  const handleReset = () => {
-    setForm(initialForm);
-    setAssetQuery("");
-    setEmployeeQuery("");
-  };
-
-  const tabs = ["All", "Open", "Solving", "Resolved", "Death"];
+  const tabs = ["All", "Arrived", "On Process", "Complete"];
 
   return (
     <div className="p-6 space-y-6">
@@ -129,35 +43,22 @@ function Tasks() {
         <h1 className="text-2xl font-bold">Task Management</h1>
 
         <div className="flex gap-3 w-full md:w-auto">
-          {/* Search */}
-          <div className="flex items-center border px-3 py-2 rounded-xl w-full md:w-72">
+          <div className="flex items-center border px-3 py-2 rounded-xl w-full md:w-72 bg-white shadow-sm">
             <Search size={16} className="text-gray-400 mr-2" />
             <input
-              placeholder="Search task..."
+              placeholder="Search tasks..."
               className="w-full outline-none text-sm"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
           </div>
 
-          {/* Button */}
-          {showForm ? (
-            <button
-              onClick={() => setShowForm(false)}
-              className="flex items-center gap-2 bg-red-600 text-white px-4 py-2 rounded-xl"
-            >
-              <X size={18} />
-              Cancel
-            </button>
-          ) : (
-            <button
-              onClick={() => setShowForm(true)}
-              className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-xl"
-            >
-              <Plus size={18} />
-              Create
-            </button>
-          )}
+          <button
+            onClick={() => navigate("/tasks/add")}
+            className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-xl hover:bg-blue-700"
+          >
+            <Plus size={18} /> Create Task
+          </button>
         </div>
       </div>
 
@@ -167,8 +68,8 @@ function Tasks() {
           <button
             key={t}
             onClick={() => setFilter(t)}
-            className={`px-4 py-1.5 rounded-full text-sm border ${
-              filter === t ? "bg-blue-600 text-white" : "bg-white"
+            className={`px-4 py-1.5 rounded-full text-sm border transition-colors ${
+              filter === t ? "bg-blue-600 text-white border-blue-600" : "bg-white hover:bg-gray-50"
             }`}
           >
             {t}
@@ -176,144 +77,16 @@ function Tasks() {
         ))}
       </div>
 
-      {/* FORM */}
-      {showForm && (
-        <form
-          onSubmit={handleSubmit}
-          className="border-emerald-200 text-black bg-gradient-to-br from-emerald-100 via-white to-teal-100 p-6 rounded-xl shadow space-y-5 max-w-3xl mx-auto"
-        >
-          <h2 className="font-semibold text-lg">Create Task</h2>
-
-          {/* ASSET SELECT */}
-          <div className="relative">
-            <label className="text-sm">Asset</label>
-            <input
-              value={assetQuery}
-              onChange={(e) => {
-                setAssetQuery(e.target.value);
-                setShowAssetDropdown(true);
-              }}
-              placeholder="Search asset..."
-              className="w-full   border px-3 py-2 rounded"
-            />
-
-            {showAssetDropdown && assetQuery && (
-              <div className="absolute bg-white z-10 border w-full rounded shadow max-h-40 overflow-y-auto">
-                {filteredAssets.map((a) => (
-                  <div
-                    key={a.id}
-                    onClick={() => {
-                      console.log("before Form:", form);
-                      setForm({
-                        ...form,
-                        assetId: a.id,
-                        assetCode: a.assetCode,
-                        assignedTo: a.assignDetails?.assignedTo || "Unassigned",
-                        employeeId: a.assignDetails?.assignEmpId || "",
-                      });
-                      console.log("Selected Asset:", a);
-                      console.log("Updated Form:", form);
-
-                      setAssetQuery(
-                        `${a.assetCode} - ${a.name} - ${a.location} - ${a.assignDetails?.assignedTo}`,
-                      );
-                      setShowAssetDropdown(false);
-                    }}
-                    className="p-2  hover:bg-blue-100 cursor-pointer"
-                  >
-                    {a.assetCode} - {a.name} - {a.location} -{" "}
-                    {a.assignDetails?.assignedTo}
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-
-          {/* STATUS + PRIORITY */}
-          <div className="grid grid-cols-3 gap-4">
-            <div className="flex flex-col">
-              <label className="text-sm">Status</label>
-              <select
-                name="status"
-                value={form.status}
-                onChange={handleChange}
-                className="border px-3 py-2 rounded"
-              >
-                <option>Open</option>
-                <option>Solving</option>
-                <option>Resolved</option>
-                <option>Death</option>
-              </select>
-            </div>
-
-            <div className="flex flex-col">
-              <label className="text-sm">Priority</label>
-              <select
-                name="priority"
-                value={form.priority}
-                onChange={handleChange}
-                className="border px-3 py-2 rounded"
-              >
-                <option>Low</option>
-                <option>Medium</option>
-                <option>High</option>
-              </select>
-            </div>
-
-            <div className="flex flex-col">
-              <label className="text-sm">Task Type</label>
-              <select
-                name="taskType"
-                value={form.taskType}
-                onChange={handleChange}
-                className="border px-3 py-2 rounded"
-              >
-                <option>Unknown</option>
-                <option>Hardware</option>
-                <option>Software</option>
-                <option>Network</option>
-              </select>
-            </div>
-          </div>
-
-          {/* DESCRIPTION */}
-          <div className="flex flex-col">
-            <label className="text-sm">Description</label>
-            <textarea
-              name="description"
-              value={form.description}
-              onChange={handleChange}
-              placeholder="Task description..."
-              className="w-full border px-3 py-2 rounded"
-            />
-          </div>
-
-          <button className="bg-green-600 text-white px-4 py-2 rounded">
-            Save Task
-          </button>
-          <button
-            type="button"
-            onClick={handleReset}
-            className="bg-gray-500 text-white ml-5 px-4 py-2 rounded"
-          >
-            Reset
-          </button>
-        </form>
-      )}
-
-      {/* Task LIST */}
+      {/* GRID */}
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {filteredTasks.map((task) => (
-          <TaskCard
-            key={task.id}
-            task={task}
-            asset={assets.find((a) => a.id === task.assetId)}
-            employee={employees.find((e) => e.id === task.employeeId)}
-          />
-        ))}
+        {filteredTasks.length > 0 ? (
+          filteredTasks.map((task) => <TaskCard key={task.id || task.taskId} task={task} />)
+        ) : (
+          <div className="col-span-full text-center py-10 text-gray-500 border rounded-xl bg-gray-50">
+            No tasks found.
+          </div>
+        )}
       </div>
     </div>
   );
 }
-
-export default Tasks;

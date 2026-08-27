@@ -19,51 +19,49 @@ import { DashboardCategoryTree } from "../components/DashboardCategoryTree";
 export default function Dashboard() {
   const [data, setData] = useState({
     assets: [],
-    employees: [],
+    tasks: [],
     users: [],
     admins: [],
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [zoom, setZoom] = useState(1);
-  const [pos, setPos] = useState({ x: 0, y: 0 });
-  const [drag, setDrag] = useState(null);
+
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const [assetsRes, employeesRes, usersRes, adminsRes] =
+        const [assetsRes, tasksRes, usersRes, adminsRes] =
           await Promise.all([
             fetch(`${API_BASE_URL}/assets`),
-            fetch(`${API_BASE_URL}/employees`),
+            fetch(`${API_BASE_URL}/tasks`),
             fetch(`${API_BASE_URL}/users`),
             fetch(`${API_BASE_URL}/admins`),
           ]);
 
         if (
           !assetsRes.ok ||
-          !employeesRes.ok ||
+          !tasksRes.ok ||
           !usersRes.ok ||
           !adminsRes.ok
         ) {
           throw new Error("Failed to fetch data from JSON Server");
         }
 
-        const [assets, employees, users, admins] = await Promise.all([
+        const [assets, tasks, users, admins] = await Promise.all([
           assetsRes.json(),
-          employeesRes.json(),
+          tasksRes.json(),
           usersRes.json(),
           adminsRes.json(),
         ]);
 
         // Sort assets by updatedAt in descending order
         assets.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
-        employees.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
+        tasks.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
         users.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
         admins.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
 
-        setData({ assets, employees, users, admins });
+        setData({ assets, tasks, users, admins });
       } catch (err) {
         setError(err.message);
       } finally {
@@ -122,7 +120,7 @@ export default function Dashboard() {
   ).length;
   const deathAssets = data.assets.filter((a) => a.status === "Death").length;
 
-  const totalEmployees = data.employees.length;
+  const totaltasks = data.tasks.length;
   const totalUsers = data.users.length;
   const totalAdmins = data.admins.length;
 
@@ -220,8 +218,8 @@ export default function Dashboard() {
             color="amber"
           />
           <StatCard
-            title="Total User"
-            value={totalEmployees}
+            title="Total Task"
+            value={totaltasks}
             subtext={`${totalUsers} standard users / ${totalAdmins} admins`}
             icon={<Users size={18} />}
             color="sky"

@@ -10,7 +10,7 @@ import {
   UserCheck,
 } from "lucide-react";
 import { API_BASE_URL } from "../env";
-import IssueCard from "../components/TaskCard";
+import TaskCard from "../components/TaskCard";
 
 const AssetDetail = () => {
   const { id } = useParams();
@@ -18,7 +18,7 @@ const AssetDetail = () => {
 
   const [asset, setAsset] = useState(null);
   const [employees, setEmployees] = useState([]);
-  const [issues, setIssues] = useState([]);
+  const [tasks, setTasks] = useState([]);
   const [isEdit, setIsEdit] = useState(false);
   const [formData, setFormData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -42,87 +42,87 @@ const AssetDetail = () => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [deleting, setDeleting] = useState(false);
 
-  useEffect(() => {
-    let isMounted = true;
+useEffect(() => {
+  let isMounted = true;
 
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        const [res, empRes, issuesRes, assetsRes] = await Promise.all([
-          fetch(`${API_BASE_URL}/assets/${id}`),
-          fetch(`${API_BASE_URL}/employees`),
-          fetch(`${API_BASE_URL}/issues`),
-          fetch(`${API_BASE_URL}/assets`),
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      const [res, empRes, tasksRes, assetsRes] = await Promise.all([
+        fetch(`${API_BASE_URL}/assets/${id}`),
+        fetch(`${API_BASE_URL}/employees`),
+        fetch(`${API_BASE_URL}/tasks`),
+        fetch(`${API_BASE_URL}/assets`),
+      ]);
+
+      const [assetData, empData, tasksData, allAssetsData] =
+        await Promise.all([
+          res.json(),
+          empRes.json(),
+          tasksRes.json(),
+          assetsRes.json(),
         ]);
 
-        const [assetData, empData, issuesData, allAssetsData] =
-          await Promise.all([
-            res.json(),
-            empRes.json(),
-            issuesRes.json(),
-            assetsRes.json(),
-          ]);
+      if (isMounted) {
+        setAsset(assetData);
+        const empList = Array.isArray(empData) ? empData : [];
+        setEmployees(empList);
+        setTasks(Array.isArray(tasksData) ? tasksData : []);
+        setFormData(assetData);
 
-        if (isMounted) {
-          setAsset(assetData);
-          const empList = Array.isArray(empData) ? empData : [];
-          setEmployees(empList);
-          setIssues(Array.isArray(issuesData) ? issuesData : []);
-          setFormData(assetData);
+        // Build dynamic options from existing DB records
+        const assets = Array.isArray(allAssetsData) ? allAssetsData : [];
 
-          // Build dynamic options from existing DB records
-          const assets = Array.isArray(allAssetsData) ? allAssetsData : [];
+        const getUnique = (arr, key) =>
+          Array.from(
+            new Set(
+              arr
+                .map((item) => (item[key] ? String(item[key]).trim() : ""))
+                .filter((val) => val !== "")
+            )
+          );
 
-          const getUnique = (arr, key) =>
-            Array.from(
-              new Set(
-                arr
-                  .map((item) => (item[key] ? String(item[key]).trim() : ""))
-                  .filter((val) => val !== ""),
-              ),
-            );
-
-          setDropdownOptions({
-            equipments: getUnique(assets, "equipment"),
-            brands: getUnique(assets, "brand"),
-            departments: getUnique(assets, "department"),
-            locations: getUnique(assets, "location"),
-            floors: getUnique(assets, "floor"),
-            rooms: getUnique(assets, "room"),
-            vendors: getUnique(assets, "vendorName"),
-            userNames: Array.from(
-              new Set([
-                ...getUnique(assets, "userName"),
-                ...getUnique(empList, "name"),
-              ]),
-            ),
-            userCodes: Array.from(
-              new Set([
-                ...getUnique(assets, "userCode"),
-                ...getUnique(empList, "employeeCode"),
-              ]),
-            ),
-            userIds: Array.from(
-              new Set([
-                ...getUnique(assets, "userId"),
-                ...getUnique(empList, "id"),
-              ]),
-            ),
-          });
-        }
-      } catch (error) {
-        console.error("Error fetching asset details:", error);
-      } finally {
-        if (isMounted) setLoading(false);
+        setDropdownOptions({
+          equipments: getUnique(assets, "equipment"),
+          brands: getUnique(assets, "brand"),
+          departments: getUnique(assets, "department"),
+          locations: getUnique(assets, "location"),
+          floors: getUnique(assets, "floor"),
+          rooms: getUnique(assets, "room"),
+          vendors: getUnique(assets, "vendorName"),
+          userNames: Array.from(
+            new Set([
+              ...getUnique(assets, "userName"),
+              ...getUnique(empList, "name"),
+            ])
+          ),
+          userCodes: Array.from(
+            new Set([
+              ...getUnique(assets, "userCode"),
+              ...getUnique(empList, "employeeCode"),
+            ])
+          ),
+          userIds: Array.from(
+            new Set([
+              ...getUnique(assets, "userId"),
+              ...getUnique(empList, "id"),
+            ])
+          ),
+        });
       }
-    };
+    } catch (error) {
+      console.error("Error fetching asset details:", error);
+    } finally {
+      if (isMounted) setLoading(false);
+    }
+  };
 
-    fetchData();
+  fetchData();
 
-    return () => {
-      isMounted = false;
-    };
-  }, [id]);
+  return () => {
+    isMounted = false;
+  };
+}, [id]);
 
   if (loading || !asset || !formData) {
     return (
@@ -254,9 +254,10 @@ const AssetDetail = () => {
       (formData.userId && e.id === formData.userId),
   );
 
-  const assetIssues = issues
-    .filter((i) => i.assetId === asset.id)
-    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  // Filter tasks belonging to this asset (checking for assetId matching either asset.id or route id)
+  const assetTasks = tasks
+    .filter((t) => String(t.assetId) === String(asset.id) || String(t.assetId) === String(id))
+    .sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
 
   return (
     <div className="min-h-screen bg-gradient-to-br rounded-xl from-blue-50 to-indigo-100 p-4 md:p-8">
@@ -637,25 +638,22 @@ const AssetDetail = () => {
             )}
           </div>
 
-          {/* FULL WIDTH - ISSUES SECTION */}
+          {/* FULL WIDTH - TASKS SECTION */}
           <div className="w-full col-span-1 md:col-span-3 space-y-3">
-            <Card title={`Logged Issues (${assetIssues.length})`}>
-              {assetIssues.length === 0 ? (
+            <Card title={`Tasks (${assetTasks.length})`}>
+              {assetTasks.length === 0 ? (
                 <p className="text-sm text-gray-500">
-                  No issues logged for this asset.
+                  No tasks logged for this asset.
                 </p>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  {assetIssues.map((issue) => {
-                    const emp = employees.find(
-                      (e) => e.id === issue.employeeId,
-                    );
+                  {assetTasks.map((task) => {
                     return (
-                      <IssueCard
-                        key={issue.id}
-                        issue={issue}
+                      <TaskCard
+                        key={task.id}
+                        task={task}
                         asset={formData}
-                        employee={emp}
+                       
                       />
                     );
                   })}
@@ -782,6 +780,7 @@ const Info = ({
     )}
   </div>
 );
+
 const InfoSelect = ({
   label,
   value,
@@ -795,7 +794,7 @@ const InfoSelect = ({
 
     {isEdit ? (
       <select
-        className="w-full border border-gray-300 rounded-lg px-2.5 py-1.5 text-black text-sm   focus:ring-2 focus:ring-blue-500 outline-none"
+        className="w-full border border-gray-300 rounded-lg px-2.5 py-1.5 text-black text-sm focus:ring-2 focus:ring-blue-500 outline-none"
         value={value}
         onChange={(e) => onChange(e.target.value)}
       >
