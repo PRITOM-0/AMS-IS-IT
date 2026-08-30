@@ -9683,16 +9683,23 @@
   "users": [
     {
       "id": "1",
-      "username": "user1",
-      "password": "123456",
-      "email": "user1@company.com",
-      "employeeCode": "EMP-101",
-      "designation": "IT Officer",
-      "role": "user",
-      "approverequests": [
-        "A1",
-        "A8"
-      ]
+      "username": "IT",
+      "password": "I123"
+    },
+    {
+      "id": "2",
+      "username": "Ratan Saha",
+      "password": "R123"
+    },
+    {
+      "id": "3",
+      "username": "Abdul Kader",
+      "password": "K123"
+    },
+    {
+      "id": "4",
+      "username": "Pritom Saha",
+      "password": "P123"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

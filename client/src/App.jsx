@@ -1,10 +1,12 @@
+ 
 import React, { useEffect, useState } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
+
+// Components
 import Layout from "./components/Layout";
 
 // Pages
 import Splash from "./pages/Splash";
-import RoleSelect from "./pages/RoleSelect";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Assets from "./pages/Assets";
@@ -17,73 +19,278 @@ import EmployeeDetails from "./pages/EmployeeDetails";
 import AddEmployee from "./pages/AddEmployee";
 import AssetAssign from "./pages/AssetAssign";
 import Task from "./pages/Tasks";
-import AddTask from "./pages/AddTask"
+import AddTask from "./pages/AddTask";
 import TaskDetails from "./pages/TaskDetails";
 import ImportAssets from "./pages/ImportAssets";
 import StoreAssets from "./pages/StoreAssets";
 import ExportAssets from "./pages/ExportAssets";
 import CategorySearch from "./pages/CategorySearch";
 
-function App() {
-  const [loading, setLoading] = useState(false);
-  const [role, setRole] = useState("admin");
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+// ==========================================
+// Session Configuration
+// ==========================================
 
-  // Splash screen timer
+const RefreshOn = 30*60*1000;
+
+// ==========================================
+// Protected Route
+// ==========================================
+
+const ProtectedRoute = ({ isLoggedIn, children }) => {
+  if (!isLoggedIn) {
+    return <Navigate to="/login" replace />;
+  }
+
+  return children;
+};
+
+// ==========================================
+// App
+// ==========================================
+
+function App() {
+  // ==========================================
+  // Splash Screen
+  // ==========================================
+
+  const [loading, setLoading] = useState(() => {
+    // Show splash only if it has never been shown
+    return localStorage.getItem("loggedInUser") !== null;
+  });
+
+  // ==========================================
+  // Check Login Session
+  // ==========================================
+
+  const [isLoggedIn, setIsLoggedIn] = useState(() => {
+    const loggedIn = localStorage.getItem("isLoggedIn");
+    const loginTime = localStorage.getItem("loginTime");
+
+    // No login information
+    if (loggedIn !== "true" || !loginTime) {
+      return false;
+    }
+
+    // Check if 1 hour has passed
+    const sessionExpired =
+      Date.now() - Number(loginTime) >= RefreshOn;
+
+    if (sessionExpired) {
+      // Remove expired login information
+      localStorage.removeItem("isLoggedIn");
+      localStorage.removeItem("loggedInUser");
+      localStorage.removeItem("loginTime");
+
+      return false;
+    }
+
+    return true;
+  });
+
+  // ==========================================
+  // Splash Screen Timer
+  // ==========================================
+
   useEffect(() => {
-    const timer = setTimeout(() => {
+    // Splash already shown before
+    if (localStorage.getItem("hasSeenSplash") === "true") {
       setLoading(false);
-    }, 2000); // 2 sec splash
+      return;
+    }
+
+    // Show splash for 2 seconds
+    const timer = setTimeout(() => {
+      localStorage.setItem("hasSeenSplash", "true");
+      setLoading(false);
+    }, 2000);
 
     return () => clearTimeout(timer);
   }, []);
 
-  // 🔄 Flow Control
+  // ==========================================
+  // Check Session Every Second
+  // ==========================================
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      return;
+    }
+
+    const checkSession = () => {
+      const loginTime = localStorage.getItem("loginTime");
+      const loggedIn = localStorage.getItem("isLoggedIn");
+
+      if (loggedIn !== "true" || !loginTime) {
+        setIsLoggedIn(false);
+        return;
+      }
+
+      const sessionExpired =
+        Date.now() - Number(loginTime) >= RefreshOn;
+
+      if (sessionExpired) {
+        // Session expired
+        localStorage.removeItem("isLoggedIn");
+        localStorage.removeItem("loggedInUser");
+        localStorage.removeItem("loginTime");
+
+        setIsLoggedIn(false);
+      }
+    };
+
+    // Check immediately
+    checkSession();
+
+    // Check every second
+    const interval = setInterval(checkSession, 1000);
+
+    return () => clearInterval(interval);
+  }, [isLoggedIn]);
+
+  // ==========================================
+  // Show Splash
+  // ==========================================
+
   if (loading) {
     return <Splash />;
   }
 
-  if (!role) {
-    return <RoleSelect onSelectRole={setRole} />;
-  }
+  // ==========================================
+  // Routes
+  // ==========================================
 
-  if (!isLoggedIn) {
-    return <Login role={role} onLogin={() => setIsLoggedIn(true)} />;
-  }
-
-  // ✅ After Login → Routed Dashboard Layout
   return (
     <Routes>
-      
+      {/* ========================================
+          LOGIN
+          ======================================== */}
 
-      <Route path="/" element={<Layout setIsLoggedIn={setIsLoggedIn} />}>
+      <Route
+        path="/login"
+        element={
+          isLoggedIn ? (
+            <Navigate to="/" replace />
+          ) : (
+            <Login setIsLoggedIn={setIsLoggedIn} />
+          )
+        }
+      />
+
+      {/* ========================================
+          PROTECTED APPLICATION
+          ======================================== */}
+
+      <Route
+        path="/"
+        element={
+          <ProtectedRoute isLoggedIn={isLoggedIn}>
+            <Layout setIsLoggedIn={setIsLoggedIn} />
+          </ProtectedRoute>
+        }
+      >
+        {/* Dashboard */}
         <Route index element={<Dashboard />} />
-        <Route path="/category-search" element={<CategorySearch />} />
+
+        {/* CATEGORY SEARCH */}
+        <Route
+          path="category-search"
+          element={<CategorySearch />}
+        />
+
+        {/* ASSETS */}
         <Route path="assets" element={<Assets />} />
-        <Route path="assets/addAsset" element={<AddAsset />} />
-        <Route path="assets/:id" element={<AssetDetails />} />
+
+        <Route
+          path="assets/addAsset"
+          element={<AddAsset />}
+        />
+
+        <Route
+          path="assets/:id"
+          element={<AssetDetails />}
+        />
+
+        {/* USERS */}
         <Route path="users" element={<Users />} />
+
+        {/* REQUESTS */}
         <Route path="requests" element={<Requests />} />
+
+        {/* SETTINGS */}
         <Route
           path="settings"
-          element={<div className="p-6">Settings page coming soon.</div>}
+          element={
+            <div className="p-6">
+              Settings page coming soon.
+            </div>
+          }
         />
+
+        {/* EMPLOYEES */}
         <Route path="employees" element={<Employees />} />
-        <Route path="/employees/add" element={<AddEmployee />} />
-        <Route path="/employees/:id" element={<EmployeeDetails />} />
-        <Route path="assign-assets" element={<AssetAssign />} />
-        <Route path="/tasks" element={<Task />} />
-        <Route path="/tasks/add" element={<AddTask />} />
-        <Route path="/tasks/:id" element={<TaskDetails />} />
 
+        <Route
+          path="employees/add"
+          element={<AddEmployee />}
+        />
 
-        <Route path="importassets" element={<ImportAssets />} />
-      <Route path="/assets/store" element={<StoreAssets />} />
-      <Route path="exportassets" element={<ExportAssets />} />
+        <Route
+          path="employees/:id"
+          element={<EmployeeDetails />}
+        />
+
+        {/* ASSIGN ASSETS */}
+        <Route
+          path="assign-assets"
+          element={<AssetAssign />}
+        />
+
+        {/* TASKS */}
+        <Route path="tasks" element={<Task />} />
+
+        <Route
+          path="tasks/add"
+          element={<AddTask />}
+        />
+
+        <Route
+          path="tasks/:id"
+          element={<TaskDetails />}
+        />
+
+        {/* IMPORT / EXPORT / STORE */}
+        <Route
+          path="importassets"
+          element={<ImportAssets />}
+        />
+
+        <Route
+          path="assets/store"
+          element={<StoreAssets />}
+        />
+
+        <Route
+          path="exportassets"
+          element={<ExportAssets />}
+        />
       </Route>
-      <Route path="*" element={<Navigate to="/" replace />} />
+
+      {/* ========================================
+          INVALID ROUTE
+          ======================================== */}
+
+      <Route
+        path="*"
+        element={
+          <Navigate
+            to={isLoggedIn ? "/" : "/login"}
+            replace
+          />
+        }
+      />
     </Routes>
   );
 }
 
 export default App;
+ 
