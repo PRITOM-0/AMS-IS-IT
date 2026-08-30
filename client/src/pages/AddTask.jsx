@@ -19,7 +19,7 @@ const initialForm = {
   complainMode: "Phone",
   complainDate: "",
   itPersonName: "",
-  progress: "On Process",
+  progress: "Arrived",
   priority: "Medium",
   taskStartDate: "",
   taskCompleteDate: "",
@@ -27,8 +27,8 @@ const initialForm = {
   days: 0,
   timeDuration: "0 hours",
   reasonForDelay: "",
-  mainCategory: "General",
-  subCategory: "Hardware",
+  mainCategory: "",
+  subCategory: "",
   issueSummary: "",
   stepInDetails: "",
 };
@@ -147,7 +147,7 @@ export default function AddTask() {
 
       <form
         onSubmit={handleSubmit}
-        className="border-emerald-200 text-black bg-gradient-to-br from-emerald-50 via-white to-teal-50 p-6 rounded-xl shadow space-y-5 border"
+        className="border-emerald-400  text-black bg-gradient-to-br from-emerald-50 via-white to-teal-50 p-6 rounded-xl shadow space-y-5 border"
       >
         <h2 className="font-semibold text-xl border-b pb-2">Create New Task</h2>
 
