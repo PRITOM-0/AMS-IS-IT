@@ -3,7 +3,9 @@ import { FaUserCircle, FaSignOutAlt } from "react-icons/fa";
 
 function Header({ onLogout, setIsLoggedIn }) {
   const [time, setTime] = useState("");
-  const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser") || "{}");
+  const loggedInUser = JSON.parse(
+  localStorage.getItem("loggedInUser") || "{}"
+);
 
   useEffect(() => {
     const updateTime = () => {
@@ -23,9 +25,7 @@ function Header({ onLogout, setIsLoggedIn }) {
     // Clear login information from localStorage
     localStorage.removeItem("isLoggedIn");
     localStorage.removeItem("loggedInUser");
-    localStorage.removeItem("loginTime");
-  
-
+    
 
     // Update React login state
     if (setIsLoggedIn) {
@@ -43,12 +43,17 @@ function Header({ onLogout, setIsLoggedIn }) {
 
   return (
     <header className="fixed top-0 left-0 w-full h-16 bg-white shadow-md flex items-center justify-between pl-2 pr-6 z-50">
+      
       {/* Left: Logo + Name */}
       <div
         className="flex items-center gap-1 cursor-pointer"
         onClick={() => (window.location.href = "/")}
       >
-        <img src="/logo.png" alt="logo" className="h-18 w-18 object-contain" />
+        <img
+          src="/logo.png"
+          alt="logo"
+          className="h-18 w-18 object-contain"
+        />
 
         <h1 className="text-xl font-bold text-gray-800">
           Asset Management System IS-IT
@@ -57,16 +62,19 @@ function Header({ onLogout, setIsLoggedIn }) {
 
       {/* Right: Time + Profile + Logout */}
       <div className="flex items-center gap-6">
+
         {/* Time */}
-        <span className="text-gray-600 font-medium">{time}</span>
+        <span className="text-gray-600 font-medium">
+          {time}
+        </span>
 
         {/* Divider */}
         <div className="w-px h-6 bg-gray-300"></div>
 
         {/* Profile name */}
         <span className="text-gray-600 font-medium">
-          {loggedInUser.username || "User"}
-        </span>
+  {loggedInUser.username || "User"}
+</span>
 
         {/* Profile Icon */}
         <FaUserCircle className="text-blue-600 text-2xl" />

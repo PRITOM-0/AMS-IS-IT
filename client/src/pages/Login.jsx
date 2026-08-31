@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState,useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Lock,
@@ -25,25 +25,25 @@ const Login = ({ setIsLoggedIn }) => {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const response = await fetch(`${API_BASE_URL}/users`);
+  const fetchUsers = async () => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/users`);
 
-        if (!response.ok) {
-          throw new Error("Unable to load users.");
-        }
-
-        const data = await response.json();
-
-        setUsers(data);
-      } catch (error) {
-        console.error("Failed to load users:", error);
-        setError("Unable to load users. Please try again.");
+      if (!response.ok) {
+        throw new Error("Unable to load users.");
       }
-    };
 
-    fetchUsers();
-  }, []);
+      const data = await response.json();
+
+      setUsers(data);
+    } catch (error) {
+      console.error("Failed to load users:", error);
+      setError("Unable to load users. Please try again.");
+    }
+  };
+
+  fetchUsers();
+}, []);
 
   // ==========================================
   // Handle Input
@@ -123,7 +123,7 @@ const Login = ({ setIsLoggedIn }) => {
       // Store logged-in user
       localStorage.setItem("loggedInUser", JSON.stringify(matchedUser));
       // Save login time
-      localStorage.setItem("loginTime", Date.now().toString());
+localStorage.setItem("loginTime", Date.now().toString());
 
       // Update App state
       setIsLoggedIn(true);
