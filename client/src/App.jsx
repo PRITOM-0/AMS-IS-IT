@@ -14,6 +14,7 @@ import Users from "./pages/Users";
 import Requests from "./pages/Requests";
 import AssetDetails from "./pages/AssetDetails";
 import AddAsset from "./pages/AddAsset";
+import EditAsset from "./pages/EditAsset";
 import Employees from "./pages/Employees";
 import EmployeeDetails from "./pages/EmployeeDetails";
 import AddEmployee from "./pages/AddEmployee";
@@ -203,6 +204,10 @@ function App() {
         <Route
           path="assets/addAsset"
           element={<AddAsset />}
+        />
+        <Route
+          path="assets/editAsset/:id"
+          element={<EditAsset />}
         />
 
         <Route

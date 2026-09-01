@@ -1,705 +1,402 @@
-import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useParams, useNavigate, Link } from "react-router-dom";
+import axios from "axios";
 import {
   ArrowLeft,
-  Trash2,
-  AlertTriangle,
-  Save,
-  RotateCcw,
   Edit,
+  Trash2,
+  HardDrive,
+  MapPin,
+  ShieldCheck,
+  Tag,
   UserCheck,
+  AlertCircle,
+  FileText,
+  Loader2,
 } from "lucide-react";
 import { API_BASE_URL } from "../env";
-import TaskCard from "../components/TaskCard";
 
-const AssetDetail = () => {
+const AssetDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
   const [asset, setAsset] = useState(null);
-  const [employees, setEmployees] = useState([]);
-  const [tasks, setTasks] = useState([]);
-  const [isEdit, setIsEdit] = useState(false);
-  const [formData, setFormData] = useState(null);
+  const [vendorInfo, setVendorInfo] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState(null);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
-  // Dynamic options extracted from existing DB data for edit mode suggestions
-  const [dropdownOptions, setDropdownOptions] = useState({
-    equipments: [],
-    brands: [],
-    departments: [],
-    locations: [],
-    floors: [],
-    rooms: [],
-    vendors: [],
-    userNames: [],
-    userCodes: [],
-    userIds: [],
-  });
-
-  // Modal State for Deletion
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [deleting, setDeleting] = useState(false);
-
-useEffect(() => {
-  let isMounted = true;
+  useEffect(() => {
+    fetchData();
+  }, [id]);
 
   const fetchData = async () => {
     try {
       setLoading(true);
-      const [res, empRes, tasksRes, assetsRes] = await Promise.all([
-        fetch(`${API_BASE_URL}/assets/${id}`),
-        fetch(`${API_BASE_URL}/employees`),
-        fetch(`${API_BASE_URL}/tasks`),
-        fetch(`${API_BASE_URL}/assets`),
-      ]);
+      setError(null);
 
-      const [assetData, empData, tasksData, allAssetsData] =
-        await Promise.all([
-          res.json(),
-          empRes.json(),
-          tasksRes.json(),
-          assetsRes.json(),
-        ]);
+      // 1. Fetch asset directly by ID
+      const assetRes = await axios.get(`${API_BASE_URL}/assets/${id}`);
+      const assetData = assetRes.data;
+      setAsset(assetData);
 
-      if (isMounted) {
-        setAsset(assetData);
-        const empList = Array.isArray(empData) ? empData : [];
-        setEmployees(empList);
-        setTasks(Array.isArray(tasksData) ? tasksData : []);
-        setFormData(assetData);
-
-        // Build dynamic options from existing DB records
-        const assets = Array.isArray(allAssetsData) ? allAssetsData : [];
-
-        const getUnique = (arr, key) =>
-          Array.from(
-            new Set(
-              arr
-                .map((item) => (item[key] ? String(item[key]).trim() : ""))
-                .filter((val) => val !== "")
-            )
+      // 2. Fetch vendor info if vendorId exists
+      if (assetData?.vendorId) {
+        try {
+          const vendorsRes = await axios.get(`${API_BASE_URL}/vendors`);
+          const foundVendor = vendorsRes.data?.find(
+            (v) => String(v.vendorId) === String(assetData.vendorId)
           );
-
-        setDropdownOptions({
-          equipments: getUnique(assets, "equipment"),
-          brands: getUnique(assets, "brand"),
-          departments: getUnique(assets, "department"),
-          locations: getUnique(assets, "location"),
-          floors: getUnique(assets, "floor"),
-          rooms: getUnique(assets, "room"),
-          vendors: getUnique(assets, "vendorName"),
-          userNames: Array.from(
-            new Set([
-              ...getUnique(assets, "userName"),
-              ...getUnique(empList, "name"),
-            ])
-          ),
-          userCodes: Array.from(
-            new Set([
-              ...getUnique(assets, "userCode"),
-              ...getUnique(empList, "employeeCode"),
-            ])
-          ),
-          userIds: Array.from(
-            new Set([
-              ...getUnique(assets, "userId"),
-              ...getUnique(empList, "id"),
-            ])
-          ),
-        });
+          setVendorInfo(foundVendor || null);
+        } catch (vErr) {
+          console.warn("Could not fetch vendor details:", vErr);
+        }
       }
-    } catch (error) {
-      console.error("Error fetching asset details:", error);
+    } catch (err) {
+      console.error("Error fetching asset details:", err);
+      setError("Asset not found or server error occurred.");
     } finally {
-      if (isMounted) setLoading(false);
-    }
-  };
-
-  fetchData();
-
-  return () => {
-    isMounted = false;
-  };
-}, [id]);
-
-  if (loading || !asset || !formData) {
-    return (
-      <p className="p-6 text-gray-600 font-medium">Loading asset details...</p>
-    );
-  }
-
-  // Helper function to append previous user to oldUsers string
-  const getUpdatedOldUsers = (currentFormData, newUserName, newUserCode) => {
-    const prevUserName = asset?.userName;
-    const prevUserCode = asset?.userCode;
-
-    // Only update oldUsers if there was a previous user and it is changing to a different user
-    if (prevUserName && prevUserName !== newUserName) {
-      const prevEntry = prevUserCode
-        ? `${prevUserName}-${prevUserCode}`
-        : prevUserName;
-      const currentOldUsers = currentFormData.oldUsers
-        ? currentFormData.oldUsers.trim()
-        : "";
-
-      if (!currentOldUsers) {
-        return prevEntry;
-      }
-
-      // Avoid adding duplicate entry if it's already recorded at the end
-      if (!currentOldUsers.endsWith(prevEntry)) {
-        return `${currentOldUsers}, ${prevEntry}`;
-      }
-    }
-    return currentFormData.oldUsers;
-  };
-
-  const handleChange = (field, value) => {
-    setFormData((prev) => {
-      let updated = { ...prev, [field]: value };
-
-      if (field === "userName") {
-        updated.oldUsers = getUpdatedOldUsers(prev, value, prev.userCode);
-      }
-
-      if (field === "purchaseDate") {
-        updated.warrantyStart = value;
-      }
-
-      return updated;
-    });
-  };
-
-  // Quick select an existing employee to fill userId, userCode, userName automatically
-  const handleSelectEmployee = (employeeId) => {
-    const selectedEmp = employees.find((e) => e.id === employeeId);
-    if (selectedEmp) {
-      setFormData((prev) => {
-        const newUserName = selectedEmp.name || "";
-        const newUserCode = selectedEmp.employeeCode || "";
-        const updatedOldUsers = getUpdatedOldUsers(
-          prev,
-          newUserName,
-          newUserCode,
-        );
-
-        return {
-          ...prev,
-          userId: selectedEmp.id || "",
-          userCode: newUserCode,
-          userName: newUserName,
-          oldUsers: updatedOldUsers,
-        };
-      });
-    }
-  };
-
-  const handleReset = () => {
-    setFormData(asset);
-  };
-
-  const handleUpdate = async () => {
-    try {
-      setIsSubmitting(true);
-      const now = new Date().toISOString();
-
-      const payload = {
-        ...formData,
-        updatedAt: now,
-      };
-
-      const res = await fetch(`${API_BASE_URL}/assets/${id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-
-      if (res.ok) {
-        const updatedAsset = await res.json();
-        setAsset(updatedAsset || payload);
-        setFormData(updatedAsset || payload);
-        setIsEdit(false);
-      }
-    } catch (error) {
-      console.error("Failed to update asset:", error);
-    } finally {
-      setIsSubmitting(false);
+      setLoading(false);
     }
   };
 
   const handleDelete = async () => {
+    setIsDeleting(true);
     try {
-      setDeleting(true);
-      const res = await fetch(`${API_BASE_URL}/assets/${id}`, {
-        method: "DELETE",
-      });
-
-      if (res.ok) {
-        setIsDeleteModalOpen(false);
-        navigate(-1);
-      }
-    } catch (error) {
-      console.error("Failed to delete asset:", error);
+      await axios.delete(`${API_BASE_URL}/assets/${id}`);
+      navigate("/assets", { state: { message: "Asset deleted successfully!" } });
+    } catch (err) {
+      console.error("Error deleting asset:", err);
+      alert("Failed to delete the asset. Please try again.");
     } finally {
-      setDeleting(false);
+      setIsDeleting(false);
+      setShowDeleteModal(false);
     }
   };
 
-  // Find linked employee
-  const employee = employees.find(
-    (e) =>
-      (formData.userCode && e.employeeCode === formData.userCode) ||
-      (formData.userId && e.id === formData.userId),
-  );
-
-  // Filter tasks belonging to this asset (checking for assetId matching either asset.id or route id)
-  const assetTasks = tasks
-    .filter((t) => String(t.assetId) === String(asset.id) || String(t.assetId) === String(id))
-    .sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
-
-  return (
-    <div className="min-h-screen bg-gradient-to-br rounded-xl from-blue-50 to-indigo-100 p-4 md:p-8">
-      {/* DATALISTS FOR EDIT MODE DROPDOWN SUGGESTIONS FROM EXISTING DB DATA */}
-      <datalist id="equipment-options">
-        {dropdownOptions.equipments.map((opt, i) => (
-          <option key={i} value={opt} />
-        ))}
-      </datalist>
-
-      <datalist id="brand-options">
-        {dropdownOptions.brands.map((opt, i) => (
-          <option key={i} value={opt} />
-        ))}
-      </datalist>
-
-      <datalist id="department-options">
-        {dropdownOptions.departments.map((opt, i) => (
-          <option key={i} value={opt} />
-        ))}
-      </datalist>
-
-      <datalist id="location-options">
-        {dropdownOptions.locations.map((opt, i) => (
-          <option key={i} value={opt} />
-        ))}
-      </datalist>
-
-      <datalist id="floor-options">
-        {dropdownOptions.floors.map((opt, i) => (
-          <option key={i} value={opt} />
-        ))}
-      </datalist>
-
-      <datalist id="room-options">
-        {dropdownOptions.rooms.map((opt, i) => (
-          <option key={i} value={opt} />
-        ))}
-      </datalist>
-
-      <datalist id="vendor-options">
-        {dropdownOptions.vendors.map((opt, i) => (
-          <option key={i} value={opt} />
-        ))}
-      </datalist>
-
-      <datalist id="username-options">
-        {dropdownOptions.userNames.map((opt, i) => (
-          <option key={i} value={opt} />
-        ))}
-      </datalist>
-
-      <datalist id="usercode-options">
-        {dropdownOptions.userCodes.map((opt, i) => (
-          <option key={i} value={opt} />
-        ))}
-      </datalist>
-
-      <datalist id="userid-options">
-        {dropdownOptions.userIds.map((opt, i) => (
-          <option key={i} value={opt} />
-        ))}
-      </datalist>
-
-      <div className="max-w-7xl mx-auto space-y-6">
-        {/* Navigation & Action Bar */}
-        <div className="flex justify-between items-center">
-          <button
-            onClick={() => navigate(-1)}
-            className="bg-white border border-blue-600 text-blue-600 px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-blue-600 hover:text-white transition shadow-sm font-medium"
-          >
-            <ArrowLeft size={20} /> Back
-          </button>
-
-          <div className="flex items-center gap-2">
-            {!isEdit ? (
-              <>
-                <button
-                  onClick={() => setIsEdit(true)}
-                  className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg flex items-center gap-1.5 font-medium transition shadow-sm"
-                >
-                  <Edit size={16} /> Edit
-                </button>
-
-                <button
-                  onClick={() => setIsDeleteModalOpen(true)}
-                  className="flex items-center gap-1.5 bg-rose-600 hover:bg-rose-700 text-white px-4 py-2 rounded-lg font-medium transition shadow-sm"
-                >
-                  <Trash2 size={16} /> Delete
-                </button>
-              </>
-            ) : (
-              <div className="flex gap-2">
-                <button
-                  onClick={handleUpdate}
-                  disabled={isSubmitting}
-                  className="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg font-medium transition flex items-center gap-1.5 shadow-sm disabled:opacity-50"
-                >
-                  <Save size={16} /> {isSubmitting ? "Updating..." : "Update"}
-                </button>
-                <button
-                  onClick={handleReset}
-                  className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg font-medium transition flex items-center gap-1.5 shadow-sm"
-                >
-                  <RotateCcw size={16} /> Reset
-                </button>
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Header Banner */}
-        <div className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-6 rounded-2xl shadow-lg flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-          <div className="space-y-1">
-            <EditableHeader
-              value={formData.equipment}
-              isEdit={isEdit}
-              list="equipment-options"
-              placeholder="Equipment Name"
-              onChange={(v) => handleChange("equipment", v)}
-            />
-            <p className="text-blue-100 text-sm">
-              Code:{" "}
-              <EditableHeaderInline
-                value={formData.assetCode}
-                isEdit={isEdit}
-                onChange={(v) => handleChange("assetCode", v)}
-              />
-            </p>
-          </div>
-          <div className="bg-white/10 backdrop-blur-md px-4 py-2 rounded-xl text-right">
-            <p className="text-xs text-blue-200 uppercase tracking-wider font-semibold">
-              Current User
-            </p>
-            <p className="text-lg font-bold">
-              {formData.userName || "Unassigned"}
-            </p>
-          </div>
-        </div>
-
-        <div className="grid md:grid-cols-3 gap-6">
-          {/* MAIN DETAILS (LEFT & MIDDLE COLUMNS) */}
-          <div className="md:col-span-2 space-y-6">
-            {/* Basic Info */}
-            <Card title="Basic Details">
-              <Grid col={3}>
-                <Info
-                  label="Equipment"
-                  value={formData.equipment}
-                  isEdit={isEdit}
-                  list="equipment-options"
-                  onChange={(v) => handleChange("equipment", v)}
-                />
-                <Info
-                  label="Asset Code"
-                  value={formData.assetCode}
-                  isEdit={isEdit}
-                  onChange={(v) => handleChange("assetCode", v)}
-                />
-                <Info
-                  label="Brand"
-                  value={formData.brand}
-                  isEdit={isEdit}
-                  list="brand-options"
-                  onChange={(v) => handleChange("brand", v)}
-                />
-                <Info
-                  label="Model"
-                  value={formData.model}
-                  isEdit={isEdit}
-                  onChange={(v) => handleChange("model", v)}
-                />
-                <Info
-                  label="Serial Number"
-                  value={formData.serialNumber}
-                  isEdit={isEdit}
-                  onChange={(v) => handleChange("serialNumber", v)}
-                />
-                <Info
-                  label="MAC Address"
-                  value={formData.macAddress}
-                  isEdit={isEdit}
-                  onChange={(v) => handleChange("macAddress", v)}
-                />
-                <InfoSelect
-                  label="Status"
-                  value={formData.status}
-                  isEdit={isEdit}
-                  onChange={(value) =>
-                    setFormData((prev) => ({
-                      ...prev,
-                      status: value,
-                    }))
-                  }
-                  options={["Instock", "Active", "Inactive", "Removal"]}
-                />
-                <Info
-                  colSpan="col-span-2"
-                  label="Specifications"
-                  value={formData.specifications}
-                  isEdit={isEdit}
-                  onChange={(v) => handleChange("specifications", v)}
-                />
-              </Grid>
-            </Card>
-
-            {/* Location & Placement */}
-            <Card title="Location & Placement">
-              <Grid col={4}>
-                <Info
-                  label="Location"
-                  value={formData.location}
-                  isEdit={isEdit}
-                  list="location-options"
-                  onChange={(v) => handleChange("location", v)}
-                />
-                <Info
-                  label="Department"
-                  value={formData.department}
-                  isEdit={isEdit}
-                  list="department-options"
-                  onChange={(v) => handleChange("department", v)}
-                />
-                <Info
-                  label="Floor"
-                  value={formData.floor}
-                  isEdit={isEdit}
-                  list="floor-options"
-                  onChange={(v) => handleChange("floor", v)}
-                />
-                <Info
-                  label="Room"
-                  value={formData.room}
-                  isEdit={isEdit}
-                  list="room-options"
-                  onChange={(v) => handleChange("room", v)}
-                />
-              </Grid>
-            </Card>
-
-            {/* Financial & Warranty */}
-            <Card title="Financial & Warranty">
-              <Grid col={3}>
-                <Info
-                  label="Purchase Price (BDT)"
-                  value={formData.purchasePrice}
-                  isEdit={isEdit}
-                  onChange={(v) => handleChange("purchasePrice", v)}
-                />
-                <Info
-                  label="Vendor Name"
-                  value={formData.vendorName}
-                  isEdit={isEdit}
-                  list="vendor-options"
-                  onChange={(v) => handleChange("vendorName", v)}
-                />
-                <InfoDate
-                  label="Purchase Date"
-                  value={formData.purchaseDate}
-                  isEdit={isEdit}
-                  onChange={(v) => handleChange("purchaseDate", v)}
-                />
-                <InfoDate
-                  label="Warranty Start"
-                  value={formData.warrantyStart}
-                  isEdit={isEdit}
-                  onChange={(v) => handleChange("warrantyStart", v)}
-                />
-                <InfoDate
-                  label="Warranty End Date"
-                  value={formData.warrantyEnd}
-                  isEdit={isEdit}
-                  onChange={(v) => handleChange("warrantyEnd", v)}
-                />
-              </Grid>
-            </Card>
-
-            {/* Remarks, Upgrades & Reports */}
-            <Card title="Remarks, Upgrades & Reports">
-              <Grid col={3}>
-                <InfoSelect
-                  label="Survey Report"
-                  value={formData.surveyReport}
-                  isEdit={isEdit}
-                  onChange={(value) =>
-                    setFormData((prev) => ({
-                      ...prev,
-                      surveyReport: value,
-                    }))
-                  }
-                  options={["OK", "Update", "Replace", "Repair/Service"]}
-                />
-                <Info
-                  label="Upgrade Equipments"
-                  value={formData.upgradeEquipments}
-                  isEdit={isEdit}
-                  onChange={(v) => handleChange("upgradeEquipments", v)}
-                />
-                <Info
-                  label="Remarks"
-                  value={formData.remarks}
-                  isEdit={isEdit}
-                  onChange={(v) => handleChange("remarks", v)}
-                />
-              </Grid>
-            </Card>
-          </div>
-
-          {/* SIDEBAR (RIGHT COLUMN) */}
-          <div className="space-y-6">
-            {/* User & Assignment */}
-            <Card title="User & Assignment Details">
-              <div className="space-y-3">
-                {isEdit && employees.length > 0 && (
-                  <div className="bg-blue-50 border border-blue-200 p-2.5 rounded-lg space-y-1 mb-2">
-                    <label className="text-xs font-semibold text-blue-700 flex items-center gap-1">
-                      <UserCheck size={14} /> Assign Existing Employee
-                    </label>
-                    <select
-                      className="w-full border border-blue-300 rounded-md px-2 py-1.5 text-xs bg-white text-gray-800"
-                      onChange={(e) => handleSelectEmployee(e.target.value)}
-                      defaultValue=""
-                    >
-                      <option value="" disabled>
-                        Select employee to auto-fill...
-                      </option>
-                      {employees.map((emp) => (
-                        <option key={emp.id} value={emp.id}>
-                          {emp.name} ({emp.employeeCode || emp.id})
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                )}
-
-                <Info
-                  label="User Name"
-                  value={formData.userName}
-                  isEdit={isEdit}
-                  list="username-options"
-                  onChange={(v) => handleChange("userName", v)}
-                />
-                <Info
-                  label="Employee ID"
-                  value={formData.userCode}
-                  isEdit={isEdit}
-                  list="usercode-options"
-                  onChange={(v) => handleChange("userCode", v)}
-                />
-                <Info
-                  label="Old Users"
-                  value={formData.oldUsers}
-                  isEdit={isEdit}
-                  placeholder="e.g. User A, User B"
-                  onChange={(v) => handleChange("oldUsers", v)}
-                />
-                <InfoDate
-                  label="Received Date"
-                  value={formData.receivedDate}
-                  isEdit={isEdit}
-                  onChange={(v) => handleChange("receivedDate", v)}
-                />
-              </div>
-            </Card>
-
-            {/* Linked Employee Info */}
-            {employee && (
-              <Card title="Assigned Employee Info">
-                <div className="space-y-3">
-                  <Info label="Name" value={employee.name} />
-                  <Info label="Employee Code" value={employee.employeeCode} />
-                  <Info label="Email" value={employee.email} />
-                  <Info label="Department" value={employee.department} />
-                  <Info label="Location" value={employee.location} />
-                  <Info label="Contact" value={employee.contact} />
-                </div>
-              </Card>
-            )}
-          </div>
-
-          {/* FULL WIDTH - TASKS SECTION */}
-          <div className="w-full col-span-1 md:col-span-3 space-y-3">
-            <Card title={`Tasks (${assetTasks.length})`}>
-              {assetTasks.length === 0 ? (
-                <p className="text-sm text-gray-500">
-                  No tasks logged for this asset.
-                </p>
-              ) : (
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  {assetTasks.map((task) => {
-                    return (
-                      <TaskCard
-                        key={task.id}
-                        task={task}
-                        asset={formData}
-                       
-                      />
-                    );
-                  })}
-                </div>
-              )}
-            </Card>
-          </div>
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-white text-slate-900 flex items-center justify-center">
+        <div className="flex flex-col items-center gap-3">
+          <Loader2 className="w-10 h-10 animate-spin text-indigo-600" />
+          <p className="text-slate-600 font-medium">Loading asset details...</p>
         </div>
       </div>
+    );
+  }
 
-      {/* Delete Confirmation Modal */}
-      {isDeleteModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-xs">
-          <div className="w-full max-w-sm rounded-2xl bg-white p-6 shadow-xl border border-gray-100">
-            <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-rose-100 text-rose-600">
-                <AlertTriangle size={20} />
+  if (error || !asset) {
+    return (
+      <div className="min-h-screen bg-white text-slate-900 p-6 flex flex-col items-center justify-center">
+        <div className="bg-white border border-red-600 rounded-xl p-8 max-w-md w-full text-center shadow-2xl shadow-red-100">
+          <AlertCircle className="w-12 h-12 text-red-600 mx-auto mb-4" />
+          <h2 className="text-xl font-bold text-slate-900 mb-2">Error Loading Asset</h2>
+          <p className="text-slate-600 mb-6">{error || "Asset does not exist."}</p>
+          <button
+            onClick={() => navigate(-1)}
+            className="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2.5 rounded-lg font-medium shadow-md transition"
+          >
+            <ArrowLeft className="w-4 h-4" /> Go Back
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  const getStatusBadge = (status) => {
+    switch (status?.toLowerCase()) {
+      case "active":
+      case "instock":
+      case "ok":
+        return "bg-emerald-100 border border-emerald-600 text-emerald-800";
+      case "on process":
+      case "repair/service":
+      case "update":
+        return "bg-amber-100 border border-amber-600 text-amber-800";
+      case "inactive":
+      case "pending":
+      case "replace":
+      case "removal":
+        return "bg-red-100 border border-red-600 text-red-800";
+      default:
+        return "bg-indigo-100 border border-indigo-600 text-indigo-800";
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-white text-slate-900 p-4 sm:p-6 lg:p-8">
+      <div className="max-w-6xl mx-auto space-y-6">
+        {/* Navigation Bar */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-4 rounded-xl border border-slate-900 shadow-xl">
+          <button
+            onClick={() => navigate(-1)}
+            className="inline-flex items-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-900 border border-slate-900 px-4 py-2 rounded-lg font-bold transition text-sm shadow-xl w-fit"
+          >
+            <ArrowLeft className="w-4 h-4" /> Back
+          </button>
+
+          <div className="flex items-center gap-3">
+            <Link
+              to={`/assets/editAsset/${asset.id}`}
+              className="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white border border-slate-900 px-4 py-2 rounded-lg text-sm font-bold shadow-xl transition"
+            >
+              <Edit className="w-4 h-4" /> Edit Asset
+            </Link>
+            <button
+              onClick={() => setShowDeleteModal(true)}
+              className="inline-flex items-center gap-2 bg-red-100 hover:bg-red-200 text-red-700 border border-red-600 px-4 py-2 rounded-lg text-sm font-bold shadow-xl transition"
+            >
+              <Trash2 className="w-4 h-4" /> Delete
+            </button>
+          </div>
+        </div>
+
+        {/* Header Summary Card */}
+        <div className="bg-white rounded-xl border border-indigo-600 p-6 shadow-xl space-y-4">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+            <div className="flex items-start gap-4">
+              <div className="p-3 bg-indigo-100 border border-indigo-600 rounded-xl text-indigo-700">
+                <HardDrive className="w-8 h-8" />
               </div>
               <div>
-                <h3 className="text-base font-bold text-gray-900">
-                  Delete Asset
-                </h3>
-                <p className="text-xs text-gray-500 mt-1">
-                  Are you sure you want to delete{" "}
-                  <span className="font-semibold text-gray-800">
-                    "{asset?.equipment || asset?.assetCode}"
+                <div className="flex items-center gap-3 flex-wrap mb-1">
+                  <h1 className="text-2xl font-black text-slate-900">
+                    {asset.equipment || "Unknown Equipment"}
+                  </h1>
+                  <span className={`px-3 py-0.5 rounded-full text-xs font-bold ${getStatusBadge(asset.status)}`}>
+                    {asset.status || "N/A"}
                   </span>
-                  ? This action cannot be undone.
+                </div>
+                <p className="text-slate-600 text-sm font-mono">
+                  Asset Code: <span className="text-indigo-600 font-bold">{asset.assetCode || "N/A"}</span>
                 </p>
               </div>
             </div>
 
-            <div className="mt-6 flex justify-end gap-2">
+            <div className="flex flex-wrap gap-4">
+              <div className="bg-slate-50 border border-slate-900 px-4 py-2 rounded-lg shadow-xl">
+                <p className="text-xs font-bold text-slate-500 uppercase">Brand & Model</p>
+                <p className="text-sm font-black text-slate-900">
+                  {asset.brand || "—"} {asset.model ? `(${asset.model})` : ""}
+                </p>
+              </div>
+              <div className="bg-slate-50 border border-emerald-600 px-4 py-2 rounded-lg shadow-xl">
+                <p className="text-xs font-bold text-emerald-700 uppercase">Company</p>
+                <p className="text-sm font-black text-emerald-900">{asset.company || "—"}</p>
+              </div>
+              <div className="bg-slate-50 border border-blue-600 px-4 py-2 rounded-lg shadow-xl">
+                <p className="text-xs font-bold text-blue-700 uppercase">Survey Status</p>
+                <p className="text-sm font-black text-blue-900">{asset.surveyStatus || "—"}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Grid Sections */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Technical Specifications */}
+          <div className="bg-white rounded-xl border border-blue-600 p-5 shadow-xl space-y-4">
+            <div className="flex items-center gap-2 text-blue-700 pb-3 border-b-2 border-blue-100">
+              <Tag className="w-5 h-5" />
+              <h2 className="font-black text-slate-900">Equipment & Specifications</h2>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4 text-sm">
+              <div>
+                <p className="text-xs font-bold text-slate-500 uppercase">Serial Number</p>
+                <p className="font-mono font-bold text-slate-900 mt-1">{asset.serialNumber || "N/A"}</p>
+              </div>
+              <div>
+                <p className="text-xs font-bold text-slate-500 uppercase">MAC Address</p>
+                <p className="font-mono font-bold text-slate-900 mt-1">{asset.macAddress || "N/A"}</p>
+              </div>
+            </div>
+
+            <div className="pt-2 border-t border-slate-200">
+              <p className="text-xs font-bold text-slate-500 uppercase mb-1">Specifications</p>
+              <p className="text-sm text-slate-800 bg-slate-50 p-3 rounded-lg border border-slate-900 whitespace-pre-wrap font-medium">
+                {asset.specifications || "No detailed specifications recorded."}
+              </p>
+            </div>
+
+            {asset.upgradeEquipments && (
+              <div>
+                <p className="text-xs font-bold text-amber-700 uppercase mb-1">Upgrades</p>
+                <p className="text-sm text-amber-900 bg-amber-50 border border-amber-600 p-3 rounded-lg font-medium">
+                  {asset.upgradeEquipments}
+                </p>
+              </div>
+            )}
+          </div>
+
+          {/* Location & Department */}
+          <div className="bg-white rounded-xl border border-emerald-600 p-5 shadow-xl space-y-4">
+            <div className="flex items-center gap-2 text-emerald-700 pb-3 border-b-2 border-emerald-100">
+              <MapPin className="w-5 h-5" />
+              <h2 className="font-black text-slate-900">Location & Department</h2>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4 text-sm">
+              <div>
+                <p className="text-xs font-bold text-slate-500 uppercase">Company</p>
+                <p className="font-bold text-slate-900 mt-1">{asset.company || "N/A"}</p>
+              </div>
+              <div>
+                <p className="text-xs font-bold text-slate-500 uppercase">Department</p>
+                <p className="font-bold text-slate-900 mt-1">{asset.department || "N/A"}</p>
+              </div>
+              <div>
+                <p className="text-xs font-bold text-slate-500 uppercase">Location</p>
+                <p className="font-bold text-slate-900 mt-1">{asset.location || "N/A"}</p>
+              </div>
+              <div>
+                <p className="text-xs font-bold text-slate-500 uppercase">Floor & Room</p>
+                <p className="font-bold text-slate-900 mt-1">
+                  {asset.floor ? `Floor: ${asset.floor}` : "N/A"}
+                  {asset.room ? `, Room: ${asset.room}` : ""}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Procurement & Warranty */}
+          <div className="bg-white rounded-xl border border-indigo-600 p-5 shadow-xl space-y-4">
+            <div className="flex items-center gap-2 text-indigo-700 pb-3 border-b-2 border-indigo-100">
+              <ShieldCheck className="w-5 h-5" />
+              <h2 className="font-black text-slate-900">Procurement & Warranty</h2>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4 text-sm">
+              <div>
+                <p className="text-xs font-bold text-slate-500 uppercase">Purchase Date</p>
+                <p className="font-bold text-slate-900 mt-1">{asset.purchaseDate || "N/A"}</p>
+              </div>
+              <div>
+                <p className="text-xs font-bold text-slate-500 uppercase">Purchase Price</p>
+                <p className="font-bold text-emerald-600 mt-1">
+                  {asset.purchasePrice ? `$${asset.purchasePrice}` : "N/A"}
+                </p>
+              </div>
+              <div>
+                <p className="text-xs font-bold text-slate-500 uppercase">Warranty Period</p>
+                <p className="font-bold text-slate-900 mt-1">
+                  {asset.warrantyYears ? `${asset.warrantyYears} Year(s)` : "N/A"}
+                </p>
+              </div>
+              <div>
+                <p className="text-xs font-bold text-slate-500 uppercase">Warranty End</p>
+                <p className="font-bold text-slate-900 mt-1">{asset.warrantyEnd || "N/A"}</p>
+              </div>
+            </div>
+
+            <div className="pt-2 border-t border-slate-200">
+              <p className="text-xs font-bold text-slate-500 uppercase mb-1">Vendor Details</p>
+              <div className="bg-indigo-50 p-3 rounded-lg border border-indigo-600 text-sm">
+                <p className="font-bold text-indigo-900">
+                  {vendorInfo?.vendorName || asset.vendorId || "No Vendor Assigned"}
+                </p>
+                {vendorInfo && (
+                  <div className="text-xs text-slate-700 mt-1 space-y-0.5 font-medium">
+                    {vendorInfo.contactPerson && <p>Contact: {vendorInfo.contactPerson}</p>}
+                    {vendorInfo.contact && <p>Phone/Email: {vendorInfo.contact}</p>}
+                    {vendorInfo.address && <p>Address: {vendorInfo.address}</p>}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Governance & Assignment */}
+          <div className="bg-white rounded-xl border border-slate-900 p-5 shadow-xl space-y-4">
+            <div className="flex items-center gap-2 text-slate-900 pb-3 border-b-2 border-slate-200">
+              <UserCheck className="w-5 h-5" />
+              <h2 className="font-black text-slate-900">Employee Information</h2>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4 text-sm">
+              <div>
+                <p className="text-xs font-bold text-slate-500 uppercase">Assigned Employee ID</p>
+                <p className="font-mono font-bold text-slate-900 mt-1">{asset.employeeId || "Unassigned"}</p>
+              </div>
+              <div>
+                <p className="text-xs font-bold text-slate-500 uppercase">Received Date</p>
+                <p className="font-bold text-slate-900 mt-1">{asset.receivedDate || "N/A"}</p>
+              </div>
+              <div>
+                <p className="text-xs font-bold text-slate-500 uppercase">Surveyor / Auditor</p>
+                <p className="font-bold text-indigo-600 mt-1">{asset.surveyer || "N/A"}</p>
+              </div>
+              <div>
+                <p className="text-xs font-bold text-slate-500 uppercase">Survey Status</p>
+                <p className="font-bold text-blue-600 mt-1">{asset.surveyStatus || "N/A"}</p>
+              </div>
+            </div>
+
+            <div className="pt-2 border-t border-slate-200">
+              <p className="text-xs font-bold text-slate-500 uppercase mb-1">Previous Users Log</p>
+              {asset.oldUsers && asset.oldUsers.length > 0 ? (
+                <div className="flex flex-wrap gap-2 mt-1">
+                  {asset.oldUsers.map((user, idx) => (
+                    <span
+                      key={idx}
+                      className="text-xs bg-slate-100 border border-slate-900 font-bold text-slate-900 px-2.5 py-1 rounded-md"
+                    >
+                      {user}
+                    </span>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-xs text-slate-500 italic">No past user history recorded.</p>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Remarks Section */}
+        {asset.remarks && (
+          <div className="bg-white rounded-xl border border-slate-900 p-5 shadow-xl">
+            <div className="flex items-center gap-2 text-slate-900 pb-2 border-b-2 border-slate-200 mb-3">
+              <FileText className="w-5 h-5" />
+              <h2 className="font-black text-slate-900">Remarks & Notes</h2>
+            </div>
+            <p className="text-sm text-slate-800 bg-slate-50 p-4 rounded-lg border border-slate-900 whitespace-pre-wrap font-medium">
+              {asset.remarks}
+            </p>
+          </div>
+        )}
+      </div>
+
+      {/* Delete Confirmation Modal */}
+      {showDeleteModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
+          <div className="bg-white border border-red-600 rounded-xl max-w-md w-full p-6 shadow-xl space-y-4">
+            <div className="flex items-center gap-3 text-red-600">
+              <AlertCircle className="w-6 h-6" />
+              <h3 className="text-lg font-black text-slate-900">Confirm Deletion</h3>
+            </div>
+            <p className="text-sm text-slate-700 font-medium">
+              Are you sure you want to delete asset{" "}
+              <span className="font-mono font-bold text-red-600">{asset.assetCode}</span>? This action cannot be undone.
+            </p>
+
+            <div className="flex justify-end gap-3 pt-4 border-t-2 border-slate-100">
               <button
-                onClick={() => setIsDeleteModalOpen(false)}
-                disabled={deleting}
-                className="px-4 py-2 text-xs font-semibold text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition"
+                type="button"
+                onClick={() => setShowDeleteModal(false)}
+                disabled={isDeleting}
+                className="bg-slate-100 hover:bg-slate-200 text-slate-900 border border-slate-900 px-4 py-2 rounded-lg text-sm font-bold transition shadow-[2px_2px_0px_0px_rgba(15,23,42,1)]"
               >
                 Cancel
               </button>
               <button
+                type="button"
                 onClick={handleDelete}
-                disabled={deleting}
-                className="px-4 py-2 text-xs font-semibold text-white bg-rose-600 hover:bg-rose-700 rounded-lg shadow-xs transition"
+                disabled={isDeleting}
+                className="bg-red-600 hover:bg-red-700 text-white border border-slate-900 px-4 py-2 rounded-lg text-sm font-bold transition flex items-center gap-2 shadow-[2px_2px_0px_0px_rgba(15,23,42,1)]"
               >
-                {deleting ? "Deleting..." : "Delete"}
+                {isDeleting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Trash2 className="w-4 h-4" />}
+                Delete Permanently
               </button>
             </div>
           </div>
@@ -709,151 +406,4 @@ useEffect(() => {
   );
 };
 
-export default AssetDetail;
-
-// Helper UI Components
-
-const Card = ({ title, children }) => (
-  <div className="border border-gray-200 bg-white p-5 rounded-2xl shadow-sm space-y-4">
-    <h2 className="text-base font-bold text-blue-600 border-b border-gray-100 pb-2">
-      {title}
-    </h2>
-    {children}
-  </div>
-);
-
-const Grid = ({ children, col = 3 }) => {
-  const colMap = {
-    1: "grid-cols-1",
-    2: "grid-cols-1 sm:grid-cols-2",
-    3: "grid-cols-1 sm:grid-cols-3",
-    4: "grid-cols-1 sm:grid-cols-2 md:grid-cols-4",
-  };
-  return (
-    <div className={`grid ${colMap[col] || "grid-cols-3"} gap-4 text-sm`}>
-      {children}
-    </div>
-  );
-};
-
-const Info = ({
-  label,
-  value,
-  isEdit,
-  onChange,
-  list,
-  type = "text",
-  colSpan = "",
-  placeholder = "",
-}) => (
-  <div className={colSpan}>
-    <p className="text-gray-500 text-xs mb-1 font-medium">{label}</p>
-    {isEdit ? (
-      <input
-        type={type}
-        list={list}
-        placeholder={placeholder}
-        className="w-full border border-gray-300 rounded-lg px-2.5 py-1.5 text-sm bg-white focus:ring-2 focus:ring-blue-500 outline-none"
-        value={typeof value === "string" ? value : (value ?? "")}
-        onChange={(e) => onChange(e.target.value)}
-      />
-    ) : label === "Old Users" && typeof value === "string" && value ? (
-      <div className="flex flex-col gap-1.5 mt-2">
-        {value
-          .split(",")
-          .map((user) => user.trim())
-          .filter(Boolean)
-          .reverse()
-          .map((user, index) => (
-            <span
-              key={index}
-              className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-slate-100 text-slate-700 border border-blue-500 w-fit"
-            >
-              {index + 1}. {user}
-            </span>
-          ))}
-      </div>
-    ) : (
-      <p className="font-semibold text-gray-800 break-words">
-        {value || "---"}
-      </p>
-    )}
-  </div>
-);
-
-const InfoSelect = ({
-  label,
-  value,
-  isEdit,
-  onChange,
-  options = [],
-  colSpan = "",
-}) => (
-  <div className={colSpan}>
-    <p className="text-gray-500 text-xs mb-1 font-medium">{label}</p>
-
-    {isEdit ? (
-      <select
-        className="w-full border border-gray-300 rounded-lg px-2.5 py-1.5 text-black text-sm focus:ring-2 focus:ring-blue-500 outline-none"
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-      >
-        {options.map((option) => (
-          <option key={option} value={option}>
-            {option}
-          </option>
-        ))}
-      </select>
-    ) : (
-      <p className="font-semibold text-gray-800 break-words">
-        {value || "---"}
-      </p>
-    )}
-  </div>
-);
-
-const InfoDate = ({ label, value, isEdit, onChange }) => {
-  const formattedDate = value ? value.toString().split("T")[0] : "";
-
-  return (
-    <div>
-      <p className="text-gray-500 text-xs mb-1 font-medium">{label}</p>
-      {isEdit ? (
-        <input
-          type="date"
-          className="w-full border border-gray-300 rounded-lg px-2.5 py-1.5 text-sm bg-white focus:ring-2 focus:ring-blue-500 outline-none"
-          value={formattedDate}
-          onChange={(e) => onChange(e.target.value)}
-        />
-      ) : (
-        <p className="font-semibold text-gray-800">
-          {value ? new Date(value).toLocaleDateString() : "---"}
-        </p>
-      )}
-    </div>
-  );
-};
-
-const EditableHeader = ({ value, isEdit, onChange, placeholder, list }) =>
-  isEdit ? (
-    <input
-      list={list}
-      className="text-2xl font-bold bg-white/20 border border-white/50 text-white placeholder-white/70 px-3 py-1 rounded-lg outline-none w-full max-w-md"
-      value={value || ""}
-      placeholder={placeholder}
-      onChange={(e) => onChange(e.target.value)}
-    />
-  ) : (
-    <h1 className="text-2xl font-bold tracking-tight">{value || "---"}</h1>
-  );
-
-const EditableHeaderInline = ({ value, isEdit, onChange }) =>
-  isEdit ? (
-    <input
-      className="bg-white/20 border border-white/50 text-white font-semibold px-2 py-0.5 rounded outline-none"
-      value={value || ""}
-      onChange={(e) => onChange(e.target.value)}
-    />
-  ) : (
-    <span className="font-semibold">{value || "---"}</span>
-  );
+export default AssetDetails;
