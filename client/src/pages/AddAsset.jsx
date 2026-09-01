@@ -13,25 +13,23 @@ const initialFormState = {
   serialNumber: "",
   specifications: "",
   macAddress: "",
+  company: "",
   department: "",
   location: "",
   floor: "",
   room: "",
   status: "",
-  userId: "",
-  userCode: "",
-  userName: "",
-  oldUsers: "",
+  employeeId: "",
+  oldUsers: [],
   receivedDate: "",
   purchaseDate: getTodayDate(),
   purchasePrice: "",
-  warrantyStart: getTodayDate(),
+  warrantyStart: "",
   warrantyEnd: "",
   warrantyYears: "",
-  vendorName: "",
+  vendorId: "",
   remarks: "",
-  surveyReport: "",
-  upgradeEquipments: "",
+  surveyId: "",
 };
 
 const AddAsset = () => {
@@ -44,6 +42,7 @@ const AddAsset = () => {
   const [dropdownOptions, setDropdownOptions] = useState({
     equipments: [],
     brands: [],
+    companys: [],
     departments: [],
     locations: [],
     statuses: [],
@@ -59,23 +58,51 @@ const AddAsset = () => {
         const assets = Array.isArray(response.data) ? response.data : [];
 
         // Helper function to extract, sanitize, and unique-filter values
-        const getUnique = (key) =>
-          Array.from(
+        const getUnique = async (key) => {
+          // ==========================================
+          // Vendors
+          // ==========================================
+          if (key === "vendors") {
+            try {
+              const response = await axios.get(`${API_BASE_URL}/vendors`);
+
+              const vendors = response.data || [];
+
+              return Array.from(
+                new Set(
+                  vendors
+                    .map((vendor) =>
+                      vendor.vendorName ? String(vendor.vendorName).trim() : "",
+                    )
+                    .filter((value) => value !== ""),
+                ),
+              );
+            } catch (error) {
+              console.error("Failed to fetch vendors:", error);
+              return [];
+            }
+          }
+
+          // ==========================================
+          // Normal asset fields
+          // ==========================================
+          return Array.from(
             new Set(
               assets
                 .map((item) => (item[key] ? String(item[key]).trim() : ""))
-                .filter((val) => val !== ""),
+                .filter((value) => value !== ""),
             ),
           );
+        };
 
         setDropdownOptions({
           equipments: getUnique("equipment"),
           brands: getUnique("brand"),
+          companys: getUnique("company"),
           departments: getUnique("department"),
           locations: getUnique("location"),
           statuses: getUnique("status"),
           vendors: getUnique("vendorName"),
-          surveyReports: getUnique("surveyReport"),
         });
       } catch (err) {
         console.error("Failed to load existing assets for dropdowns:", err);
@@ -123,6 +150,7 @@ const AddAsset = () => {
       serialNumber: formData.serialNumber,
       specifications: formData.specifications,
       macAddress: formData.macAddress,
+      company: formData.company,
       department: formData.department,
       location: formData.location,
       floor: formData.floor,
@@ -220,7 +248,11 @@ const AddAsset = () => {
                 <option key={i} value={opt} />
               ))}
             </datalist>
-
+            <datalist id="company-db-options">
+              {dropdownOptions.companys.map((opt, i) => (
+                <option key={i} value={opt} />
+              ))}
+            </datalist>
             <datalist id="location-db-options">
               {dropdownOptions.locations.map((opt, i) => (
                 <option key={i} value={opt} />
@@ -373,7 +405,7 @@ const AddAsset = () => {
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-1">
-                    User Code
+                    Employee ID
                   </label>
                   <input
                     className={inputStyle}
@@ -432,6 +464,20 @@ const AddAsset = () => {
               </h3>
 
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-1">
+                    Company <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    className={inputStyle}
+                    name="company"
+                    list="company-db-options"
+                    placeholder="Type or select company"
+                    value={formData.company}
+                    required
+                    onChange={handleChange}
+                  />
+                </div>
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-1">
                     Location <span className="text-red-500">*</span>
@@ -613,7 +659,7 @@ const AddAsset = () => {
                     value={formData.surveyReport}
                     onChange={handleChange}
                   >
-                     <option >Select...</option>
+                    <option>Select...</option>
                     <option value="OK">OK</option>
                     <option value="Update">Update</option>
                     <option value="Replace">Replace</option>
