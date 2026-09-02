@@ -31,7 +31,7 @@ import CategorySearch from "./pages/CategorySearch";
 // Session Configuration
 // ==========================================
 
-const RefreshOn = 30*60*1000;
+const RefreshOn = 60*60*1000;
 
 // ==========================================
 // Protected Route

@@ -4,8 +4,6 @@ import { Plus, X } from "lucide-react";
 import AssetCard from "../components/AssetCard";
 import { API_BASE_URL } from "../env";
 
-const ITEMS_PER_PAGE = 24;
-
 const INITIAL_FILTERS = {
   assetInfo: "",
   location: "",
@@ -20,14 +18,14 @@ const INITIAL_FILTERS = {
 // Helper function to calculate asset age in full years
 const calculateAssetAgeInYears = (asset) => {
   const dateString = asset.purchaseDate;
-  
+
   // 1. Treats empty, missing, null, undefined, or non-string values as invalid
   if (!dateString || typeof dateString !== "string" || !dateString.trim()) {
     return null;
   }
 
   const date = new Date(dateString);
-  
+
   // 2. Treats non-date text (e.g., "N/A", "TBD", "pending") as invalid
   if (isNaN(date.getTime())) {
     return null;
@@ -76,29 +74,29 @@ const filterStrategies = {
     !surveyReport || asset.surveyReport === surveyReport,
 
   matchesStatus: (asset, status) => {
-  if (status === "") return true;
-  if (status === "None") return !asset.status || asset.status.trim() === "";
-  return asset.status === status;
-},
+    if (status === "") return true;
+    if (status === "None") return !asset.status || asset.status.trim() === "";
+    return asset.status === status;
+  },
 
   matchesAge: (asset, ageYears, invalidDateOnly) => {
-  const assetAge = calculateAssetAgeInYears(asset);
+    const assetAge = calculateAssetAgeInYears(asset);
 
-  // Filter exclusively for invalid/missing dates if toggled
-  if (invalidDateOnly) {
-    return assetAge === null;
-  }
+    // Filter exclusively for invalid/missing dates if toggled
+    if (invalidDateOnly) {
+      return assetAge === null;
+    }
 
-  if (!ageYears) return true;
+    if (!ageYears) return true;
 
-  const targetYears = parseInt(ageYears, 10);
-  if (isNaN(targetYears)) return true;
+    const targetYears = parseInt(ageYears, 10);
+    if (isNaN(targetYears)) return true;
 
-  if (assetAge === null) return false;
+    if (assetAge === null) return false;
 
-  // Returns assets that are at least as old as target years
-  return assetAge >= targetYears;
-},
+    // Returns assets that are at least as old as target years
+    return assetAge >= targetYears;
+  },
 };
 
 // ==========================================
@@ -110,12 +108,15 @@ export const useAssets = () => {
   const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState(INITIAL_FILTERS);
   const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
 
   useEffect(() => {
     let isMounted = true;
+
     const fetchData = async () => {
       try {
         setLoading(true);
+
         const [resAssets, resEmp] = await Promise.all([
           fetch(`${API_BASE_URL}/assets`),
           fetch(`${API_BASE_URL}/employees`),
@@ -133,36 +134,49 @@ export const useAssets = () => {
       } catch (error) {
         console.error("Failed to fetch assets data:", error);
       } finally {
-        if (isMounted) setLoading(false);
+        if (isMounted) {
+          setLoading(false);
+        }
       }
     };
 
     fetchData();
+
     return () => {
       isMounted = false;
     };
   }, []);
 
-  // Extract unique dynamic options for select fields
+  // Filter options
   const filterOptions = useMemo(() => {
     const locations = Array.from(
       new Set(assets.map((a) => a.location).filter(Boolean)),
     );
+
     const departments = Array.from(
       new Set(assets.map((a) => a.department).filter(Boolean)),
     );
+
     const equipments = Array.from(
       new Set(assets.map((a) => a.equipment).filter(Boolean)),
     );
+
     const surveyReports = Array.from(
       new Set(assets.map((a) => a.surveyReport).filter(Boolean)),
     );
+
     const statuses = Array.from(new Set(assets.map((a) => a.status)));
 
-    return { locations, departments, equipments, surveyReports, statuses };
+    return {
+      locations,
+      departments,
+      equipments,
+      surveyReports,
+      statuses,
+    };
   }, [assets]);
 
-  // Filter and Sort Pipeline
+  // Filter and sort
   const filteredAssets = useMemo(() => {
     return [...assets]
       .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
@@ -182,21 +196,30 @@ export const useAssets = () => {
       );
   }, [assets, filters]);
 
-  // Pagination Calculations
+  // Pagination
   const totalPages = Math.max(
     1,
-    Math.ceil(filteredAssets.length / ITEMS_PER_PAGE),
+    Math.ceil(filteredAssets.length / itemsPerPage),
   );
-  const paginatedAssets = useMemo(() => {
-    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-    return filteredAssets.slice(startIndex, startIndex + ITEMS_PER_PAGE);
-  }, [filteredAssets, currentPage]);
 
+  const paginatedAssets = useMemo(() => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+
+    return filteredAssets.slice(startIndex, startIndex + itemsPerPage);
+  }, [filteredAssets, currentPage, itemsPerPage]);
+
+  // Handle filters
   const handleFilterChange = useCallback((key, value) => {
-    setFilters((prev) => ({ ...prev, [key]: value }));
-    setCurrentPage(1); // Reset to page 1 on filter change
+    setFilters((prev) => ({
+      ...prev,
+      [key]: value,
+    }));
+
+    // Always go back to first page
+    setCurrentPage(1);
   }, []);
 
+  // Reset filters
   const resetFilters = useCallback(() => {
     setFilters(INITIAL_FILTERS);
     setCurrentPage(1);
@@ -206,13 +229,20 @@ export const useAssets = () => {
     assets: paginatedAssets,
     totalCount: assets.length,
     filteredCount: filteredAssets.length,
+
+    // Pagination
     totalPages,
     currentPage,
     setCurrentPage,
+    itemsPerPage,
+    setItemsPerPage,
+
+    // Filters
     filters,
     filterOptions,
     handleFilterChange,
     resetFilters,
+
     loading,
   };
 };
@@ -425,30 +455,30 @@ const AssetFilterBar = ({
           Status
         </label>
         <select
-  className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-indigo-400 bg-white"
-  value={filters.status}
-  onChange={(e) => onFilterChange("status", e.target.value)}
->
-  <option value="">All Status</option>
-  {filterOptions.statuses.length > 0 ? (
-    filterOptions.statuses.map((st) => {
-      const isNone = st === "" || !st || !st.trim();
-      return (
-        <option key={st || "None"} value={isNone ? "None" : st}>
-          {isNone ? "None" : st}
-        </option>
-      );
-    })
-  ) : (
-    <>
-      <option value="Instock">Instock</option>
-      <option value="Active">Active</option>
-      <option value="Inactive">Inactive</option>
-      <option value="Removal">Removal</option>
-      <option value="None">None</option>
-    </>
-  )}
-</select>
+          className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-indigo-400 bg-white"
+          value={filters.status}
+          onChange={(e) => onFilterChange("status", e.target.value)}
+        >
+          <option value="">All Status</option>
+          {filterOptions.statuses.length > 0 ? (
+            filterOptions.statuses.map((st) => {
+              const isNone = st === "" || !st || !st.trim();
+              return (
+                <option key={st || "None"} value={isNone ? "None" : st}>
+                  {isNone ? "None" : st}
+                </option>
+              );
+            })
+          ) : (
+            <>
+              <option value="Instock">Instock</option>
+              <option value="Active">Active</option>
+              <option value="Inactive">Inactive</option>
+              <option value="Removal">Removal</option>
+              <option value="None">None</option>
+            </>
+          )}
+        </select>
       </div>
 
       {/* Reset Button */}
@@ -480,7 +510,7 @@ const AssetGrid = ({ assets, loading }) => {
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
       {assets.map((asset) => (
         <AssetCard key={asset.id || asset._id} asset={asset} />
       ))}
@@ -488,27 +518,80 @@ const AssetGrid = ({ assets, loading }) => {
   );
 };
 
-const Pagination = ({ totalPages, currentPage, onPageChange }) => {
-  if (totalPages <= 1) return null;
+const Pagination = ({
+  totalPages,
+  currentPage,
+  onPageChange,
+  itemsPerPage,
+  onItemsPerPageChange,
+}) => {
+  if (totalPages <= 1 && !itemsPerPage) return null;
 
   return (
-    <div className="flex justify-center mt-6 gap-2">
-      {Array.from({ length: totalPages }, (_, i) => {
-        const pageNumber = i + 1;
-        return (
+    <div className="flex flex-col sm:flex-row items-center justify-between gap-4 my-4 px-4 py-3 bg-white border border-indigo-500 rounded-xl shadow-sm">
+      {/* Items Per Page */}
+      <div className="flex items-center gap-2">
+        <span className="text-sm font-semibold text-slate-600">Show</span>
+
+        <select
+          value={itemsPerPage}
+          onChange={(e) => {
+            onItemsPerPageChange(Number(e.target.value));
+            onPageChange(1);
+          }}
+          className="px-3 py-1.5 rounded-lg border border-slate-300 bg-white text-sm font-semibold text-slate-700 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
+        >
+          <option value={10}>1 - 10</option>
+          <option value={50}>1 - 50</option>
+          <option value={100}>1 - 100</option>
+          <option value={150}>1 - 150</option>
+          <option value={200}>1 - 200</option>
+          <option value={500}>1 - 500</option>
+        </select>
+        <span className="text-sm text-slate-500">per page</span>
+      </div>
+
+      {/* Page Navigation */}
+      {totalPages > 1 && (
+        <div className="flex items-center gap-1">
+          {/* Previous */}
           <button
-            key={pageNumber}
-            className={`px-3 py-1 border rounded transition ${
-              currentPage === pageNumber
-                ? "bg-blue-600 text-white border-blue-600"
-                : "bg-white hover:bg-gray-100"
-            }`}
-            onClick={() => onPageChange(pageNumber)}
+            onClick={() => onPageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+            className="px-3 py-1.5 rounded-lg border border-slate-300 bg-white text-sm font-bold text-slate-600 hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed transition"
           >
-            {pageNumber}
+            ←
           </button>
-        );
-      })}
+
+          {/* Page Numbers */}
+          {Array.from({ length: totalPages }, (_, i) => {
+            const pageNumber = i + 1;
+
+            return (
+              <button
+                key={pageNumber}
+                onClick={() => onPageChange(pageNumber)}
+                className={`min-w-[36px] px-3 py-1.5 rounded-lg text-sm font-bold border transition ${
+                  currentPage === pageNumber
+                    ? "bg-indigo-600 text-white border-indigo-600 shadow-sm"
+                    : "bg-white text-slate-600 border-slate-300 hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-300"
+                }`}
+              >
+                {pageNumber}
+              </button>
+            );
+          })}
+
+          {/* Next */}
+          <button
+            onClick={() => onPageChange(currentPage + 1)}
+            disabled={currentPage === totalPages}
+            className="px-3 py-1.5 rounded-lg border border-slate-300 bg-white text-sm font-bold text-slate-600 hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed transition"
+          >
+            →
+          </button>
+        </div>
+      )}
     </div>
   );
 };
@@ -524,6 +607,8 @@ const Assets = () => {
     totalPages,
     currentPage,
     setCurrentPage,
+    itemsPerPage,
+    setItemsPerPage,
     filters,
     filterOptions,
     handleFilterChange,
@@ -571,14 +656,17 @@ const Assets = () => {
           onReset={resetFilters}
         />
       </div>
-
-      <AssetGrid assets={assets} loading={loading} />
-
       <Pagination
         totalPages={totalPages}
         currentPage={currentPage}
         onPageChange={setCurrentPage}
+        itemsPerPage={itemsPerPage}
+        onItemsPerPageChange={setItemsPerPage}
       />
+
+      <AssetGrid assets={assets} loading={loading} />
+
+      
     </div>
   );
 };

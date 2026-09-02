@@ -991,7 +991,7 @@ function SearchableDropdown({
           <button
             type="button"
             onClick={onAddClick}
-            className="p-2.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-600 border border-indigo-200 rounded-xl transition-colors flex items-center justify-center shrink-0 shadow-sm"
+            className="bg-indigo-600 text-white border border-slate-900 p-2 rounded-lg font-bold shadow-xl hover:bg-indigo-700"
             title="Add new option"
           >
             <Plus className="w-4 h-4" />
