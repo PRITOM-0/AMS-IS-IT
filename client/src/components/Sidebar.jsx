@@ -26,7 +26,9 @@ function Sidebar() {
         { label: "Dashboard", icon: <LayoutDashboard size={17} strokeWidth={3} />, path: "/" },
         { label: "Assets", icon: <FaBoxOpen size={17} />, path: "/assets" },
         { label: "Add Asset", icon: <FaPlusCircle size={17} />, path: "/assets/addAsset" },
-        { label: "Tasks", icon: <AlarmClockCheck size={17} strokeWidth={3} />, path: "/tasks" },
+        // { label: "Tasks", icon: <AlarmClockCheck size={17} strokeWidth={3} />, path: "/tasks" },
+        { label: "Employees", icon: <FaUserTie size={17} />, path: "/employees" },
+        { label: "Add Employee", icon: <FaPlusCircle size={17} />, path: "employees/add" },
       ],
     },
     {
@@ -43,18 +45,15 @@ function Sidebar() {
           path: "/exportassets",
         },
         // { label: "Assign Assets", icon: <FaShareSquare size={17} />, path: "/assign-assets" },
-        
         // { label: "Requests", icon: <FaClipboardList size={17} />, path: "/requests" },
       ],
     },
-    // {
-    //   title: "System",
-    //   items: [
-    //     { label: "Employees", icon: <FaUserTie size={17} />, path: "/employees" },
-    //     { label: "Users", icon: <FaUsers size={17} />, path: "/users" },
-    //     { label: "Settings", icon: <FaCog size={17} />, path: "/settings" },
-    //   ],
-    // },
+    {
+      title: "System",
+      items: [
+        { label: "Settings", icon: <FaCog size={17} />, path: "/settings" },
+      ],
+    },
   ];
 
   return (

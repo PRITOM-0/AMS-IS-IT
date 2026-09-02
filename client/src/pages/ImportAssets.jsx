@@ -10,8 +10,11 @@ import {
   ArrowLeft,
 } from "lucide-react";
 
+/* =========================================================
+   ASSET DATA STRUCTURE
+========================================================= */
+
 const demoAsset = {
-  id: "",
   equipment: "",
   assetCode: "",
   brand: "",
@@ -19,213 +22,342 @@ const demoAsset = {
   serialNumber: "",
   specifications: "",
   macAddress: "",
-  department: "",
+
+  company: "",
   location: "",
+  department: "",
   floor: "",
   room: "",
+
   status: "",
-  userId: "",
-  userCode: "",
-  userName: "",
-  oldUsers: "",
+
+  employeeId: "",
   receivedDate: "",
+  oldUsers: [],
+
   purchaseDate: "",
   purchasePrice: "",
+
   warrantyStart: "",
   warrantyEnd: "",
-  vendorName: "",
+  warrantyYears: "",
+
+  vendorId: "",
+
   remarks: "",
+  surveyStatus: "",
   upgradeEquipments: "",
-  surveyReport: "",
+
+  surveyTakenBy: "",
+
   createdAt: "",
   updatedAt: "",
+
+  id: ""
 };
+
+/* =========================================================
+   FINAL EXCEL FIELDS
+   Excel column names MUST match these fields.
+========================================================= */
 
 const ASSET_FIELDS = [
-  { value: "equipment", label: "Equipment", type: "string" },
-  { value: "assetCode", label: "Asset Code", type: "string" },
-  { value: "brand", label: "Brand", type: "string" },
-  { value: "model", label: "Model", type: "string" },
-  { value: "serialNumber", label: "Serial Number", type: "string" },
-  { value: "specifications", label: "Specifications", type: "string" },
-  { value: "macAddress", label: "MAC Address", type: "string" },
-  { value: "department", label: "Department", type: "string" },
-  { value: "location", label: "Location", type: "string" },
-  { value: "floor", label: "Floor", type: "string" },
-  { value: "room", label: "Room", type: "string" },
-  { value: "status", label: "Status", type: "string" },
-  { value: "userId", label: "User ID", type: "string" },
-  { value: "userCode", label: "User Code", type: "string" },
-  { value: "userName", label: "User Name", type: "string" },
-  { value: "oldUsers", label: "Old User", type: "string" },
-  { value: "receivedDate", label: "Received Date", type: "date" },
-  { value: "purchaseDate", label: "Purchase Date", type: "date" },
-  { value: "purchasePrice", label: "Purchase Price", type: "number" },
-  { value: "warrantyStart", label: "Warranty Start", type: "date" },
-  { value: "warrantyEnd", label: "Warranty End", type: "date" },
-  { value: "vendorName", label: "Vendor Name", type: "string" },
-  { value: "remarks", label: "Remarks", type: "string" },
-  { value: "upgradeEquipments", label: "Upgrade Equipments", type: "string" },
-  { value: "surveyReport", label: "Survey Report", type: "string" },
-  { value: "createdAt", label: "Created At", type: "datetime" },
-  { value: "updatedAt", label: "Updated At", type: "datetime" },
+  "equipment",
+  "assetCode",
+  "brand",
+  "model",
+  "serialNumber",
+  "specifications",
+  "macAddress",
+  "company",
+  "location",
+  "department",
+  "floor",
+  "room",
+  "status",
+  "employeeId",
+  "receivedDate",
+  "purchaseDate",
+  "purchasePrice",
+  "warrantyStart",
+  "warrantyEnd",
+  "warrantyYears",
+  "vendorId",
+  "remarks",
+  "surveyStatus",
+  "upgradeEquipments",
+  "surveyTakenBy",
 ];
 
-const ASSET_ALIAS_MAP = {
-  equipment: ["equipment", "asset", "item", "itemname", "equipmentname"],
-  assetCode: ["assetcode", "assetid", "code", "assetno", "assetnumber"],
-  brand: ["brand", "manufacturer", "make", "company"],
-  model: ["model", "modelnumber", "modelname"],
-  serialNumber: ["serialnumber", "serialno", "serial", "sn"],
-  specifications: ["specifications", "configuration/specification", "configuration", "description"],
-  macAddress: ["macaddress", "mac", "macid"],
-  department: ["department", "dept", "division"],
-  location: ["location", "location/campus", "campus", "building", "office"],
-  floor: ["floor", "office/floor/building/room", "level"],
-  room: ["room", "roomno", "roomnumber", "roomname"],
-  status: ["status", "assetstatus", "condition"],
-  userId: ["userid", "currentuserid"],
-  userCode: ["usercode", "employeeid", "employeecode", "empid"],
-  userName: ["username", "employeename", "assignedto", "user"],
-  oldUsers: ["olduser", "Old User Name", "Old User"],
-  receivedDate: ["User Received Date"],
-  purchaseDate: ["purchasedate", "buydate", "dateofpurchase", "purchase"],
-  purchasePrice: ["purchaseprice", "price", "cost", "amount"],
-  warrantyStart: ["warrantystart", "warrantyfrom", "warrantybegin"],
-  warrantyEnd: ["warrantyend", "warrantyto", "warranty", "warrantyexpirydate"],
-  vendorName: ["vendorname", "vendor", "supplier", "suppliername"],
-  remarks: ["remarks", "remark", "notes", "comment", "comments"],
-  surveyReport: ["surveyreport", "survey", "it survey report", "inspection"], 
-  upgradeEquipments: ["upgradeEquipments", "Upgrade Equipment"],
-  createdAt: ["createdat", "createddate"],
-  updatedAt: ["updatedat", "updateddate"],
-};
+/* =========================================================
+   REQUIRED EXCEL FIELDS
+========================================================= */
 
-const normalize = (val) => String(val || "").trim().toLowerCase().replace(/[^a-z0-9]/g, "");
+const REQUIRED_FIELDS = [
+  "equipment",
+  "assetCode",
+  "brand",
+  "company",
+  "location",
+  "status",
+  "purchaseDate",
+];
 
-const isEmptyColumnName = (name) => {
-  if (name === null || name === undefined) return true;
-  const value = String(name).trim();
-  if (!value || value === "undefined") return true;
-  return /^(__EMPTY|Unnamed:)/i.test(value) || /^__EMPTY_\d+$/i.test(value);
-};
-
-const findMatchField = (columnName) => {
-  const normalizedColumn = normalize(columnName);
-  for (const [fieldName, aliases] of Object.entries(ASSET_ALIAS_MAP)) {
-    if (aliases.some((alias) => normalize(alias) === normalizedColumn)) {
-      return fieldName;
-    }
-  }
-  return "";
-};
-
-const setNestedValue = (target, path, value) => {
-  const keys = path.split(".");
-  let current = target;
-  keys.forEach((key, index) => {
-    if (index === keys.length - 1) {
-      current[key] = value;
-      return;
-    }
-    if (!current[key] || typeof current[key] !== "object") {
-      current[key] = {};
-    }
-    current = current[key];
-  });
-};
+/* =========================================================
+   DATE FORMAT
+========================================================= */
 
 const formatDateTime = (value) => {
-  if (value === null || value === undefined || String(value).trim() === "") return "";
-  if (value instanceof Date && !Number.isNaN(value.getTime())) return value.toISOString();
+  if (
+    value === null ||
+    value === undefined ||
+    String(value).trim() === ""
+  ) {
+    return "";
+  }
+
+  if (value instanceof Date && !Number.isNaN(value.getTime())) {
+    return value.toISOString();
+  }
+
   if (typeof value === "number") {
     const parsed = XLSX.SSF.parse_date_code(value);
+
     if (parsed) {
       const month = String(parsed.m || 1).padStart(2, "0");
       const day = String(parsed.d || 1).padStart(2, "0");
+
       return `${parsed.y}-${month}-${day}T00:00:00.000Z`;
     }
   }
+
   const parsedDate = new Date(String(value).trim());
-  return !Number.isNaN(parsedDate.getTime()) ? parsedDate.toISOString() : String(value).trim();
+
+  return !Number.isNaN(parsedDate.getTime())
+    ? parsedDate.toISOString()
+    : String(value).trim();
 };
 
+/* =========================================================
+   VALUE CONVERSION
+========================================================= */
+
 const convertCellValue = (value, fieldName) => {
-  if (value === null || value === undefined || String(value).trim() === "") return "";
+  if (
+    value === null ||
+    value === undefined ||
+    String(value).trim() === ""
+  ) {
+    return "";
+  }
+
   const dateFields = [
-    "purchaseDate", "receivedDate", "warrantyStart", "warrantyEnd", "createdAt", "updatedAt",
+    "purchaseDate",
+    "receivedDate",
+    "warrantyStart",
+    "warrantyEnd",
   ];
-  if (dateFields.includes(fieldName)) return formatDateTime(value);
-  if (fieldName === "purchasePrice") return /^[0-9.]*$/.test(String(value)) ? value : "";
+
+  if (dateFields.includes(fieldName)) {
+    return formatDateTime(value);
+  }
+
+  if (
+    fieldName === "purchasePrice" ||
+    fieldName === "warrantyYears"
+  ) {
+    const numberValue = String(value).trim();
+
+    return /^[0-9.]*$/.test(numberValue)
+      ? numberValue
+      : "";
+  }
+
   return String(value).trim();
 };
 
+/* =========================================================
+   VALIDATE EXCEL COLUMNS
+========================================================= */
+
+const validateColumns = (columns) => {
+  const errors = [];
+
+  const normalizedColumns = columns.map((column) =>
+    String(column).trim()
+  );
+
+  /* Check required fields */
+  REQUIRED_FIELDS.forEach((field) => {
+    if (!normalizedColumns.includes(field)) {
+      errors.push(`Missing required field: ${field}`);
+    }
+  });
+
+  /* Check for unknown fields */
+  normalizedColumns.forEach((column) => {
+    if (!ASSET_FIELDS.includes(column)) {
+      errors.push(`Unknown Excel field: ${column}`);
+    }
+  });
+
+  return errors;
+};
+
+/* =========================================================
+   CLEAN EXCEL DATA
+========================================================= */
+
 const removeEmptyColumnsAndRows = (rows) => {
-  if (!rows.length) return { columns: [], rows: [] };
+  if (!rows.length) {
+    return {
+      columns: [],
+      rows: [],
+    };
+  }
 
-  const validColumns = Object.keys(rows[0]).filter((col) => !isEmptyColumnName(col));
-
-  // Find the raw column name that corresponds to 'equipment'
-  const equipmentColumn = validColumns.find(
-    (col) => findMatchField(col) === "equipment"
+  /* Only keep columns that belong to the final schema */
+  const validColumns = Object.keys(rows[0]).filter((column) =>
+    ASSET_FIELDS.includes(String(column).trim())
   );
 
   const cleanedRows = rows
     .map((row) => {
       const newRow = {};
-      validColumns.forEach((col) => { newRow[col] = row[col]; });
+
+      validColumns.forEach((column) => {
+        newRow[column] = row[column];
+      });
+
       return newRow;
     })
     .filter((row) => {
-      // 1. Must not be completely blank
-      const isNotEmpty = Object.values(row).some((val) => String(val ?? "").trim() !== "");
-      
-      // 2. Must contain a non-empty Equipment value (if equipment column was auto-mapped)
-      const hasEquipment = equipmentColumn 
-        ? String(row[equipmentColumn] ?? "").trim() !== "" 
-        : true;
+      const isNotEmpty = Object.values(row).some(
+        (value) =>
+          String(value ?? "").trim() !== ""
+      );
+
+      const hasEquipment =
+        String(row.equipment ?? "").trim() !== "";
 
       return isNotEmpty && hasEquipment;
     });
 
-  return { columns: validColumns, rows: cleanedRows };
+  return {
+    columns: validColumns,
+    rows: cleanedRows,
+  };
 };
 
-const buildAssetFromRow = (row, rowIndex, mapping) => {
+/* =========================================================
+   BUILD ASSET FROM EXCEL ROW
+========================================================= */
+
+const buildAssetFromRow = (row, rowIndex) => {
+  const now = new Date().toISOString();
+
   const asset = {
     ...demoAsset,
+
     id: `${Date.now()}-${rowIndex}`,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
+
+    createdAt: now,
+    updatedAt: now,
+
+    employeeId: "",
+    receivedDate: "",
+    oldUsers: [],
   };
 
-  Object.entries(mapping).forEach(([excelColumn, assetField]) => {
-    if (!assetField || !(excelColumn in row)) return;
-    const convertedValue = convertCellValue(row[excelColumn], assetField);
-    if (!convertedValue) return;
+  /* -------------------------------------------------------
+     Direct field-to-field assignment
+     No mapping / alias matching required.
+  ------------------------------------------------------- */
 
-    if (assetField.includes(".")) {
-      setNestedValue(asset, assetField, convertedValue);
-    } else {
-      asset[assetField] = convertedValue;
+  ASSET_FIELDS.forEach((fieldName) => {
+    if (!(fieldName in row)) {
+      return;
     }
+
+    const value = convertCellValue(
+      row[fieldName],
+      fieldName
+    );
+
+    if (!value) {
+      return;
+    }
+
+    if (fieldName === "oldUsers") {
+      asset.oldUsers = [value];
+      return;
+    }
+
+    asset[fieldName] = value;
   });
+
+  /* -------------------------------------------------------
+     WARRANTY
+  ------------------------------------------------------- */
+
+  if (
+    asset.purchaseDate &&
+    !asset.warrantyStart
+  ) {
+    asset.warrantyStart = asset.purchaseDate;
+  }
+
+  if (
+    asset.purchaseDate &&
+    asset.warrantyYears
+  ) {
+    const startDate = new Date(asset.purchaseDate);
+
+    const years = parseInt(
+      asset.warrantyYears,
+      10
+    );
+
+    if (
+      !Number.isNaN(startDate.getTime()) &&
+      !Number.isNaN(years)
+    ) {
+      const endDate = new Date(startDate);
+
+      endDate.setFullYear(
+        endDate.getFullYear() + years
+      );
+
+      asset.warrantyEnd =
+        endDate.toISOString().split("T")[0];
+    }
+  }
 
   return asset;
 };
 
+/* =========================================================
+   COMPONENT
+========================================================= */
+
 const ImportAssets = () => {
+  const navigate = useNavigate();
+
   const [excelData, setExcelData] = useState([]);
   const [columns, setColumns] = useState([]);
-  const [mapping, setMapping] = useState({});
   const [fileName, setFileName] = useState("");
+
   const [message, setMessage] = useState("");
   const [success, setSuccess] = useState(true);
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
+
+  /* =======================================================
+     FILE UPLOAD
+  ======================================================= */
 
   const handleFileUpload = (event) => {
     const file = event.target.files?.[0];
+
     if (!file) return;
 
     setLoading(true);
@@ -234,11 +366,30 @@ const ImportAssets = () => {
     setFileName(file.name);
 
     const reader = new FileReader();
+
     reader.onload = (loadEvent) => {
       try {
-        const workbook = XLSX.read(new Uint8Array(loadEvent.target.result), { type: "array", cellDates: true });
-        const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
-        const rawRows = XLSX.utils.sheet_to_json(firstSheet, { defval: "", raw: true });
+        const workbook = XLSX.read(
+          new Uint8Array(loadEvent.target.result),
+          {
+            type: "array",
+            cellDates: true,
+          }
+        );
+
+        const firstSheet =
+          workbook.Sheets[
+            workbook.SheetNames[0]
+          ];
+
+        const rawRows =
+          XLSX.utils.sheet_to_json(
+            firstSheet,
+            {
+              defval: "",
+              raw: true,
+            }
+          );
 
         if (!rawRows.length) {
           setSuccess(false);
@@ -247,104 +398,293 @@ const ImportAssets = () => {
           return;
         }
 
-        const { columns: validColumns, rows: validRows } = removeEmptyColumnsAndRows(rawRows);
+        /* =================================================
+           EXACT FIELD VALIDATION
+        ================================================= */
 
-        if (!validColumns.length || !validRows.length) {
+        const excelColumns = Object.keys(
+          rawRows[0]
+        );
+
+        const columnErrors =
+          validateColumns(excelColumns);
+
+        if (columnErrors.length > 0) {
           setSuccess(false);
-          setMessage("No valid data found. Rows without an Equipment value or empty columns were removed.");
+
+          setMessage(
+            `Invalid Excel structure:\n${columnErrors.join(
+              "\n"
+            )}`
+          );
+
           setLoading(false);
           return;
         }
 
-        const autoMapping = {};
-        validColumns.forEach((col) => { autoMapping[col] = findMatchField(col); });
+        /* =================================================
+           CLEAN DATA
+        ================================================= */
+
+        const {
+          columns: validColumns,
+          rows: validRows,
+        } = removeEmptyColumnsAndRows(rawRows);
+
+        if (
+          !validColumns.length ||
+          !validRows.length
+        ) {
+          setSuccess(false);
+
+          setMessage(
+            "No valid data found. Rows without Equipment were removed."
+          );
+
+          setLoading(false);
+          return;
+        }
+
+        /* =================================================
+           BUILD FINAL ASSETS DIRECTLY
+        ================================================= */
+
+        const finalAssets = validRows
+          .map((row, index) =>
+            buildAssetFromRow(row, index)
+          )
+          .filter(
+            (asset) =>
+              String(
+                asset.equipment || ""
+              ).trim() !== ""
+          );
+
+        if (!finalAssets.length) {
+          setSuccess(false);
+
+          setMessage(
+            "No valid asset records found."
+          );
+
+          setLoading(false);
+          return;
+        }
 
         setColumns(validColumns);
-        setExcelData(validRows);
-        setMapping(autoMapping);
+        setExcelData(finalAssets);
+
         setSuccess(true);
-        setMessage(`Loaded ${validRows.length} valid rows (rows missing equipment were skipped).`);
+
+        setMessage(
+          `Successfully loaded ${finalAssets.length} asset records from ${file.name}.`
+        );
       } catch (error) {
-        console.error(error);
+        console.error(
+          "Excel import error:",
+          error
+        );
+
         setSuccess(false);
-        setMessage("Unable to read the Excel file.");
+        setMessage(
+          "Unable to read the Excel file."
+        );
       } finally {
         setLoading(false);
       }
     };
 
     reader.readAsArrayBuffer(file);
+
     event.target.value = "";
   };
 
-  const handleMappingChange = (excelColumn, assetField) => {
-    setMapping((prev) => ({ ...prev, [excelColumn]: assetField }));
-  };
+  /* =======================================================
+     PROCEED
+  ======================================================= */
 
-  const validateAndProceed = () => {
-    const values = Object.values(mapping).filter(Boolean);
+  const proceedToStore = () => {
+    if (!excelData.length) {
+      setSuccess(false);
+      setMessage(
+        "No valid asset data available."
+      );
+      return;
+    }
 
-    const seen = new Set();
-    const duplicates = new Set();
-    values.forEach((v) => {
-      if (seen.has(v)) duplicates.add(v);
-      seen.add(v);
+    navigate("/assets/store", {
+      state: {
+        assets: excelData,
+        fileName,
+      },
     });
-
-    if (duplicates.size > 0) {
-      setSuccess(false);
-      setMessage("Each asset field should be mapped only once. Please fix duplicate mappings.");
-      return;
-    }
-
-    // Build final assets and strictly exclude any row missing the equipment field
-    const finalAssets = excelData
-      .map((row, index) => buildAssetFromRow(row, index, mapping))
-      .filter((asset) => String(asset.equipment || "").trim() !== "");
-
-    if (!finalAssets.length) {
-      setSuccess(false);
-      setMessage("No valid rows remaining. Ensure 'Equipment' field is properly mapped and not empty.");
-      return;
-    }
-
-    navigate("/assets/store", { state: { assets: finalAssets, fileName } });
   };
+
+  /* =======================================================
+     RESET
+  ======================================================= */
 
   const resetImport = () => {
     setExcelData([]);
     setColumns([]);
-    setMapping({});
     setFileName("");
     setMessage("");
     setSuccess(true);
   };
 
+  /* =======================================================
+     UI
+  ======================================================= */
+
   return (
     <div className="min-h-screen rounded-2xl border border-indigo-400 shadow-2xl bg-white p-4 sm:p-6 lg:p-8 font-sans text-slate-800">
       <div className="max-w-6xl mx-auto space-y-6">
 
-        {/* Header */}
+        {/* =================================================
+            HEADER
+        ================================================= */}
+
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+
           <div>
+
             <button
               type="button"
-              onClick={() => navigate("/assets", { replace: true })}
+              onClick={() =>
+                navigate("/assets", {
+                  replace: true,
+                })
+              }
               className="mb-3 inline-flex items-center gap-2 rounded-xl border border-indigo-400 bg-white px-3.5 py-2 text-xs font-semibold text-slate-700 shadow-sm hover:bg-slate-100 hover:text-indigo-600 transition-all duration-150 active:scale-[0.98]"
             >
-              <ArrowLeft size={15} className="text-indigo-600" /> Back to Assets
+              <ArrowLeft
+                size={15}
+                className="text-indigo-600"
+              />
+
+              Back to Assets
             </button>
+
+            {/* =================================================
+                EXCEL FIELDS
+            ================================================= */}
+
+            {columns.length === 0 && (
+              <div className="mt-5 rounded-xl border border-slate-200 bg-white/70 p-4 shadow-sm backdrop-blur-sm">
+
+                <div className="mb-3 flex items-center gap-2">
+
+                  <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-red-500 to-rose-600 shadow-sm">
+                    <FileSpreadsheet className="h-4 w-4 text-white" />
+                  </div>
+
+                  <span className="text-sm font-bold text-slate-800">
+                    Excel Fields
+                  </span>
+
+                  <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-medium text-slate-500">
+                    25 Fields
+                  </span>
+
+                </div>
+
+                <div className="flex flex-wrap gap-2">
+
+                  {ASSET_FIELDS.map(
+                    (field, index) => (
+                      <span
+                        key={field}
+                        className="
+                          group inline-flex items-center gap-1.5
+                          rounded-lg border border-slate-200
+                          bg-gradient-to-b from-white to-slate-50
+                          px-2.5 py-1.5
+                          text-[11px] font-medium text-slate-600
+                          shadow-sm
+                          transition-all duration-200
+                          hover:-translate-y-0.5
+                          hover:border-red-200
+                          hover:bg-red-50
+                          hover:text-red-600
+                          hover:shadow-md
+                        "
+                      >
+
+                        <span
+                          className="
+                            flex h-4 w-4 items-center justify-center
+                            rounded-md bg-slate-100
+                            text-[9px] font-bold text-slate-400
+                            transition-colors
+                            group-hover:bg-red-100
+                            group-hover:text-red-500
+                          "
+                        >
+                          {index + 1}
+                        </span>
+
+                        {field}
+
+                      </span>
+                    )
+                  )}
+
+                </div>
+
+                <div className="mt-3 flex items-center gap-2 border-t border-slate-100 pt-3">
+
+                  <div className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+
+                  <span className="text-[10px] text-slate-400">
+                    Excel column names must exactly match
+                    these fields.
+                  </span>
+
+                </div>
+
+              </div>
+            )}
+
+            {/* =================================================
+                PAGE TITLE
+            ================================================= */}
+
             <div className="flex items-center gap-3">
+
               <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-600 flex items-center justify-center text-white shadow-md shadow-indigo-500/20">
                 <FileSpreadsheet size={20} />
               </div>
+
               <div>
-                <h1 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">Import Assets</h1>
+
+                <h1 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
+                  Import Assets
+                </h1>
+
                 <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
-                  Upload Excel <span className="text-indigo-400 mx-1">•</span> Clean data <span className="text-indigo-400 mx-1">•</span> Map fields <span className="text-indigo-400 mx-1">•</span> Store to DB
+                  Upload Excel
+                  <span className="text-indigo-400 mx-1">
+                    •
+                  </span>
+                  Validate
+                  <span className="text-indigo-400 mx-1">
+                    •
+                  </span>
+                  Clean Data
+                  <span className="text-indigo-400 mx-1">
+                    •
+                  </span>
+                  Review
+                  <span className="text-indigo-400 mx-1">
+                    •
+                  </span>
+                  Store to DB
                 </p>
+
               </div>
+
             </div>
+
           </div>
 
           {excelData.length > 0 && (
@@ -352,53 +692,107 @@ const ImportAssets = () => {
               onClick={resetImport}
               className="inline-flex items-center gap-2 px-4 py-2.5 border border-indigo-400 rounded-xl bg-white hover:bg-slate-50 text-xs font-semibold text-slate-700 shadow-sm transition-all active:scale-[0.98]"
             >
-              <RefreshCw size={15} className="text-indigo-600" /> Upload Another File
+              <RefreshCw
+                size={15}
+                className="text-indigo-600"
+              />
+
+              Upload Another File
             </button>
           )}
+
         </div>
 
-        {/* Alert Banner */}
+        {/* =================================================
+            MESSAGE
+        ================================================= */}
+
         {message && (
           <div
-            className={`p-4 rounded-xl border flex items-start sm:items-center gap-3 shadow-sm transition-all ${
+            className={`p-4 rounded-xl border flex items-start sm:items-center gap-3 shadow-sm whitespace-pre-line ${
               success
                 ? "bg-emerald-50 border-emerald-200 text-emerald-800"
                 : "bg-rose-50 border-rose-200 text-rose-800"
             }`}
           >
+
             {success ? (
-              <FileSpreadsheet size={18} className="text-emerald-600 shrink-0 mt-0.5 sm:mt-0" />
+              <Check
+                size={18}
+                className="text-emerald-600 shrink-0"
+              />
             ) : (
-              <AlertCircle size={18} className="text-rose-600 shrink-0 mt-0.5 sm:mt-0" />
+              <AlertCircle
+                size={18}
+                className="text-rose-600 shrink-0"
+              />
             )}
-            <p className="text-xs sm:text-sm font-medium">{message}</p>
+
+            <p className="text-xs sm:text-sm font-medium">
+              {message}
+            </p>
+
           </div>
         )}
 
-        {/* File Upload State */}
+        {/* =================================================
+            UPLOAD
+        ================================================= */}
+
         {excelData.length === 0 ? (
+
           <div className="bg-white border border-indigo-400 rounded-2xl p-8 sm:p-14 shadow-sm relative overflow-hidden">
-            <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"></div>
+
+            <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500" />
 
             <div className="max-w-md mx-auto text-center">
+
               <div className="w-20 h-20 mx-auto rounded-2xl bg-indigo-50 border border-indigo-500 flex items-center justify-center text-indigo-600 shadow-inner mb-5">
                 <Upload size={32} />
               </div>
-              <h2 className="text-xl font-bold text-slate-900">Upload Excel Spreadsheet</h2>
+
+              <h2 className="text-xl font-bold text-slate-900">
+                Upload Excel Spreadsheet
+              </h2>
+
               <p className="text-xs sm:text-sm text-slate-500 mt-2 leading-relaxed">
-                Supports <span className="font-semibold text-indigo-600">.xlsx</span>, <span className="font-semibold text-indigo-600">.xls</span>, or <span className="font-semibold text-indigo-600">.csv</span>. Blank rows and missing equipment records are auto-cleaned.
+                Supports{" "}
+                <span className="font-semibold text-indigo-600">
+                  .xlsx
+                </span>
+                ,{" "}
+                <span className="font-semibold text-indigo-600">
+                  .xls
+                </span>
+                , or{" "}
+                <span className="font-semibold text-indigo-600">
+                  .csv
+                </span>
+                .
+                <br />
+                Excel columns must use the exact
+                asset field names.
               </p>
 
               <label className="mt-7 inline-flex items-center gap-2.5 px-6 py-3.5 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white font-semibold text-xs sm:text-sm rounded-xl cursor-pointer shadow-md shadow-indigo-500/25 active:scale-[0.98] transition-all">
+
                 {loading ? (
                   <>
-                    <RefreshCw size={17} className="animate-spin" /> Reading File...
+                    <RefreshCw
+                      size={17}
+                      className="animate-spin"
+                    />
+
+                    Reading File...
                   </>
                 ) : (
                   <>
-                    <FileSpreadsheet size={17} /> Choose Excel File
+                    <FileSpreadsheet size={17} />
+
+                    Choose Excel File
                   </>
                 )}
+
                 <input
                   type="file"
                   accept=".xlsx,.xls,.csv"
@@ -406,94 +800,233 @@ const ImportAssets = () => {
                   className="hidden"
                   disabled={loading}
                 />
+
               </label>
+
             </div>
+
           </div>
+
         ) : (
-          /* Field Mapping State */
+
+          /* =================================================
+             REVIEW
+          ================================================= */
+
           <div className="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
+
             <div className="p-5 sm:px-6 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-gradient-to-r from-slate-50 to-indigo-50/30">
+
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-lg bg-indigo-100 border border-indigo-200 flex items-center justify-center text-indigo-600 font-bold text-xs">
-                  {columns.length}
+
+                <div className="w-8 h-8 rounded-lg bg-emerald-100 border border-emerald-200 flex items-center justify-center text-emerald-600 font-bold text-xs">
+                  <Check size={16} />
                 </div>
+
                 <div>
-                  <h2 className="text-base font-bold text-slate-900">Map Excel Columns</h2>
+
+                  <h2 className="text-base font-bold text-slate-900">
+                    Excel Data Ready
+                  </h2>
+
                   <p className="text-xs text-slate-500 mt-0.5">
-                    Match source spreadsheet columns with asset database schema
+                    All fields validated and converted
+                    successfully.
                   </p>
+
                 </div>
+
               </div>
-              <div className="flex items-center gap-2">
+
+              <div className="flex items-center gap-2 flex-wrap">
+
                 <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-white text-slate-700 border border-slate-200 shadow-sm">
-                  File: <strong className="ml-1 text-indigo-600 font-semibold">{fileName}</strong>
+
+                  File:
+
+                  <strong className="ml-1 text-indigo-600 font-semibold">
+                    {fileName}
+                  </strong>
+
                 </span>
+
                 <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
                   {excelData.length} Rows
                 </span>
+
               </div>
+
             </div>
 
-            <div className="divide-y divide-slate-100">
-              {columns.map((column) => {
-                const isMapped = Boolean(mapping[column]);
-                return (
-                  <div
-                    key={column}
-                    className={`grid grid-cols-1 md:grid-cols-12 gap-3 p-4 sm:px-6 items-center transition-colors ${
-                      isMapped ? "bg-indigo-50/20" : "hover:bg-slate-50/80"
-                    }`}
-                  >
-                    <div className="md:col-span-5">
-                      <div className="flex items-center gap-2">
-                        <span
-                          className={`w-2 h-2 rounded-full ${
-                            isMapped ? "bg-emerald-500" : "bg-amber-400"
-                          }`}
-                        ></span>
-                        <p className="text-sm font-semibold text-slate-900">{column}</p>
-                      </div>
-                      <div className="mt-1 text-xs text-slate-500 flex items-center gap-1.5 truncate pl-4">
-                        <span className="shrink-0 text-slate-400">Sample:</span>
-                        <span className="font-mono bg-slate-100 text-indigo-700 px-2 py-0.5 rounded text-xs border border-slate-200/60 truncate">
-                          {String(excelData[0]?.[column] ?? "N/A")}
-                        </span>
-                      </div>
-                    </div>
-                    <div className="md:col-span-7">
-                      <select
-                        value={mapping[column] || ""}
-                        onChange={(e) => handleMappingChange(column, e.target.value)}
-                        className={`w-full border rounded-xl px-3.5 py-2.5 text-xs sm:text-sm font-medium transition-all shadow-sm focus:outline-none focus:ring-2 ${
-                          isMapped
-                            ? "bg-indigo-50/50 border-indigo-300 text-indigo-900 focus:ring-indigo-500/20 focus:border-indigo-500"
-                            : "bg-white border-slate-300 text-slate-500 focus:ring-slate-900/10 focus:border-slate-400"
-                        }`}
+            {/* =================================================
+                DATA PREVIEW
+            ================================================= */}
+
+            <div className="overflow-x-auto">
+
+              <table className="w-full min-w-[1100px] text-xs sm:text-sm text-left border-collapse">
+
+                <thead>
+
+                  <tr className="bg-slate-50 border-b border-slate-200 text-slate-600 font-semibold">
+
+                    <th className="px-4 py-3 text-center w-12 border-r border-slate-200">
+                      #
+                    </th>
+
+                    <th className="px-4 py-3 border-r border-slate-200">
+                      Equipment
+                    </th>
+
+                    <th className="px-4 py-3 border-r border-slate-200">
+                      Asset Code
+                    </th>
+
+                    <th className="px-4 py-3 border-r border-slate-200">
+                      Brand
+                    </th>
+
+                    <th className="px-4 py-3 border-r border-slate-200">
+                      Model
+                    </th>
+
+                    <th className="px-4 py-3 border-r border-slate-200">
+                      Company
+                    </th>
+
+                    <th className="px-4 py-3 border-r border-slate-200">
+                      Location
+                    </th>
+
+                    <th className="px-4 py-3 border-r border-slate-200">
+                      Department
+                    </th>
+
+                    <th className="px-4 py-3 border-r border-slate-200">
+                      Status
+                    </th>
+
+                    <th className="px-4 py-3 border-r border-slate-200">
+                      Employee ID
+                    </th>
+
+                    <th className="px-4 py-3 border-r border-slate-200">
+                      Purchase Date
+                    </th>
+
+                    <th className="px-4 py-3 border-r border-slate-200">
+                      Purchase Price
+                    </th>
+
+                    <th className="px-4 py-3">
+                      Vendor ID
+                    </th>
+
+                  </tr>
+
+                </thead>
+
+                <tbody className="divide-y divide-slate-100 text-slate-700">
+
+                  {excelData.map(
+                    (asset, index) => (
+
+                      <tr
+                        key={asset.id || index}
+                        className="hover:bg-indigo-50/30 transition-colors"
                       >
-                        <option value="">-- Select Target Asset Field --</option>
-                        {ASSET_FIELDS.map((field) => (
-                          <option key={field.value} value={field.value} className="text-slate-800">
-                            {field.label}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                  </div>
-                );
-              })}
+
+                        <td className="px-4 py-3 text-center text-slate-400 font-medium border-r border-slate-100">
+                          {index + 1}
+                        </td>
+
+                        <td className="px-4 py-3 font-semibold text-slate-900 border-r border-slate-100">
+                          {asset.equipment || "-"}
+                        </td>
+
+                        <td className="px-4 py-3 font-mono text-indigo-600 font-semibold border-r border-slate-100">
+                          {asset.assetCode || "-"}
+                        </td>
+
+                        <td className="px-4 py-3 border-r border-slate-100">
+                          {asset.brand || "-"}
+                        </td>
+
+                        <td className="px-4 py-3 border-r border-slate-100">
+                          {asset.model || "-"}
+                        </td>
+
+                        <td className="px-4 py-3 border-r border-slate-100">
+                          {asset.company || "-"}
+                        </td>
+
+                        <td className="px-4 py-3 border-r border-slate-100">
+                          {asset.location || "-"}
+                        </td>
+
+                        <td className="px-4 py-3 border-r border-slate-100">
+                          {asset.department || "-"}
+                        </td>
+
+                        <td className="px-4 py-3 border-r border-slate-100">
+
+                          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-200">
+                            {asset.status || "N/A"}
+                          </span>
+
+                        </td>
+
+                        <td className="px-4 py-3 font-mono border-r border-slate-100">
+                          {asset.employeeId || "-"}
+                        </td>
+
+                        <td className="px-4 py-3 whitespace-nowrap border-r border-slate-100">
+                          {asset.purchaseDate || "-"}
+                        </td>
+
+                        <td className="px-4 py-3 font-semibold border-r border-slate-100">
+                          {asset.purchasePrice || "-"}
+                        </td>
+
+                        <td className="px-4 py-3 font-mono text-violet-600 font-semibold">
+                          {asset.vendorId || "-"}
+                        </td>
+
+                      </tr>
+
+                    )
+                  )}
+
+                </tbody>
+
+              </table>
+
             </div>
 
-            <div className="p-4 sm:px-6 border-t border-slate-100 bg-slate-50/60 flex items-center justify-between">
-              <p className="text-xs text-slate-500 hidden sm:block">
-                Map <span className="font-semibold text-indigo-600">Equipment</span> & <span className="font-semibold text-indigo-600">Asset Code</span> to proceed.
-              </p>
+            {/* =================================================
+                PROCEED
+            ================================================= */}
+
+            <div className="p-4 sm:px-6 border-t border-slate-100 bg-slate-50/60 flex flex-col sm:flex-row items-center justify-between gap-3">
+
+              <div className="text-xs text-slate-500">
+                <span className="font-semibold text-emerald-600">
+                  {excelData.length}
+                </span>{" "}
+                valid asset records are ready to store.
+              </div>
+
               <button
-                onClick={validateAndProceed}
+                onClick={proceedToStore}
                 className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-2.5 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white text-xs sm:text-sm font-bold rounded-xl shadow-md shadow-indigo-500/20 active:scale-[0.98] transition-all"
               >
-                <Check size={16} /> Proceed to Review & Save
+                <Check size={16} />
+
+                Proceed to Review & Save
               </button>
+
             </div>
+
           </div>
         )}
       </div>

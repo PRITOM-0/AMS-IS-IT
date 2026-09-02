@@ -9,7 +9,7 @@ const INITIAL_FILTERS = {
   location: "",
   department: "",
   equipment: "",
-  surveyReport: "",
+  surveyStatus: "",
   status: "",
   ageYears: 0,
   invalidDateOnly: false,
@@ -70,8 +70,8 @@ const filterStrategies = {
   matchesEquipment: (asset, equipment) =>
     !equipment || asset.equipment === equipment,
 
-  matchesSurveyReport: (asset, surveyReport) =>
-    !surveyReport || asset.surveyReport === surveyReport,
+  matchesSurveyStatus: (asset, surveyStatus) =>
+    !surveyStatus || asset.surveyStatus === surveyStatus,
 
   matchesStatus: (asset, status) => {
     if (status === "") return true;
@@ -108,7 +108,7 @@ export const useAssets = () => {
   const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState(INITIAL_FILTERS);
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [itemsPerPage, setItemsPerPage] = useState(50);
 
   useEffect(() => {
     let isMounted = true;
@@ -161,8 +161,8 @@ export const useAssets = () => {
       new Set(assets.map((a) => a.equipment).filter(Boolean)),
     );
 
-    const surveyReports = Array.from(
-      new Set(assets.map((a) => a.surveyReport).filter(Boolean)),
+    const surveyStatuss = Array.from(
+      new Set(assets.map((a) => a.surveyStatus).filter(Boolean)),
     );
 
     const statuses = Array.from(new Set(assets.map((a) => a.status)));
@@ -171,7 +171,7 @@ export const useAssets = () => {
       locations,
       departments,
       equipments,
-      surveyReports,
+      surveyStatuss,
       statuses,
     };
   }, [assets]);
@@ -186,7 +186,7 @@ export const useAssets = () => {
           filterStrategies.matchesLocation(asset, filters.location) &&
           filterStrategies.matchesDepartment(asset, filters.department) &&
           filterStrategies.matchesEquipment(asset, filters.equipment) &&
-          filterStrategies.matchesSurveyReport(asset, filters.surveyReport) &&
+          filterStrategies.matchesSurveyStatus(asset, filters.surveyStatus) &&
           filterStrategies.matchesStatus(asset, filters.status) &&
           filterStrategies.matchesAge(
             asset,
@@ -437,11 +437,11 @@ const AssetFilterBar = ({
         </label>
         <select
           className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-indigo-400 bg-white"
-          value={filters.surveyReport}
-          onChange={(e) => onFilterChange("surveyReport", e.target.value)}
+          value={filters.surveyStatus}
+          onChange={(e) => onFilterChange("surveyStatus", e.target.value)}
         >
           <option value="">All Surveys</option>
-          {filterOptions.surveyReports.map((sr) => (
+          {filterOptions.surveyStatuss.map((sr) => (
             <option key={sr} value={sr}>
               {sr}
             </option>

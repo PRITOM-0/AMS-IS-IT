@@ -427,12 +427,13 @@ const AssetDetails = () => {
                     "No Vendor Assigned"}
                 </p>
 
-                <div className="mt-2 grid grid-cols-3 gap-2 text-slate-700">
-                  <div className="">
-                    <p className="text-[11px] font-bold  text-slate-500">
-                      Contact Person
-                    </p>
-                    <p className="font-mono font-bold text-slate-900 mt-1">
+                {vendorInfo && (
+                  <div className="mt-2 grid grid-cols-3 gap-2 text-slate-700">
+                    <div className="">
+                      <p className="text-[11px] font-bold  text-slate-500">
+                        Contact Person
+                      </p>
+                      <p className="font-mono font-bold text-slate-900 mt-1">
                       {vendorInfo.contactPerson || "N/A"}
                     </p>
                   </div>
@@ -452,7 +453,7 @@ const AssetDetails = () => {
                       {vendorInfo.address || "N/A"}
                     </p>
                   </div>
-                </div>
+                </div>)}
               </div>
             </div>
 

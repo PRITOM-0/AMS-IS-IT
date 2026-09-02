@@ -26,6 +26,7 @@ import ImportAssets from "./pages/ImportAssets";
 import StoreAssets from "./pages/StoreAssets";
 import ExportAssets from "./pages/ExportAssets";
 import CategorySearch from "./pages/CategorySearch";
+import Setting from "./pages/Setting";
 
 // ==========================================
 // Session Configuration
@@ -225,9 +226,7 @@ function App() {
         <Route
           path="settings"
           element={
-            <div className="p-6">
-              Settings page coming soon.
-            </div>
+            <Setting   />
           }
         />
 
