@@ -354,7 +354,7 @@ function AssetAssign() {
           {emp.employeeName || "N/A"}
         </h2>
         <span
-          className={`text-[10px] font-mono px-1.5 py-0.5 rounded ${
+          className={`text-[12px] font-mono px-1.5 py-0.5 rounded ${
             selectedEmployee?.id === emp.id
               ? "bg-white/20 text-white"
               : "bg-slate-100 text-slate-600"
@@ -399,7 +399,7 @@ function AssetAssign() {
             return (
               <div
                 key={assetId}
-                className={`text-[10px] leading-tight ${
+                className={`text-[12px] leading-tight ${
                   selectedEmployee?.id === emp.id
                     ? "text-blue-100"
                     : "text-slate-500"
@@ -407,7 +407,7 @@ function AssetAssign() {
               >
                 <span className="font-medium">{asset.equipment}</span>
                 <span className="mx-1 opacity-60">•</span>
-                <span className="font-mono text-[9px] opacity-80">
+                <span className="font-mono text-[12px] ">
                   {asset.assetCode}
                 </span>
               </div>

@@ -511,7 +511,7 @@ function Setting() {
               <h2 className="font-bold text-slate-800">
                 {activeTab === "users" && "User Management"}
                 {activeTab === "vendors" && "Vendor Management"}
-                {activeTab === "list" && "List Management"}
+                {activeTab === "list" && "Company Information"}
               </h2>
 
               <p className="mt-1 text-xs text-slate-400">

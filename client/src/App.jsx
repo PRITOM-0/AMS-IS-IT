@@ -32,7 +32,7 @@ import Setting from "./pages/Setting";
 // Session Configuration
 // ==========================================
 
-const RefreshOn = 60 * 60 * 1000; // 1 hour
+const RefreshOn = 2 *60 * 60 * 1000; // 1 hour
 
 // ==========================================
 // Protected Route
