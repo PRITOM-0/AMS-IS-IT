@@ -619,7 +619,7 @@ const AssetDetails = () => {
       {/* Top Row: Employee Name + Release Date Badge */}
       <div className="flex items-center justify-between gap-2">
         <p className="truncate text-xs font-medium text-gray-800">
-          {oldUser.employeeName || "Unknown Employee"}
+          {oldUser.employeeName || "Unknown Employee"}{oldUser.employeeId ? ` (${oldUser.employeeId})` : ""}
         </p>
 
         <span className="shrink-0 inline-block rounded bg-indigo-50 px-1.5 py-0.5 text-[10px] font-medium text-indigo-700">
