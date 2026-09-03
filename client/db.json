@@ -15,8 +15,15 @@
       "room": "",
       "status": "Active",
       "employeeId": "",
-      "receivedDate": "2026-09-01T17:59:36.000Z",
-      "oldUsers": [],
+      "receivedDate": "",
+      "oldUsers": [
+        {
+          "employeeName": "Pritom Saha",
+          "employeeId": "904740",
+          "receivedDate": "2026-09-03T07:04:47.928Z",
+          "releaseDate": "2026-09-03T07:54:42.600Z"
+        }
+      ],
       "purchaseDate": "10th Dec-2015",
       "purchasePrice": "",
       "warrantyStart": "10th Dec-2015",
@@ -27,9 +34,9 @@
       "surveyStatus": "Upgrade",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.008Z",
-      "updatedAt": "2026-09-02T10:25:12.008Z",
-      "id": "Z_hsu-3BVN4"
+      "createdAt": "2026-09-03T06:57:53.339Z",
+      "updatedAt": "2026-09-03T07:04:47.928Z",
+      "id": "Oy-0cDJT8Zk"
     },
     {
       "equipment": "Monitor",
@@ -58,9 +65,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.008Z",
-      "updatedAt": "2026-09-02T10:25:12.008Z",
-      "id": "dMVHnCpXzxc"
+      "createdAt": "2026-09-03T06:57:53.339Z",
+      "updatedAt": "2026-09-03T06:57:53.339Z",
+      "id": "dtMOSykw-bw"
     },
     {
       "equipment": "UPS",
@@ -89,9 +96,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.008Z",
-      "updatedAt": "2026-09-02T10:25:12.008Z",
-      "id": "txQabWl_HmY"
+      "createdAt": "2026-09-03T06:57:53.339Z",
+      "updatedAt": "2026-09-03T06:57:53.339Z",
+      "id": "eYe0OJBX-T4"
     },
     {
       "equipment": "Scanner",
@@ -120,9 +127,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.008Z",
-      "updatedAt": "2026-09-02T10:25:12.008Z",
-      "id": "Ic0ImWt6huU"
+      "createdAt": "2026-09-03T06:57:53.339Z",
+      "updatedAt": "2026-09-03T06:57:53.339Z",
+      "id": "-wWUceajePE"
     },
     {
       "equipment": "Laptop",
@@ -151,9 +158,9 @@
       "surveyStatus": "Upgrade",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.008Z",
-      "updatedAt": "2026-09-02T10:25:12.008Z",
-      "id": "3SMSGQu9m_c"
+      "createdAt": "2026-09-03T06:57:53.339Z",
+      "updatedAt": "2026-09-03T06:57:53.339Z",
+      "id": "I2aKL9gJRoU"
     },
     {
       "equipment": "CPU",
@@ -182,9 +189,9 @@
       "surveyStatus": "Upgrade",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.008Z",
-      "updatedAt": "2026-09-02T10:25:12.008Z",
-      "id": "Wl5hm6VKzT0"
+      "createdAt": "2026-09-03T06:57:53.339Z",
+      "updatedAt": "2026-09-03T06:57:53.339Z",
+      "id": "jNFzH_XU6R8"
     },
     {
       "equipment": "Monitor",
@@ -213,9 +220,9 @@
       "surveyStatus": "Replace",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.008Z",
-      "updatedAt": "2026-09-02T10:25:12.008Z",
-      "id": "gfSarXuC_fw"
+      "createdAt": "2026-09-03T06:57:53.339Z",
+      "updatedAt": "2026-09-03T06:57:53.339Z",
+      "id": "lJ2xTviCuKY"
     },
     {
       "equipment": "UPS",
@@ -244,9 +251,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.008Z",
-      "updatedAt": "2026-09-02T10:25:12.008Z",
-      "id": "p1FY9Se3bIk"
+      "createdAt": "2026-09-03T06:57:53.339Z",
+      "updatedAt": "2026-09-03T06:57:53.339Z",
+      "id": "REoCHl0PmXY"
     },
     {
       "equipment": "Webcam",
@@ -275,9 +282,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.008Z",
-      "updatedAt": "2026-09-02T10:25:12.008Z",
-      "id": "2BcT7hzcmjs"
+      "createdAt": "2026-09-03T06:57:53.339Z",
+      "updatedAt": "2026-09-03T06:57:53.339Z",
+      "id": "bPhxELcEFdM"
     },
     {
       "equipment": "Headphone",
@@ -306,9 +313,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.008Z",
-      "updatedAt": "2026-09-02T10:25:12.008Z",
-      "id": "Z2eHNeoS_GE"
+      "createdAt": "2026-09-03T06:57:53.339Z",
+      "updatedAt": "2026-09-03T06:57:53.339Z",
+      "id": "Sh62lDqum2Y"
     },
     {
       "equipment": "Router",
@@ -337,9 +344,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.008Z",
-      "updatedAt": "2026-09-02T10:25:12.008Z",
-      "id": "mrK4zqtlo9g"
+      "createdAt": "2026-09-03T06:57:53.339Z",
+      "updatedAt": "2026-09-03T06:57:53.339Z",
+      "id": "MsrPZ1tv5aA"
     },
     {
       "equipment": "CPU",
@@ -368,9 +375,9 @@
       "surveyStatus": "Upgrade",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.008Z",
-      "updatedAt": "2026-09-02T10:25:12.008Z",
-      "id": "XipcqTgU-Qw"
+      "createdAt": "2026-09-03T06:57:53.339Z",
+      "updatedAt": "2026-09-03T06:57:53.339Z",
+      "id": "xBcCDYV95Qg"
     },
     {
       "equipment": "Monitor",
@@ -399,9 +406,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.008Z",
-      "updatedAt": "2026-09-02T10:25:12.008Z",
-      "id": "y_CT4-HHKHg"
+      "createdAt": "2026-09-03T06:57:53.339Z",
+      "updatedAt": "2026-09-03T06:57:53.339Z",
+      "id": "ylxNX352aj4"
     },
     {
       "equipment": "UPS",
@@ -430,9 +437,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.008Z",
-      "updatedAt": "2026-09-02T10:25:12.008Z",
-      "id": "IP-Vz85VwjM"
+      "createdAt": "2026-09-03T06:57:53.339Z",
+      "updatedAt": "2026-09-03T06:57:53.339Z",
+      "id": "K5OU3Zrgcks"
     },
     {
       "equipment": "Webcam",
@@ -461,9 +468,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.008Z",
-      "updatedAt": "2026-09-02T10:25:12.008Z",
-      "id": "rkh7JZZENr8"
+      "createdAt": "2026-09-03T06:57:53.339Z",
+      "updatedAt": "2026-09-03T06:57:53.339Z",
+      "id": "3hK_BQCOKMc"
     },
     {
       "equipment": "Headphone",
@@ -492,9 +499,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.008Z",
-      "updatedAt": "2026-09-02T10:25:12.008Z",
-      "id": "33H4f2dvxzU"
+      "createdAt": "2026-09-03T06:57:53.339Z",
+      "updatedAt": "2026-09-03T06:57:53.339Z",
+      "id": "EBhoySzP5PQ"
     },
     {
       "equipment": "CPU",
@@ -523,9 +530,9 @@
       "surveyStatus": "Upgrade",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.008Z",
-      "updatedAt": "2026-09-02T10:25:12.008Z",
-      "id": "-xlH0E4UKgs"
+      "createdAt": "2026-09-03T06:57:53.339Z",
+      "updatedAt": "2026-09-03T06:57:53.339Z",
+      "id": "omaSa_LOhjM"
     },
     {
       "equipment": "Monitor",
@@ -554,9 +561,9 @@
       "surveyStatus": "Replace",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.008Z",
-      "updatedAt": "2026-09-02T10:25:12.008Z",
-      "id": "8kaFmzUfBqg"
+      "createdAt": "2026-09-03T06:57:53.339Z",
+      "updatedAt": "2026-09-03T06:57:53.339Z",
+      "id": "v7WyA3hpphM"
     },
     {
       "equipment": "UPS",
@@ -585,9 +592,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.008Z",
-      "updatedAt": "2026-09-02T10:25:12.008Z",
-      "id": "YwsB3WsT3sI"
+      "createdAt": "2026-09-03T06:57:53.339Z",
+      "updatedAt": "2026-09-03T06:57:53.339Z",
+      "id": "Gp4q_Gew-OY"
     },
     {
       "equipment": "Webcam",
@@ -616,9 +623,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.008Z",
-      "updatedAt": "2026-09-02T10:25:12.008Z",
-      "id": "O73hJZ6Mjbg"
+      "createdAt": "2026-09-03T06:57:53.339Z",
+      "updatedAt": "2026-09-03T06:57:53.339Z",
+      "id": "qFly_TWGedY"
     },
     {
       "equipment": "Headphone",
@@ -647,9 +654,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.008Z",
-      "updatedAt": "2026-09-02T10:25:12.008Z",
-      "id": "Ts4hdLwuMvk"
+      "createdAt": "2026-09-03T06:57:53.339Z",
+      "updatedAt": "2026-09-03T06:57:53.339Z",
+      "id": "nDMrwFcRv8M"
     },
     {
       "equipment": "UPS",
@@ -678,9 +685,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.008Z",
-      "updatedAt": "2026-09-02T10:25:12.008Z",
-      "id": "eYpmksq37so"
+      "createdAt": "2026-09-03T06:57:53.339Z",
+      "updatedAt": "2026-09-03T06:57:53.339Z",
+      "id": "JJxo76DAkrU"
     },
     {
       "equipment": "CPU",
@@ -709,9 +716,9 @@
       "surveyStatus": "Upgrade",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.008Z",
-      "updatedAt": "2026-09-02T10:25:12.008Z",
-      "id": "jg_Wh9j0F5E"
+      "createdAt": "2026-09-03T06:57:53.339Z",
+      "updatedAt": "2026-09-03T06:57:53.339Z",
+      "id": "RZEdtRo4Nzw"
     },
     {
       "equipment": "Monitor",
@@ -740,9 +747,9 @@
       "surveyStatus": "Replace",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.009Z",
-      "updatedAt": "2026-09-02T10:25:12.009Z",
-      "id": "x0NL7qlBEZU"
+      "createdAt": "2026-09-03T06:57:53.339Z",
+      "updatedAt": "2026-09-03T06:57:53.339Z",
+      "id": "dxDmK4LE26o"
     },
     {
       "equipment": "UPS",
@@ -771,9 +778,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.009Z",
-      "updatedAt": "2026-09-02T10:25:12.009Z",
-      "id": "IHGMkQz0BQY"
+      "createdAt": "2026-09-03T06:57:53.339Z",
+      "updatedAt": "2026-09-03T06:57:53.339Z",
+      "id": "vbkYKq_Pvl8"
     },
     {
       "equipment": "UPS",
@@ -802,9 +809,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.009Z",
-      "updatedAt": "2026-09-02T10:25:12.009Z",
-      "id": "W0Px97kSdLw"
+      "createdAt": "2026-09-03T06:57:53.339Z",
+      "updatedAt": "2026-09-03T06:57:53.339Z",
+      "id": "paYJ4M4Kb8g"
     },
     {
       "equipment": "Monitor",
@@ -833,9 +840,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.009Z",
-      "updatedAt": "2026-09-02T10:25:12.009Z",
-      "id": "K1LwdrN9-Eg"
+      "createdAt": "2026-09-03T06:57:53.339Z",
+      "updatedAt": "2026-09-03T06:57:53.339Z",
+      "id": "bqk-j3Ho6a0"
     },
     {
       "equipment": "UPS",
@@ -864,9 +871,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.009Z",
-      "updatedAt": "2026-09-02T10:25:12.009Z",
-      "id": "cUUUr5XfxAw"
+      "createdAt": "2026-09-03T06:57:53.339Z",
+      "updatedAt": "2026-09-03T06:57:53.339Z",
+      "id": "c4IjNG7PvEo"
     },
     {
       "equipment": "UPS",
@@ -895,9 +902,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.009Z",
-      "updatedAt": "2026-09-02T10:25:12.009Z",
-      "id": "Aw5zPRvaXdI"
+      "createdAt": "2026-09-03T06:57:53.339Z",
+      "updatedAt": "2026-09-03T06:57:53.339Z",
+      "id": "BBVeQr2GNUs"
     },
     {
       "equipment": "UPS",
@@ -926,9 +933,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.009Z",
-      "updatedAt": "2026-09-02T10:25:12.009Z",
-      "id": "1qID_8bbJk0"
+      "createdAt": "2026-09-03T06:57:53.340Z",
+      "updatedAt": "2026-09-03T06:57:53.340Z",
+      "id": "Jl4Q4mj2LpI"
     },
     {
       "equipment": "Switch",
@@ -957,9 +964,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.009Z",
-      "updatedAt": "2026-09-02T10:25:12.009Z",
-      "id": "nM905BASEBQ"
+      "createdAt": "2026-09-03T06:57:53.340Z",
+      "updatedAt": "2026-09-03T06:57:53.340Z",
+      "id": "s6Ty0eIz780"
     },
     {
       "equipment": "Switch",
@@ -988,9 +995,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.009Z",
-      "updatedAt": "2026-09-02T10:25:12.009Z",
-      "id": "RtIIh7O8-3o"
+      "createdAt": "2026-09-03T06:57:53.340Z",
+      "updatedAt": "2026-09-03T06:57:53.340Z",
+      "id": "AWyGmfDg4uc"
     },
     {
       "equipment": "Router",
@@ -1019,9 +1026,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.009Z",
-      "updatedAt": "2026-09-02T10:25:12.009Z",
-      "id": "9H8HDe-pzwE"
+      "createdAt": "2026-09-03T06:57:53.340Z",
+      "updatedAt": "2026-09-03T06:57:53.340Z",
+      "id": "XwAO0MTY3j0"
     },
     {
       "equipment": "Router",
@@ -1050,9 +1057,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.009Z",
-      "updatedAt": "2026-09-02T10:25:12.009Z",
-      "id": "nHzhk4eKrC4"
+      "createdAt": "2026-09-03T06:57:53.340Z",
+      "updatedAt": "2026-09-03T06:57:53.340Z",
+      "id": "RjtDnEUgR4w"
     },
     {
       "equipment": "Router",
@@ -1081,9 +1088,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.009Z",
-      "updatedAt": "2026-09-02T10:25:12.009Z",
-      "id": "gweMito_NsY"
+      "createdAt": "2026-09-03T06:57:53.340Z",
+      "updatedAt": "2026-09-03T06:57:53.340Z",
+      "id": "HA_zfF-Ld_g"
     },
     {
       "equipment": "Router",
@@ -1112,9 +1119,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.009Z",
-      "updatedAt": "2026-09-02T10:25:12.009Z",
-      "id": "OkuQUszkQ5w"
+      "createdAt": "2026-09-03T06:57:53.340Z",
+      "updatedAt": "2026-09-03T06:57:53.340Z",
+      "id": "fbuwUSWVg1o"
     },
     {
       "equipment": "Printer",
@@ -1143,9 +1150,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.009Z",
-      "updatedAt": "2026-09-02T10:25:12.009Z",
-      "id": "ynrHtVRynHo"
+      "createdAt": "2026-09-03T06:57:53.340Z",
+      "updatedAt": "2026-09-03T06:57:53.340Z",
+      "id": "5Obm9xEZDIA"
     },
     {
       "equipment": "Projector",
@@ -1174,9 +1181,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.009Z",
-      "updatedAt": "2026-09-02T10:25:12.009Z",
-      "id": "0bbAT33Bonw"
+      "createdAt": "2026-09-03T06:57:53.340Z",
+      "updatedAt": "2026-09-03T06:57:53.340Z",
+      "id": "1D0xbWpBO74"
     },
     {
       "equipment": "Projection Screen",
@@ -1205,9 +1212,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.009Z",
-      "updatedAt": "2026-09-02T10:25:12.009Z",
-      "id": "5cb3_fqeqfU"
+      "createdAt": "2026-09-03T06:57:53.340Z",
+      "updatedAt": "2026-09-03T06:57:53.340Z",
+      "id": "3jnoSlviB_k"
     },
     {
       "equipment": "Projection Screen",
@@ -1236,9 +1243,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.009Z",
-      "updatedAt": "2026-09-02T10:25:12.009Z",
-      "id": "FcHcg2Sewtg"
+      "createdAt": "2026-09-03T06:57:53.340Z",
+      "updatedAt": "2026-09-03T06:57:53.340Z",
+      "id": "G7Lk-UAVKAc"
     },
     {
       "equipment": "Speaker",
@@ -1267,9 +1274,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.009Z",
-      "updatedAt": "2026-09-02T10:25:12.009Z",
-      "id": "EI61p2jlKfo"
+      "createdAt": "2026-09-03T06:57:53.340Z",
+      "updatedAt": "2026-09-03T06:57:53.340Z",
+      "id": "6zxqNV76iGs"
     },
     {
       "equipment": "Access Control",
@@ -1298,9 +1305,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.009Z",
-      "updatedAt": "2026-09-02T10:25:12.009Z",
-      "id": "QqdpsXk1_O0"
+      "createdAt": "2026-09-03T06:57:53.340Z",
+      "updatedAt": "2026-09-03T06:57:53.340Z",
+      "id": "h91vUG8tauU"
     },
     {
       "equipment": "CCTV Camera",
@@ -1329,9 +1336,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.009Z",
-      "updatedAt": "2026-09-02T10:25:12.009Z",
-      "id": "4grvjHGwbW8"
+      "createdAt": "2026-09-03T06:57:53.340Z",
+      "updatedAt": "2026-09-03T06:57:53.340Z",
+      "id": "tp49m7GVnQ8"
     },
     {
       "equipment": "CCTV Camera",
@@ -1360,9 +1367,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.009Z",
-      "updatedAt": "2026-09-02T10:25:12.009Z",
-      "id": "RK6W4pTfbsw"
+      "createdAt": "2026-09-03T06:57:53.340Z",
+      "updatedAt": "2026-09-03T06:57:53.340Z",
+      "id": "4U0altKhqXg"
     },
     {
       "equipment": "CCTV Camera",
@@ -1391,9 +1398,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.009Z",
-      "updatedAt": "2026-09-02T10:25:12.009Z",
-      "id": "OEdnDaVD6YQ"
+      "createdAt": "2026-09-03T06:57:53.340Z",
+      "updatedAt": "2026-09-03T06:57:53.340Z",
+      "id": "brQVTq0MNuM"
     },
     {
       "equipment": "CCTV Camera",
@@ -1422,9 +1429,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.009Z",
-      "updatedAt": "2026-09-02T10:25:12.009Z",
-      "id": "xcDhRSAPeEQ"
+      "createdAt": "2026-09-03T06:57:53.340Z",
+      "updatedAt": "2026-09-03T06:57:53.340Z",
+      "id": "tlgu3pvGPBI"
     },
     {
       "equipment": "DVR",
@@ -1453,9 +1460,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.009Z",
-      "updatedAt": "2026-09-02T10:25:12.009Z",
-      "id": "SSSs77WDHVc"
+      "createdAt": "2026-09-03T06:57:53.340Z",
+      "updatedAt": "2026-09-03T06:57:53.340Z",
+      "id": "vDlISsyNh48"
     },
     {
       "equipment": "CCTV Camera",
@@ -1484,9 +1491,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.009Z",
-      "updatedAt": "2026-09-02T10:25:12.009Z",
-      "id": "T5wGKYUJcic"
+      "createdAt": "2026-09-03T06:57:53.340Z",
+      "updatedAt": "2026-09-03T06:57:53.340Z",
+      "id": "DPDCnXDmpyk"
     },
     {
       "equipment": "CCTV Camera",
@@ -1515,9 +1522,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.009Z",
-      "updatedAt": "2026-09-02T10:25:12.009Z",
-      "id": "MJp4hUq6K-s"
+      "createdAt": "2026-09-03T06:57:53.340Z",
+      "updatedAt": "2026-09-03T06:57:53.340Z",
+      "id": "kpHfr_y2j2U"
     },
     {
       "equipment": "Laptop",
@@ -1546,9 +1553,9 @@
       "surveyStatus": "Upgrade",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.009Z",
-      "updatedAt": "2026-09-02T10:25:12.009Z",
-      "id": "jiJA3qLsLZc"
+      "createdAt": "2026-09-03T06:57:53.340Z",
+      "updatedAt": "2026-09-03T06:57:53.340Z",
+      "id": "bABEh1Fgwbc"
     },
     {
       "equipment": "Headphone",
@@ -1577,9 +1584,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.009Z",
-      "updatedAt": "2026-09-02T10:25:12.009Z",
-      "id": "uRHNQkmLIiM"
+      "createdAt": "2026-09-03T06:57:53.340Z",
+      "updatedAt": "2026-09-03T06:57:53.340Z",
+      "id": "d_o5TQy49uM"
     },
     {
       "equipment": "CPU",
@@ -1608,9 +1615,9 @@
       "surveyStatus": "Upgrade",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.009Z",
-      "updatedAt": "2026-09-02T10:25:12.009Z",
-      "id": "jOY7A6n1ocQ"
+      "createdAt": "2026-09-03T06:57:53.340Z",
+      "updatedAt": "2026-09-03T06:57:53.340Z",
+      "id": "DFjpjCdeUXE"
     },
     {
       "equipment": "Monitor",
@@ -1639,9 +1646,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.009Z",
-      "updatedAt": "2026-09-02T10:25:12.009Z",
-      "id": "CHG2-b8mk7A"
+      "createdAt": "2026-09-03T06:57:53.340Z",
+      "updatedAt": "2026-09-03T06:57:53.340Z",
+      "id": "xC01EjC8UfI"
     },
     {
       "equipment": "UPS",
@@ -1670,9 +1677,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.009Z",
-      "updatedAt": "2026-09-02T10:25:12.009Z",
-      "id": "hn66Mayp4Q0"
+      "createdAt": "2026-09-03T06:57:53.340Z",
+      "updatedAt": "2026-09-03T06:57:53.340Z",
+      "id": "zrgSbFTCeeg"
     },
     {
       "equipment": "Headphone",
@@ -1701,9 +1708,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.009Z",
-      "updatedAt": "2026-09-02T10:25:12.009Z",
-      "id": "6RiSo_E6Av4"
+      "createdAt": "2026-09-03T06:57:53.340Z",
+      "updatedAt": "2026-09-03T06:57:53.340Z",
+      "id": "v91Ga6x45fo"
     },
     {
       "equipment": "Webcam",
@@ -1732,9 +1739,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.009Z",
-      "updatedAt": "2026-09-02T10:25:12.009Z",
-      "id": "JjbBE7cPrIc"
+      "createdAt": "2026-09-03T06:57:53.340Z",
+      "updatedAt": "2026-09-03T06:57:53.340Z",
+      "id": "sJ2RCGvYtso"
     },
     {
       "equipment": "CPU",
@@ -1763,9 +1770,9 @@
       "surveyStatus": "Upgrade",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.009Z",
-      "updatedAt": "2026-09-02T10:25:12.009Z",
-      "id": "wScalXQNm54"
+      "createdAt": "2026-09-03T06:57:53.340Z",
+      "updatedAt": "2026-09-03T06:57:53.340Z",
+      "id": "LY0t8kwjJyI"
     },
     {
       "equipment": "Monitor",
@@ -1794,9 +1801,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.009Z",
-      "updatedAt": "2026-09-02T10:25:12.009Z",
-      "id": "9qtFKavV_Ig"
+      "createdAt": "2026-09-03T06:57:53.340Z",
+      "updatedAt": "2026-09-03T06:57:53.340Z",
+      "id": "VMKUrjXmv3E"
     },
     {
       "equipment": "UPS",
@@ -1825,9 +1832,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.009Z",
-      "updatedAt": "2026-09-02T10:25:12.009Z",
-      "id": "2lYc3MiHVhU"
+      "createdAt": "2026-09-03T06:57:53.340Z",
+      "updatedAt": "2026-09-03T06:57:53.340Z",
+      "id": "VcHWJwwYg0g"
     },
     {
       "equipment": "Router",
@@ -1856,9 +1863,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.009Z",
-      "updatedAt": "2026-09-02T10:25:12.009Z",
-      "id": "0ia3-Nb_2pE"
+      "createdAt": "2026-09-03T06:57:53.340Z",
+      "updatedAt": "2026-09-03T06:57:53.340Z",
+      "id": "CYR6gyv1o-w"
     },
     {
       "equipment": "Printer",
@@ -1887,9 +1894,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.009Z",
-      "updatedAt": "2026-09-02T10:25:12.009Z",
-      "id": "YXYlNEnRR7k"
+      "createdAt": "2026-09-03T06:57:53.340Z",
+      "updatedAt": "2026-09-03T06:57:53.340Z",
+      "id": "HafaQ1h3Pis"
     },
     {
       "equipment": "CPU",
@@ -1918,9 +1925,9 @@
       "surveyStatus": "Upgrade",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.009Z",
-      "updatedAt": "2026-09-02T10:25:12.009Z",
-      "id": "7I5qFVn852M"
+      "createdAt": "2026-09-03T06:57:53.340Z",
+      "updatedAt": "2026-09-03T06:57:53.340Z",
+      "id": "ag9EX3cshLE"
     },
     {
       "equipment": "UPS",
@@ -1949,9 +1956,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.009Z",
-      "updatedAt": "2026-09-02T10:25:12.009Z",
-      "id": "BTsFwOOO8sc"
+      "createdAt": "2026-09-03T06:57:53.340Z",
+      "updatedAt": "2026-09-03T06:57:53.340Z",
+      "id": "7Yjnwz8hryg"
     },
     {
       "equipment": "Scanner",
@@ -1980,9 +1987,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.009Z",
-      "updatedAt": "2026-09-02T10:25:12.009Z",
-      "id": "Z4b5DChWvvA"
+      "createdAt": "2026-09-03T06:57:53.340Z",
+      "updatedAt": "2026-09-03T06:57:53.340Z",
+      "id": "LwvBrObOa9s"
     },
     {
       "equipment": "Printer",
@@ -2011,9 +2018,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.009Z",
-      "updatedAt": "2026-09-02T10:25:12.009Z",
-      "id": "vgeHy9Xf31M"
+      "createdAt": "2026-09-03T06:57:53.340Z",
+      "updatedAt": "2026-09-03T06:57:53.340Z",
+      "id": "sOmqB-3fZrE"
     },
     {
       "equipment": "CPU",
@@ -2042,9 +2049,9 @@
       "surveyStatus": "Upgrade",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.009Z",
-      "updatedAt": "2026-09-02T10:25:12.009Z",
-      "id": "yMKYJiH7qsQ"
+      "createdAt": "2026-09-03T06:57:53.340Z",
+      "updatedAt": "2026-09-03T06:57:53.340Z",
+      "id": "8V1OHYgNKs8"
     },
     {
       "equipment": "Monitor",
@@ -2073,9 +2080,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.009Z",
-      "updatedAt": "2026-09-02T10:25:12.009Z",
-      "id": "Gs0lb4pXYKc"
+      "createdAt": "2026-09-03T06:57:53.340Z",
+      "updatedAt": "2026-09-03T06:57:53.340Z",
+      "id": "YJdaPnmutmk"
     },
     {
       "equipment": "UPS",
@@ -2104,9 +2111,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.009Z",
-      "updatedAt": "2026-09-02T10:25:12.009Z",
-      "id": "mJUZ-3F6z_w"
+      "createdAt": "2026-09-03T06:57:53.340Z",
+      "updatedAt": "2026-09-03T06:57:53.340Z",
+      "id": "qn42er2mCLQ"
     },
     {
       "equipment": "Headphone",
@@ -2135,9 +2142,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.009Z",
-      "updatedAt": "2026-09-02T10:25:12.009Z",
-      "id": "Kn9wAa0xM2A"
+      "createdAt": "2026-09-03T06:57:53.340Z",
+      "updatedAt": "2026-09-03T06:57:53.340Z",
+      "id": "wYcV3SVIteo"
     },
     {
       "equipment": "Webcam",
@@ -2166,9 +2173,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.009Z",
-      "updatedAt": "2026-09-02T10:25:12.009Z",
-      "id": "dR80g9o3D9E"
+      "createdAt": "2026-09-03T06:57:53.340Z",
+      "updatedAt": "2026-09-03T06:57:53.340Z",
+      "id": "7k1gYr3cpiU"
     },
     {
       "equipment": "CPU",
@@ -2197,9 +2204,9 @@
       "surveyStatus": "Upgrade",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.009Z",
-      "updatedAt": "2026-09-02T10:25:12.009Z",
-      "id": "TSjhCvR1kyI"
+      "createdAt": "2026-09-03T06:57:53.340Z",
+      "updatedAt": "2026-09-03T06:57:53.340Z",
+      "id": "J2t1N8SpqmI"
     },
     {
       "equipment": "Monitor",
@@ -2228,9 +2235,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.009Z",
-      "updatedAt": "2026-09-02T10:25:12.009Z",
-      "id": "O45BBLjL5ek"
+      "createdAt": "2026-09-03T06:57:53.340Z",
+      "updatedAt": "2026-09-03T06:57:53.340Z",
+      "id": "JwI54A7Svns"
     },
     {
       "equipment": "UPS",
@@ -2259,9 +2266,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.009Z",
-      "updatedAt": "2026-09-02T10:25:12.009Z",
-      "id": "n-rdxbZpiKw"
+      "createdAt": "2026-09-03T06:57:53.340Z",
+      "updatedAt": "2026-09-03T06:57:53.340Z",
+      "id": "LFEK7KM21F4"
     },
     {
       "equipment": "Laptop",
@@ -2290,9 +2297,9 @@
       "surveyStatus": "Upgrade",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.009Z",
-      "updatedAt": "2026-09-02T10:25:12.009Z",
-      "id": "AgUd03nNfwo"
+      "createdAt": "2026-09-03T06:57:53.340Z",
+      "updatedAt": "2026-09-03T06:57:53.340Z",
+      "id": "JVT8Ysw8EDU"
     },
     {
       "equipment": "Router",
@@ -2321,9 +2328,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.009Z",
-      "updatedAt": "2026-09-02T10:25:12.009Z",
-      "id": "fmov7iNAkU4"
+      "createdAt": "2026-09-03T06:57:53.340Z",
+      "updatedAt": "2026-09-03T06:57:53.340Z",
+      "id": "1Igp3f-Lke0"
     },
     {
       "equipment": "Network Rack",
@@ -2352,9 +2359,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.009Z",
-      "updatedAt": "2026-09-02T10:25:12.009Z",
-      "id": "nprmbpLXFJw"
+      "createdAt": "2026-09-03T06:57:53.340Z",
+      "updatedAt": "2026-09-03T06:57:53.340Z",
+      "id": "f4FTrGgwQ6c"
     },
     {
       "equipment": "Network Rack",
@@ -2383,9 +2390,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.009Z",
-      "updatedAt": "2026-09-02T10:25:12.009Z",
-      "id": "BE_rmqoeKUo"
+      "createdAt": "2026-09-03T06:57:53.340Z",
+      "updatedAt": "2026-09-03T06:57:53.340Z",
+      "id": "jxhgnuEv4Ew"
     },
     {
       "equipment": "Photocopier",
@@ -2414,9 +2421,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.009Z",
-      "updatedAt": "2026-09-02T10:25:12.009Z",
-      "id": "v7LWDyHbIxU"
+      "createdAt": "2026-09-03T06:57:53.340Z",
+      "updatedAt": "2026-09-03T06:57:53.340Z",
+      "id": "UVmYObCUDjg"
     },
     {
       "equipment": "Smoke Detector Controller",
@@ -2445,9 +2452,9 @@
       "surveyStatus": "Upgrade",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.009Z",
-      "updatedAt": "2026-09-02T10:25:12.009Z",
-      "id": "Kzki_arXt9E"
+      "createdAt": "2026-09-03T06:57:53.340Z",
+      "updatedAt": "2026-09-03T06:57:53.340Z",
+      "id": "iXLqBdCDFPI"
     },
     {
       "equipment": "Scanner",
@@ -2476,9 +2483,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.010Z",
-      "updatedAt": "2026-09-02T10:25:12.010Z",
-      "id": "GeY7hVROjCQ"
+      "createdAt": "2026-09-03T06:57:53.340Z",
+      "updatedAt": "2026-09-03T06:57:53.340Z",
+      "id": "AWxDx1LC7R4"
     },
     {
       "equipment": "Laptop",
@@ -2507,9 +2514,9 @@
       "surveyStatus": "Upgrade",
       "upgradeEquipments": "need to upgrade 8GB DDR3",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.010Z",
-      "updatedAt": "2026-09-02T10:25:12.010Z",
-      "id": "6sLIm_94RuM"
+      "createdAt": "2026-09-03T06:57:53.340Z",
+      "updatedAt": "2026-09-03T06:57:53.340Z",
+      "id": "IlL3fiRUg-w"
     },
     {
       "equipment": "UPS",
@@ -2538,9 +2545,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.010Z",
-      "updatedAt": "2026-09-02T10:25:12.010Z",
-      "id": "u4gu8ieQV3c"
+      "createdAt": "2026-09-03T06:57:53.340Z",
+      "updatedAt": "2026-09-03T06:57:53.340Z",
+      "id": "b88_bSRuUPE"
     },
     {
       "equipment": "UPS",
@@ -2569,9 +2576,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.010Z",
-      "updatedAt": "2026-09-02T10:25:12.010Z",
-      "id": "LPkSbBeRwr8"
+      "createdAt": "2026-09-03T06:57:53.340Z",
+      "updatedAt": "2026-09-03T06:57:53.340Z",
+      "id": "J3XoZkhfj4M"
     },
     {
       "equipment": "Switch",
@@ -2600,9 +2607,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.010Z",
-      "updatedAt": "2026-09-02T10:25:12.010Z",
-      "id": "1feJCJAHAh8"
+      "createdAt": "2026-09-03T06:57:53.340Z",
+      "updatedAt": "2026-09-03T06:57:53.340Z",
+      "id": "vMROcQRKb-g"
     },
     {
       "equipment": "Switch",
@@ -2631,9 +2638,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.010Z",
-      "updatedAt": "2026-09-02T10:25:12.010Z",
-      "id": "5L9jXAiJ6OY"
+      "createdAt": "2026-09-03T06:57:53.340Z",
+      "updatedAt": "2026-09-03T06:57:53.340Z",
+      "id": "pXmTyB4plME"
     },
     {
       "equipment": "Laptop",
@@ -2662,9 +2669,9 @@
       "surveyStatus": "OK",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.010Z",
-      "updatedAt": "2026-09-02T10:25:12.010Z",
-      "id": "iyBJI-9DPKc"
+      "createdAt": "2026-09-03T06:57:53.340Z",
+      "updatedAt": "2026-09-03T06:57:53.340Z",
+      "id": "B1V7yY0FfTM"
     },
     {
       "equipment": "Router",
@@ -2693,9 +2700,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.010Z",
-      "updatedAt": "2026-09-02T10:25:12.010Z",
-      "id": "3rtdk_HMyuw"
+      "createdAt": "2026-09-03T06:57:53.340Z",
+      "updatedAt": "2026-09-03T06:57:53.340Z",
+      "id": "kIc2G19SNys"
     },
     {
       "equipment": "Printer",
@@ -2724,9 +2731,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.010Z",
-      "updatedAt": "2026-09-02T10:25:12.010Z",
-      "id": "kTd41YJuHDM"
+      "createdAt": "2026-09-03T06:57:53.340Z",
+      "updatedAt": "2026-09-03T06:57:53.340Z",
+      "id": "bwwuoHbllu4"
     },
     {
       "equipment": "Laptop",
@@ -2755,9 +2762,9 @@
       "surveyStatus": "OK",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.010Z",
-      "updatedAt": "2026-09-02T10:25:12.010Z",
-      "id": "XHsqV2-o8K8"
+      "createdAt": "2026-09-03T06:57:53.340Z",
+      "updatedAt": "2026-09-03T06:57:53.340Z",
+      "id": "xuqjzwjSEIc"
     },
     {
       "equipment": "Monitor",
@@ -2786,9 +2793,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.010Z",
-      "updatedAt": "2026-09-02T10:25:12.010Z",
-      "id": "bbD0GywBnZY"
+      "createdAt": "2026-09-03T06:57:53.340Z",
+      "updatedAt": "2026-09-03T06:57:53.340Z",
+      "id": "7sCe7iF05Eo"
     },
     {
       "equipment": "Laptop",
@@ -2817,9 +2824,9 @@
       "surveyStatus": "Ok",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.010Z",
-      "updatedAt": "2026-09-02T10:25:12.010Z",
-      "id": "493IsJwZ3KI"
+      "createdAt": "2026-09-03T06:57:53.340Z",
+      "updatedAt": "2026-09-03T06:57:53.340Z",
+      "id": "2y9rFgj04bU"
     },
     {
       "equipment": "Laptop",
@@ -2848,9 +2855,9 @@
       "surveyStatus": "OK",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.010Z",
-      "updatedAt": "2026-09-02T10:25:12.010Z",
-      "id": "iEs8vply_qE"
+      "createdAt": "2026-09-03T06:57:53.340Z",
+      "updatedAt": "2026-09-03T06:57:53.340Z",
+      "id": "Z_L_kbGfvsw"
     },
     {
       "equipment": "Monitor",
@@ -2879,9 +2886,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.010Z",
-      "updatedAt": "2026-09-02T10:25:12.010Z",
-      "id": "2UmaLOiql5s"
+      "createdAt": "2026-09-03T06:57:53.340Z",
+      "updatedAt": "2026-09-03T06:57:53.340Z",
+      "id": "-mg0w15X2UE"
     },
     {
       "equipment": "UPS",
@@ -2910,9 +2917,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.010Z",
-      "updatedAt": "2026-09-02T10:25:12.010Z",
-      "id": "gRPuGtzD38E"
+      "createdAt": "2026-09-03T06:57:53.340Z",
+      "updatedAt": "2026-09-03T06:57:53.340Z",
+      "id": "MBUyki0k5K0"
     },
     {
       "equipment": "CPU",
@@ -2941,9 +2948,9 @@
       "surveyStatus": "Upgrade",
       "upgradeEquipments": "Need to upgrade 4GB DDR3 1600 Mhz",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.010Z",
-      "updatedAt": "2026-09-02T10:25:12.010Z",
-      "id": "bU3hxPWOtA4"
+      "createdAt": "2026-09-03T06:57:53.340Z",
+      "updatedAt": "2026-09-03T06:57:53.340Z",
+      "id": "hMDJYzB3LxQ"
     },
     {
       "equipment": "Laptop",
@@ -2972,9 +2979,9 @@
       "surveyStatus": "OK",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.010Z",
-      "updatedAt": "2026-09-02T10:25:12.010Z",
-      "id": "DH_0BJxko1M"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "Yl9YV7f16cY"
     },
     {
       "equipment": "Laptop",
@@ -3003,9 +3010,9 @@
       "surveyStatus": "Upgrade",
       "upgradeEquipments": "Need to upgrade 4 GB DDR3ram 1600Mhz",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.010Z",
-      "updatedAt": "2026-09-02T10:25:12.010Z",
-      "id": "_eI4uYrY2eU"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "1SL8GqCmuNQ"
     },
     {
       "equipment": "Laptop",
@@ -3034,9 +3041,9 @@
       "surveyStatus": "OK",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.010Z",
-      "updatedAt": "2026-09-02T10:25:12.010Z",
-      "id": "5pHzIgCm9xQ"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "-kBxGDRZKU8"
     },
     {
       "equipment": "CPU",
@@ -3065,9 +3072,9 @@
       "surveyStatus": "Upgrade",
       "upgradeEquipments": "Need to upgrade 4 GB ram 1333Mhz",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.010Z",
-      "updatedAt": "2026-09-02T10:25:12.010Z",
-      "id": "YExlrykwBRw"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "5AtdNKBvAUY"
     },
     {
       "equipment": "Monitor",
@@ -3096,9 +3103,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.010Z",
-      "updatedAt": "2026-09-02T10:25:12.010Z",
-      "id": "r_gmFfgFYoI"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "VWaB5t9RfuA"
     },
     {
       "equipment": "UPS",
@@ -3127,9 +3134,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.010Z",
-      "updatedAt": "2026-09-02T10:25:12.010Z",
-      "id": "KkIUkXEKP-Y"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "q_aKsZLasLc"
     },
     {
       "equipment": "CPU",
@@ -3158,9 +3165,9 @@
       "surveyStatus": "Upgrade",
       "upgradeEquipments": "Need to upgrade 4 GB DDR3 ram 1600Mhz",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.010Z",
-      "updatedAt": "2026-09-02T10:25:12.010Z",
-      "id": "tTtKEVB3RB0"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "49PNksXKNI8"
     },
     {
       "equipment": "Monitor",
@@ -3189,9 +3196,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.010Z",
-      "updatedAt": "2026-09-02T10:25:12.010Z",
-      "id": "vSyQUFgj-Ow"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "bYp54RdUj-8"
     },
     {
       "equipment": "UPS",
@@ -3220,9 +3227,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.010Z",
-      "updatedAt": "2026-09-02T10:25:12.010Z",
-      "id": "1HEQOUlaXaQ"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "X2DgWIPKXcE"
     },
     {
       "equipment": "CPU",
@@ -3251,9 +3258,9 @@
       "surveyStatus": "Upgrade",
       "upgradeEquipments": "Need to upgrade 4 GB DDR3 ram 1600Mhz",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.010Z",
-      "updatedAt": "2026-09-02T10:25:12.010Z",
-      "id": "e0IWFRhBELE"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "V9bGIuBoghw"
     },
     {
       "equipment": "Monitor",
@@ -3282,9 +3289,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.010Z",
-      "updatedAt": "2026-09-02T10:25:12.010Z",
-      "id": "UjgYwuFybew"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "vFkgLB_dzt4"
     },
     {
       "equipment": "UPS",
@@ -3313,9 +3320,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.010Z",
-      "updatedAt": "2026-09-02T10:25:12.010Z",
-      "id": "D_fXTO3HrhE"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "MNVWI_e7ZIA"
     },
     {
       "equipment": "Webcam",
@@ -3344,9 +3351,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.010Z",
-      "updatedAt": "2026-09-02T10:25:12.010Z",
-      "id": "4Fq8M7e5ogo"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "pdEIDqSksF4"
     },
     {
       "equipment": "Laptop",
@@ -3375,9 +3382,9 @@
       "surveyStatus": "Upgrade",
       "upgradeEquipments": "Need to upgrade 4GB RAM 2133mhz",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.010Z",
-      "updatedAt": "2026-09-02T10:25:12.010Z",
-      "id": "GS1LvIb7nyg"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "ZKWP_NdUVyg"
     },
     {
       "equipment": "Scanner",
@@ -3406,9 +3413,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.010Z",
-      "updatedAt": "2026-09-02T10:25:12.010Z",
-      "id": "yYXqAWqEyZw"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "nhkHdafZKz8"
     },
     {
       "equipment": "Printer",
@@ -3437,9 +3444,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.010Z",
-      "updatedAt": "2026-09-02T10:25:12.010Z",
-      "id": "ueLJzIIdP7E"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "9F_iE9J6nVM"
     },
     {
       "equipment": "Network Rack",
@@ -3468,9 +3475,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.010Z",
-      "updatedAt": "2026-09-02T10:25:12.010Z",
-      "id": "MZKTkedaqzk"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "x-G998J4ePU"
     },
     {
       "equipment": "UPS",
@@ -3499,9 +3506,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.010Z",
-      "updatedAt": "2026-09-02T10:25:12.010Z",
-      "id": "odGQ4H0qQII"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "qGh-mkvyXpU"
     },
     {
       "equipment": "Switch",
@@ -3530,9 +3537,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.010Z",
-      "updatedAt": "2026-09-02T10:25:12.010Z",
-      "id": "I3SkcfMaEAc"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "1CWw6UYmBQA"
     },
     {
       "equipment": "Monitor",
@@ -3561,9 +3568,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.010Z",
-      "updatedAt": "2026-09-02T10:25:12.010Z",
-      "id": "VEx25AHkwsI"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "ltOxQ8MzZgQ"
     },
     {
       "equipment": "NVR",
@@ -3592,9 +3599,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.010Z",
-      "updatedAt": "2026-09-02T10:25:12.010Z",
-      "id": "FvKkeMFjf_Q"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "JP7TI_8fzf4"
     },
     {
       "equipment": "NVR",
@@ -3623,9 +3630,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.010Z",
-      "updatedAt": "2026-09-02T10:25:12.010Z",
-      "id": "rkDxYmmm-R0"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "uJ6lkxuOsgE"
     },
     {
       "equipment": "Network Rack",
@@ -3654,9 +3661,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.010Z",
-      "updatedAt": "2026-09-02T10:25:12.010Z",
-      "id": "WD9cDLS0vmE"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "TwekdKT_Nag"
     },
     {
       "equipment": "Network Rack",
@@ -3685,9 +3692,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.010Z",
-      "updatedAt": "2026-09-02T10:25:12.010Z",
-      "id": "aPk5ULnK-4U"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "680MHuKqt-k"
     },
     {
       "equipment": "CPU",
@@ -3716,9 +3723,9 @@
       "surveyStatus": "Upgrade",
       "upgradeEquipments": "Need to upgrade 4GB DDR4 ram 2400Mhz",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.010Z",
-      "updatedAt": "2026-09-02T10:25:12.010Z",
-      "id": "OGATgWcAXVk"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "LhvJ2f86I0g"
     },
     {
       "equipment": "Monitor",
@@ -3747,9 +3754,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.010Z",
-      "updatedAt": "2026-09-02T10:25:12.010Z",
-      "id": "njZTLjwsP3I"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "QMci94aCC5Y"
     },
     {
       "equipment": "UPS",
@@ -3778,9 +3785,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.010Z",
-      "updatedAt": "2026-09-02T10:25:12.010Z",
-      "id": "1r1hDuaqji4"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "gc5ajTzEhLA"
     },
     {
       "equipment": "Printer",
@@ -3809,9 +3816,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.010Z",
-      "updatedAt": "2026-09-02T10:25:12.010Z",
-      "id": "byBXig0XUQ0"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "ZNPYu_apMA0"
     },
     {
       "equipment": "Laptop",
@@ -3840,9 +3847,9 @@
       "surveyStatus": "OK",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.010Z",
-      "updatedAt": "2026-09-02T10:25:12.010Z",
-      "id": "iatuUk8at4I"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "eOjB6EmncXY"
     },
     {
       "equipment": "Laptop",
@@ -3871,9 +3878,9 @@
       "surveyStatus": "OK",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.010Z",
-      "updatedAt": "2026-09-02T10:25:12.010Z",
-      "id": "qPrCbIp6GSs"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "l-SCgFr6bF0"
     },
     {
       "equipment": "CPU",
@@ -3902,9 +3909,9 @@
       "surveyStatus": "Upgrade",
       "upgradeEquipments": "Need to upgrade 4 GB DDR3 ram 1333Mhz",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.010Z",
-      "updatedAt": "2026-09-02T10:25:12.010Z",
-      "id": "JuOQqHYcEHQ"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "Xq1B4-P8CFk"
     },
     {
       "equipment": "Monitor",
@@ -3933,9 +3940,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.010Z",
-      "updatedAt": "2026-09-02T10:25:12.010Z",
-      "id": "l_o4bqKMD-Q"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "5Jnlor0fF7I"
     },
     {
       "equipment": "Scanner",
@@ -3964,9 +3971,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.010Z",
-      "updatedAt": "2026-09-02T10:25:12.010Z",
-      "id": "IDi2TtBR-aA"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "jkdaYvdN8r4"
     },
     {
       "equipment": "CPU",
@@ -3995,9 +4002,9 @@
       "surveyStatus": "Upgrade",
       "upgradeEquipments": "Need to upgrade 4 GB  DDR4ram 2400Mhz",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.010Z",
-      "updatedAt": "2026-09-02T10:25:12.010Z",
-      "id": "Y6CofEu0NgY"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "qmwJVKJ8JAE"
     },
     {
       "equipment": "Monitor",
@@ -4026,9 +4033,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.010Z",
-      "updatedAt": "2026-09-02T10:25:12.010Z",
-      "id": "aazuuMpJFQI"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "5Cmr0oANAyM"
     },
     {
       "equipment": "UPS",
@@ -4057,9 +4064,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.010Z",
-      "updatedAt": "2026-09-02T10:25:12.010Z",
-      "id": "L82-gYrr7Cc"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "cYQngQlX4O4"
     },
     {
       "equipment": "Network Rack",
@@ -4088,9 +4095,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.010Z",
-      "updatedAt": "2026-09-02T10:25:12.010Z",
-      "id": "2athZVc9kAw"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "LVnTy9psROI"
     },
     {
       "equipment": "Laptop",
@@ -4119,9 +4126,9 @@
       "surveyStatus": "Upgrade",
       "upgradeEquipments": "Need to upgrade 4GB Ram DDR4 2400mhz",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.010Z",
-      "updatedAt": "2026-09-02T10:25:12.010Z",
-      "id": "D_VJ-I0CCJQ"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "UvXA_6z3AlA"
     },
     {
       "equipment": "Monitor",
@@ -4150,9 +4157,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.010Z",
-      "updatedAt": "2026-09-02T10:25:12.010Z",
-      "id": "26oLHDEKYEo"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "cRc794pKi_U"
     },
     {
       "equipment": "CPU",
@@ -4181,9 +4188,9 @@
       "surveyStatus": "Upgrade",
       "upgradeEquipments": "Need to upgrade 4GB Ram DDR4 2400mhz",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.010Z",
-      "updatedAt": "2026-09-02T10:25:12.010Z",
-      "id": "ZnTeYXMnZ9M"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "UVlr2LIzVTI"
     },
     {
       "equipment": "Monitor",
@@ -4212,9 +4219,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.010Z",
-      "updatedAt": "2026-09-02T10:25:12.010Z",
-      "id": "P097IzUMXUI"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "N9AzqPubR3U"
     },
     {
       "equipment": "UPS",
@@ -4243,9 +4250,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.010Z",
-      "updatedAt": "2026-09-02T10:25:12.010Z",
-      "id": "AtN73PeBweA"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "kf8qG2gsv90"
     },
     {
       "equipment": "Scanner",
@@ -4274,9 +4281,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.010Z",
-      "updatedAt": "2026-09-02T10:25:12.010Z",
-      "id": "pJO2adscVXw"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "XDpTzdZnwGs"
     },
     {
       "equipment": "CPU",
@@ -4305,9 +4312,9 @@
       "surveyStatus": "Upgrade",
       "upgradeEquipments": "Need to upgrade 8GB Ram  400mhz",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.010Z",
-      "updatedAt": "2026-09-02T10:25:12.010Z",
-      "id": "NFIew3cWI5w"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "Zc1VsHPoYNo"
     },
     {
       "equipment": "Monitor",
@@ -4336,9 +4343,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.010Z",
-      "updatedAt": "2026-09-02T10:25:12.010Z",
-      "id": "0LJnwcCjLX8"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "v8wu7RZEKZQ"
     },
     {
       "equipment": "UPS",
@@ -4367,9 +4374,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.010Z",
-      "updatedAt": "2026-09-02T10:25:12.010Z",
-      "id": "yWIYyopGg1Y"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "jGOcNAzGrBI"
     },
     {
       "equipment": "CPU",
@@ -4398,9 +4405,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "Need to upgrade 4GB Ram DDR3 1333mhz",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.010Z",
-      "updatedAt": "2026-09-02T10:25:12.010Z",
-      "id": "h14dennZPYU"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "iVboJzs1IZg"
     },
     {
       "equipment": "Monitor",
@@ -4429,9 +4436,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.010Z",
-      "updatedAt": "2026-09-02T10:25:12.010Z",
-      "id": "TrvPSzuSdds"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "3z-AmckBbU0"
     },
     {
       "equipment": "UPS",
@@ -4460,9 +4467,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.010Z",
-      "updatedAt": "2026-09-02T10:25:12.010Z",
-      "id": "wjhAg8Ka-Es"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "K3NGR0wc6PA"
     },
     {
       "equipment": "CPU",
@@ -4491,9 +4498,9 @@
       "surveyStatus": "Upgrade",
       "upgradeEquipments": "Need to upgrade 4GB Ram DDR3 1067mhz",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.010Z",
-      "updatedAt": "2026-09-02T10:25:12.010Z",
-      "id": "Be7tyqEC1bk"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "rIawlptZj3s"
     },
     {
       "equipment": "Monitor",
@@ -4522,9 +4529,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.010Z",
-      "updatedAt": "2026-09-02T10:25:12.010Z",
-      "id": "jxv5vVSitgA"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "qjWXnb_tTVc"
     },
     {
       "equipment": "CPU",
@@ -4553,9 +4560,9 @@
       "surveyStatus": "Upgrade",
       "upgradeEquipments": "Need to upgrade 4GB Ram DDR4 2400mhz",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.010Z",
-      "updatedAt": "2026-09-02T10:25:12.010Z",
-      "id": "KDQ6Re74Ok8"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "YwGf75qi-uY"
     },
     {
       "equipment": "Monitor",
@@ -4584,9 +4591,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "04Rpv9xrxuM"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "zDUYmPYu6Uc"
     },
     {
       "equipment": "UPS",
@@ -4615,9 +4622,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "4X4RSO7m38c"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "ikBZftd8ucc"
     },
     {
       "equipment": "CPU",
@@ -4646,9 +4653,9 @@
       "surveyStatus": "Upgrade",
       "upgradeEquipments": "Need to upgrade 4GB Ram DDR4 2400mhz",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "y7r-7aYrSng"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "2wNw_chdhZ8"
     },
     {
       "equipment": "Monitor",
@@ -4677,9 +4684,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "z_-LL0K9yJw"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "C6dLbz2wWjw"
     },
     {
       "equipment": "UPS",
@@ -4708,9 +4715,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "JPKvX_GeZHA"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "ivZtdTynx_I"
     },
     {
       "equipment": "CPU",
@@ -4739,9 +4746,9 @@
       "surveyStatus": "Upgrade",
       "upgradeEquipments": "Need to upgrade 4GB Ram DDR3 1333mhz",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "oLRydzfRQLo"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "UUqJX9owb9Y"
     },
     {
       "equipment": "Monitor",
@@ -4770,9 +4777,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "4giwzRe1ZKY"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "NgMDbOtmw6M"
     },
     {
       "equipment": "UPS",
@@ -4801,9 +4808,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "gAIOVpy04yc"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "KofvmC1o0aQ"
     },
     {
       "equipment": "Scanner",
@@ -4832,9 +4839,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "j7p32rHflMM"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "Wnp0quRiId0"
     },
     {
       "equipment": "Laptop",
@@ -4863,9 +4870,9 @@
       "surveyStatus": "OK",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "2MOIGXspgaY"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "1qPXeJwTUGI"
     },
     {
       "equipment": "CPU",
@@ -4894,9 +4901,9 @@
       "surveyStatus": "Upgrade",
       "upgradeEquipments": "Need to upgrade 8GB Ram DDR4 2400mhz",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "EcsqlZqkMhU"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "hMd1PS-WAdw"
     },
     {
       "equipment": "Monitor",
@@ -4925,9 +4932,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "1kR2x3NA7cQ"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "0BAMGvZ26C0"
     },
     {
       "equipment": "UPS",
@@ -4956,9 +4963,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "JgeW197dvTo"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "TCJzVuTnN78"
     },
     {
       "equipment": "Laptop",
@@ -4987,9 +4994,9 @@
       "surveyStatus": "OK",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "4yooqoEmjXs"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "qyM7micDdEQ"
     },
     {
       "equipment": "Headphone",
@@ -5018,9 +5025,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "hEdlujFQo0w"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "Rvw0ucIvd_U"
     },
     {
       "equipment": "CPU",
@@ -5049,9 +5056,9 @@
       "surveyStatus": "Upgrade",
       "upgradeEquipments": "Need to upgrade 4GB Ram DDR4 2400mhz",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "MM5B0uo--1s"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "emb6fgzXhSs"
     },
     {
       "equipment": "Monitor",
@@ -5080,9 +5087,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "fEpPO1lYBrc"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "wM36Ms_s7mg"
     },
     {
       "equipment": "CPU",
@@ -5111,9 +5118,9 @@
       "surveyStatus": "Upgrade",
       "upgradeEquipments": "Need to upgrade 4GB Ram DDR3 1600mhz",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "86p1QwxvcNs"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "v-pJrsHHdm4"
     },
     {
       "equipment": "Monitor",
@@ -5142,9 +5149,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "wia8Q_Iz-Qg"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "QO19Z_jZAXc"
     },
     {
       "equipment": "UPS",
@@ -5173,9 +5180,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "QD5F-SQkx8w"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "3iFe9PqxBso"
     },
     {
       "equipment": "Scanner",
@@ -5204,9 +5211,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "TJi5icOtdSc"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "ZbtNtLXxTec"
     },
     {
       "equipment": "CPU",
@@ -5235,9 +5242,9 @@
       "surveyStatus": "Upgrade",
       "upgradeEquipments": "Need to upgrade 4GB Ram DDR3 1600mhz",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "sJixXWxw814"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "BUSazqyGj_0"
     },
     {
       "equipment": "Monitor",
@@ -5266,9 +5273,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "Ok3yBaTTBBE"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "-LVlW060xoU"
     },
     {
       "equipment": "UPS",
@@ -5297,9 +5304,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "AXtkVRddOqY"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "dgpo_9I2m0A"
     },
     {
       "equipment": "CPU",
@@ -5328,9 +5335,9 @@
       "surveyStatus": "Upgrade",
       "upgradeEquipments": "Need to upgrade 4GB Ram DDR3 1600mhz",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "AfteY7kJ90M"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "2vHyJUVAJ9U"
     },
     {
       "equipment": "Monitor",
@@ -5359,9 +5366,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "IeIJGnt6Q5w"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "_lg4ij_nre4"
     },
     {
       "equipment": "UPS",
@@ -5390,9 +5397,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "EHgpaNJK2qs"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "w3fJpNsin8Q"
     },
     {
       "equipment": "CPU",
@@ -5421,9 +5428,9 @@
       "surveyStatus": "Upgrade",
       "upgradeEquipments": "Need to upgrade 8GB Ram DDR3 1333mhz",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "YjjVsZGGUl4"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "2a_0jGJcNNA"
     },
     {
       "equipment": "Monitor",
@@ -5452,9 +5459,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "gtj8PkpJRrg"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "QEhX22aGD9w"
     },
     {
       "equipment": "UPS",
@@ -5483,9 +5490,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "dROJFbSBdMs"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "GDPRT3a6SR0"
     },
     {
       "equipment": "Scanner",
@@ -5514,9 +5521,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "osWUwmkyBnk"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "GGIWUptto4w"
     },
     {
       "equipment": "Network Rack",
@@ -5545,9 +5552,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "MFe6aHvgljE"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "VM8lB17lvYM"
     },
     {
       "equipment": "Printer",
@@ -5576,9 +5583,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "EW5wj4CJ1T4"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "X8En-38ZHi8"
     },
     {
       "equipment": "UPS",
@@ -5607,9 +5614,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "ZglWpxt0rx0"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "gUmFwcLiAqA"
     },
     {
       "equipment": "Switch",
@@ -5638,9 +5645,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "5ZeIzCJccA0"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "pv8eG2oN03U"
     },
     {
       "equipment": "Switch",
@@ -5669,9 +5676,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "Wyl3TpBssbA"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "7XDrf429-NU"
     },
     {
       "equipment": "UPS",
@@ -5700,9 +5707,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "ec3BMzfp_qM"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "RE3Ulvprf1E"
     },
     {
       "equipment": "Switch",
@@ -5731,9 +5738,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "SK74gMeCdFI"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "VtECZiWFwDg"
     },
     {
       "equipment": "CPU",
@@ -5762,9 +5769,9 @@
       "surveyStatus": "Upgrade",
       "upgradeEquipments": "Need to upgrade 4GB Ram DDR3 1600mhz",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "sFLrfElXKlI"
+      "createdAt": "2026-09-03T06:57:53.341Z",
+      "updatedAt": "2026-09-03T06:57:53.341Z",
+      "id": "Ldlj5n_NPKs"
     },
     {
       "equipment": "Monitor",
@@ -5793,9 +5800,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "sUJzEmOIDiQ"
+      "createdAt": "2026-09-03T06:57:53.342Z",
+      "updatedAt": "2026-09-03T06:57:53.342Z",
+      "id": "8XW6uI7OK2Y"
     },
     {
       "equipment": "UPS",
@@ -5824,9 +5831,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "DwepzJL1k-c"
+      "createdAt": "2026-09-03T06:57:53.342Z",
+      "updatedAt": "2026-09-03T06:57:53.342Z",
+      "id": "Kv6oHMHrCQc"
     },
     {
       "equipment": "POS Printer",
@@ -5855,9 +5862,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "axkhJ5Ae_U0"
+      "createdAt": "2026-09-03T06:57:53.342Z",
+      "updatedAt": "2026-09-03T06:57:53.342Z",
+      "id": "0dFcYrgTuR0"
     },
     {
       "equipment": "Scanner",
@@ -5886,9 +5893,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "R5REQMhO85E"
+      "createdAt": "2026-09-03T06:57:53.342Z",
+      "updatedAt": "2026-09-03T06:57:53.342Z",
+      "id": "G4cD81rLN5Y"
     },
     {
       "equipment": "CPU",
@@ -5917,9 +5924,9 @@
       "surveyStatus": "Replace",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "hvBKvbub1-s"
+      "createdAt": "2026-09-03T06:57:53.342Z",
+      "updatedAt": "2026-09-03T06:57:53.342Z",
+      "id": "qCaOghw_c6s"
     },
     {
       "equipment": "Monitor",
@@ -5948,9 +5955,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "6u8UbXA3YYs"
+      "createdAt": "2026-09-03T06:57:53.342Z",
+      "updatedAt": "2026-09-03T06:57:53.342Z",
+      "id": "4tzngvNX1YU"
     },
     {
       "equipment": "UPS",
@@ -5979,9 +5986,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "AXKmt-P2h5Q"
+      "createdAt": "2026-09-03T06:57:53.342Z",
+      "updatedAt": "2026-09-03T06:57:53.342Z",
+      "id": "e_gdjApK8p4"
     },
     {
       "equipment": "Scanner",
@@ -6010,9 +6017,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "SCOXB7g8Xkc"
+      "createdAt": "2026-09-03T06:57:53.342Z",
+      "updatedAt": "2026-09-03T06:57:53.342Z",
+      "id": "qrqnQK-Edw4"
     },
     {
       "equipment": "CPU",
@@ -6041,9 +6048,9 @@
       "surveyStatus": "Upgrade",
       "upgradeEquipments": "Need to upgrade 4GB Ram DDR3 1600mhz",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "h13gnJ3H1Sg"
+      "createdAt": "2026-09-03T06:57:53.342Z",
+      "updatedAt": "2026-09-03T06:57:53.342Z",
+      "id": "LlrOmxrR0L0"
     },
     {
       "equipment": "Monitor",
@@ -6072,9 +6079,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "-ZLoIqWT9z0"
+      "createdAt": "2026-09-03T06:57:53.342Z",
+      "updatedAt": "2026-09-03T06:57:53.342Z",
+      "id": "iFzO1hPzB0U"
     },
     {
       "equipment": "Barcode Printer",
@@ -6103,9 +6110,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "VjATZ68wfMU"
+      "createdAt": "2026-09-03T06:57:53.342Z",
+      "updatedAt": "2026-09-03T06:57:53.342Z",
+      "id": "AS50NNePY2Q"
     },
     {
       "equipment": "TV",
@@ -6134,9 +6141,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "d1NBTfafqB8"
+      "createdAt": "2026-09-03T06:57:53.342Z",
+      "updatedAt": "2026-09-03T06:57:53.342Z",
+      "id": "GUgHPkHbb_0"
     },
     {
       "equipment": "CPU",
@@ -6165,9 +6172,9 @@
       "surveyStatus": "Upgrade",
       "upgradeEquipments": "Need to upgrade 4GB Ram DDR4 2400mhz",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "ZgKbPdYmfz8"
+      "createdAt": "2026-09-03T06:57:53.342Z",
+      "updatedAt": "2026-09-03T06:57:53.342Z",
+      "id": "kSoaXz7k2Ng"
     },
     {
       "equipment": "Monitor",
@@ -6196,9 +6203,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "A1xa3MdXJaA"
+      "createdAt": "2026-09-03T06:57:53.342Z",
+      "updatedAt": "2026-09-03T06:57:53.342Z",
+      "id": "rdo9peGZNJ4"
     },
     {
       "equipment": "UPS",
@@ -6227,9 +6234,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "xPhYZXOaMNU"
+      "createdAt": "2026-09-03T06:57:53.342Z",
+      "updatedAt": "2026-09-03T06:57:53.342Z",
+      "id": "o8ocIVrRBBQ"
     },
     {
       "equipment": "Headphone",
@@ -6258,9 +6265,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "P-mRWKFJ2k4"
+      "createdAt": "2026-09-03T06:57:53.342Z",
+      "updatedAt": "2026-09-03T06:57:53.342Z",
+      "id": "QanvHkEY_V4"
     },
     {
       "equipment": "CPU",
@@ -6289,9 +6296,9 @@
       "surveyStatus": "OK",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "iLYUoHwYMJk"
+      "createdAt": "2026-09-03T06:57:53.342Z",
+      "updatedAt": "2026-09-03T06:57:53.342Z",
+      "id": "pguaIeEezLY"
     },
     {
       "equipment": "Monitor",
@@ -6320,9 +6327,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "bAJ0spG2yPo"
+      "createdAt": "2026-09-03T06:57:53.342Z",
+      "updatedAt": "2026-09-03T06:57:53.342Z",
+      "id": "t4AxZpWqO4w"
     },
     {
       "equipment": "UPS",
@@ -6351,9 +6358,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "fsT9FqUz7Uk"
+      "createdAt": "2026-09-03T06:57:53.342Z",
+      "updatedAt": "2026-09-03T06:57:53.342Z",
+      "id": "NkyALweYfss"
     },
     {
       "equipment": "Scanner",
@@ -6382,9 +6389,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "AEVF6-eH_1I"
+      "createdAt": "2026-09-03T06:57:53.342Z",
+      "updatedAt": "2026-09-03T06:57:53.342Z",
+      "id": "VcI-kJJ2V8U"
     },
     {
       "equipment": "Laptop",
@@ -6413,9 +6420,9 @@
       "surveyStatus": "Upgrade",
       "upgradeEquipments": "Need to upgrade 4GB Ram DDR4",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "T3Ip3FnZKZI"
+      "createdAt": "2026-09-03T06:57:53.342Z",
+      "updatedAt": "2026-09-03T06:57:53.342Z",
+      "id": "cJpM4b1GL2Q"
     },
     {
       "equipment": "Monitor",
@@ -6444,9 +6451,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "upXA8J-1WaQ"
+      "createdAt": "2026-09-03T06:57:53.342Z",
+      "updatedAt": "2026-09-03T06:57:53.342Z",
+      "id": "lEvpnK0Li44"
     },
     {
       "equipment": "Printer",
@@ -6475,9 +6482,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "4Y2HC0629o0"
+      "createdAt": "2026-09-03T06:57:53.342Z",
+      "updatedAt": "2026-09-03T06:57:53.342Z",
+      "id": "6LMm3VVixYI"
     },
     {
       "equipment": "Photocopier",
@@ -6506,9 +6513,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "ZI3n4vc-sQw"
+      "createdAt": "2026-09-03T06:57:53.342Z",
+      "updatedAt": "2026-09-03T06:57:53.342Z",
+      "id": "TDKSWBbx9hw"
     },
     {
       "equipment": "Laptop",
@@ -6537,9 +6544,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "BtbAyM9TuOQ"
+      "createdAt": "2026-09-03T06:57:53.342Z",
+      "updatedAt": "2026-09-03T06:57:53.342Z",
+      "id": "WxXzg4i3U-k"
     },
     {
       "equipment": "UPS",
@@ -6568,9 +6575,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "lBKZJBMLotg"
+      "createdAt": "2026-09-03T06:57:53.342Z",
+      "updatedAt": "2026-09-03T06:57:53.342Z",
+      "id": "6zK3GPX9y1A"
     },
     {
       "equipment": "UPS",
@@ -6599,9 +6606,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "7EH4Ncc29iw"
+      "createdAt": "2026-09-03T06:57:53.342Z",
+      "updatedAt": "2026-09-03T06:57:53.342Z",
+      "id": "LBFKLDv-3wM"
     },
     {
       "equipment": "Keyboard & Mouse",
@@ -6630,9 +6637,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "6uiU22PDG4w"
+      "createdAt": "2026-09-03T06:57:53.342Z",
+      "updatedAt": "2026-09-03T06:57:53.342Z",
+      "id": "8KbEQdd4il4"
     },
     {
       "equipment": "Monitor",
@@ -6661,9 +6668,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "Ivqh4i1ZsnM"
+      "createdAt": "2026-09-03T06:57:53.342Z",
+      "updatedAt": "2026-09-03T06:57:53.342Z",
+      "id": "O0APr0SgO2s"
     },
     {
       "equipment": "Laptop",
@@ -6692,9 +6699,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "4Rt6Nh5msJM"
+      "createdAt": "2026-09-03T06:57:53.342Z",
+      "updatedAt": "2026-09-03T06:57:53.342Z",
+      "id": "SJ-z3bImcpo"
     },
     {
       "equipment": "Laptop",
@@ -6723,9 +6730,9 @@
       "surveyStatus": "Upgrade",
       "upgradeEquipments": "Need to upgrade 4GB  2133 mhz",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "8kqgnkbZdxc"
+      "createdAt": "2026-09-03T06:57:53.342Z",
+      "updatedAt": "2026-09-03T06:57:53.342Z",
+      "id": "GdNbaTqc5rI"
     },
     {
       "equipment": "Laptop",
@@ -6754,9 +6761,9 @@
       "surveyStatus": "OK",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "sWr6NQsveXY"
+      "createdAt": "2026-09-03T06:57:53.342Z",
+      "updatedAt": "2026-09-03T06:57:53.342Z",
+      "id": "5gQ7LlJxleo"
     },
     {
       "equipment": "Laptop",
@@ -6785,9 +6792,9 @@
       "surveyStatus": "OK",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "ir9Gl2_4EFg"
+      "createdAt": "2026-09-03T06:57:53.342Z",
+      "updatedAt": "2026-09-03T06:57:53.342Z",
+      "id": "ZWlLqTcHTNI"
     },
     {
       "equipment": "Monitor",
@@ -6816,9 +6823,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "PFEjjvV8xnM"
+      "createdAt": "2026-09-03T06:57:53.342Z",
+      "updatedAt": "2026-09-03T06:57:53.342Z",
+      "id": "agTCJMhUoGY"
     },
     {
       "equipment": "Laptop",
@@ -6847,9 +6854,9 @@
       "surveyStatus": "Ok",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "PwVO8dUWkbA"
+      "createdAt": "2026-09-03T06:57:53.342Z",
+      "updatedAt": "2026-09-03T06:57:53.342Z",
+      "id": "9bxl8I1Myus"
     },
     {
       "equipment": "Laptop",
@@ -6878,9 +6885,9 @@
       "surveyStatus": "Upgrade",
       "upgradeEquipments": "Need to upgrade 4GB  2133 mhz",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "1i5YlI8sl3Q"
+      "createdAt": "2026-09-03T06:57:53.342Z",
+      "updatedAt": "2026-09-03T06:57:53.342Z",
+      "id": "V9MGIVeKZFY"
     },
     {
       "equipment": "Laptop",
@@ -6909,9 +6916,9 @@
       "surveyStatus": "OK",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "nMYL2ssQPdU"
+      "createdAt": "2026-09-03T06:57:53.342Z",
+      "updatedAt": "2026-09-03T06:57:53.342Z",
+      "id": "mcqQPiAvHgs"
     },
     {
       "equipment": "Laptop",
@@ -6940,9 +6947,9 @@
       "surveyStatus": "Upgrade",
       "upgradeEquipments": "Need to upgrade 4GB  2133 mhz",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "U-4Dc6iUWFQ"
+      "createdAt": "2026-09-03T06:57:53.342Z",
+      "updatedAt": "2026-09-03T06:57:53.342Z",
+      "id": "Hqg-2cbfzIc"
     },
     {
       "equipment": "Laptop",
@@ -6971,9 +6978,9 @@
       "surveyStatus": "OK",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "YReA9lir7QU"
+      "createdAt": "2026-09-03T06:57:53.342Z",
+      "updatedAt": "2026-09-03T06:57:53.342Z",
+      "id": "kT_JMxSer4U"
     },
     {
       "equipment": "Monitor",
@@ -7002,9 +7009,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "u__V2S08DVE"
+      "createdAt": "2026-09-03T06:57:53.342Z",
+      "updatedAt": "2026-09-03T06:57:53.342Z",
+      "id": "Ho5_hgk0MvY"
     },
     {
       "equipment": "CPU",
@@ -7033,9 +7040,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "jNnvUXgZ_dQ"
+      "createdAt": "2026-09-03T06:57:53.342Z",
+      "updatedAt": "2026-09-03T06:57:53.342Z",
+      "id": "pXGYYSMEZAk"
     },
     {
       "equipment": "Monitor",
@@ -7064,9 +7071,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "4FqmgZGGD1M"
+      "createdAt": "2026-09-03T06:57:53.342Z",
+      "updatedAt": "2026-09-03T06:57:53.342Z",
+      "id": "nlX0buw7Wq8"
     },
     {
       "equipment": "UPS",
@@ -7095,9 +7102,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "AyVOpWWBQkU"
+      "createdAt": "2026-09-03T06:57:53.342Z",
+      "updatedAt": "2026-09-03T06:57:53.342Z",
+      "id": "KXb-mMK-vd8"
     },
     {
       "equipment": "Scanner",
@@ -7126,9 +7133,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "UAiK6knjP7o"
+      "createdAt": "2026-09-03T06:57:53.342Z",
+      "updatedAt": "2026-09-03T06:57:53.342Z",
+      "id": "Yk-nvCDYZ3s"
     },
     {
       "equipment": "Router",
@@ -7157,9 +7164,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "ZEh4Zw3Lzpw"
+      "createdAt": "2026-09-03T06:57:53.342Z",
+      "updatedAt": "2026-09-03T06:57:53.342Z",
+      "id": "xN7vtLks2Ck"
     },
     {
       "equipment": "Switch",
@@ -7188,9 +7195,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "3d768N6BPFs"
+      "createdAt": "2026-09-03T06:57:53.342Z",
+      "updatedAt": "2026-09-03T06:57:53.342Z",
+      "id": "zmyOR7Hijfw"
     },
     {
       "equipment": "UPS",
@@ -7219,9 +7226,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "m0sjGkODvVU"
+      "createdAt": "2026-09-03T06:57:53.342Z",
+      "updatedAt": "2026-09-03T06:57:53.342Z",
+      "id": "k6OXFzFywAw"
     },
     {
       "equipment": "Network Rack",
@@ -7250,9 +7257,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "vLCuz5tcPB0"
+      "createdAt": "2026-09-03T06:57:53.342Z",
+      "updatedAt": "2026-09-03T06:57:53.342Z",
+      "id": "o46ZSNkKYUw"
     },
     {
       "equipment": "Network Rack",
@@ -7281,9 +7288,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "CuZkGmFD0LY"
+      "createdAt": "2026-09-03T06:57:53.342Z",
+      "updatedAt": "2026-09-03T06:57:53.342Z",
+      "id": "ZL3M4jpbrqA"
     },
     {
       "equipment": "Switch",
@@ -7312,9 +7319,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "kSHtAbJfd-4"
+      "createdAt": "2026-09-03T06:57:53.342Z",
+      "updatedAt": "2026-09-03T06:57:53.342Z",
+      "id": "C4rYDljaVQ4"
     },
     {
       "equipment": "UPS",
@@ -7343,9 +7350,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "GlTpAMI7i_c"
+      "createdAt": "2026-09-03T06:57:53.342Z",
+      "updatedAt": "2026-09-03T06:57:53.342Z",
+      "id": "AvzcOwZqsnY"
     },
     {
       "equipment": "Printer",
@@ -7374,9 +7381,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "PfMxAUbD40g"
+      "createdAt": "2026-09-03T06:57:53.342Z",
+      "updatedAt": "2026-09-03T06:57:53.342Z",
+      "id": "RCFOsEMz9nQ"
     },
     {
       "equipment": "Router",
@@ -7405,9 +7412,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "-R5UFp9YQ10"
+      "createdAt": "2026-09-03T06:57:53.342Z",
+      "updatedAt": "2026-09-03T06:57:53.342Z",
+      "id": "tHxQgYbBHd0"
     },
     {
       "equipment": "TV",
@@ -7436,9 +7443,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "qsZQMXFj0Uc"
+      "createdAt": "2026-09-03T06:57:53.342Z",
+      "updatedAt": "2026-09-03T06:57:53.342Z",
+      "id": "OOq-iafcEXU"
     },
     {
       "equipment": "Webcam",
@@ -7467,9 +7474,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "Nx6Lkmx08LE"
+      "createdAt": "2026-09-03T06:57:53.342Z",
+      "updatedAt": "2026-09-03T06:57:53.342Z",
+      "id": "unQPsdgbPnw"
     },
     {
       "equipment": "Router",
@@ -7498,9 +7505,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "ebnpZTs5fzY"
+      "createdAt": "2026-09-03T06:57:53.342Z",
+      "updatedAt": "2026-09-03T06:57:53.342Z",
+      "id": "YnK2Od-EzpE"
     },
     {
       "equipment": "Monitor",
@@ -7529,9 +7536,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "ExXZL7hWHVA"
+      "createdAt": "2026-09-03T06:57:53.342Z",
+      "updatedAt": "2026-09-03T06:57:53.342Z",
+      "id": "1O3tbsDLabs"
     },
     {
       "equipment": "Wireless Keyboard",
@@ -7560,9 +7567,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "D5NrgQs5HZo"
+      "createdAt": "2026-09-03T06:57:53.342Z",
+      "updatedAt": "2026-09-03T06:57:53.342Z",
+      "id": "g4sRWiQuEPc"
     },
     {
       "equipment": "Wireless Mouse",
@@ -7591,9 +7598,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "tO9KWg2li-g"
+      "createdAt": "2026-09-03T06:57:53.342Z",
+      "updatedAt": "2026-09-03T06:57:53.342Z",
+      "id": "0Sok34Ju5CM"
     },
     {
       "equipment": "Speaker",
@@ -7622,9 +7629,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "WvIXPEijmuI"
+      "createdAt": "2026-09-03T06:57:53.342Z",
+      "updatedAt": "2026-09-03T06:57:53.342Z",
+      "id": "HuTnKeiKk24"
     },
     {
       "equipment": "HDMI Cable",
@@ -7653,9 +7660,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "I7SjNRZOVhs"
+      "createdAt": "2026-09-03T06:57:53.342Z",
+      "updatedAt": "2026-09-03T06:57:53.342Z",
+      "id": "Lsd5Sw22HSM"
     },
     {
       "equipment": "HDMI Cable",
@@ -7684,9 +7691,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "dPOUDceN_vw"
+      "createdAt": "2026-09-03T06:57:53.342Z",
+      "updatedAt": "2026-09-03T06:57:53.342Z",
+      "id": "zxD9W-hHXTc"
     },
     {
       "equipment": "Monitor",
@@ -7715,9 +7722,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "tTPQ-pSNtCw"
+      "createdAt": "2026-09-03T06:57:53.342Z",
+      "updatedAt": "2026-09-03T06:57:53.342Z",
+      "id": "7sXPCPFDX7o"
     },
     {
       "equipment": "Microphone",
@@ -7746,9 +7753,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "dohTRUiOhzk"
+      "createdAt": "2026-09-03T06:57:53.342Z",
+      "updatedAt": "2026-09-03T06:57:53.342Z",
+      "id": "MyKvUGUVtiU"
     },
     {
       "equipment": "Wireless Keyboard",
@@ -7777,9 +7784,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "s2QhTDH3118"
+      "createdAt": "2026-09-03T06:57:53.342Z",
+      "updatedAt": "2026-09-03T06:57:53.342Z",
+      "id": "5uM4ncwxOmQ"
     },
     {
       "equipment": "Wireless Mouse",
@@ -7808,9 +7815,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "Zdhs0rfgvfU"
+      "createdAt": "2026-09-03T06:57:53.342Z",
+      "updatedAt": "2026-09-03T06:57:53.342Z",
+      "id": "LAnJAhUuAdQ"
     },
     {
       "equipment": "UPS",
@@ -7839,9 +7846,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "RbAf_8Awv6o"
+      "createdAt": "2026-09-03T06:57:53.342Z",
+      "updatedAt": "2026-09-03T06:57:53.342Z",
+      "id": "BixfAfDdaXY"
     },
     {
       "equipment": "Type-C Stick",
@@ -7870,9 +7877,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "1Pt-EOvQTAw"
+      "createdAt": "2026-09-03T06:57:53.342Z",
+      "updatedAt": "2026-09-03T06:57:53.342Z",
+      "id": "LVUMQ1bXGng"
     },
     {
       "equipment": "Access Control",
@@ -7901,9 +7908,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.011Z",
-      "updatedAt": "2026-09-02T10:25:12.011Z",
-      "id": "4oRTVsw2z9w"
+      "createdAt": "2026-09-03T06:57:53.342Z",
+      "updatedAt": "2026-09-03T06:57:53.342Z",
+      "id": "tte5My2CcZg"
     },
     {
       "equipment": "CCTV Camera",
@@ -7932,9 +7939,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.012Z",
-      "updatedAt": "2026-09-02T10:25:12.012Z",
-      "id": "8s06gqMzVZI"
+      "createdAt": "2026-09-03T06:57:53.343Z",
+      "updatedAt": "2026-09-03T06:57:53.343Z",
+      "id": "dk1pRD4_VOc"
     },
     {
       "equipment": "CCTV Camera",
@@ -7950,7 +7957,7 @@
       "floor": "Ground Floor",
       "room": "",
       "status": "Active",
-      "employeeId": "342",
+      "employeeId": "",
       "receivedDate": "",
       "oldUsers": [],
       "purchaseDate": "2020-03-08T18:00:00.000Z",
@@ -7963,9 +7970,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.012Z",
-      "updatedAt": "2026-09-02T11:10:10.092Z",
-      "id": "V0ug4xATzi4"
+      "createdAt": "2026-09-03T06:57:53.343Z",
+      "updatedAt": "2026-09-03T06:57:53.343Z",
+      "id": "1BUBbgjbq8I"
     },
     {
       "equipment": "CCTV Camera",
@@ -7994,9 +8001,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.012Z",
-      "updatedAt": "2026-09-02T10:25:12.012Z",
-      "id": "Yl3F_CjSGA4"
+      "createdAt": "2026-09-03T06:57:53.343Z",
+      "updatedAt": "2026-09-03T06:57:53.343Z",
+      "id": "DyNmbJ6EY84"
     },
     {
       "equipment": "CCTV Camera",
@@ -8025,9 +8032,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.012Z",
-      "updatedAt": "2026-09-02T10:25:12.012Z",
-      "id": "ZmWeWh-9nvk"
+      "createdAt": "2026-09-03T06:57:53.343Z",
+      "updatedAt": "2026-09-03T06:57:53.343Z",
+      "id": "-EJA0U-VsNI"
     },
     {
       "equipment": "CCTV Camera",
@@ -8056,9 +8063,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.012Z",
-      "updatedAt": "2026-09-02T10:25:12.012Z",
-      "id": "oqLPWVOOn_4"
+      "createdAt": "2026-09-03T06:57:53.343Z",
+      "updatedAt": "2026-09-03T06:57:53.343Z",
+      "id": "q_NUxn637Kg"
     },
     {
       "equipment": "CCTV Camera",
@@ -8087,9 +8094,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.012Z",
-      "updatedAt": "2026-09-02T10:25:12.012Z",
-      "id": "pomgdzb5isA"
+      "createdAt": "2026-09-03T06:57:53.343Z",
+      "updatedAt": "2026-09-03T06:57:53.343Z",
+      "id": "kQqRCO0bOxg"
     },
     {
       "equipment": "CCTV Camera",
@@ -8118,9 +8125,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.012Z",
-      "updatedAt": "2026-09-02T10:25:12.012Z",
-      "id": "Bern57x4Qs8"
+      "createdAt": "2026-09-03T06:57:53.343Z",
+      "updatedAt": "2026-09-03T06:57:53.343Z",
+      "id": "b00H-laRsCI"
     },
     {
       "equipment": "CCTV Camera",
@@ -8149,9 +8156,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.012Z",
-      "updatedAt": "2026-09-02T10:25:12.012Z",
-      "id": "4HGGZA2IL0Y"
+      "createdAt": "2026-09-03T06:57:53.343Z",
+      "updatedAt": "2026-09-03T06:57:53.343Z",
+      "id": "Pk8aTYlMqlc"
     },
     {
       "equipment": "CCTV Camera",
@@ -8180,9 +8187,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.012Z",
-      "updatedAt": "2026-09-02T10:25:12.012Z",
-      "id": "4tqUA03VTqA"
+      "createdAt": "2026-09-03T06:57:53.343Z",
+      "updatedAt": "2026-09-03T06:57:53.343Z",
+      "id": "_bTaVIdy9-A"
     },
     {
       "equipment": "CCTV Camera",
@@ -8211,9 +8218,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.012Z",
-      "updatedAt": "2026-09-02T10:25:12.012Z",
-      "id": "f-zKqu-O0eQ"
+      "createdAt": "2026-09-03T06:57:53.343Z",
+      "updatedAt": "2026-09-03T06:57:53.343Z",
+      "id": "LLlW2y1ZrKw"
     },
     {
       "equipment": "CCTV Camera",
@@ -8242,9 +8249,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.012Z",
-      "updatedAt": "2026-09-02T10:25:12.012Z",
-      "id": "_F4w12fvWaw"
+      "createdAt": "2026-09-03T06:57:53.343Z",
+      "updatedAt": "2026-09-03T06:57:53.343Z",
+      "id": "Cupru5BlU9U"
     },
     {
       "equipment": "CCTV Camera",
@@ -8273,9 +8280,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.012Z",
-      "updatedAt": "2026-09-02T10:25:12.012Z",
-      "id": "uex1HVtTaXA"
+      "createdAt": "2026-09-03T06:57:53.343Z",
+      "updatedAt": "2026-09-03T06:57:53.343Z",
+      "id": "Mx2e7BChnIo"
     },
     {
       "equipment": "CCTV Camera",
@@ -8304,9 +8311,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.012Z",
-      "updatedAt": "2026-09-02T10:25:12.012Z",
-      "id": "SCfiZBQ6mis"
+      "createdAt": "2026-09-03T06:57:53.343Z",
+      "updatedAt": "2026-09-03T06:57:53.343Z",
+      "id": "EKiUnlP8pLE"
     },
     {
       "equipment": "CCTV Camera",
@@ -8335,9 +8342,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.012Z",
-      "updatedAt": "2026-09-02T10:25:12.012Z",
-      "id": "5x6o6Li3WV8"
+      "createdAt": "2026-09-03T06:57:53.343Z",
+      "updatedAt": "2026-09-03T06:57:53.343Z",
+      "id": "TTAXTLrLHYM"
     },
     {
       "equipment": "CCTV Camera",
@@ -8366,9 +8373,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.012Z",
-      "updatedAt": "2026-09-02T10:25:12.012Z",
-      "id": "iMnRBCxqPQ8"
+      "createdAt": "2026-09-03T06:57:53.343Z",
+      "updatedAt": "2026-09-03T06:57:53.343Z",
+      "id": "Bpj3beV_z0c"
     },
     {
       "equipment": "CCTV Camera",
@@ -8397,9 +8404,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.012Z",
-      "updatedAt": "2026-09-02T10:25:12.012Z",
-      "id": "_SJxmdOtKAc"
+      "createdAt": "2026-09-03T06:57:53.343Z",
+      "updatedAt": "2026-09-03T06:57:53.343Z",
+      "id": "WvlQWpBBqeg"
     },
     {
       "equipment": "CCTV Camera",
@@ -8428,9 +8435,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.012Z",
-      "updatedAt": "2026-09-02T10:25:12.012Z",
-      "id": "pmK3hNl36F8"
+      "createdAt": "2026-09-03T06:57:53.343Z",
+      "updatedAt": "2026-09-03T06:57:53.343Z",
+      "id": "SnPnUYWMZTM"
     },
     {
       "equipment": "CCTV Camera",
@@ -8459,9 +8466,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.012Z",
-      "updatedAt": "2026-09-02T10:25:12.012Z",
-      "id": "c1lbdAWO2zw"
+      "createdAt": "2026-09-03T06:57:53.343Z",
+      "updatedAt": "2026-09-03T06:57:53.343Z",
+      "id": "_Yc-fukcXzY"
     },
     {
       "equipment": "CCTV Camera",
@@ -8490,9 +8497,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.012Z",
-      "updatedAt": "2026-09-02T10:25:12.012Z",
-      "id": "6VVlqzuKmfQ"
+      "createdAt": "2026-09-03T06:57:53.343Z",
+      "updatedAt": "2026-09-03T06:57:53.343Z",
+      "id": "9i9Xgi0V-ao"
     },
     {
       "equipment": "Photocopier",
@@ -8521,9 +8528,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.012Z",
-      "updatedAt": "2026-09-02T10:25:12.012Z",
-      "id": "lu9-K3143hw"
+      "createdAt": "2026-09-03T06:57:53.343Z",
+      "updatedAt": "2026-09-03T06:57:53.343Z",
+      "id": "K-AyD6TyQ9c"
     },
     {
       "equipment": "Smoke Detector",
@@ -8552,9 +8559,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.012Z",
-      "updatedAt": "2026-09-02T10:25:12.012Z",
-      "id": "uRiUhvVDD10"
+      "createdAt": "2026-09-03T06:57:53.343Z",
+      "updatedAt": "2026-09-03T06:57:53.343Z",
+      "id": "z4lWXnkDhs4"
     },
     {
       "equipment": "Smoke Detector",
@@ -8583,9 +8590,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.012Z",
-      "updatedAt": "2026-09-02T10:25:12.012Z",
-      "id": "viqrEyUE96M"
+      "createdAt": "2026-09-03T06:57:53.343Z",
+      "updatedAt": "2026-09-03T06:57:53.343Z",
+      "id": "hMu-hRMJZf0"
     },
     {
       "equipment": "Smoke Detector",
@@ -8614,9 +8621,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.012Z",
-      "updatedAt": "2026-09-02T10:25:12.012Z",
-      "id": "6HA7mpklPuQ"
+      "createdAt": "2026-09-03T06:57:53.343Z",
+      "updatedAt": "2026-09-03T06:57:53.343Z",
+      "id": "E8EYHs5mAuc"
     },
     {
       "equipment": "Smoke Detector",
@@ -8645,9 +8652,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.012Z",
-      "updatedAt": "2026-09-02T10:25:12.012Z",
-      "id": "HkDIPhEjd-o"
+      "createdAt": "2026-09-03T06:57:53.343Z",
+      "updatedAt": "2026-09-03T06:57:53.343Z",
+      "id": "eR1VIxhh2zc"
     },
     {
       "equipment": "Call Point",
@@ -8676,9 +8683,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.012Z",
-      "updatedAt": "2026-09-02T10:25:12.012Z",
-      "id": "hbXtCmOrXrs"
+      "createdAt": "2026-09-03T06:57:53.343Z",
+      "updatedAt": "2026-09-03T06:57:53.343Z",
+      "id": "OF0rypcSE2Y"
     },
     {
       "equipment": "Smoke Detector",
@@ -8707,9 +8714,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.012Z",
-      "updatedAt": "2026-09-02T10:25:12.012Z",
-      "id": "3U_zM2f_MOM"
+      "createdAt": "2026-09-03T06:57:53.343Z",
+      "updatedAt": "2026-09-03T06:57:53.343Z",
+      "id": "xdppgw-VtZU"
     },
     {
       "equipment": "Smoke Detector",
@@ -8738,9 +8745,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.012Z",
-      "updatedAt": "2026-09-02T10:25:12.012Z",
-      "id": "5KBSzhilza8"
+      "createdAt": "2026-09-03T06:57:53.343Z",
+      "updatedAt": "2026-09-03T06:57:53.343Z",
+      "id": "LyZ89vPULTE"
     },
     {
       "equipment": "Smoke Detector",
@@ -8769,9 +8776,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.012Z",
-      "updatedAt": "2026-09-02T10:25:12.012Z",
-      "id": "0JaM5b6N6no"
+      "createdAt": "2026-09-03T06:57:53.343Z",
+      "updatedAt": "2026-09-03T06:57:53.343Z",
+      "id": "XYIUAEHDfpw"
     },
     {
       "equipment": "Smoke Detector",
@@ -8800,9 +8807,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.012Z",
-      "updatedAt": "2026-09-02T10:25:12.012Z",
-      "id": "-yBiM7wn5t8"
+      "createdAt": "2026-09-03T06:57:53.343Z",
+      "updatedAt": "2026-09-03T06:57:53.343Z",
+      "id": "tO_fwNcC5HY"
     },
     {
       "equipment": "Smoke Detector",
@@ -8831,9 +8838,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.012Z",
-      "updatedAt": "2026-09-02T10:25:12.012Z",
-      "id": "WA3-V6Qtuxs"
+      "createdAt": "2026-09-03T06:57:53.343Z",
+      "updatedAt": "2026-09-03T06:57:53.343Z",
+      "id": "37SR2QiEz1Y"
     },
     {
       "equipment": "CCTV Camera",
@@ -8862,9 +8869,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.012Z",
-      "updatedAt": "2026-09-02T10:25:12.012Z",
-      "id": "Sfjon777oNI"
+      "createdAt": "2026-09-03T06:57:53.343Z",
+      "updatedAt": "2026-09-03T06:57:53.343Z",
+      "id": "QDi9H2nlCgk"
     },
     {
       "equipment": "CCTV Camera",
@@ -8893,9 +8900,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.012Z",
-      "updatedAt": "2026-09-02T10:25:12.012Z",
-      "id": "e7VAt-aCXFg"
+      "createdAt": "2026-09-03T06:57:53.343Z",
+      "updatedAt": "2026-09-03T06:57:53.343Z",
+      "id": "i--KWTtWknI"
     },
     {
       "equipment": "CCTV Camera",
@@ -8924,9 +8931,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.012Z",
-      "updatedAt": "2026-09-02T10:25:12.012Z",
-      "id": "H1s-AwSSaKE"
+      "createdAt": "2026-09-03T06:57:53.343Z",
+      "updatedAt": "2026-09-03T06:57:53.343Z",
+      "id": "mnY0AUgfr-M"
     },
     {
       "equipment": "Call Point",
@@ -8955,9 +8962,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.012Z",
-      "updatedAt": "2026-09-02T10:25:12.012Z",
-      "id": "6LwUadtPE1k"
+      "createdAt": "2026-09-03T06:57:53.343Z",
+      "updatedAt": "2026-09-03T06:57:53.343Z",
+      "id": "mfttlURUoIE"
     },
     {
       "equipment": "Fire Bell",
@@ -8986,9 +8993,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.012Z",
-      "updatedAt": "2026-09-02T10:25:12.012Z",
-      "id": "XDoGyrx8ZcA"
+      "createdAt": "2026-09-03T06:57:53.343Z",
+      "updatedAt": "2026-09-03T06:57:53.343Z",
+      "id": "T6Fs6_fkgiw"
     },
     {
       "equipment": "Smoke Detector",
@@ -9017,9 +9024,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.012Z",
-      "updatedAt": "2026-09-02T10:25:12.012Z",
-      "id": "gIl9dYhYQ9k"
+      "createdAt": "2026-09-03T06:57:53.343Z",
+      "updatedAt": "2026-09-03T06:57:53.343Z",
+      "id": "-VQOS5ltRC4"
     },
     {
       "equipment": "Smoke Detector",
@@ -9048,9 +9055,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.012Z",
-      "updatedAt": "2026-09-02T10:25:12.012Z",
-      "id": "-5G6FWwxRiU"
+      "createdAt": "2026-09-03T06:57:53.343Z",
+      "updatedAt": "2026-09-03T06:57:53.343Z",
+      "id": "mf0-magKLA4"
     },
     {
       "equipment": "CCTV Camera",
@@ -9079,9 +9086,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.012Z",
-      "updatedAt": "2026-09-02T10:25:12.012Z",
-      "id": "eEBglcGP0Pw"
+      "createdAt": "2026-09-03T06:57:53.343Z",
+      "updatedAt": "2026-09-03T06:57:53.343Z",
+      "id": "T0ePPha1_3w"
     },
     {
       "equipment": "CCTV Camera",
@@ -9110,9 +9117,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.012Z",
-      "updatedAt": "2026-09-02T10:25:12.012Z",
-      "id": "02vKQbbFkA8"
+      "createdAt": "2026-09-03T06:57:53.343Z",
+      "updatedAt": "2026-09-03T06:57:53.343Z",
+      "id": "XTPbdzg3lww"
     },
     {
       "equipment": "Fire Bell",
@@ -9141,9 +9148,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.012Z",
-      "updatedAt": "2026-09-02T10:25:12.012Z",
-      "id": "XAV2nbxzmXI"
+      "createdAt": "2026-09-03T06:57:53.343Z",
+      "updatedAt": "2026-09-03T06:57:53.343Z",
+      "id": "71ekvU5g8LY"
     },
     {
       "equipment": "Call Point",
@@ -9172,9 +9179,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.012Z",
-      "updatedAt": "2026-09-02T10:25:12.012Z",
-      "id": "ay0nRRBxb1M"
+      "createdAt": "2026-09-03T06:57:53.343Z",
+      "updatedAt": "2026-09-03T06:57:53.343Z",
+      "id": "ryH67fGMlqY"
     },
     {
       "equipment": "Smoke Detector",
@@ -9203,9 +9210,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.012Z",
-      "updatedAt": "2026-09-02T10:25:12.012Z",
-      "id": "Wt0HLsYM0bM"
+      "createdAt": "2026-09-03T06:57:53.343Z",
+      "updatedAt": "2026-09-03T06:57:53.343Z",
+      "id": "jQqADLwayT8"
     },
     {
       "equipment": "Smoke Detector",
@@ -9234,9 +9241,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.012Z",
-      "updatedAt": "2026-09-02T10:25:12.012Z",
-      "id": "L1EeukEZ4Ok"
+      "createdAt": "2026-09-03T06:57:53.343Z",
+      "updatedAt": "2026-09-03T06:57:53.343Z",
+      "id": "0LjMR7EUqyI"
     },
     {
       "equipment": "Smoke Detector",
@@ -9265,9 +9272,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.012Z",
-      "updatedAt": "2026-09-02T10:25:12.012Z",
-      "id": "CGua62hPcwI"
+      "createdAt": "2026-09-03T06:57:53.343Z",
+      "updatedAt": "2026-09-03T06:57:53.343Z",
+      "id": "jJ33ierNp00"
     },
     {
       "equipment": "Smoke Detector",
@@ -9296,9 +9303,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.012Z",
-      "updatedAt": "2026-09-02T10:25:12.012Z",
-      "id": "R-4HwQOPRG0"
+      "createdAt": "2026-09-03T06:57:53.343Z",
+      "updatedAt": "2026-09-03T06:57:53.343Z",
+      "id": "ld5pH61hVQ8"
     },
     {
       "equipment": "Smoke Detector",
@@ -9327,9 +9334,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.012Z",
-      "updatedAt": "2026-09-02T10:25:12.012Z",
-      "id": "9mvO6TTywqg"
+      "createdAt": "2026-09-03T06:57:53.343Z",
+      "updatedAt": "2026-09-03T06:57:53.343Z",
+      "id": "X2okP43rWCw"
     },
     {
       "equipment": "Fire Bell",
@@ -9358,9 +9365,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.012Z",
-      "updatedAt": "2026-09-02T10:25:12.012Z",
-      "id": "EpwFTJQxDIw"
+      "createdAt": "2026-09-03T06:57:53.343Z",
+      "updatedAt": "2026-09-03T06:57:53.343Z",
+      "id": "6IbsOH8-p3w"
     },
     {
       "equipment": "CCTV Camera",
@@ -9389,9 +9396,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.012Z",
-      "updatedAt": "2026-09-02T10:25:12.012Z",
-      "id": "LhZqGR1I480"
+      "createdAt": "2026-09-03T06:57:53.343Z",
+      "updatedAt": "2026-09-03T06:57:53.343Z",
+      "id": "2-nAPWvvpmQ"
     },
     {
       "equipment": "CCTV Camera",
@@ -9420,9 +9427,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.012Z",
-      "updatedAt": "2026-09-02T10:25:12.012Z",
-      "id": "tTwKG5HAdHg"
+      "createdAt": "2026-09-03T06:57:53.343Z",
+      "updatedAt": "2026-09-03T06:57:53.343Z",
+      "id": "JOUjuOKC9gA"
     },
     {
       "equipment": "Call Point",
@@ -9451,9 +9458,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.012Z",
-      "updatedAt": "2026-09-02T10:25:12.012Z",
-      "id": "v2-xsv2FEu4"
+      "createdAt": "2026-09-03T06:57:53.343Z",
+      "updatedAt": "2026-09-03T06:57:53.343Z",
+      "id": "KHX_rvfLaps"
     },
     {
       "equipment": "Smoke Detector",
@@ -9482,9 +9489,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.012Z",
-      "updatedAt": "2026-09-02T10:25:12.012Z",
-      "id": "TnXyoeiblUI"
+      "createdAt": "2026-09-03T06:57:53.343Z",
+      "updatedAt": "2026-09-03T06:57:53.343Z",
+      "id": "1Sotfj9t1Mo"
     },
     {
       "equipment": "Smoke Detector",
@@ -9513,9 +9520,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.012Z",
-      "updatedAt": "2026-09-02T10:25:12.012Z",
-      "id": "ovAIvDLzxp8"
+      "createdAt": "2026-09-03T06:57:53.343Z",
+      "updatedAt": "2026-09-03T06:57:53.343Z",
+      "id": "hPfVLis7z-U"
     },
     {
       "equipment": "Smoke Detector",
@@ -9544,9 +9551,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.012Z",
-      "updatedAt": "2026-09-02T10:25:12.012Z",
-      "id": "yCqfeAOV-Ko"
+      "createdAt": "2026-09-03T06:57:53.343Z",
+      "updatedAt": "2026-09-03T06:57:53.343Z",
+      "id": "jC5f2svsoSM"
     },
     {
       "equipment": "Smoke Detector",
@@ -9575,9 +9582,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.012Z",
-      "updatedAt": "2026-09-02T10:25:12.012Z",
-      "id": "M29zDoVzYFQ"
+      "createdAt": "2026-09-03T06:57:53.343Z",
+      "updatedAt": "2026-09-03T06:57:53.343Z",
+      "id": "vpnLW7vbOm0"
     },
     {
       "equipment": "CCTV Camera",
@@ -9606,9 +9613,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.012Z",
-      "updatedAt": "2026-09-02T10:25:12.012Z",
-      "id": "_H8gU7wpJNo"
+      "createdAt": "2026-09-03T06:57:53.343Z",
+      "updatedAt": "2026-09-03T06:57:53.343Z",
+      "id": "rcRXx3vSNcg"
     },
     {
       "equipment": "CCTV Camera",
@@ -9637,9 +9644,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.012Z",
-      "updatedAt": "2026-09-02T10:25:12.012Z",
-      "id": "X5EcuVlw-mU"
+      "createdAt": "2026-09-03T06:57:53.343Z",
+      "updatedAt": "2026-09-03T06:57:53.343Z",
+      "id": "8vWykHQxeJQ"
     },
     {
       "equipment": "Photocopier",
@@ -9668,9 +9675,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.012Z",
-      "updatedAt": "2026-09-02T10:25:12.012Z",
-      "id": "92t-SrMGzX0"
+      "createdAt": "2026-09-03T06:57:53.343Z",
+      "updatedAt": "2026-09-03T06:57:53.343Z",
+      "id": "8WV7kwdxj8I"
     },
     {
       "equipment": "Fire Bell",
@@ -9699,9 +9706,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.012Z",
-      "updatedAt": "2026-09-02T10:25:12.012Z",
-      "id": "paJPI33DgUU"
+      "createdAt": "2026-09-03T06:57:53.343Z",
+      "updatedAt": "2026-09-03T06:57:53.343Z",
+      "id": "uk6EG15YAEU"
     },
     {
       "equipment": "Call Point",
@@ -9730,9 +9737,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.012Z",
-      "updatedAt": "2026-09-02T10:25:12.012Z",
-      "id": "07kbYXPzJF8"
+      "createdAt": "2026-09-03T06:57:53.343Z",
+      "updatedAt": "2026-09-03T06:57:53.343Z",
+      "id": "uz16QjGpiOo"
     },
     {
       "equipment": "Smoke Detector",
@@ -9761,9 +9768,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.012Z",
-      "updatedAt": "2026-09-02T10:25:12.012Z",
-      "id": "co17xmrp5KM"
+      "createdAt": "2026-09-03T06:57:53.343Z",
+      "updatedAt": "2026-09-03T06:57:53.343Z",
+      "id": "-bIJoFFmg9s"
     },
     {
       "equipment": "Smoke Detector",
@@ -9792,9 +9799,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.012Z",
-      "updatedAt": "2026-09-02T10:25:12.012Z",
-      "id": "zjZCO34o-eA"
+      "createdAt": "2026-09-03T06:57:53.343Z",
+      "updatedAt": "2026-09-03T06:57:53.343Z",
+      "id": "LeRKYNECo0Y"
     },
     {
       "equipment": "Smoke Detector",
@@ -9823,9 +9830,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.012Z",
-      "updatedAt": "2026-09-02T10:25:12.012Z",
-      "id": "RnYGBixUkb8"
+      "createdAt": "2026-09-03T06:57:53.343Z",
+      "updatedAt": "2026-09-03T06:57:53.343Z",
+      "id": "IkczoQPebmA"
     },
     {
       "equipment": "Smoke Detector",
@@ -9854,9 +9861,9 @@
       "surveyStatus": "",
       "upgradeEquipments": "",
       "surveyTakenBy": "",
-      "createdAt": "2026-09-02T10:25:12.012Z",
-      "updatedAt": "2026-09-02T10:25:12.012Z",
-      "id": "ZhAdUNEsHuk"
+      "createdAt": "2026-09-03T06:57:53.343Z",
+      "updatedAt": "2026-09-03T06:57:53.343Z",
+      "id": "KZLu8mIMvoY"
     }
   ],
   "list": {
@@ -9967,7 +9974,8 @@
       "Type-C Stick",
       "Smoke Detector",
       "Call Point",
-      "Fire Bell"
+      "Fire Bell",
+      "Test"
     ],
     "brand": [
       "Acer",
@@ -10018,25 +10026,22 @@
       "EDIFIER",
       "D-Tech",
       "U-Green",
-      "BOYA"
+      "BOYA",
+      "Test"
     ]
   },
   "employees": [
     {
-      "id": "Ltc-dYmltvg",
-      "employeeName": "Mr.Alex",
-      "employeeId": "342",
-      "designation": "gere",
+      "id": "x4HhH5D8vk4",
+      "employeeName": "Pritom Saha",
+      "employeeId": "904740",
+      "designation": "Jr. IT Officer",
       "company": "SPL",
-      "location": "STS",
-      "department": "PCL",
-      "createdAt": "2026-09-02T09:05:32.018Z",
-      "updatedAt": "2026-09-02T11:10:10.092Z",
-      "assetlist": [
-        "U8-f5m50tKE",
-        "V0ug4xATzi4"
-      ],
-      "assethistory": []
+      "location": "CORP",
+      "department": "IT",
+      "createdAt": "2026-09-03T07:04:31.057Z",
+      "updatedAt": "2026-09-03T07:04:47.928Z",
+      "assetlist": []
     }
   ],
   "vendors": [

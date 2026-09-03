@@ -18,6 +18,7 @@ import {
   Loader2,
 } from "lucide-react";
 import { API_BASE_URL } from "../env";
+import ReleaseAsset from "../components/ReleaseAsset";
 
 const AssetDetails = () => {
   const { id } = useParams();
@@ -25,6 +26,7 @@ const AssetDetails = () => {
 
   const [asset, setAsset] = useState(null);
   const [vendorInfo, setVendorInfo] = useState(null);
+  const [employeeInfo, setEmployeeInfo] = useState(null);
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -43,7 +45,27 @@ const AssetDetails = () => {
       const assetRes = await axios.get(`${API_BASE_URL}/assets/${id}`);
       const assetData = assetRes.data;
       setAsset(assetData);
+      // Fetch employee information based on asset.employeeId
+      if (assetData?.employeeId) {
+        try {
+          const employeesRes = await axios.get(`${API_BASE_URL}/employees`);
 
+          const employees = employeesRes.data || [];
+
+          const foundEmployee = employees.find(
+            (employee) =>
+              String(employee.id || "") ===
+              String(assetData.employeeId || ""),
+          );
+
+          setEmployeeInfo(foundEmployee || null);
+        } catch (employeeErr) {
+          console.warn("Could not fetch employee details:", employeeErr);
+          setEmployeeInfo(null);
+        }
+      } else {
+        setEmployeeInfo(null);
+      }
       if (assetData?.vendorId) {
         try {
           const vendorsRes = await axios.get(`${API_BASE_URL}/vendors`);
@@ -343,20 +365,14 @@ const AssetDetails = () => {
                   </p>
                 </div>
                 <div>
-                  <p className="text-[11px] font-bold  text-slate-500">
-                    Floor 
-                  </p>
+                  <p className="text-[11px] font-bold  text-slate-500">Floor</p>
                   <p className="font-bold text-slate-900 mt-1">
                     {asset.floor || "N/A"}
-                   
                   </p>
                 </div>
                 <div>
-                  <p className="text-[11px] font-bold  text-slate-500">
-                      Room
-                  </p>
+                  <p className="text-[11px] font-bold  text-slate-500">Room</p>
                   <p className="font-bold text-slate-900 mt-1">
-                     
                     {asset.room ? ` ${asset.room}` : ""}
                   </p>
                 </div>
@@ -414,7 +430,6 @@ const AssetDetails = () => {
                       : "N/A"}
                   </p>
                 </div>
-                 
               </div>
 
               <div className="mt-4 bg-indigo-50 border border-indigo-200 rounded-lg p-3 text-sm">
@@ -434,26 +449,27 @@ const AssetDetails = () => {
                         Contact Person
                       </p>
                       <p className="font-mono font-bold text-slate-900 mt-1">
-                      {vendorInfo.contactPerson || "N/A"}
-                    </p>
+                        {vendorInfo.contactPerson || "N/A"}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-[11px] font-bold  text-slate-500">
+                        Phone / Email
+                      </p>
+                      <p className="font-mono font-bold text-slate-900 mt-1">
+                        {vendorInfo.contact || "N/A"}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-[11px] font-bold  text-slate-500">
+                        Address
+                      </p>
+                      <p className="font-mono font-bold text-slate-900 mt-1">
+                        {vendorInfo.address || "N/A"}
+                      </p>
+                    </div>
                   </div>
-                  <div>
-                    <p className="text-[11px] font-bold  text-slate-500">
-                      Phone / Email
-                    </p>
-                    <p className="font-mono font-bold text-slate-900 mt-1">
-                      {vendorInfo.contact || "N/A"}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-[11px] font-bold  text-slate-500">
-                      Address
-                    </p>
-                    <p className="font-mono font-bold text-slate-900 mt-1">
-                      {vendorInfo.address || "N/A"}
-                    </p>
-                  </div>
-                </div>)}
+                )}
               </div>
             </div>
 
@@ -503,88 +519,119 @@ const AssetDetails = () => {
             </div>
           </div>
 
-          <div className="space-y-6">
-            <div className="bg-white rounded-xl border border-indigo-500 p-5 shadow-xl">
-              <div className="flex items-center justify-between pb-3 border-b border-slate-200 mb-4">
-                <div className="flex items-center gap-2 text-slate-900">
-                  <UserCheck className="w-5 h-5 text-indigo-600" />
-                  <h2 className="font-black text-slate-900">
-                    User Information
-                  </h2>
-                </div>
+          <div className="bg-white rounded-xl border border-indigo-500 p-5 shadow-xl self-start h-fit">
+            <div className="flex items-center gap-2 text-slate-900 pb-3 border-b border-slate-200 mb-4">
+              <UserCheck className="w-5 h-5 text-indigo-600" />
+              <h2 className="font-black text-slate-900">User Information</h2>
+            </div>
 
-                <button
-                  type="button"
-                  className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-indigo-600 text-xs font-bold text-white hover:bg-indigo-900 transition"
-                >
-                  <Pencil className="w-3.5 h-3.5" />
-                  Edit
-                </button>
-              </div>
-
-              <div className="space-y-4 text-sm">
-                <div>
-                  <p className="text-[11px] font-bold text-slate-500">
-                    Employee ID
-                  </p>
-                  <p className="font-mono font-bold text-slate-900 mt-1">
-                    {asset.employeeId || "None"}
-                  </p>
-                </div>
-
-                <div>
-                  <p className="text-[11px] font-bold text-slate-500">
-                    Received Date
+            {employeeInfo ? (
+              <div className="grid grid-cols-2 gap-x-6 gap-y-4 text-sm">
+                {/* Employee Name */}
+                <div className="col-span-2">
+                  <p className="text-[10px] uppercase tracking-wider font-bold text-slate-400">
+                    Employee Name
                   </p>
                   <p className="font-bold text-slate-900 mt-1">
-                    {asset.receivedDate || "N/A"}
+                    {employeeInfo.employeeName || "N/A"}
                   </p>
                 </div>
 
+                {/* Employee ID */}
                 <div>
-                  <p className="text-[11px] font-bold text-slate-500">
-                    Previous Users
+                  <p className="text-[10px] uppercase tracking-wider font-bold text-slate-400">
+                    Employee ID
                   </p>
-
-                  {Array.isArray(asset.oldUsers) &&
-                  asset.oldUsers.length > 0 ? (
-                    <div className="flex flex-wrap gap-2 mt-2">
-                      {asset.oldUsers.map((user, index) => (
-                        <span
-                          key={`${user}-${index}`}
-                          className="text-xs bg-slate-100 border border-slate-300 rounded-md px-2 py-1 font-bold text-slate-800"
-                        >
-                          {user}
-                        </span>
-                      ))}
-                    </div>
-                  ) : (
-                    <p className="text-slate-500 mt-1">
-                      No previous user history
-                    </p>
-                  )}
+                  <p className="font-mono font-bold text-indigo-600 mt-1">
+                    {employeeInfo.employeeId || "N/A"}
+                  </p>
                 </div>
-              </div>
 
-              {/* Employee Actions */}
-              <div className="mt-6 pt-4 border-t border-slate-200 space-y-2">
-                <button
-                  type="button"
-                  className="w-full flex items-center justify-center gap-2 rounded-lg bg-indigo-500 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-indigo-700"
-                >
-                  <UserPlus className="w-4 h-4" />
-                  Add Employee
-                </button>
+                {/* Designation */}
+                <div>
+                  <p className="text-[10px] uppercase tracking-wider font-bold text-slate-400">
+                    Designation
+                  </p>
+                  <p className="font-semibold text-slate-900 mt-1 truncate">
+                    {employeeInfo.designation || "N/A"}
+                  </p>
+                </div>
 
-                <button
-                  type="button"
-                  className="w-full flex items-center justify-center gap-2 rounded-lg bg-red-500 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-red-700"
-                >
-                  <UserMinus className="w-4 h-4" />
-                  Release Employee
-                </button>
+                {/* Company */}
+                <div>
+                  <p className="text-[10px] uppercase tracking-wider font-bold text-slate-400">
+                    Company
+                  </p>
+                  <p className="font-semibold text-slate-900 mt-1">
+                    {employeeInfo.company || "N/A"}
+                  </p>
+                </div>
+
+                {/* Location */}
+                <div>
+                  <p className="text-[10px] uppercase tracking-wider font-bold text-slate-400">
+                    Location
+                  </p>
+                  <p className="font-semibold text-slate-900 mt-1">
+                    {employeeInfo.location || "N/A"}
+                  </p>
+                </div>
+
+                {/* Department */}
+                <div className="col-span-2">
+                  <p className="text-[10px] uppercase tracking-wider font-bold text-slate-400">
+                    Department
+                  </p>
+                  <p className="font-semibold text-slate-900 mt-1">
+                    {employeeInfo.department || "N/A"}
+                  </p>
+                </div>
+                <ReleaseAsset employee={employeeInfo} asset={asset} onReleased={(updatedAsset) => { console.log("Asset released:", updatedAsset); }} />
               </div>
+            ) : (
+              <div className="rounded-lg border border-dashed border-slate-300 bg-slate-50 p-5 text-center">
+                <UserCheck className="w-8 h-8 mx-auto mb-2 text-slate-400" />
+
+                <p className="font-bold text-slate-600">No Employee Assigned</p>
+
+                <p className="mt-1 text-xs text-slate-400">
+                  This asset is currently not assigned to an employee.
+                </p>
+              </div>
+            )}
+            {Array.isArray(asset?.oldUsers) && asset.oldUsers.length > 0 && (
+  <div className="mt-5 rounded-lg border border-gray-100 bg-white shadow-xs overflow-hidden">
+    <div className="flex items-center justify-between border-b border-gray-100 bg-gray-50/50 px-3 py-2">
+      <h3 className="text-xs font-medium text-gray-600">History</h3>
+      <span className="text-[10px] font-medium text-gray-400">
+        {asset.oldUsers.length} recorded
+      </span>
+    </div>
+
+    <div className="divide-y divide-gray-100">
+      {[...asset.oldUsers]
+        .sort((a, b) => new Date(b.releaseDate) - new Date(a.releaseDate))
+        .map((oldUser, index) => (
+          <div key={index} className="flex items-center justify-between px-3 py-2 hover:bg-gray-50/80 transition-colors">
+            <div className="min-w-0 pr-2">
+              <p className="truncate text-xs font-medium text-gray-800">
+                {oldUser.employeeName || "Unknown Employee"}
+              </p>
+              <p className="text-[10px] text-gray-400">
+                Assigned: {oldUser.receivedDate ? new Date(oldUser.receivedDate).toLocaleDateString() : "N/A"}
+              </p>
             </div>
+
+            <div className="text-right whitespace-nowrap">
+              <span className="inline-block rounded bg-indigo-50 px-1.5 py-0.5 text-[10px] font-medium text-indigo-700">
+                Released {oldUser.releaseDate ? new Date(oldUser.releaseDate).toLocaleDateString() : "N/A"}
+              </span>
+            </div>
+          </div>
+        ))}
+    </div>
+  </div>
+)}
           </div>
         </div>
 

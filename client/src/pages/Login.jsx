@@ -145,11 +145,15 @@ localStorage.setItem("loginTime", Date.now().toString());
       <div className="w-full max-w-md">
         {/* Logo / Header */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-indigo-600 to-blue-500 shadow-lg shadow-indigo-200 mb-4">
-            <Lock size={30} className="text-white" />
+          <div className="inline-flex items-center justify-center w-24 h-24 rounded-2xl border border-indigo-600 shadow-lg shadow-indigo-200 mb-4">
+            <img
+          src="/logo.png"
+          alt="logo"
+          className="h-24 w-24 object-contain"
+        />
           </div>
 
-          <h1 className="text-3xl font-bold text-gray-900">Welcome Back</h1>
+          <h1 className="text-3xl font-bold text-gray-900">Asset Management System</h1>
 
           <p className="text-gray-500 mt-2">
             Sign in to your Asset Management System

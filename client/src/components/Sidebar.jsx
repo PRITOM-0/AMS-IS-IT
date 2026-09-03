@@ -13,8 +13,7 @@ import {
   FaExclamationCircle,
 } from "react-icons/fa";
 import { LuImport } from "react-icons/lu";
-import { LayoutDashboard,AlarmClockCheck } from 'lucide-react';
- 
+import { LayoutDashboard, AlarmClockCheck } from "lucide-react";
 
 function Sidebar() {
   const location = useLocation();
@@ -23,12 +22,33 @@ function Sidebar() {
     {
       title: "Main",
       items: [
-        { label: "Dashboard", icon: <LayoutDashboard size={17} strokeWidth={3} />, path: "/" },
+        {
+          label: "Dashboard",
+          icon: <LayoutDashboard size={17} strokeWidth={3} />,
+          path: "/",
+        },
         { label: "Assets", icon: <FaBoxOpen size={17} />, path: "/assets" },
-        { label: "Add Asset", icon: <FaPlusCircle size={17} />, path: "/assets/addAsset" },
+        {
+          label: "Add Asset",
+          icon: <FaPlusCircle size={17} />,
+          path: "/assets/addAsset",
+        },
+        {
+          label: "Assign Assets",
+          icon: <FaShareSquare size={17} />,
+          path: "/assign-assets",
+        },
         // { label: "Tasks", icon: <AlarmClockCheck size={17} strokeWidth={3} />, path: "/tasks" },
-        { label: "Employees", icon: <FaUserTie size={17} />, path: "/employees" },
-        { label: "Add Employee", icon: <FaPlusCircle size={17} />, path: "employees/add" },
+        {
+          label: "Employees",
+          icon: <FaUserTie size={17} />,
+          path: "/employees",
+        },
+        // {
+        //   label: "Add Employee",
+        //   icon: <FaPlusCircle size={17} />,
+        //   path: "/employees/add",
+        // },
       ],
     },
     {

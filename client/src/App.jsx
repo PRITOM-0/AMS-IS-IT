@@ -32,7 +32,7 @@ import Setting from "./pages/Setting";
 // Session Configuration
 // ==========================================
 
-const RefreshOn = 60*60*1000;
+const RefreshOn = 60 * 60 * 1000; // 1 hour
 
 // ==========================================
 // Protected Route
@@ -52,23 +52,27 @@ const ProtectedRoute = ({ isLoggedIn, children }) => {
 
 function App() {
   // ==========================================
-  // Splash Screen
+  // Splash State
+  // ==========================================
+  //
+  // IMPORTANT:
+  // false = no splash
+  // true  = show splash
+  //
+  // So refreshing the browser will NOT show splash.
+  // Logout will manually set this to true.
   // ==========================================
 
-  const [loading, setLoading] = useState(() => {
-    // Show splash only if it has never been shown
-    return localStorage.getItem("loggedInUser") !== null;
-  });
+  const [loading, setLoading] = useState(false);
 
   // ==========================================
-  // Check Login Session
+  // Login Session
   // ==========================================
 
   const [isLoggedIn, setIsLoggedIn] = useState(() => {
     const loggedIn = localStorage.getItem("isLoggedIn");
     const loginTime = localStorage.getItem("loginTime");
 
-    // No login information
     if (loggedIn !== "true" || !loginTime) {
       return false;
     }
@@ -78,7 +82,6 @@ function App() {
       Date.now() - Number(loginTime) >= RefreshOn;
 
     if (sessionExpired) {
-      // Remove expired login information
       localStorage.removeItem("isLoggedIn");
       localStorage.removeItem("loggedInUser");
       localStorage.removeItem("loginTime");
@@ -90,27 +93,24 @@ function App() {
   });
 
   // ==========================================
-  // Splash Screen Timer
+  // Splash Timer
   // ==========================================
 
   useEffect(() => {
-    // Splash already shown before
-    if (localStorage.getItem("hasSeenSplash") === "true") {
-      setLoading(false);
+    if (!loading) {
       return;
     }
 
     // Show splash for 2 seconds
     const timer = setTimeout(() => {
-      localStorage.setItem("hasSeenSplash", "true");
       setLoading(false);
     }, 2000);
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [loading]);
 
   // ==========================================
-  // Check Session Every Second
+  // Session Check
   // ==========================================
 
   useEffect(() => {
@@ -122,20 +122,26 @@ function App() {
       const loginTime = localStorage.getItem("loginTime");
       const loggedIn = localStorage.getItem("isLoggedIn");
 
+      // Session information missing
       if (loggedIn !== "true" || !loginTime) {
         setIsLoggedIn(false);
         return;
       }
 
+      // Check expiration
       const sessionExpired =
         Date.now() - Number(loginTime) >= RefreshOn;
 
       if (sessionExpired) {
-        // Session expired
+        // Remove session
         localStorage.removeItem("isLoggedIn");
         localStorage.removeItem("loggedInUser");
         localStorage.removeItem("loginTime");
 
+        // Show splash before login
+        setLoading(true);
+
+        // Logout user
         setIsLoggedIn(false);
       }
     };
@@ -148,6 +154,23 @@ function App() {
 
     return () => clearInterval(interval);
   }, [isLoggedIn]);
+
+  // ==========================================
+  // Logout
+  // ==========================================
+
+  const handleLogout = () => {
+    // Remove session
+    localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("loggedInUser");
+    localStorage.removeItem("loginTime");
+
+    // Logout
+    setIsLoggedIn(false);
+
+    // Show splash
+    setLoading(true);
+  };
 
   // ==========================================
   // Show Splash
@@ -186,26 +209,33 @@ function App() {
         path="/"
         element={
           <ProtectedRoute isLoggedIn={isLoggedIn}>
-            <Layout setIsLoggedIn={setIsLoggedIn} />
+            <Layout
+              setIsLoggedIn={setIsLoggedIn}
+              onLogout={handleLogout}
+            />
           </ProtectedRoute>
         }
       >
         {/* Dashboard */}
         <Route index element={<Dashboard />} />
 
-        {/* CATEGORY SEARCH */}
+        {/* Category Search */}
         <Route
           path="category-search"
           element={<CategorySearch />}
         />
 
-        {/* ASSETS */}
-        <Route path="assets" element={<Assets />} />
+        {/* Assets */}
+        <Route
+          path="assets"
+          element={<Assets />}
+        />
 
         <Route
           path="assets/addAsset"
           element={<AddAsset />}
         />
+
         <Route
           path="assets/editAsset/:id"
           element={<EditAsset />}
@@ -216,22 +246,29 @@ function App() {
           element={<AssetDetails />}
         />
 
-        {/* USERS */}
-        <Route path="users" element={<Users />} />
-
-        {/* REQUESTS */}
-        <Route path="requests" element={<Requests />} />
-
-        {/* SETTINGS */}
+        {/* Users */}
         <Route
-          path="settings"
-          element={
-            <Setting   />
-          }
+          path="users"
+          element={<Users />}
         />
 
-        {/* EMPLOYEES */}
-        <Route path="employees" element={<Employees />} />
+        {/* Requests */}
+        <Route
+          path="requests"
+          element={<Requests />}
+        />
+
+        {/* Settings */}
+        <Route
+          path="settings"
+          element={<Setting />}
+        />
+
+        {/* Employees */}
+        <Route
+          path="employees"
+          element={<Employees />}
+        />
 
         <Route
           path="employees/add"
@@ -243,14 +280,17 @@ function App() {
           element={<EmployeeDetails />}
         />
 
-        {/* ASSIGN ASSETS */}
+        {/* Assign Assets */}
         <Route
           path="assign-assets"
           element={<AssetAssign />}
         />
 
-        {/* TASKS */}
-        <Route path="tasks" element={<Task />} />
+        {/* Tasks */}
+        <Route
+          path="tasks"
+          element={<Task />}
+        />
 
         <Route
           path="tasks/add"
@@ -262,17 +302,19 @@ function App() {
           element={<TaskDetails />}
         />
 
-        {/* IMPORT / EXPORT / STORE */}
+        {/* Import Assets */}
         <Route
           path="importassets"
           element={<ImportAssets />}
         />
 
+        {/* Store Assets */}
         <Route
           path="assets/store"
           element={<StoreAssets />}
         />
 
+        {/* Export Assets */}
         <Route
           path="exportassets"
           element={<ExportAssets />}
@@ -280,7 +322,7 @@ function App() {
       </Route>
 
       {/* ========================================
-          INVALID ROUTE
+          Invalid Route
           ======================================== */}
 
       <Route

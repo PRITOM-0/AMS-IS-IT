@@ -20,27 +20,26 @@ function Header({ onLogout, setIsLoggedIn }) {
     return () => clearInterval(interval);
   }, []);
 
-  // 🔴 Logout
-  const handleLogout = () => {
-    // Clear login information from localStorage
-    localStorage.removeItem("isLoggedIn");
-    localStorage.removeItem("loggedInUser");
-    
+ const handleLogout = () => {
+  // Clear login information
+  localStorage.removeItem("isLoggedIn");
+  localStorage.removeItem("loggedInUser");
+  localStorage.removeItem("loginTime");
 
-    // Update React login state
-    if (setIsLoggedIn) {
-      setIsLoggedIn(false);
-    }
+  // Let App.jsx handle:
+  // 1. setIsLoggedIn(false)
+  // 2. show splash
+  // 3. navigate to login
+  if (onLogout) {
+    onLogout();
+    return;
+  }
 
-    // Optional logout callback
-    if (onLogout) {
-      onLogout();
-    }
-
-    // Go back to login page
-    window.location.href = "/login";
-  };
-
+  // Fallback if onLogout is not provided
+  if (setIsLoggedIn) {
+    setIsLoggedIn(false);
+  }
+};
   return (
     <header className="fixed top-0 left-0 w-full h-16 bg-white shadow-md flex items-center justify-between pl-2 pr-6 z-50">
       
