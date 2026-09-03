@@ -610,25 +610,37 @@ const AssetDetails = () => {
 
     <div className="divide-y divide-gray-100">
       {[...asset.oldUsers]
-        .sort((a, b) => new Date(b.releaseDate) - new Date(a.releaseDate))
-        .map((oldUser, index) => (
-          <div key={index} className="flex items-center justify-between px-3 py-2 hover:bg-gray-50/80 transition-colors">
-            <div className="min-w-0 pr-2">
-              <p className="truncate text-xs font-medium text-gray-800">
-                {oldUser.employeeName || "Unknown Employee"}
-              </p>
-              <p className="text-[10px] text-gray-400">
-                Assigned: {oldUser.receivedDate ? new Date(oldUser.receivedDate).toLocaleDateString() : "N/A"}
-              </p>
-            </div>
+  .sort((a, b) => new Date(b.releaseDate) - new Date(a.releaseDate))
+  .map((oldUser, index) => (
+    <div
+      key={index}
+      className="px-3 py-2 hover:bg-gray-50/80 transition-colors space-y-1"
+    >
+      {/* Top Row: Employee Name + Release Date Badge */}
+      <div className="flex items-center justify-between gap-2">
+        <p className="truncate text-xs font-medium text-gray-800">
+          {oldUser.employeeName || "Unknown Employee"}
+        </p>
 
-            <div className="text-right whitespace-nowrap">
-              <span className="inline-block rounded bg-indigo-50 px-1.5 py-0.5 text-[10px] font-medium text-indigo-700">
-                Released {oldUser.releaseDate ? new Date(oldUser.releaseDate).toLocaleDateString() : "N/A"}
-              </span>
-            </div>
-          </div>
-        ))}
+        <span className="shrink-0 inline-block rounded bg-indigo-50 px-1.5 py-0.5 text-[10px] font-medium text-indigo-700">
+          Released {oldUser.releaseDate ? new Date(oldUser.releaseDate).toLocaleDateString() : "N/A"}
+        </span>
+      </div>
+
+      {/* Middle Row: Assigned Date */}
+      <p className="text-[10px] text-gray-400">
+        Assigned: {oldUser.receivedDate ? new Date(oldUser.receivedDate).toLocaleDateString() : "N/A"}
+      </p>
+
+      {/* Bottom Row: Release Note in its own full line */}
+      {oldUser.releaseNote && (
+        <p className="text-[10px] italic text-gray-600 bg-gray-50 rounded px-2 py-1 border border-gray-100">
+          <span className="font-semibold non-italic text-gray-500">Note: </span>
+          {oldUser.releaseNote}
+        </p>
+      )}
+    </div>
+  ))}
     </div>
   </div>
 )}

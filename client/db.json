@@ -14,8 +14,8 @@
       "floor": "Ground Floor",
       "room": "",
       "status": "Active",
-      "employeeId": "x4HhH5D8vk4",
-      "receivedDate": "2026-09-03T08:31:55.719Z",
+      "employeeId": "",
+      "receivedDate": "",
       "oldUsers": [
         {
           "employeeName": "Pritom Saha",
@@ -28,6 +28,13 @@
           "employeeId": "904740",
           "receivedDate": "2026-09-03T08:30:30.119Z",
           "releaseDate": "2026-09-03T08:31:39.271Z"
+        },
+        {
+          "employeeName": "Pritom Saha",
+          "employeeId": "904740",
+          "receivedDate": "2026-09-03T08:31:55.719Z",
+          "releaseDate": "2026-09-03T10:44:07.438Z",
+          "releaseNote": "Very slow"
         }
       ],
       "purchaseDate": "10th Dec-2015",
@@ -10056,7 +10063,6 @@
       "updatedAt": "2026-09-03T09:31:43.149Z",
       "assetlist": [
         "eYe0OJBX-T4",
-        "Oy-0cDJT8Zk",
         "dtMOSykw-bw",
         "I2aKL9gJRoU"
       ]

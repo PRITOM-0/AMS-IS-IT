@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { X, PackageCheck, Loader2, AlertTriangle } from "lucide-react";
+import { X, PackageCheck, Loader2, AlertTriangle, FileText } from "lucide-react";
 import { API_BASE_URL } from "../env";
 
 const ReleaseAsset = ({ employee, asset, onReleased }) => {
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [releaseNote, setReleaseNote] = useState("");
 
   // ==========================================
   // Open Confirmation Modal
@@ -13,6 +14,7 @@ const ReleaseAsset = ({ employee, asset, onReleased }) => {
 
   const handleOpenModal = () => {
     setError("");
+    setReleaseNote("");
     setShowModal(true);
   };
 
@@ -25,114 +27,122 @@ const ReleaseAsset = ({ employee, asset, onReleased }) => {
 
     setShowModal(false);
     setError("");
+    setReleaseNote("");
   };
 
   // ==========================================
   // Release Asset
   // ==========================================
 
- const handleRelease = async () => {
-  if (!asset?.id) {
-    setError("Asset information is missing.");
-    return;
-  }
-
-  if (!employee?.id) {
-    setError("Employee information is missing.");
-    return;
-  }
-
-  setLoading(true);
-  setError("");
-
-  try {
-    const employeeName = employee?.employeeName || "";
-    const receivedDate = asset?.receivedDate || "";
-    const releaseDate = new Date().toISOString();
-
-    const oldUser = {
-      employeeName,
-      employeeId: employee?.employeeId || "",
-      receivedDate,
-      releaseDate,
-    };
-
-    const oldUsers = Array.isArray(asset?.oldUsers) ? asset.oldUsers : [];
-
-    // 1. Prepare updated Asset payload
-    const updatedAsset = {
-      ...asset,
-      employeeId: "",
-      receivedDate: "",
-      oldUsers: [...oldUsers, oldUser],
-    };
-
-    // 2. Safely filter out the asset ID from employee assetlist (handling string/number conversion)
-    const currentAssetList = Array.isArray(employee?.assetlist)
-      ? employee.assetlist
-      : [];
-
-    const updatedAssetList = currentAssetList.filter(
-      (assetId) => String(assetId) !== String(asset.id)
-    );
-
-    const updatedEmployee = {
-      ...employee,
-      assetlist: updatedAssetList,
-    };
-
-    // 3. Fire BOTH PUT requests concurrently using Promise.all
-    const [assetRes, employeeRes] = await Promise.all([
-      fetch(`${API_BASE_URL}/assets/${asset.id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(updatedAsset),
-      }),
-      fetch(`${API_BASE_URL}/employees/${employee.id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(updatedEmployee),
-      }),
-    ]);
-
-    // 4. Validate Asset Response
-    if (!assetRes.ok) {
-      const responseText = await assetRes.text();
-      throw new Error(responseText || "Failed to update asset information.");
+  const handleRelease = async () => {
+    if (!asset?.id) {
+      setError("Asset information is missing.");
+      return;
     }
 
-    // 5. Validate Employee Response
-    if (!employeeRes.ok) {
-      const responseText = await employeeRes.text();
-      throw new Error(
-        responseText || "Asset was updated, but failed to remove asset from employee."
+    if (!employee?.id) {
+      setError("Employee information is missing.");
+      return;
+    }
+
+    if (!releaseNote.trim()) {
+      setError("Please provide a release note.");
+      return;
+    }
+
+    setLoading(true);
+    setError("");
+
+    try {
+      const employeeName = employee?.employeeName || employee?.name || "";
+      const receivedDate = asset?.receivedDate || "";
+      const releaseDate = new Date().toISOString();
+
+      // Create Old User Object with Release Note
+      const oldUser = {
+        employeeName,
+        employeeId: employee?.employeeId || "",
+        receivedDate,
+        releaseDate,
+        releaseNote: releaseNote.trim(),
+      };
+
+      const oldUsers = Array.isArray(asset?.oldUsers) ? asset.oldUsers : [];
+
+      // 1. Prepare updated Asset payload
+      const updatedAsset = {
+        ...asset,
+        employeeId: "",
+        receivedDate: "",
+        oldUsers: [...oldUsers, oldUser],
+      };
+
+      // 2. Safely filter out the asset ID from employee assetlist
+      const currentAssetList = Array.isArray(employee?.assetlist)
+        ? employee.assetlist
+        : [];
+
+      const updatedAssetList = currentAssetList.filter(
+        (assetId) => String(assetId) !== String(asset.id)
       );
+
+      const updatedEmployee = {
+        ...employee,
+        assetlist: updatedAssetList,
+      };
+
+      // 3. Fire BOTH PUT requests concurrently
+      const [assetRes, employeeRes] = await Promise.all([
+        fetch(`${API_BASE_URL}/assets/${asset.id}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(updatedAsset),
+        }),
+        fetch(`${API_BASE_URL}/employees/${employee.id}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(updatedEmployee),
+        }),
+      ]);
+
+      // 4. Validate Asset Response
+      if (!assetRes.ok) {
+        const responseText = await assetRes.text();
+        throw new Error(responseText || "Failed to update asset information.");
+      }
+
+      // 5. Validate Employee Response
+      if (!employeeRes.ok) {
+        const responseText = await employeeRes.text();
+        throw new Error(
+          responseText || "Asset was updated, but failed to remove asset from employee."
+        );
+      }
+
+      const savedAsset = await assetRes.json();
+      const savedEmployee = await employeeRes.json();
+
+      // 6. Complete flow
+      handleCloseModal();
+
+      if (onReleased) {
+        onReleased({
+          asset: savedAsset,
+          employee: savedEmployee,
+        });
+      }
+    } catch (err) {
+      console.error("Release asset error:", err);
+
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Failed to release asset."
+      );
+    } finally {
+      setLoading(false);
     }
-
-    const savedAsset = await assetRes.json();
-    const savedEmployee = await employeeRes.json();
-
-    // 6. Complete flow
-    setShowModal(false);
-
-    if (onReleased) {
-      onReleased({
-        asset: savedAsset,
-        employee: savedEmployee,
-      });
-    }
-  } catch (err) {
-    console.error("Release asset error:", err);
-
-    setError(
-      err instanceof Error
-        ? err.message
-        : "Failed to release asset."
-    );
-  } finally {
-    setLoading(false);
-  }
-};
+  };
 
   // ==========================================
   // Component
@@ -140,10 +150,7 @@ const ReleaseAsset = ({ employee, asset, onReleased }) => {
 
   return (
     <>
-      {/* ========================================
-          Release Button
-          ======================================== */}
-
+      {/* Release Button */}
       <button
         type="button"
         onClick={handleOpenModal}
@@ -171,10 +178,7 @@ const ReleaseAsset = ({ employee, asset, onReleased }) => {
         Release
       </button>
 
-      {/* ========================================
-          Confirmation Modal
-          ======================================== */}
-
+      {/* Confirmation Modal */}
       {showModal && (
         <div
           className="
@@ -190,10 +194,6 @@ const ReleaseAsset = ({ employee, asset, onReleased }) => {
           "
           onClick={handleCloseModal}
         >
-          {/* ======================================
-              Modal
-              ====================================== */}
-
           <div
             className="
               w-full
@@ -207,10 +207,7 @@ const ReleaseAsset = ({ employee, asset, onReleased }) => {
             "
             onClick={(e) => e.stopPropagation()}
           >
-            {/* ====================================
-                Header
-                ==================================== */}
-
+            {/* Modal Header */}
             <div
               className="
                 flex
@@ -242,7 +239,6 @@ const ReleaseAsset = ({ employee, asset, onReleased }) => {
                   <h2 className="text-lg font-semibold text-gray-900">
                     Release Asset
                   </h2>
-
                   <p className="text-xs text-gray-500">Confirm asset release</p>
                 </div>
               </div>
@@ -265,18 +261,14 @@ const ReleaseAsset = ({ employee, asset, onReleased }) => {
               </button>
             </div>
 
-            {/* ====================================
-                Body
-                ==================================== */}
-
-            <div className="px-5 py-5">
-              <p className="text-sm text-gray-600 mb-5">
+            {/* Modal Body */}
+            <div className="px-5 py-5 space-y-4">
+              <p className="text-sm text-gray-600">
                 Are you sure you want to release this asset from the current
                 employee?
               </p>
 
-              {/* Asset Information */}
-
+              {/* Asset Details summary */}
               <div
                 className="
                   rounded-xl
@@ -284,12 +276,11 @@ const ReleaseAsset = ({ employee, asset, onReleased }) => {
                   border
                   border-gray-200
                   p-4
-                  space-y-3
+                  space-y-2.5
                 "
               >
                 <div className="flex justify-between gap-4">
                   <span className="text-xs text-gray-500">Asset</span>
-
                   <span className="text-sm font-medium text-gray-900">
                     {asset?.assetCode || asset?.name || "Unknown"}
                   </span>
@@ -297,7 +288,6 @@ const ReleaseAsset = ({ employee, asset, onReleased }) => {
 
                 <div className="flex justify-between gap-4">
                   <span className="text-xs text-gray-500">Employee</span>
-
                   <span className="text-sm font-medium text-gray-900">
                     {employee?.name || employee?.employeeName || "Unknown"}
                   </span>
@@ -305,19 +295,53 @@ const ReleaseAsset = ({ employee, asset, onReleased }) => {
 
                 <div className="flex justify-between gap-4">
                   <span className="text-xs text-gray-500">Received Date</span>
-
                   <span className="text-sm font-medium text-gray-900">
-                    {asset?.receivedDate || "N/A"}
+                    {asset?.receivedDate
+                      ? new Date(asset.receivedDate).toLocaleDateString()
+                      : "N/A"}
                   </span>
                 </div>
               </div>
 
-              {/* Error */}
+              {/* Release Note Input */}
+              <div className="space-y-1.5">
+                <label
+                  htmlFor="releaseNote"
+                  className="flex items-center gap-1.5 text-xs font-semibold text-gray-700"
+                >
+                  <FileText size={14} className="text-gray-400" />
+                  Release Note <span className="text-red-500">*</span>
+                </label>
+                <textarea
+                  id="releaseNote"
+                  rows={3}
+                  value={releaseNote}
+                  onChange={(e) => setReleaseNote(e.target.value)}
+                  placeholder="e.g., Returned in good condition / Upgrade issued / Employee left company"
+                  disabled={loading}
+                  className="
+                    w-full
+                    rounded-lg
+                    border
+                    border-gray-300
+                    px-3
+                    py-2
+                    text-xs
+                    text-gray-900
+                    placeholder-gray-400
+                    focus:border-red-500
+                    focus:outline-none
+                    focus:ring-1
+                    focus:ring-red-500
+                    disabled:bg-gray-50
+                  "
+                />
+              </div>
 
+              {/* Error Message */}
               {error && (
                 <div
                   className="
-                    mt-4
                     rounded-lg
                     border
                     border-red-200
@@ -333,10 +357,7 @@ const ReleaseAsset = ({ employee, asset, onReleased }) => {
               )}
             </div>
 
-            {/* ====================================
-                Footer
-                ==================================== */}
-
+            {/* Modal Footer */}
             <div
               className="
                 flex
