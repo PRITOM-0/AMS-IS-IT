@@ -337,70 +337,87 @@ function AssetAssign() {
               ) : (
                 filteredEmployees.map((emp) => (
                   <button
-                    key={emp.id}
-                    type="button"
-                    onClick={() =>
-                      setSelectedEmployee(emp)
-                    }
-                    className={`w-full rounded-2xl border p-4 text-left transition ${
-                      selectedEmployee?.id === emp.id
-                        ? "border-blue-600 bg-blue-500 text-white shadow-md"
-                        : "border-slate-400 border-amber-200 bg-gradient-to-br from-amber-100 via-white to-orange-100 text-slate-700 hover:border-blue-300 hover:shadow-sm"
-                    }`}
-                  >
-                    <div className="flex items-center justify-between gap-4">
+  key={emp.id}
+  type="button"
+  onClick={() => setSelectedEmployee(emp)}
+  className={`w-full rounded-xl border p-2.5 text-left transition ${
+    selectedEmployee?.id === emp.id
+      ? "border-blue-600 bg-blue-500 text-white shadow-sm"
+      : "border-slate-300 bg-white text-slate-700 hover:border-blue-300 hover:shadow-xs"
+  }`}
+>
+  <div className="flex items-start justify-between gap-3">
+    {/* Employee Details */}
+    <div className="min-w-0 flex-1">
+      <div className="flex items-center gap-2">
+        <h2 className="truncate text-sm font-semibold">
+          {emp.employeeName || "N/A"}
+        </h2>
+        <span
+          className={`text-[10px] font-mono px-1.5 py-0.5 rounded ${
+            selectedEmployee?.id === emp.id
+              ? "bg-white/20 text-white"
+              : "bg-slate-100 text-slate-600"
+          }`}
+        >
+          #{emp.employeeId || "N/A"}
+        </span>
+      </div>
 
-                      {/* Employee information */}
-                      <div>
-                        <h2 className="text-lg font-semibold">
-                          {emp.employeeName || "N/A"}
-                        </h2>
+      <p
+        className={`mt-0.5 truncate text-[11px] ${
+          selectedEmployee?.id === emp.id ? "text-blue-100" : "text-slate-500"
+        }`}
+      >
+        {[emp.designation, emp.department, emp.location, emp.company]
+          .filter(Boolean)
+          .join(" • ") || "No details"}
+      </p>
+    </div>
 
-                        <p className="mt-1 text-sm">
-                          Employee ID:{" "}
-                          <strong>
-                            {emp.employeeId || "N/A"}
-                          </strong>
-                        </p>
+    {/* Assets Badge & Stacked Asset List */}
+    <div className="shrink-0 text-right">
+      <span
+        className={`inline-block rounded-full px-2 py-0.5 text-[10px] font-bold ${
+          selectedEmployee?.id === emp.id
+            ? "bg-white/20 text-white"
+            : "bg-blue-100 text-blue-700"
+        }`}
+      >
+        {emp.assetlist?.length || 0} Assets
+      </span>
 
-                        <div className="mt-2 space-y-1 text-sm">
-                          <p>
-                            <strong>Designation:</strong>{" "}
-                            {emp.designation || "N/A"}
-                          </p>
+      {/* Stacked Asset Rows */}
+      {emp.assetlist?.length > 0 && (
+        <div className="mt-1 space-y-0.5 text-right">
+          {emp.assetlist.map((assetId) => {
+            const asset = assets.find(
+              (item) => String(item.id) === String(assetId)
+            );
+            if (!asset) return null;
 
-                          <p>
-                            <strong>Company:</strong>{" "}
-                            {emp.company || "N/A"}
-                          </p>
-
-                          <p>
-                            <strong>Location:</strong>{" "}
-                            {emp.location || "N/A"}
-                          </p>
-
-                          <p>
-                            <strong>Department:</strong>{" "}
-                            {emp.department || "N/A"}
-                          </p>
-                        </div>
-                      </div>
-
-                      {/* Asset count */}
-                      <div className="shrink-0 text-right">
-                        <span
-                          className={`rounded-full px-3 py-1 text-xs font-bold ${
-                            selectedEmployee?.id === emp.id
-                              ? "bg-white/20 text-white"
-                              : "bg-blue-100 text-blue-700"
-                          }`}
-                        >
-                          {emp.assetlist?.length || 0} Assets
-                        </span>
-                      </div>
-
-                    </div>
-                  </button>
+            return (
+              <div
+                key={assetId}
+                className={`text-[10px] leading-tight ${
+                  selectedEmployee?.id === emp.id
+                    ? "text-blue-100"
+                    : "text-slate-500"
+                }`}
+              >
+                <span className="font-medium">{asset.equipment}</span>
+                <span className="mx-1 opacity-60">•</span>
+                <span className="font-mono text-[9px] opacity-80">
+                  {asset.assetCode}
+                </span>
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  </div>
+</button>
                 ))
               )}
 

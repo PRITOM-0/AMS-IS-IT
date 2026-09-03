@@ -31,7 +31,7 @@ const ReleaseAsset = ({ employee, asset, onReleased }) => {
   // Release Asset
   // ==========================================
 
-  const handleRelease = async () => {
+ const handleRelease = async () => {
   if (!asset?.id) {
     setError("Asset information is missing.");
     return;
@@ -46,39 +46,20 @@ const ReleaseAsset = ({ employee, asset, onReleased }) => {
   setError("");
 
   try {
-    // ==========================================
-    // Current Assignment Information
-    // ==========================================
-
     const employeeName = employee?.employeeName || "";
-
     const receivedDate = asset?.receivedDate || "";
-
     const releaseDate = new Date().toISOString();
-
-    // ==========================================
-    // Create Old User Object
-    // ==========================================
 
     const oldUser = {
       employeeName,
-      employeeId:employee?.employeeId || "",
+      employeeId: employee?.employeeId || "",
       receivedDate,
       releaseDate,
     };
 
-    // ==========================================
-    // Existing Old Users
-    // ==========================================
+    const oldUsers = Array.isArray(asset?.oldUsers) ? asset.oldUsers : [];
 
-    const oldUsers = Array.isArray(asset?.oldUsers)
-      ? asset.oldUsers
-      : [];
-
-    // ==========================================
-    // Update Asset
-    // ==========================================
-
+    // 1. Prepare updated Asset payload
     const updatedAsset = {
       ...asset,
       employeeId: "",
@@ -86,85 +67,53 @@ const ReleaseAsset = ({ employee, asset, onReleased }) => {
       oldUsers: [...oldUsers, oldUser],
     };
 
-    // ==========================================
-    // Update Employee Asset List
-    // ==========================================
-
+    // 2. Safely filter out the asset ID from employee assetlist (handling string/number conversion)
     const currentAssetList = Array.isArray(employee?.assetlist)
       ? employee.assetlist
       : [];
 
     const updatedAssetList = currentAssetList.filter(
       (assetId) => String(assetId) !== String(asset.id)
-    
     );
-    console.log("Updated Asset List:", updatedAssetList);
-    console.log("Current Asset List:", currentAssetList);
 
     const updatedEmployee = {
       ...employee,
       assetlist: updatedAssetList,
     };
 
-    // ==========================================
-    // Update Asset
-    // ==========================================
-
-    const assetResponse = await fetch(
-      `${API_BASE_URL}/assets/${asset.id}`,
-      {
+    // 3. Fire BOTH PUT requests concurrently using Promise.all
+    const [assetRes, employeeRes] = await Promise.all([
+      fetch(`${API_BASE_URL}/assets/${asset.id}`, {
         method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updatedAsset),
-      }
-    );
-
-    if (!assetResponse.ok) {
-      const responseText = await assetResponse.text();
-      throw new Error(
-        responseText || "Failed to release asset."
-      );
-    }
-
-    // ==========================================
-    // Update Employee
-    // ==========================================
-
-    const employeeResponse = await fetch(
-      `${API_BASE_URL}/employees/${employee.id}`,
-      {
+      }),
+      fetch(`${API_BASE_URL}/employees/${employee.id}`, {
         method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updatedEmployee),
-      }
-    );
+      }),
+    ]);
 
-    if (!employeeResponse.ok) {
-      const responseText = await employeeResponse.text();
+    // 4. Validate Asset Response
+    if (!assetRes.ok) {
+      const responseText = await assetRes.text();
+      throw new Error(responseText || "Failed to update asset information.");
+    }
 
-      // Important:
-      // Asset was already updated, but employee update failed.
+    // 5. Validate Employee Response
+    if (!employeeRes.ok) {
+      const responseText = await employeeRes.text();
       throw new Error(
-        responseText || "Asset released, but employee asset list could not be updated."
+        responseText || "Asset was updated, but failed to remove asset from employee."
       );
     }
 
-    const savedAsset = await assetResponse.json();
-    const savedEmployee = await employeeResponse.json();
+    const savedAsset = await assetRes.json();
+    const savedEmployee = await employeeRes.json();
 
-    // ==========================================
-    // Close Modal
-    // ==========================================
-
+    // 6. Complete flow
     setShowModal(false);
-
-    // ==========================================
-    // Notify Parent
-    // ==========================================
 
     if (onReleased) {
       onReleased({
@@ -172,14 +121,14 @@ const ReleaseAsset = ({ employee, asset, onReleased }) => {
         employee: savedEmployee,
       });
     }
-  } catch (error) {
+  } catch (err) {
     console.error("Release asset error:", err);
 
-  setError(
-    err instanceof Error
-      ? err.message
-      : "Failed to release asset."
-  );
+    setError(
+      err instanceof Error
+        ? err.message
+        : "Failed to release asset."
+    );
   } finally {
     setLoading(false);
   }

@@ -2,12 +2,47 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+
     <link rel="icon" type="image/png" href="/logo.png">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+
+    <style>
+      #root {
+        zoom: 1;
+      }
+
+      /* 1920px and larger */
+      @media (min-width: 1600px) {
+        #root {
+          zoom: 1.25;
+        }
+      }
+
+      /* 1366px - 1599px */
+      @media (min-width: 1366px) and (max-width: 1599px) {
+        #root {
+          zoom: 1;
+        }
+      }
+
+      /* Smaller displays */
+      @media (max-width: 1365px) {
+        #root {
+          zoom: 0.9;
+        }
+      }
+    </style>
+
     <title>AMS IS-IT</title>
   </head>
+
   <body>
     <div id="root"></div>
+
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

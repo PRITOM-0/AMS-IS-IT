@@ -14,14 +14,20 @@
       "floor": "Ground Floor",
       "room": "",
       "status": "Active",
-      "employeeId": "",
-      "receivedDate": "",
+      "employeeId": "x4HhH5D8vk4",
+      "receivedDate": "2026-09-03T08:31:55.719Z",
       "oldUsers": [
         {
           "employeeName": "Pritom Saha",
           "employeeId": "904740",
-          "receivedDate": "2026-09-03T07:04:47.928Z",
-          "releaseDate": "2026-09-03T07:54:42.600Z"
+          "receivedDate": "2026-09-03T08:29:52.007Z",
+          "releaseDate": "2026-09-03T08:30:07.215Z"
+        },
+        {
+          "employeeName": "Pritom Saha",
+          "employeeId": "904740",
+          "receivedDate": "2026-09-03T08:30:30.119Z",
+          "releaseDate": "2026-09-03T08:31:39.271Z"
         }
       ],
       "purchaseDate": "10th Dec-2015",
@@ -35,7 +41,7 @@
       "upgradeEquipments": "",
       "surveyTakenBy": "",
       "createdAt": "2026-09-03T06:57:53.339Z",
-      "updatedAt": "2026-09-03T07:04:47.928Z",
+      "updatedAt": "2026-09-03T08:31:55.719Z",
       "id": "Oy-0cDJT8Zk"
     },
     {
@@ -52,9 +58,16 @@
       "floor": "Ground Floor",
       "room": "",
       "status": "Active",
-      "employeeId": "",
-      "receivedDate": "",
-      "oldUsers": [],
+      "employeeId": "x4HhH5D8vk4",
+      "receivedDate": "2026-09-03T08:32:15.535Z",
+      "oldUsers": [
+        {
+          "employeeName": "Pritom Saha",
+          "employeeId": "904740",
+          "receivedDate": "2026-09-03T08:30:36.111Z",
+          "releaseDate": "2026-09-03T08:31:04.983Z"
+        }
+      ],
       "purchaseDate": "2017-07-22T18:00:00.000Z",
       "purchasePrice": "",
       "warrantyStart": "2017-07-22T18:00:00.000Z",
@@ -66,7 +79,7 @@
       "upgradeEquipments": "",
       "surveyTakenBy": "",
       "createdAt": "2026-09-03T06:57:53.339Z",
-      "updatedAt": "2026-09-03T06:57:53.339Z",
+      "updatedAt": "2026-09-03T08:32:15.535Z",
       "id": "dtMOSykw-bw"
     },
     {
@@ -83,8 +96,8 @@
       "floor": "Ground Floor",
       "room": "",
       "status": "Active",
-      "employeeId": "",
-      "receivedDate": "",
+      "employeeId": "x4HhH5D8vk4",
+      "receivedDate": "2026-09-03T08:30:44.943Z",
       "oldUsers": [],
       "purchaseDate": "",
       "purchasePrice": "",
@@ -97,7 +110,7 @@
       "upgradeEquipments": "",
       "surveyTakenBy": "",
       "createdAt": "2026-09-03T06:57:53.339Z",
-      "updatedAt": "2026-09-03T06:57:53.339Z",
+      "updatedAt": "2026-09-03T08:30:44.943Z",
       "id": "eYe0OJBX-T4"
     },
     {
@@ -145,8 +158,8 @@
       "floor": "3rd Floor",
       "room": "",
       "status": "Active",
-      "employeeId": "",
-      "receivedDate": "",
+      "employeeId": "x4HhH5D8vk4",
+      "receivedDate": "2026-09-03T09:31:43.149Z",
       "oldUsers": [],
       "purchaseDate": "",
       "purchasePrice": "",
@@ -159,7 +172,7 @@
       "upgradeEquipments": "",
       "surveyTakenBy": "",
       "createdAt": "2026-09-03T06:57:53.339Z",
-      "updatedAt": "2026-09-03T06:57:53.339Z",
+      "updatedAt": "2026-09-03T09:31:43.149Z",
       "id": "I2aKL9gJRoU"
     },
     {
@@ -10040,8 +10053,13 @@
       "location": "CORP",
       "department": "IT",
       "createdAt": "2026-09-03T07:04:31.057Z",
-      "updatedAt": "2026-09-03T07:04:47.928Z",
-      "assetlist": []
+      "updatedAt": "2026-09-03T09:31:43.149Z",
+      "assetlist": [
+        "eYe0OJBX-T4",
+        "Oy-0cDJT8Zk",
+        "dtMOSykw-bw",
+        "I2aKL9gJRoU"
+      ]
     }
   ],
   "vendors": [
