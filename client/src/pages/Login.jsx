@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Lock,
@@ -25,25 +25,25 @@ const Login = ({ setIsLoggedIn }) => {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-  const fetchUsers = async () => {
-    try {
-      const response = await fetch(`${API_BASE_URL}/users`);
+    const fetchUsers = async () => {
+      try {
+        const response = await fetch(`${API_BASE_URL}/users`);
 
-      if (!response.ok) {
-        throw new Error("Unable to load users.");
+        if (!response.ok) {
+          throw new Error("Unable to load users.");
+        }
+
+        const data = await response.json();
+
+        setUsers(data);
+      } catch (error) {
+        console.error("Failed to load users:", error);
+        setError("Unable to load users. Please try again.");
       }
+    };
 
-      const data = await response.json();
-
-      setUsers(data);
-    } catch (error) {
-      console.error("Failed to load users:", error);
-      setError("Unable to load users. Please try again.");
-    }
-  };
-
-  fetchUsers();
-}, []);
+    fetchUsers();
+  }, []);
 
   // ==========================================
   // Handle Input
@@ -123,7 +123,7 @@ const Login = ({ setIsLoggedIn }) => {
       // Store logged-in user
       localStorage.setItem("loggedInUser", JSON.stringify(matchedUser));
       // Save login time
-localStorage.setItem("loginTime", Date.now().toString());
+      localStorage.setItem("loginTime", Date.now().toString());
 
       // Update App state
       setIsLoggedIn(true);
@@ -147,13 +147,15 @@ localStorage.setItem("loginTime", Date.now().toString());
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center w-24 h-24 rounded-2xl border border-indigo-600 shadow-lg shadow-indigo-200 mb-4">
             <img
-          src="/logo.png"
-          alt="logo"
-          className="h-24 w-24 object-contain"
-        />
+              src="/logo.png"
+              alt="logo"
+              className="h-24 w-24 object-contain"
+            />
           </div>
-
-          <h1 className="text-3xl font-bold text-gray-900">Asset Management System</h1>
+          <h1 className="text-3xl font-bold text-gray-900">IS-IT </h1>
+          <h1 className="text-3xl font-bold text-gray-900">
+            Asset Management System
+          </h1>
 
           <p className="text-gray-500 mt-2">
             Sign in to your Asset Management System
@@ -280,8 +282,8 @@ localStorage.setItem("loginTime", Date.now().toString());
           {/* Demo Information */}
           <div className="mt-6 pt-5 border-t border-gray-100">
             <p className="text-center text-xs text-gray-400">
-              Use the username and password stored in your JSON Server users
-              collection.
+              &copy; {new Date().getFullYear()} IS-IT, Scholastica Private
+              Limited. All rights reserved.
             </p>
           </div>
         </div>
