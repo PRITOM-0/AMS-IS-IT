@@ -63,7 +63,7 @@ function App() {
   // Logout will manually set this to true.
   // ==========================================
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   // ==========================================
   // Login Session

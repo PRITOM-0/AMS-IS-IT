@@ -9892,6 +9892,37 @@
       "createdAt": "2026-09-03T06:57:53.343Z",
       "updatedAt": "2026-09-03T06:57:53.343Z",
       "id": "KZLu8mIMvoY"
+    },
+    {
+      "equipment": "CPU",
+      "assetCode": "06-01-34345",
+      "brand": "Lenovo",
+      "model": "B",
+      "serialNumber": "A",
+      "specifications": "A",
+      "macAddress": "A",
+      "company": "SPL",
+      "location": "CORP",
+      "department": "SRD",
+      "floor": "A",
+      "room": "5",
+      "status": "Active",
+      "employeeId": "x4HhH5D8vk4",
+      "receivedDate": "2026-09-06T06:48:35.065Z",
+      "oldUsers": [],
+      "purchaseDate": "2026-09-06",
+      "purchasePrice": "5000",
+      "warrantyStart": "2026-09-06",
+      "warrantyEnd": "2034-09-06",
+      "warrantyYears": "8",
+      "vendorId": "VND002",
+      "remarks": "DD",
+      "surveyStatus": "OK",
+      "upgradeEquipments": "FF",
+      "surveyTakenBy": "Pritom Saha",
+      "createdAt": "2026-09-06T06:47:48.307Z",
+      "updatedAt": "2026-09-06T06:48:35.065Z",
+      "id": "CLYl3umHcPk"
     }
   ],
   "list": {
@@ -10068,11 +10099,12 @@
       "location": "CORP",
       "department": "IT",
       "createdAt": "2026-09-03T07:04:31.057Z",
-      "updatedAt": "2026-09-03T09:31:43.149Z",
+      "updatedAt": "2026-09-06T06:48:35.065Z",
       "assetlist": [
         "eYe0OJBX-T4",
         "dtMOSykw-bw",
-        "I2aKL9gJRoU"
+        "I2aKL9gJRoU",
+        "CLYl3umHcPk"
       ]
     },
     {
@@ -10413,7 +10445,7 @@
     },
     {
       "id": "4",
-      "username": "Mahmudul Hassan",
+      "username": "Pritom Saha",
       "password": "P123"
     },
     {

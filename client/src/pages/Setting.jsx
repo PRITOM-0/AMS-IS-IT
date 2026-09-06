@@ -418,7 +418,7 @@ function Setting() {
     },
     {
       id: "list",
-      label: "Lists",
+      label: "Company Info",
       icon: List,
       count: listEntries.length,
     },
