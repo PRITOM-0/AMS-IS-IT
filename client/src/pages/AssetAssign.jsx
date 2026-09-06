@@ -1,4 +1,3 @@
- 
 import React, { useEffect, useState } from "react";
 import { Search, PackagePlus, UserCheck } from "lucide-react";
 import { API_BASE_URL } from "../env";
@@ -13,7 +12,7 @@ function AssetAssign() {
   const [selectedEmployee, setSelectedEmployee] = useState(null);
   const [selectedAssetId, setSelectedAssetId] = useState("");
 
-  const [notes, setNotes] = useState("");
+ 
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(true);
   const [assigning, setAssigning] = useState(false);
@@ -108,9 +107,7 @@ function AssetAssign() {
     return isUnassigned && matchesSearch;
   });
 
-  const selectedAsset = assets.find(
-    (asset) => asset.id === selectedAssetId,
-  );
+  const selectedAsset = assets.find((asset) => asset.id === selectedAssetId);
 
   // --------------------------------------------------
   // Assign employee to asset
@@ -150,21 +147,14 @@ function AssetAssign() {
       // ----------------------------------------------
       // Update employee assetlist
       // ----------------------------------------------
-      const existingAssetList = Array.isArray(
-        selectedEmployee.assetlist,
-      )
+      const existingAssetList = Array.isArray(selectedEmployee.assetlist)
         ? selectedEmployee.assetlist
         : [];
 
       const updatedEmployee = {
         ...selectedEmployee,
 
-        assetlist: [
-          ...new Set([
-            ...existingAssetList,
-            selectedAsset.id,
-          ]),
-        ],
+        assetlist: [...new Set([...existingAssetList, selectedAsset.id])],
 
         updatedAt: now,
       };
@@ -172,30 +162,23 @@ function AssetAssign() {
       // ----------------------------------------------
       // Save both endpoints
       // ----------------------------------------------
-      const [assetResponse, employeeResponse] =
-        await Promise.all([
-          fetch(
-            `${API_BASE_URL}/assets/${selectedAsset.id}`,
-            {
-              method: "PUT",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify(updatedAsset),
-            },
-          ),
+      const [assetResponse, employeeResponse] = await Promise.all([
+        fetch(`${API_BASE_URL}/assets/${selectedAsset.id}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(updatedAsset),
+        }),
 
-          fetch(
-            `${API_BASE_URL}/employees/${selectedEmployee.id}`,
-            {
-              method: "PUT",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify(updatedEmployee),
-            },
-          ),
-        ]);
+        fetch(`${API_BASE_URL}/employees/${selectedEmployee.id}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(updatedEmployee),
+        }),
+      ]);
 
       if (!assetResponse.ok) {
         throw new Error("Failed to update asset.");
@@ -214,17 +197,14 @@ function AssetAssign() {
       setSelectedEmployee(null);
       setEmployeeSearch("");
       setAssetSearch("");
-      setNotes("");
+     
 
       // Reload latest data
       await fetchData();
     } catch (error) {
       console.error("Error assigning asset:", error);
 
-      setMessage(
-        error.message ||
-          "Assignment failed. Please try again.",
-      );
+      setMessage(error.message || "Assignment failed. Please try again.");
     } finally {
       setAssigning(false);
     }
@@ -249,7 +229,6 @@ function AssetAssign() {
   return (
     <div className="min-h-screen p-6 lg:p-8">
       <div className="mx-auto max-w-7xl space-y-6">
-
         {/* Header */}
         <div className="rounded-3xl border border-slate-400 border-indigo-200 bg-gradient-to-br from-indigo-100 via-white to-violet-100 p-6 text-indigo-700 shadow-xl shadow-blue-100 backdrop-blur">
           <div>
@@ -271,12 +250,10 @@ function AssetAssign() {
         )}
 
         <div className="grid gap-6 xl:grid-cols-[1.05fr_0.95fr]">
-
           {/* =====================================================
               EMPLOYEE SECTION
           ====================================================== */}
           <div className="rounded-3xl border border-slate-400 border-indigo-200 bg-gradient-to-br from-indigo-100 via-white to-violet-100 p-6 text-indigo-700 shadow-lg shadow-slate-100">
-
             <div className="mb-5 flex items-center gap-3">
               <div className="rounded-2xl bg-blue-100 p-2.5 text-blue-600">
                 <UserCheck size={20} />
@@ -289,7 +266,6 @@ function AssetAssign() {
 
             {/* Employee Search */}
             <div className="rounded-2xl border border-slate-400 border-indigo-200 bg-gradient-to-br from-indigo-100 via-white to-violet-100 p-3 shadow-inner">
-
               <label className="mb-2 block text-sm font-medium text-slate-700">
                 Search Employee
               </label>
@@ -303,9 +279,7 @@ function AssetAssign() {
                 <input
                   type="text"
                   value={employeeSearch}
-                  onChange={(e) =>
-                    setEmployeeSearch(e.target.value)
-                  }
+                  onChange={(e) => setEmployeeSearch(e.target.value)}
                   placeholder="Employee ID or name"
                   className="w-full rounded-xl border border-slate-400 bg-white px-3 py-2.5 pl-9 text-sm outline-none transition focus:border-blue-400 focus:ring-2 focus:ring-blue-200"
                 />
@@ -325,11 +299,8 @@ function AssetAssign() {
 
             {/* Employee List */}
             <div className="mt-3 max-h-[420px] space-y-2 overflow-y-auto pr-1">
-
               {loading ? (
-                <p className="text-sm text-gray-500">
-                  Loading employees...
-                </p>
+                <p className="text-sm text-gray-500">Loading employees...</p>
               ) : filteredEmployees.length === 0 ? (
                 <p className="text-sm text-gray-500">
                   No matching employee found.
@@ -337,90 +308,98 @@ function AssetAssign() {
               ) : (
                 filteredEmployees.map((emp) => (
                   <button
-  key={emp.id}
-  type="button"
-  onClick={() => setSelectedEmployee(emp)}
-  className={`w-full rounded-xl border p-2.5 text-left transition ${
-    selectedEmployee?.id === emp.id
-      ? "border-blue-600 bg-blue-500 text-white shadow-sm"
-      : "border-slate-300 bg-white text-slate-700 hover:border-blue-300 hover:shadow-xs"
-  }`}
->
-  <div className="flex items-start justify-between gap-3">
-    {/* Employee Details */}
-    <div className="min-w-0 flex-1">
-      <div className="flex items-center gap-2">
-        <h2 className="truncate text-sm font-semibold">
-          {emp.employeeName || "N/A"}
-        </h2>
-        <span
-          className={`text-[12px] font-mono px-1.5 py-0.5 rounded ${
-            selectedEmployee?.id === emp.id
-              ? "bg-white/20 text-white"
-              : "bg-slate-100 text-slate-600"
-          }`}
-        >
-          #{emp.employeeId || "N/A"}
-        </span>
-      </div>
+                    key={emp.id}
+                    type="button"
+                    onClick={() => setSelectedEmployee(emp)}
+                    className={`w-full rounded-xl border p-2.5 text-left transition ${
+                      selectedEmployee?.id === emp.id
+                        ? "border-blue-600 bg-blue-500 text-white shadow-sm"
+                        : "border-slate-300 bg-white text-slate-700 hover:border-blue-300 hover:shadow-xs"
+                    }`}
+                  >
+                    <div className="flex items-start justify-between gap-3">
+                      {/* Employee Details */}
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-center gap-2">
+                          <h2 className="truncate text-sm font-semibold">
+                            {emp.employeeName || "N/A"}
+                          </h2>
+                          <span
+                            className={`text-[12px] font-mono px-1.5 py-0.5 rounded ${
+                              selectedEmployee?.id === emp.id
+                                ? "bg-white/20 text-white"
+                                : "bg-slate-100 text-slate-600"
+                            }`}
+                          >
+                            #{emp.employeeId || "N/A"}
+                          </span>
+                        </div>
 
-      <p
-        className={`mt-0.5 truncate text-[11px] ${
-          selectedEmployee?.id === emp.id ? "text-blue-100" : "text-slate-500"
-        }`}
-      >
-        {[emp.designation, emp.department, emp.location, emp.company]
-          .filter(Boolean)
-          .join(" • ") || "No details"}
-      </p>
-    </div>
+                        <p
+                          className={`mt-0.5 truncate text-[11px] ${
+                            selectedEmployee?.id === emp.id
+                              ? "text-blue-100"
+                              : "text-slate-500"
+                          }`}
+                        >
+                          {[
+                            emp.designation,
+                            emp.department,
+                            emp.location,
+                            emp.company,
+                          ]
+                            .filter(Boolean)
+                            .join(" • ") || "No details"}
+                        </p>
+                      </div>
 
-    {/* Assets Badge & Stacked Asset List */}
-    <div className="shrink-0 text-right">
-      <span
-        className={`inline-block rounded-full px-2 py-0.5 text-[10px] font-bold ${
-          selectedEmployee?.id === emp.id
-            ? "bg-white/20 text-white"
-            : "bg-blue-100 text-blue-700"
-        }`}
-      >
-        {emp.assetlist?.length || 0} Assets
-      </span>
+                      {/* Assets Badge & Stacked Asset List */}
+                      <div className="shrink-0 text-right">
+                        <span
+                          className={`inline-block rounded-full px-2 py-0.5 text-[10px] font-bold ${
+                            selectedEmployee?.id === emp.id
+                              ? "bg-white/20 text-white"
+                              : "bg-blue-100 text-blue-700"
+                          }`}
+                        >
+                          {emp.assetlist?.length || 0} Assets
+                        </span>
 
-      {/* Stacked Asset Rows */}
-      {emp.assetlist?.length > 0 && (
-        <div className="mt-1 space-y-0.5 text-right">
-          {emp.assetlist.map((assetId) => {
-            const asset = assets.find(
-              (item) => String(item.id) === String(assetId)
-            );
-            if (!asset) return null;
+                        {/* Stacked Asset Rows */}
+                        {emp.assetlist?.length > 0 && (
+                          <div className="mt-1 space-y-0.5 text-right">
+                            {emp.assetlist.map((assetId) => {
+                              const asset = assets.find(
+                                (item) => String(item.id) === String(assetId),
+                              );
+                              if (!asset) return null;
 
-            return (
-              <div
-                key={assetId}
-                className={`text-[12px] leading-tight ${
-                  selectedEmployee?.id === emp.id
-                    ? "text-blue-100"
-                    : "text-slate-500"
-                }`}
-              >
-                <span className="font-medium">{asset.equipment}</span>
-                <span className="mx-1 opacity-60">•</span>
-                <span className="font-mono text-[12px] ">
-                  {asset.assetCode}
-                </span>
-              </div>
-            );
-          })}
-        </div>
-      )}
-    </div>
-  </div>
-</button>
+                              return (
+                                <div
+                                  key={assetId}
+                                  className={`text-[12px] leading-tight ${
+                                    selectedEmployee?.id === emp.id
+                                      ? "text-blue-100"
+                                      : "text-slate-500"
+                                  }`}
+                                >
+                                  <span className="font-medium">
+                                    {asset.equipment}
+                                  </span>
+                                  <span className="mx-1 opacity-60">•</span>
+                                  <span className="font-mono text-[12px] ">
+                                    {asset.assetCode}
+                                  </span>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </button>
                 ))
               )}
-
             </div>
           </div>
 
@@ -428,7 +407,6 @@ function AssetAssign() {
               ASSET SECTION
           ====================================================== */}
           <div className="rounded-3xl border border-slate-400 border-indigo-200 bg-gradient-to-br from-indigo-100 via-white to-violet-100 p-6 text-indigo-700 shadow-lg shadow-slate-100">
-
             <div className="mb-5 flex items-center gap-3">
               <div className="rounded-2xl bg-emerald-100 p-2.5 text-emerald-600">
                 <PackagePlus size={20} />
@@ -441,7 +419,6 @@ function AssetAssign() {
 
             {/* Asset Search */}
             <div className="mb-4 rounded-2xl border border-slate-400 border-indigo-200 bg-gradient-to-br from-indigo-100 via-white to-violet-100 p-3 shadow-inner">
-
               <label className="mb-2 block text-sm font-medium text-slate-700">
                 Search Asset
               </label>
@@ -455,9 +432,7 @@ function AssetAssign() {
                 <input
                   type="text"
                   value={assetSearch}
-                  onChange={(e) =>
-                    setAssetSearch(e.target.value)
-                  }
+                  onChange={(e) => setAssetSearch(e.target.value)}
                   placeholder="Asset Code, Equipment, Brand or Model"
                   className="w-full rounded-xl border border-slate-400 bg-white py-2 pl-9 pr-3 text-sm outline-none transition focus:border-emerald-400 focus:ring-2 focus:ring-emerald-200"
                 />
@@ -477,11 +452,8 @@ function AssetAssign() {
 
             {/* Asset List */}
             <div className="mb-4 max-h-[420px] space-y-2 overflow-y-auto pr-1">
-
               {loading ? (
-                <p className="text-sm text-gray-500">
-                  Loading assets...
-                </p>
+                <p className="text-sm text-gray-500">Loading assets...</p>
               ) : unassignedAssets.length === 0 ? (
                 <p className="text-sm text-gray-500">
                   No unassigned assets available.
@@ -491,18 +463,14 @@ function AssetAssign() {
                   <button
                     key={asset.id}
                     type="button"
-                    onClick={() =>
-                      setSelectedAssetId(asset.id)
-                    }
+                    onClick={() => setSelectedAssetId(asset.id)}
                     className={`w-full rounded-2xl border p-4 text-left transition ${
                       selectedAssetId === asset.id
                         ? "border-blue-600 bg-blue-500 text-white shadow-md"
                         : "border-slate-400 border-emerald-200 bg-gradient-to-br from-emerald-100 via-white to-teal-100 text-slate-700 hover:border-emerald-300 hover:shadow-sm"
                     }`}
                   >
-
                     <div className="flex items-center justify-between gap-4">
-
                       <div>
                         <p className="font-semibold">
                           {asset.equipment || "N/A"}
@@ -542,13 +510,10 @@ function AssetAssign() {
                           {asset.status || "N/A"}
                         </span>
                       </div>
-
                     </div>
-
                   </button>
                 ))
               )}
-
             </div>
 
             {/* =====================================================
@@ -556,16 +521,13 @@ function AssetAssign() {
             ====================================================== */}
             {selectedEmployee && selectedAssetId && (
               <div className="mb-4 rounded-3xl border border-blue-400 bg-gradient-to-r from-blue-50 via-indigo-50 to-white p-4 shadow-sm">
-
                 <h3 className="mb-3 font-semibold text-blue-700">
                   Assignment Summary
                 </h3>
 
                 <div className="grid gap-3 text-sm text-slate-700 md:grid-cols-2">
-
                   {/* Employee */}
                   <div className="rounded-2xl bg-white/90 p-3 shadow-md">
-
                     <p className="text-xs font-semibold uppercase tracking-wide text-blue-600">
                       Employee
                     </p>
@@ -576,10 +538,7 @@ function AssetAssign() {
                       {selectedEmployee.employeeName || "N/A"}
                     </p>
 
-                    <p>
-                      ID:{" "}
-                      {selectedEmployee.employeeId || "N/A"}
-                    </p>
+                    <p>ID: {selectedEmployee.employeeId || "N/A"}</p>
 
                     <p className="text-slate-500">
                       {selectedEmployee.designation || "N/A"}
@@ -600,7 +559,6 @@ function AssetAssign() {
 
                   {/* Asset */}
                   <div className="rounded-2xl bg-white/90 p-3 shadow-md">
-
                     <p className="text-xs font-semibold uppercase tracking-wide text-emerald-600">
                       Asset
                     </p>
@@ -611,9 +569,7 @@ function AssetAssign() {
                       {selectedAsset?.equipment || "N/A"}
                     </p>
 
-                    <p>
-                      {selectedAsset?.assetCode || "N/A"}
-                    </p>
+                    <p>{selectedAsset?.assetCode || "N/A"}</p>
 
                     <p className="text-slate-500">
                       {selectedAsset?.brand || "N/A"}
@@ -631,29 +587,11 @@ function AssetAssign() {
                       {selectedAsset?.location || "N/A"}
                     </p>
                   </div>
-
                 </div>
               </div>
             )}
 
-            {/* Notes */}
-            <div className="mb-4 rounded-2xl border border-slate-400 border-indigo-200 bg-gradient-to-br from-indigo-100 via-white to-violet-100 p-3 shadow-inner">
-
-              <label className="mb-2 block text-sm font-medium text-slate-700">
-                Additional Notes
-              </label>
-
-              <textarea
-                value={notes}
-                onChange={(e) =>
-                  setNotes(e.target.value)
-                }
-                rows="3"
-                className="w-full rounded-xl border border-slate-400 bg-white px-3 py-2 text-sm outline-none transition focus:border-emerald-400 focus:ring-2 focus:ring-emerald-200"
-                placeholder="Add any remarks for this assignment"
-              />
-
-            </div>
+            
 
             {/* Assign Button */}
             {selectedEmployee && selectedAssetId && (
@@ -663,12 +601,9 @@ function AssetAssign() {
                 disabled={assigning}
                 className="w-full rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 px-4 py-3 font-semibold text-white shadow-md transition hover:from-blue-700 hover:to-indigo-700 disabled:cursor-not-allowed disabled:opacity-60"
               >
-                {assigning
-                  ? "Assigning Asset..."
-                  : "Assign Asset"}
+                {assigning ? "Assigning Asset..." : "Assign Asset"}
               </button>
             )}
-
           </div>
         </div>
       </div>
@@ -677,4 +612,3 @@ function AssetAssign() {
 }
 
 export default AssetAssign;
- 

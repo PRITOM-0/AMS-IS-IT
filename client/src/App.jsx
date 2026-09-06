@@ -10,7 +10,7 @@ import Splash from "./pages/Splash";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Assets from "./pages/Assets";
-import Users from "./pages/Users";
+ 
 import Requests from "./pages/Requests";
 import AssetDetails from "./pages/AssetDetails";
 import AddAsset from "./pages/AddAsset";
@@ -246,11 +246,7 @@ function App() {
           element={<AssetDetails />}
         />
 
-        {/* Users */}
-        <Route
-          path="users"
-          element={<Users />}
-        />
+       
 
         {/* Requests */}
         <Route

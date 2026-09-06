@@ -18,19 +18,19 @@
       "receivedDate": "",
       "oldUsers": [
         {
-          "employeeName": "Pritom Saha",
+          "employeeName": "Mahmudul Hassan",
           "employeeId": "904740",
           "receivedDate": "2026-09-03T08:29:52.007Z",
           "releaseDate": "2026-09-03T08:30:07.215Z"
         },
         {
-          "employeeName": "Pritom Saha",
+          "employeeName": "Mahmudul Hassan",
           "employeeId": "904740",
           "receivedDate": "2026-09-03T08:30:30.119Z",
           "releaseDate": "2026-09-03T08:31:39.271Z"
         },
         {
-          "employeeName": "Pritom Saha",
+          "employeeName": "Mahmudul Hassan",
           "employeeId": "904740",
           "receivedDate": "2026-09-03T08:31:55.719Z",
           "releaseDate": "2026-09-03T10:44:07.438Z",
@@ -69,7 +69,7 @@
       "receivedDate": "2026-09-03T08:32:15.535Z",
       "oldUsers": [
         {
-          "employeeName": "Pritom Saha",
+          "employeeName": "Mahmudul Hassan",
           "employeeId": "904740",
           "receivedDate": "2026-09-03T08:30:36.111Z",
           "releaseDate": "2026-09-03T08:31:04.983Z"
@@ -136,7 +136,15 @@
       "status": "Active",
       "employeeId": "",
       "receivedDate": "",
-      "oldUsers": [],
+      "oldUsers": [
+        {
+          "employeeName": "Ainal Rahman",
+          "employeeId": "782833",
+          "receivedDate": "2026-09-06T04:14:33.684Z",
+          "releaseDate": "2026-09-06T04:15:52.197Z",
+          "releaseNote": "No need now, Assign later"
+        }
+      ],
       "purchaseDate": "",
       "purchasePrice": "",
       "warrantyStart": "",
@@ -148,7 +156,7 @@
       "upgradeEquipments": "",
       "surveyTakenBy": "",
       "createdAt": "2026-09-03T06:57:53.339Z",
-      "updatedAt": "2026-09-03T06:57:53.339Z",
+      "updatedAt": "2026-09-06T04:14:33.684Z",
       "id": "-wWUceajePE"
     },
     {
@@ -196,8 +204,8 @@
       "floor": "Ground Floor",
       "room": "",
       "status": "Active",
-      "employeeId": "",
-      "receivedDate": "",
+      "employeeId": "fbF0ZQQD4W0",
+      "receivedDate": "2026-09-06T04:00:26.172Z",
       "oldUsers": [],
       "purchaseDate": "",
       "purchasePrice": "",
@@ -210,7 +218,7 @@
       "upgradeEquipments": "",
       "surveyTakenBy": "",
       "createdAt": "2026-09-03T06:57:53.339Z",
-      "updatedAt": "2026-09-03T06:57:53.339Z",
+      "updatedAt": "2026-09-06T04:00:26.172Z",
       "id": "jNFzH_XU6R8"
     },
     {
@@ -227,8 +235,8 @@
       "floor": "Ground Floor",
       "room": "",
       "status": "Active",
-      "employeeId": "",
-      "receivedDate": "",
+      "employeeId": "VIpPYncKJKw",
+      "receivedDate": "2026-09-06T04:14:39.245Z",
       "oldUsers": [],
       "purchaseDate": "",
       "purchasePrice": "",
@@ -241,7 +249,7 @@
       "upgradeEquipments": "",
       "surveyTakenBy": "",
       "createdAt": "2026-09-03T06:57:53.339Z",
-      "updatedAt": "2026-09-03T06:57:53.339Z",
+      "updatedAt": "2026-09-06T04:14:39.245Z",
       "id": "lJ2xTviCuKY"
     },
     {
@@ -258,8 +266,8 @@
       "floor": "Ground Floor",
       "room": "",
       "status": "Active",
-      "employeeId": "",
-      "receivedDate": "",
+      "employeeId": "fbF0ZQQD4W0",
+      "receivedDate": "2026-09-06T04:12:28.180Z",
       "oldUsers": [],
       "purchaseDate": "",
       "purchasePrice": "",
@@ -272,7 +280,7 @@
       "upgradeEquipments": "",
       "surveyTakenBy": "",
       "createdAt": "2026-09-03T06:57:53.339Z",
-      "updatedAt": "2026-09-03T06:57:53.339Z",
+      "updatedAt": "2026-09-06T04:12:28.180Z",
       "id": "REoCHl0PmXY"
     },
     {
@@ -320,8 +328,8 @@
       "floor": "Ground Floor",
       "room": "",
       "status": "Active",
-      "employeeId": "",
-      "receivedDate": "",
+      "employeeId": "Ad0MuLFhn2A",
+      "receivedDate": "2026-09-06T04:14:27.045Z",
       "oldUsers": [],
       "purchaseDate": "",
       "purchasePrice": "",
@@ -334,7 +342,7 @@
       "upgradeEquipments": "",
       "surveyTakenBy": "",
       "createdAt": "2026-09-03T06:57:53.339Z",
-      "updatedAt": "2026-09-03T06:57:53.339Z",
+      "updatedAt": "2026-09-06T04:14:27.045Z",
       "id": "Sh62lDqum2Y"
     },
     {
@@ -351,8 +359,8 @@
       "floor": "Ground Floor",
       "room": "",
       "status": "Active",
-      "employeeId": "",
-      "receivedDate": "",
+      "employeeId": "Ad0MuLFhn2A",
+      "receivedDate": "2026-09-06T04:00:31.940Z",
       "oldUsers": [],
       "purchaseDate": "",
       "purchasePrice": "",
@@ -365,7 +373,7 @@
       "upgradeEquipments": "",
       "surveyTakenBy": "",
       "createdAt": "2026-09-03T06:57:53.339Z",
-      "updatedAt": "2026-09-03T06:57:53.339Z",
+      "updatedAt": "2026-09-06T04:00:31.940Z",
       "id": "MsrPZ1tv5aA"
     },
     {
@@ -382,8 +390,8 @@
       "floor": "1st Floor",
       "room": "",
       "status": "Active",
-      "employeeId": "",
-      "receivedDate": "",
+      "employeeId": "VIpPYncKJKw",
+      "receivedDate": "2026-09-06T04:14:45.245Z",
       "oldUsers": [],
       "purchaseDate": "",
       "purchasePrice": "",
@@ -396,7 +404,7 @@
       "upgradeEquipments": "",
       "surveyTakenBy": "",
       "createdAt": "2026-09-03T06:57:53.339Z",
-      "updatedAt": "2026-09-03T06:57:53.339Z",
+      "updatedAt": "2026-09-06T04:14:45.245Z",
       "id": "xBcCDYV95Qg"
     },
     {
@@ -444,8 +452,8 @@
       "floor": "1st Floor",
       "room": "",
       "status": "Active",
-      "employeeId": "",
-      "receivedDate": "",
+      "employeeId": "VIpPYncKJKw",
+      "receivedDate": "2026-09-06T04:14:50.397Z",
       "oldUsers": [],
       "purchaseDate": "",
       "purchasePrice": "",
@@ -458,7 +466,7 @@
       "upgradeEquipments": "",
       "surveyTakenBy": "",
       "createdAt": "2026-09-03T06:57:53.339Z",
-      "updatedAt": "2026-09-03T06:57:53.339Z",
+      "updatedAt": "2026-09-06T04:14:50.397Z",
       "id": "K5OU3Zrgcks"
     },
     {
@@ -1281,8 +1289,8 @@
       "floor": "3rd Floor",
       "room": "",
       "status": "Active",
-      "employeeId": "",
-      "receivedDate": "",
+      "employeeId": "fbF0ZQQD4W0",
+      "receivedDate": "2026-09-06T04:15:04.069Z",
       "oldUsers": [],
       "purchaseDate": "",
       "purchasePrice": "",
@@ -1295,7 +1303,7 @@
       "upgradeEquipments": "",
       "surveyTakenBy": "",
       "createdAt": "2026-09-03T06:57:53.340Z",
-      "updatedAt": "2026-09-03T06:57:53.340Z",
+      "updatedAt": "2026-09-06T04:15:04.069Z",
       "id": "6zxqNV76iGs"
     },
     {
@@ -10053,7 +10061,7 @@
   "employees": [
     {
       "id": "x4HhH5D8vk4",
-      "employeeName": "Pritom Saha",
+      "employeeName": "Mahmudul Hassan",
       "employeeId": "904740",
       "designation": "Jr. IT Officer",
       "company": "SPL",
@@ -10065,6 +10073,64 @@
         "eYe0OJBX-T4",
         "dtMOSykw-bw",
         "I2aKL9gJRoU"
+      ]
+    },
+    {
+      "id": "AK1azsL7Dmk",
+      "employeeName": "Kaiser Alam",
+      "employeeId": "897484",
+      "designation": "Manager",
+      "company": "IPL",
+      "location": "SRU",
+      "department": "APM",
+      "createdAt": "2026-09-06T03:52:05.916Z",
+      "updatedAt": "2026-09-06T03:52:05.916Z"
+    },
+    {
+      "id": "fbF0ZQQD4W0",
+      "employeeName": "Morshed Islam",
+      "employeeId": "897237",
+      "designation": "Deputy manager",
+      "company": "ITL",
+      "location": "JRD",
+      "department": "Payroll",
+      "createdAt": "2026-09-06T03:52:50.900Z",
+      "updatedAt": "2026-09-06T04:15:04.069Z",
+      "assetlist": [
+        "jNFzH_XU6R8",
+        "REoCHl0PmXY",
+        "6zxqNV76iGs"
+      ]
+    },
+    {
+      "id": "VIpPYncKJKw",
+      "employeeName": "Riyadul Islam",
+      "employeeId": "687700",
+      "designation": "Officer",
+      "company": "SPL",
+      "location": "Gulshan-02",
+      "department": "HR",
+      "createdAt": "2026-09-06T03:56:10.541Z",
+      "updatedAt": "2026-09-06T04:14:50.397Z",
+      "assetlist": [
+        "lJ2xTviCuKY",
+        "xBcCDYV95Qg",
+        "K5OU3Zrgcks"
+      ]
+    },
+    {
+      "id": "Ad0MuLFhn2A",
+      "employeeName": "Ainal Rahman",
+      "employeeId": "782833",
+      "designation": "Head",
+      "company": "KHL",
+      "location": "SRM",
+      "department": "Faculty",
+      "createdAt": "2026-09-06T04:00:11.316Z",
+      "updatedAt": "2026-09-06T04:14:33.684Z",
+      "assetlist": [
+        "MsrPZ1tv5aA",
+        "Sh62lDqum2Y"
       ]
     }
   ],
@@ -10296,7 +10362,7 @@
       "location": "JRU-03",
       "complainMode": "Phone",
       "complainDate": "2026-08-30T04:52",
-      "itPersonName": "PRITOM SAHA",
+      "itPersonName": "Mahmudul Hassan",
       "progress": "Arrived",
       "priority": "Medium",
       "taskStartDate": "",
@@ -10346,7 +10412,7 @@
     },
     {
       "id": "4",
-      "username": "Pritom Saha",
+      "username": "Mahmudul Hassan",
       "password": "P123"
     },
     {

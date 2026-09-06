@@ -217,14 +217,25 @@ function Employees() {
         </div>
       ) : (
         /* EMPLOYEE LIST */
-        <div className="grid grid-cols-4">
-          {filteredEmployees.map((emp) => (
-            <EmployeeCard
-              key={emp.id}
-              employee={emp}
-            />
-          ))}
-        </div>
+        <div className="overflow-x-auto border border-indigo-200 rounded-xl shadow-sm">
+  <table className="w-full text-left border-collapse bg-white">
+    <thead className="bg-gradient-to-r from-indigo-100 via-white to-violet-100 border-b border-indigo-200 text-xs font-semibold text-indigo-700 uppercase">
+      <tr>
+        <th className="px-4 py-3">Employee</th>
+        <th className="px-4 py-3">Designation</th>
+        <th className="px-4 py-3">Company</th>
+        <th className="px-4 py-3">Location</th>
+        <th className="px-4 py-3">Department</th>
+        <th className="px-4 py-3 text-right">Assets</th>
+      </tr>
+    </thead>
+    <tbody className="divide-y divide-indigo-100">
+      {filteredEmployees.map((emp) => (
+        <EmployeeCard key={emp.id} employee={emp} />
+      ))}
+    </tbody>
+  </table>
+</div>
       )}
     </div>
   );
