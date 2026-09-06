@@ -1,4 +1,3 @@
- 
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import {
@@ -12,6 +11,7 @@ import {
   Building2,
   MapPin,
   Layers,
+  ChevronDown,
   Package,
   History,
 } from "lucide-react";
@@ -25,8 +25,14 @@ function EmployeeDetails() {
   const [originalEmployee, setOriginalEmployee] = useState(null);
   const [formData, setFormData] = useState(null);
   const [assets, setAssets] = useState([]);
+  const [list, setList] = useState({
+    company: [],
+    Location: [],
+    department: [],
+  });
   const [isEdit, setIsEdit] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [listLoading, setListLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
@@ -34,10 +40,12 @@ function EmployeeDetails() {
       try {
         setLoading(true);
 
-        const [employeeResponse, assetsResponse] = await Promise.all([
-          axios.get(`${API_BASE_URL}/employees/${id}`),
-          axios.get(`${API_BASE_URL}/assets`),
-        ]);
+        const [employeeResponse, assetsResponse, listResponse] =
+          await Promise.all([
+            axios.get(`${API_BASE_URL}/employees/${id}`),
+            axios.get(`${API_BASE_URL}/assets`),
+            axios.get(`${API_BASE_URL}/list`),
+          ]);
 
         const employeeData = employeeResponse.data;
         const assetData = assetsResponse.data || [];
@@ -46,10 +54,16 @@ function EmployeeDetails() {
         setOriginalEmployee(employeeData);
         setFormData(employeeData ? { ...employeeData } : null);
         setAssets(assetData);
+        setList({
+          company: listResponse.data?.company || [],
+          Location: listResponse.data?.Location || [],
+          department: listResponse.data?.department || [],
+        });
       } catch (error) {
         console.error("Error fetching employee data:", error);
       } finally {
         setLoading(false);
+        setListLoading(false);
       }
     };
 
@@ -152,7 +166,6 @@ function EmployeeDetails() {
 
   return (
     <div className="p-6 space-y-6">
-
       {/* TOP BAR */}
       <div className="flex justify-between items-center gap-4">
         <button
@@ -196,11 +209,9 @@ function EmployeeDetails() {
 
       {/* EMPLOYEE INFORMATION */}
       <div className="bg-white border shadow-lg rounded-2xl overflow-hidden">
-
         {/* HEADER */}
         <div className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-6">
           <div className="flex justify-between items-center gap-4">
-
             <div className="flex items-center gap-4 min-w-0">
               <div className="w-14 h-14 rounded-xl bg-white/20 flex items-center justify-center shrink-0">
                 <User size={28} />
@@ -220,7 +231,6 @@ function EmployeeDetails() {
             <span className="bg-white/20 px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap">
               {employee.employeeId || "N/A"}
             </span>
-
           </div>
         </div>
 
@@ -228,7 +238,6 @@ function EmployeeDetails() {
         <div className="p-6">
           {isEdit ? (
             <div className="space-y-4">
-
               <EditableField
                 label="Employee Name"
                 icon={<User size={16} />}
@@ -253,34 +262,38 @@ function EmployeeDetails() {
                 onChange={handleChange}
               />
 
-              <EditableField
+              <SelectField
                 label="Company"
                 icon={<Building2 size={16} />}
                 name="company"
                 value={formData?.company || ""}
                 onChange={handleChange}
+                options={list.company}
+                loading={listLoading}
               />
 
-              <EditableField
+              <SelectField
                 label="Location"
                 icon={<MapPin size={16} />}
                 name="location"
                 value={formData?.location || ""}
                 onChange={handleChange}
+                options={list.Location}
+                loading={listLoading}
               />
 
-              <EditableField
+              <SelectField
                 label="Department"
                 icon={<Layers size={16} />}
                 name="department"
                 value={formData?.department || ""}
                 onChange={handleChange}
+                options={list.department}
+                loading={listLoading}
               />
-
             </div>
           ) : (
             <div className="space-y-3">
-
               <InfoRow
                 label="Employee Name"
                 value={employee.employeeName}
@@ -316,7 +329,6 @@ function EmployeeDetails() {
                 value={employee.department}
                 icon={<Layers size={16} />}
               />
-
             </div>
           )}
         </div>
@@ -351,7 +363,6 @@ function EmployeeDetails() {
                   className="block border rounded-xl p-4 shadow-sm hover:shadow-md hover:border-indigo-300 transition bg-white"
                 >
                   <div className="flex justify-between items-center gap-4">
-
                     <div className="min-w-0">
                       <p className="font-semibold text-indigo-600 truncate">
                         {asset?.equipment || "Asset"}
@@ -378,7 +389,6 @@ function EmployeeDetails() {
                     <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded whitespace-nowrap">
                       Assigned
                     </span>
-
                   </div>
                 </Link>
               );
@@ -391,9 +401,7 @@ function EmployeeDetails() {
       <div>
         <div className="flex items-center gap-2 mb-3">
           <History size={20} className="text-indigo-600" />
-          <h2 className="font-semibold text-lg text-gray-800">
-            Asset History
-          </h2>
+          <h2 className="font-semibold text-lg text-gray-800">Asset History</h2>
 
           <span className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">
             {employee.assethistory?.length || 0}
@@ -416,7 +424,6 @@ function EmployeeDetails() {
                   className="block border rounded-xl p-4 shadow-sm bg-white hover:shadow-md hover:border-indigo-300 transition"
                 >
                   <div className="flex justify-between items-start gap-4">
-
                     <div className="min-w-0">
                       <p className="font-semibold text-indigo-600 truncate">
                         {asset?.equipment || entry.assetId || "Asset"}
@@ -443,7 +450,6 @@ function EmployeeDetails() {
                         {entry.returnedDate ? "Returned" : "In Use"}
                       </span>
                     </div>
-
                   </div>
 
                   <div className="my-3 border-t" />
@@ -483,9 +489,7 @@ function InfoRow({ label, value, icon }) {
         <span className="font-medium">{label}</span>
       </div>
 
-      <span className="text-gray-800 font-medium">
-        : {value || "N/A"}
-      </span>
+      <span className="text-gray-800 font-medium">: {value || "N/A"}</span>
     </div>
   );
 }
@@ -494,14 +498,7 @@ function InfoRow({ label, value, icon }) {
 /* EDITABLE FIELD */
 /* -------------------------------- */
 
-function EditableField({
-  label,
-  name,
-  value,
-  onChange,
-  icon,
-  type = "text",
-}) {
+function EditableField({ label, name, value, onChange, icon, type = "text" }) {
   return (
     <label className="flex items-center gap-4 text-sm">
       <div className="w-40 flex items-center gap-2 text-gray-500 shrink-0">
@@ -519,4 +516,41 @@ function EditableField({
     </label>
   );
 }
- 
+
+function SelectField({ label, name, value, onChange, icon, options, loading }) {
+  const availableOptions =
+    value && !options.includes(value) ? [value, ...options] : options;
+
+  return (
+    <label className="flex items-center gap-4 text-sm">
+      <div className="flex w-40 shrink-0 items-center gap-2 text-gray-500">
+        <span className="text-indigo-500">{icon}</span>
+        <span className="font-medium">{label}</span>
+      </div>
+
+      <div className="relative flex-1">
+        <select
+          name={name}
+          value={value}
+          onChange={onChange}
+          disabled={loading}
+          className="w-full appearance-none rounded-lg border border-gray-300 bg-white px-3 py-2 pr-9 text-gray-800 focus:border-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-400 disabled:bg-gray-100"
+        >
+          <option value="">
+            {loading
+              ? `Loading ${label.toLowerCase()}...`
+              : `Select ${label.toLowerCase()}`}
+          </option>
+
+          {availableOptions.map((option) => (
+            <option key={option} value={option}>
+              {option}
+            </option>
+          ))}
+        </select>
+
+        <ChevronDown className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+      </div>
+    </label>
+  );
+}
