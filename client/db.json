@@ -65,14 +65,35 @@
       "floor": "Ground Floor",
       "room": "",
       "status": "Active",
-      "employeeId": "x4HhH5D8vk4",
-      "receivedDate": "2026-09-03T08:32:15.535Z",
+      "employeeId": "Ad0MuLFhn2A",
+      "receivedDate": "2026-09-07T03:30:42.757Z",
       "oldUsers": [
         {
           "employeeName": "Mahmudul Hassan",
           "employeeId": "904740",
           "receivedDate": "2026-09-03T08:30:36.111Z",
           "releaseDate": "2026-09-03T08:31:04.983Z"
+        },
+        {
+          "employeeName": "Mahmudul Hassan",
+          "employeeId": "904740",
+          "receivedDate": "2026-09-03T08:32:15.535Z",
+          "releaseDate": "2026-09-07T03:28:24.429Z",
+          "releaseNote": "Display problem"
+        },
+        {
+          "employeeName": "Ainal Rahman",
+          "employeeId": "782833",
+          "receivedDate": "2026-09-07T03:28:45.989Z",
+          "releaseDate": "2026-09-07T03:29:29.045Z",
+          "releaseNote": "Need large monitor"
+        },
+        {
+          "employeeName": "Kaiser Alam",
+          "employeeId": "897484",
+          "receivedDate": "2026-09-07T03:29:57.453Z",
+          "releaseDate": "2026-09-07T03:30:26.725Z",
+          "releaseNote": "Employee resign"
         }
       ],
       "purchaseDate": "2017-07-22T18:00:00.000Z",
@@ -86,7 +107,7 @@
       "upgradeEquipments": "",
       "surveyTakenBy": "",
       "createdAt": "2026-09-03T06:57:53.339Z",
-      "updatedAt": "2026-09-03T08:32:15.535Z",
+      "updatedAt": "2026-09-07T03:30:42.757Z",
       "id": "dtMOSykw-bw"
     },
     {
@@ -10099,13 +10120,13 @@
       "location": "CORP",
       "department": "IT",
       "createdAt": "2026-09-03T07:04:31.057Z",
-      "updatedAt": "2026-09-06T06:48:35.065Z",
+      "updatedAt": "2026-09-07T03:25:43.757Z",
       "assetlist": [
         "eYe0OJBX-T4",
-        "dtMOSykw-bw",
         "I2aKL9gJRoU",
         "CLYl3umHcPk"
-      ]
+      ],
+      "assethistory": []
     },
     {
       "id": "AK1azsL7Dmk",
@@ -10116,7 +10137,8 @@
       "location": "SRU",
       "department": "APM",
       "createdAt": "2026-09-06T03:52:05.916Z",
-      "updatedAt": "2026-09-06T03:52:05.916Z"
+      "updatedAt": "2026-09-07T03:29:57.453Z",
+      "assetlist": []
     },
     {
       "id": "fbF0ZQQD4W0",
@@ -10159,10 +10181,11 @@
       "location": "SRM",
       "department": "Faculty",
       "createdAt": "2026-09-06T04:00:11.316Z",
-      "updatedAt": "2026-09-06T05:10:06.729Z",
+      "updatedAt": "2026-09-07T03:30:42.757Z",
       "assetlist": [
         "MsrPZ1tv5aA",
-        "Sh62lDqum2Y"
+        "Sh62lDqum2Y",
+        "dtMOSykw-bw"
       ],
       "assethistory": []
     }
@@ -10429,24 +10452,9 @@
   ],
   "users": [
     {
-      "id": "1",
-      "username": "IT",
-      "password": "I123"
-    },
-    {
-      "id": "2",
+      "id": "hrgfdheg",
       "username": "Ratan Saha",
       "password": "R123"
-    },
-    {
-      "id": "3",
-      "username": "Abdul Kader",
-      "password": "K123"
-    },
-    {
-      "username": "Ripon Mia",
-      "password": "R123",
-      "id": "FWfjNcYxJWA"
     },
     {
       "username": "Arifur Rahman",
@@ -10454,9 +10462,29 @@
       "id": "LGuHi-8uBFg"
     },
     {
+      "id": "hfddhfhg",
+      "username": "Abdul Kader",
+      "password": "K123"
+    },
+    {
+      "username": "Ripon Mia",
+      "password": "RM123",
+      "id": "FWfjNcYxJWA"
+    },
+    {
+      "username": "Tanoy Sarkar",
+      "password": "T123",
+      "id": "mFpXLvz7xHY"
+    },
+    {
       "username": "Pritom Saha",
       "password": "P123",
       "id": "j7tn9UxYhmk"
+    },
+    {
+      "id": "kjkjrejr",
+      "username": "IT Person",
+      "password": "I123"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

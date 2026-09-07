@@ -683,7 +683,7 @@ export default function AddAsset() {
               </div>
 
               {/* Upgrade Equipments */}
-              <div>
+              <div className="md:col-span-2 lg:col-span-3">
                 <label className="block text-xs font-semibold text-slate-700 mb-1.5">
                   Upgrade Equipments
                 </label>
