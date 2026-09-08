@@ -20,6 +20,7 @@ import {
 export default function AddAsset() {
   const [users, setUsers] = useState([]);
   const [vendors, setVendors] = useState([]);
+  const [newEquipmentCodePattern, setNewEquipmentCodePattern] = useState("");
   const [list, setList] = useState({
     company: [],
     Location: [],
@@ -156,16 +157,41 @@ export default function AddAsset() {
   // Validation
   const validate = () => {
     const newErrors = {};
-    if (!formData.equipment) newErrors.equipment = "Equipment is required";
-    if (!formData.assetCode) newErrors.assetCode = "Asset Code is required";
-    if (!formData.brand) newErrors.brand = "Brand is required";
-    if (!formData.company) newErrors.company = "Company is required";
-    if (!formData.location) newErrors.location = "Location is required";
-    if (!formData.status) newErrors.status = "Status is required";
-    if (!formData.purchaseDate)
-      newErrors.purchaseDate = "Purchase Date is required";
+
+    if (!formData.equipment) {
+      newErrors.equipment = "Equipment is required";
+    }
+
+    if (!formData.company) {
+      newErrors.company = "Company is required";
+    }
+
+    if (!formData.status) {
+      newErrors.status = "Status is required";
+    }
+
+    const validateEquipments = list.validateEquipments?.[0] || {};
+    const equipmentPattern = validateEquipments[formData.equipment];
+
+    // Asset code rules
+    if (!formData.assetCode?.trim()) {
+      // Allow empty asset code when equipment has no validation pattern
+      if (equipmentPattern) {
+        newErrors.assetCode = "Asset code is required";
+      }
+    } else if (equipmentPattern) {
+      // Validate asset code only when a pattern exists
+      const regexPattern = new RegExp(
+        "^" + equipmentPattern.replace(/#/g, "[0-9]") + "$",
+      );
+
+      if (!regexPattern.test(formData.assetCode.trim())) {
+        newErrors.assetCode = `Asset code must match ${equipmentPattern}`;
+      }
+    }
 
     setErrors(newErrors);
+
     return Object.keys(newErrors).length === 0;
   };
 
@@ -211,11 +237,75 @@ export default function AddAsset() {
     if (!newItemInput.trim()) return;
 
     const valueToAdd = newItemInput.trim();
+
+    // ==========================================
+    // EQUIPMENT
+    // ==========================================
+    if (listKey === "equipment") {
+      if (!newEquipmentCodePattern.trim()) {
+        alert("Please enter the asset code pattern.");
+        return;
+      }
+
+      const codePattern = newEquipmentCodePattern.trim();
+
+      // Add equipment name to equipment list
+      const updatedCategoryList = [...(list[listKey] || []), valueToAdd];
+
+      // Get existing validation object
+      const existingValidateEquipments = list.validateEquipments?.[0] || {};
+
+      // Add new equipment + its code pattern
+      const updatedValidateEquipments = {
+        ...existingValidateEquipments,
+        [valueToAdd]: codePattern,
+      };
+
+      const updatedList = {
+        ...list,
+        [listKey]: updatedCategoryList,
+        validateEquipments: [updatedValidateEquipments],
+      };
+
+      try {
+        // Update both equipment list and validation patterns
+        await axios.patch(`${API_BASE_URL}/list`, {
+          [listKey]: updatedCategoryList,
+          validateEquipments: [updatedValidateEquipments],
+        });
+      } catch (err) {
+        console.warn("API list update warning (updating local state):", err);
+      }
+
+      // Update local state
+      setList(updatedList);
+
+      // Auto-select new equipment
+      setFormData((prev) => ({
+        ...prev,
+        equipment: valueToAdd,
+      }));
+
+      // Reset
+      setNewItemInput("");
+      setNewEquipmentCodePattern("");
+      setActiveModal(null);
+
+      return;
+    }
+
+    // ==========================================
+    // OTHER LIST ITEMS
+    // ==========================================
+
     const updatedCategoryList = [...(list[listKey] || []), valueToAdd];
-    const updatedList = { ...list, [listKey]: updatedCategoryList };
+
+    const updatedList = {
+      ...list,
+      [listKey]: updatedCategoryList,
+    };
 
     try {
-      // Update DB via API
       await axios.patch(`${API_BASE_URL}/list`, {
         [listKey]: updatedCategoryList,
       });
@@ -223,10 +313,8 @@ export default function AddAsset() {
       console.warn("API list update warning (updating local state):", err);
     }
 
-    // Update local state list
     setList(updatedList);
 
-    // Auto-select the newly created option in form
     const fieldMap = {
       equipment: "equipment",
       brand: "brand",
@@ -237,7 +325,10 @@ export default function AddAsset() {
     };
 
     if (fieldMap[listKey]) {
-      setFormData((prev) => ({ ...prev, [fieldMap[listKey]]: valueToAdd }));
+      setFormData((prev) => ({
+        ...prev,
+        [fieldMap[listKey]]: valueToAdd,
+      }));
     }
 
     setNewItemInput("");
@@ -336,14 +427,20 @@ export default function AddAsset() {
             </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-              {/* Equipment * */}
+              {/* Equipment */}
               <SearchableDropdown
                 label="Equipment *"
                 options={list.equipment || []}
                 value={formData.equipment}
-                onChange={(val) =>
-                  setFormData((prev) => ({ ...prev, equipment: val }))
-                }
+                onChange={(val) => {
+                  const pattern = list.validateEquipments?.[0]?.[val] || "";
+
+                  setFormData((prev) => ({
+                    ...prev,
+                    equipment: val,
+                    assetCode: pattern,
+                  }));
+                }}
                 onAddClick={() => setActiveModal("equipment")}
                 error={errors.equipment}
               />
@@ -351,7 +448,7 @@ export default function AddAsset() {
               {/* Asset Code * */}
               <div>
                 <label className="block text-xs font-semibold text-slate-700 mb-1.5">
-                  Asset Code *
+                  Asset Code
                 </label>
                 <input
                   type="text"
@@ -370,7 +467,7 @@ export default function AddAsset() {
 
               {/* Brand * */}
               <SearchableDropdown
-                label="Brand *"
+                label="Brand"
                 options={list.brand || []}
                 value={formData.brand}
                 onChange={(val) =>
@@ -465,7 +562,7 @@ export default function AddAsset() {
 
               {/* Location * */}
               <SearchableDropdown
-                label="Location *"
+                label="Location"
                 options={list.Location || []}
                 value={formData.location}
                 onChange={(val) =>
@@ -542,7 +639,7 @@ export default function AddAsset() {
               {/* Purchase Date * */}
               <div>
                 <label className="block text-xs font-semibold text-slate-700 mb-1.5">
-                  Purchase Date *
+                  Purchase Date
                 </label>
                 <input
                   type="date"
@@ -735,12 +832,15 @@ export default function AddAsset() {
       </div>
 
       {/* Modal 1: Add New Option Modal (Equipment, Brand, Company, Location, Department, Status) */}
-      {}
       {activeModal && activeModal !== "vendor" && (
         <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-white border  border-slate-700 rounded-2xl max-w-md w-full p-6 shadow-2xl relative">
+          <div className="bg-white border border-slate-700 rounded-2xl max-w-md w-full p-6 shadow-2xl relative">
             <button
-              onClick={() => setActiveModal(null)}
+              onClick={() => {
+                setActiveModal(null);
+                setNewItemInput("");
+                setNewEquipmentCodePattern("");
+              }}
               className="absolute top-4 right-4 text-slate-400 hover:text-slate-700 transition-colors"
             >
               <X className="w-5 h-5" />
@@ -750,23 +850,52 @@ export default function AddAsset() {
               Add New {activeModal.replace(/([A-Z])/g, " $1")}
             </h3>
 
+            {/* Equipment Name */}
             <input
               type="text"
               value={newItemInput}
               onChange={(e) => setNewItemInput(e.target.value)}
               placeholder={`Enter new ${activeModal}`}
-              className="w-full bg-white border  border-slate-700 rounded-xl p-3 text-sm text-slate-800 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 mb-6 shadow-sm"
+              className="w-full bg-white border border-slate-700 rounded-xl p-3 text-sm text-slate-800 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 mb-4 shadow-sm"
               autoFocus
             />
+
+            {/* Asset Code Pattern - Only for Equipment */}
+            {activeModal === "equipment" && (
+              <div className="mb-6">
+                <label className="block text-sm font-semibold text-slate-700 mb-2">
+                  Asset Code Pattern
+                </label>
+
+                <input
+                  type="text"
+                  value={newEquipmentCodePattern}
+                  onChange={(e) => setNewEquipmentCodePattern(e.target.value)}
+                  placeholder="e.g. 06-01-01-####"
+                  className="w-full bg-white border border-slate-700 rounded-xl p-3 text-sm text-slate-800 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 shadow-sm"
+                />
+
+                <p className="text-xs text-slate-500 mt-2">
+                  Use <span className="font-semibold">#</span> for variable
+                  digits and <span className="font-semibold">####</span> for the
+                  unique asset number.
+                </p>
+              </div>
+            )}
 
             <div className="flex justify-end gap-3">
               <button
                 type="button"
-                onClick={() => setActiveModal(null)}
-                className="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-semibold border  border-slate-700 transition-colors"
+                onClick={() => {
+                  setActiveModal(null);
+                  setNewItemInput("");
+                  setNewEquipmentCodePattern("");
+                }}
+                className="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-semibold border border-slate-700 transition-colors"
               >
                 Cancel
               </button>
+
               <button
                 type="button"
                 onClick={() => handleSaveModalItem(activeModal)}

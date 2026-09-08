@@ -9944,6 +9944,45 @@
       "createdAt": "2026-09-06T06:47:48.307Z",
       "updatedAt": "2026-09-06T06:48:35.065Z",
       "id": "CLYl3umHcPk"
+    },
+    {
+      "equipment": "Headphone",
+      "assetCode": "",
+      "brand": "Lenovo",
+      "model": "A",
+      "serialNumber": "A",
+      "specifications": "",
+      "macAddress": "A",
+      "company": "SPL",
+      "location": "SRU",
+      "department": "SRD",
+      "floor": "4",
+      "room": "304",
+      "status": "Active",
+      "employeeId": "",
+      "receivedDate": "",
+      "oldUsers": [
+        {
+          "employeeName": "ABC",
+          "employeeId": "Abc",
+          "receivedDate": "2026-09-07T06:51:45.811Z",
+          "releaseDate": "2026-09-07T06:52:50.986Z",
+          "releaseNote": "none"
+        }
+      ],
+      "purchaseDate": "2026-09-07",
+      "purchasePrice": "500000",
+      "warrantyStart": "2026-09-07",
+      "warrantyEnd": "2028-09-07",
+      "warrantyYears": "2",
+      "vendorId": "VND009",
+      "remarks": "A",
+      "surveyStatus": "OK",
+      "upgradeEquipments": "A",
+      "surveyTakenBy": "Pritom Saha",
+      "createdAt": "2026-09-07T06:47:38.524Z",
+      "updatedAt": "2026-09-07T06:51:45.811Z",
+      "id": "m9cQfHkYpo8"
     }
   ],
   "list": {
@@ -10054,8 +10093,48 @@
       "Type-C Stick",
       "Smoke Detector",
       "Call Point",
-      "Fire Bell",
-      "Test"
+      "Fire Bell"
+    ],
+    "validateEquipments": [
+      {
+        "CPU": "06-01-01-####",
+        "Monitor": "06-01-06-####",
+        "UPS": "06-01-05-####",
+        "Scanner": "06-01-04-####",
+        "Laptop": "06-01-03-####",
+        "Webcam": null,
+        "Headphone": null,
+        "Router": "06-01-09-####",
+        "Switch": "06-01-09-####",
+        "Printer": "##-01-02-####",
+        "Projector": "05-01-03-####",
+        "Projection Screen": "05-01-13-####",
+        "Speaker": "05-01-04-####",
+        "Access Control": "04-01-13-####",
+        "CCTV Camera": "08-01-16-####",
+        "DVR": "08-01-15-####",
+        "Network Rack": "01-04-02-####",
+        "Photocopier": "##-01-02-####",
+        "Smoke Detector Controller": "06-01-12-####",
+        "NVR": "06-01-14-####",
+        "POS Printer": "06-01-12-####",
+        "Barcode Printer": null,
+        "TV": "06-01-06-####",
+        "Keyboard & Mouse": null,
+        "Wireless Keyboard": null,
+        "Wireless Mouse": null,
+        "HDMI Cable": null,
+        "Microphone": null,
+        "Type-C Stick": null,
+        "Smoke Detector": null,
+        "Call Point": null,
+        "Fire Bell": null,
+        "Barcode Scanner": "06-01-10-####",
+        "PA Control Panel": "09-01-31-####",
+        "Smart Board": "05-01-15-####",
+        "TAB": "06-01-15-####",
+        "Multifunction Printer": "##-01-02-####"
+      }
     ],
     "brand": [
       "Acer",
@@ -10187,6 +10266,19 @@
         "Sh62lDqum2Y",
         "dtMOSykw-bw"
       ],
+      "assethistory": []
+    },
+    {
+      "id": "v0u6xTk-I0U",
+      "employeeName": "Cba",
+      "employeeId": "Abc",
+      "designation": "Abc",
+      "company": "SPL",
+      "location": "JRB",
+      "department": "HR",
+      "createdAt": "2026-09-07T06:50:15.358Z",
+      "updatedAt": "2026-09-07T07:01:46.050Z",
+      "assetlist": [],
       "assethistory": []
     }
   ],

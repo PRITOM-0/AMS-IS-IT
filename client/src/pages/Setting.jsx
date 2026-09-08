@@ -72,6 +72,9 @@ function Setting() {
   const [selectedListKey, setSelectedListKey] = useState("");
   const [listValue, setListValue] = useState("");
 
+  // NEW: Equipment asset code pattern
+  const [assetCodePattern, setAssetCodePattern] = useState("");
+
   // --------------------------------------------------
   // FETCH DATA
   // --------------------------------------------------
@@ -80,11 +83,12 @@ function Setting() {
     try {
       setLoading(true);
 
-      const [usersResponse, vendorsResponse, listResponse] = await Promise.all([
-        axios.get(`${API_BASE_URL}/users`),
-        axios.get(`${API_BASE_URL}/vendors`),
-        axios.get(`${API_BASE_URL}/list`),
-      ]);
+      const [usersResponse, vendorsResponse, listResponse] =
+        await Promise.all([
+          axios.get(`${API_BASE_URL}/users`),
+          axios.get(`${API_BASE_URL}/vendors`),
+          axios.get(`${API_BASE_URL}/list`),
+        ]);
 
       setUsers(usersResponse.data || []);
       setVendors(vendorsResponse.data || []);
@@ -109,10 +113,15 @@ function Setting() {
     setShowModal(false);
     setModalType("");
     setEditingItem(null);
+
     setUserForm(EMPTY_USER);
     setVendorForm(EMPTY_VENDOR);
+
     setSelectedListKey("");
     setListValue("");
+
+    // NEW
+    setAssetCodePattern("");
   };
 
   // --------------------------------------------------
@@ -150,7 +159,10 @@ function Setting() {
       setSaving(true);
 
       if (editingItem) {
-        await axios.patch(`${API_BASE_URL}/users/${editingItem.id}`, userForm);
+        await axios.patch(
+          `${API_BASE_URL}/users/${editingItem.id}`,
+          userForm,
+        );
       } else {
         await axios.post(`${API_BASE_URL}/users`, {
           ...userForm,
@@ -270,13 +282,19 @@ function Setting() {
   const openAddListValue = (key) => {
     setModalType("list");
     setEditingItem(null);
+
     setSelectedListKey(key);
     setListValue("");
+
+    // NEW
+    setAssetCodePattern("");
+
     setShowModal(true);
   };
 
   const openEditListValue = (key, index, value) => {
     setModalType("list");
+
     setEditingItem({
       key,
       index,
@@ -286,8 +304,23 @@ function Setting() {
     setSelectedListKey(key);
     setListValue(value);
 
+    // NEW:
+    // If editing equipment, get its existing pattern
+    if (key === "equipment") {
+      const existingPattern =
+        list.validateEquipments?.[0]?.[value] || "";
+
+      setAssetCodePattern(existingPattern);
+    } else {
+      setAssetCodePattern("");
+    }
+
     setShowModal(true);
   };
+
+  // --------------------------------------------------
+  // SAVE LIST VALUE
+  // --------------------------------------------------
 
   const saveListValue = async (e) => {
     e.preventDefault();
@@ -298,6 +331,117 @@ function Setting() {
       alert("Please enter a value.");
       return;
     }
+
+    // ==================================================
+    // EQUIPMENT
+    // ==================================================
+
+    if (selectedListKey === "equipment") {
+      const pattern = assetCodePattern.trim();
+
+      if (!pattern) {
+        alert("Asset code pattern is required for equipment.");
+        return;
+      }
+
+      // Basic pattern validation
+      if (!pattern.includes("#")) {
+        alert(
+          "Please enter a valid asset code pattern using # or ####.",
+        );
+        return;
+      }
+
+      const currentEquipment = Array.isArray(list.equipment)
+        ? [...list.equipment]
+        : [];
+
+      // Existing validation object
+      const currentValidation =
+        list.validateEquipments?.[0] || {};
+
+      let updatedEquipment = [...currentEquipment];
+      let updatedValidation = {
+        ...currentValidation,
+      };
+
+      // ----------------------------------------------
+      // EDIT EQUIPMENT
+      // ----------------------------------------------
+
+      if (editingItem) {
+        const oldValue = editingItem.value;
+
+        // Check duplicate name if name changed
+        if (
+          value !== oldValue &&
+          currentEquipment.some(
+            (item, index) =>
+              item.toLowerCase() === value.toLowerCase() &&
+              index !== editingItem.index,
+          )
+        ) {
+          alert("This equipment already exists.");
+          return;
+        }
+
+        // Update equipment name
+        updatedEquipment[editingItem.index] = value;
+
+        // Remove old validation key
+        delete updatedValidation[oldValue];
+
+        // Add new validation key
+        updatedValidation[value] = pattern;
+      }
+
+      // ----------------------------------------------
+      // ADD EQUIPMENT
+      // ----------------------------------------------
+
+      else {
+        const exists = currentEquipment.some(
+          (item) =>
+            item.toLowerCase() === value.toLowerCase(),
+        );
+
+        if (exists) {
+          alert("This equipment already exists.");
+          return;
+        }
+
+        updatedEquipment.push(value);
+
+        updatedValidation[value] = pattern;
+      }
+
+      try {
+        setSaving(true);
+
+        await axios.patch(`${API_BASE_URL}/list`, {
+          equipment: updatedEquipment,
+          validateEquipments: [updatedValidation],
+        });
+
+        closeModal();
+        await fetchData();
+      } catch (error) {
+        console.error(
+          "Failed to save equipment:",
+          error,
+        );
+
+        alert("Failed to save equipment.");
+      } finally {
+        setSaving(false);
+      }
+
+      return;
+    }
+
+    // ==================================================
+    // OTHER LIST VALUES
+    // ==================================================
 
     const currentValues = Array.isArray(list[selectedListKey])
       ? [...list[selectedListKey]]
@@ -331,6 +475,10 @@ function Setting() {
     }
   };
 
+  // --------------------------------------------------
+  // DELETE LIST VALUE
+  // --------------------------------------------------
+
   const deleteListValue = async (key, index, value) => {
     const confirmed = window.confirm(
       `Are you sure you want to delete "${value}"?`,
@@ -338,19 +486,52 @@ function Setting() {
 
     if (!confirmed) return;
 
-    const currentValues = Array.isArray(list[key]) ? [...list[key]] : [];
+    const currentValues = Array.isArray(list[key])
+      ? [...list[key]]
+      : [];
 
     currentValues.splice(index, 1);
 
     try {
-      await axios.patch(`${API_BASE_URL}/list`, {
-        [key]: currentValues,
-      });
+      setSaving(true);
+
+      // ==================================================
+      // DELETE EQUIPMENT
+      // ==================================================
+
+      if (key === "equipment") {
+        const currentValidation =
+          list.validateEquipments?.[0] || {};
+
+        const updatedValidation = {
+          ...currentValidation,
+        };
+
+        // Remove equipment's code pattern
+        delete updatedValidation[value];
+
+        await axios.patch(`${API_BASE_URL}/list`, {
+          equipment: currentValues,
+          validateEquipments: [updatedValidation],
+        });
+      }
+
+      // ==================================================
+      // DELETE OTHER LIST
+      // ==================================================
+
+      else {
+        await axios.patch(`${API_BASE_URL}/list`, {
+          [key]: currentValues,
+        });
+      }
 
       await fetchData();
     } catch (error) {
       console.error("Failed to delete list value:", error);
       alert("Failed to delete list value.");
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -364,7 +545,9 @@ function Setting() {
     if (!query) return users;
 
     return users.filter((user) =>
-      `${user.username} ${user.id}`.toLowerCase().includes(query),
+      `${user.username} ${user.id}`
+        .toLowerCase()
+        .includes(query),
     );
   }, [users, search]);
 
@@ -385,18 +568,27 @@ function Setting() {
       .filter(([key]) => LIST_LABELS[key])
       .sort(
         ([firstKey], [secondKey]) =>
-          LIST_ORDER.indexOf(firstKey) - LIST_ORDER.indexOf(secondKey),
+          LIST_ORDER.indexOf(firstKey) -
+          LIST_ORDER.indexOf(secondKey),
       );
   }, [list]);
 
   const sortedListValues = (values) =>
     values
       .map((value, index) => ({ value, index }))
-      .sort(({ value: firstValue }, { value: secondValue }) =>
-        firstValue.localeCompare(secondValue, undefined, {
-          sensitivity: "base",
-          numeric: true,
-        }),
+      .sort(
+        (
+          { value: firstValue },
+          { value: secondValue },
+        ) =>
+          firstValue.localeCompare(
+            secondValue,
+            undefined,
+            {
+              sensitivity: "base",
+              numeric: true,
+            },
+          ),
       );
 
   // --------------------------------------------------
@@ -431,17 +623,22 @@ function Setting() {
   return (
     <div className="min-h-screen bg-linear-to-br from-slate-50 via-white to-indigo-50/40 p-4 md:p-6">
       <div className="mx-auto max-w-7xl">
+
         {/* HEADER */}
         <div className="mb-5 border-b border-slate-300 pb-5">
           <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
+
             <div>
               <div className="flex items-center gap-3">
+
                 <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-600 text-white">
                   <SettingsIcon className="h-5 w-5" />
                 </div>
 
                 <div>
-                  <h1 className="text-xl font-bold text-slate-900">Settings</h1>
+                  <h1 className="text-xl font-bold text-slate-900">
+                    Settings
+                  </h1>
 
                   <p className="text-sm text-slate-500">
                     Manage users, vendors, and system lists
@@ -452,6 +649,7 @@ function Setting() {
 
             {/* SEARCH */}
             <div className="relative w-full md:w-80">
+
               <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
 
               <input
@@ -461,12 +659,14 @@ function Setting() {
                 placeholder={`Search ${activeTab}...`}
                 className="w-full rounded-lg border border-slate-400 bg-white py-2.5 pl-10 pr-4 text-sm outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
               />
+
             </div>
           </div>
         </div>
 
         {/* TABS */}
         <div className="mb-5 flex overflow-x-auto border-b border-slate-300">
+
           {tabs.map((tab) => {
             const Icon = tab.icon;
             const active = activeTab === tab.id;
@@ -485,7 +685,10 @@ function Setting() {
                 }`}
               >
                 <Icon className="h-4 w-4" />
-                <span className="font-semibold">{tab.label}</span>
+
+                <span className="font-semibold">
+                  {tab.label}
+                </span>
 
                 <span className="rounded-full bg-slate-100 px-2 py-0.5 text-xs font-semibold text-slate-500">
                   {tab.count}
@@ -493,12 +696,15 @@ function Setting() {
               </button>
             );
           })}
+
         </div>
 
         {/* CONTENT */}
         <div className="overflow-hidden rounded-xl border border-slate-400 bg-white/95">
+
           {/* CONTENT HEADER */}
           <div className="flex flex-col justify-between gap-3 border-b border-slate-300 p-4 sm:flex-row sm:items-center">
+
             <div>
               <h2 className="font-semibold text-slate-900">
                 {activeTab === "users" && "User Management"}
@@ -530,6 +736,7 @@ function Setting() {
                 Add Vendor
               </button>
             )}
+
           </div>
 
           {/* LOADING */}
@@ -539,12 +746,16 @@ function Setting() {
             </div>
           ) : (
             <>
+
               {/* USERS */}
               {activeTab === "users" && (
                 <div className="overflow-x-auto">
+
                   <table className="w-full min-w-162.5">
+
                     <thead>
                       <tr className="border-b border-slate-300 bg-slate-50 text-left">
+
                         <th className="px-5 py-3 text-xs font-bold uppercase tracking-wide text-slate-500">
                           ID
                         </th>
@@ -560,6 +771,7 @@ function Setting() {
                         <th className="px-5 py-3 text-right text-xs font-bold uppercase tracking-wide text-slate-500">
                           Actions
                         </th>
+
                       </tr>
                     </thead>
 
@@ -569,6 +781,7 @@ function Setting() {
                           key={user.id}
                           className="border-b border-slate-200 transition hover:bg-slate-50"
                         >
+
                           <td className="px-5 py-4">
                             <span className="rounded-lg bg-slate-100 px-2.5 py-1 font-mono text-xs text-slate-600">
                               {user.id}
@@ -589,8 +802,11 @@ function Setting() {
 
                           <td className="px-5 py-4">
                             <div className="flex justify-end gap-2">
+
                               <button
-                                onClick={() => openEditUser(user)}
+                                onClick={() =>
+                                  openEditUser(user)
+                                }
                                 className="rounded-lg p-2 text-indigo-600 transition hover:bg-indigo-50"
                                 title="Edit"
                               >
@@ -598,31 +814,40 @@ function Setting() {
                               </button>
 
                               <button
-                                onClick={() => deleteUser(user)}
+                                onClick={() =>
+                                  deleteUser(user)
+                                }
                                 className="rounded-lg p-2 text-red-500 transition hover:bg-red-50"
                                 title="Delete"
                               >
                                 <Trash2 className="h-4 w-4" />
                               </button>
+
                             </div>
                           </td>
+
                         </tr>
                       ))}
                     </tbody>
+
                   </table>
 
                   {filteredUsers.length === 0 && (
                     <EmptyState text="No users found." />
                   )}
+
                 </div>
               )}
 
               {/* VENDORS */}
               {activeTab === "vendors" && (
                 <div className="overflow-x-auto">
+
                   <table className="w-full min-w-225">
+
                     <thead>
                       <tr className="border-b border-slate-300 bg-slate-50 text-left">
+
                         <th className="px-5 py-3 text-xs font-bold uppercase tracking-wide text-slate-500">
                           Vendor ID
                         </th>
@@ -646,6 +871,7 @@ function Setting() {
                         <th className="px-5 py-3 text-right text-xs font-bold uppercase tracking-wide text-slate-500">
                           Actions
                         </th>
+
                       </tr>
                     </thead>
 
@@ -655,6 +881,7 @@ function Setting() {
                           key={vendor.id}
                           className="border-b border-slate-200 transition hover:bg-slate-50"
                         >
+
                           <td className="px-5 py-4">
                             <span className="rounded-lg bg-indigo-50 px-2.5 py-1 font-mono text-xs font-semibold text-indigo-600">
                               {vendor.vendorId}
@@ -679,8 +906,11 @@ function Setting() {
 
                           <td className="px-5 py-4">
                             <div className="flex justify-end gap-2">
+
                               <button
-                                onClick={() => openEditVendor(vendor)}
+                                onClick={() =>
+                                  openEditVendor(vendor)
+                                }
                                 className="rounded-lg p-2 text-indigo-600 transition hover:bg-indigo-50"
                                 title="Edit"
                               >
@@ -688,109 +918,178 @@ function Setting() {
                               </button>
 
                               <button
-                                onClick={() => deleteVendor(vendor)}
+                                onClick={() =>
+                                  deleteVendor(vendor)
+                                }
                                 className="rounded-lg p-2 text-red-500 transition hover:bg-red-50"
                                 title="Delete"
                               >
                                 <Trash2 className="h-4 w-4" />
                               </button>
+
                             </div>
                           </td>
+
                         </tr>
                       ))}
                     </tbody>
+
                   </table>
 
                   {filteredVendors.length === 0 && (
                     <EmptyState text="No vendors found." />
                   )}
+
                 </div>
               )}
 
               {/* LIST */}
               {activeTab === "list" && (
                 <div className="p-5">
-                  <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
-                    {listEntries.map(([key, values]) => (
-                      <div
-                        key={key}
-                        className="overflow-hidden rounded-xl border border-slate-400 bg-white"
-                      >
-                        {/* LIST HEADER */}
-                        <div className="flex items-center justify-between border-b border-slate-300 bg-slate-50 p-4">
-                          <div>
-                            <h3 className="font-bold text-slate-800">
-                              {LIST_LABELS[key]}
-                            </h3>
 
-                            <p className="mt-0.5 text-xs text-slate-400">
-                              {values.length} values
-                            </p>
+                  <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
+
+                    {listEntries.map(([key, values]) => {
+
+                      /*
+                       * validateEquipments is an object, not
+                       * an equipment list. Therefore only render
+                       * normal array-based lists here.
+                       */
+
+                      if (!Array.isArray(values)) {
+                        return null;
+                      }
+
+                      return (
+                        <div
+                          key={key}
+                          className="overflow-hidden rounded-xl border border-slate-400 bg-white"
+                        >
+
+                          {/* LIST HEADER */}
+                          <div className="flex items-center justify-between border-b border-slate-300 bg-slate-50 p-4">
+
+                            <div>
+                              <h3 className="font-bold text-slate-800">
+                                {LIST_LABELS[key]}
+                              </h3>
+
+                              <p className="mt-0.5 text-xs text-slate-400">
+                                {values.length} values
+                              </p>
+                            </div>
+
+                            <button
+                              onClick={() =>
+                                openAddListValue(key)
+                              }
+                              className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-600 text-white transition hover:bg-indigo-700"
+                              title="Add value"
+                            >
+                              <Plus className="h-4 w-4" />
+                            </button>
+
                           </div>
 
-                          <button
-                            onClick={() => openAddListValue(key)}
-                            className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-600 text-white transition hover:bg-indigo-700"
-                            title="Add value"
-                          >
-                            <Plus className="h-4 w-4" />
-                          </button>
-                        </div>
+                          {/* VALUES */}
+                          <div className="max-h-80 overflow-y-auto p-3">
 
-                        {/* VALUES */}
-                        <div className="max-h-80 overflow-y-auto p-3">
-                          {sortedListValues(values).map(
-                            ({ value, index }, displayIndex) => (
-                              <div
-                                key={`${key}-${index}`}
-                                className="group mb-2 flex items-center justify-between rounded-lg border border-slate-300 bg-white px-3 py-2.5 transition hover:border-indigo-400 hover:bg-indigo-50/30"
-                              >
-                                <div className="flex min-w-0 items-center gap-2">
-                                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-slate-100 text-[10px] font-bold text-slate-500">
-                                    {displayIndex + 1}
-                                  </span>
+                            {sortedListValues(values).map(
+                              ({ value, index }, displayIndex) => {
 
-                                  <span className="truncate text-sm font-medium text-slate-700">
-                                    {value}
-                                  </span>
-                                </div>
+                                const equipmentPattern =
+                                  key === "equipment"
+                                    ? list
+                                        .validateEquipments?.[0]?.[
+                                        value
+                                      ]
+                                    : null;
 
-                                <div className="ml-2 flex shrink-0 gap-1 opacity-0 transition group-hover:opacity-100">
-                                  <button
-                                    onClick={() =>
-                                      openEditListValue(key, index, value)
-                                    }
-                                    className="rounded-lg p-1.5 text-indigo-600 hover:bg-indigo-50"
-                                    title="Edit"
+                                return (
+                                  <div
+                                    key={`${key}-${index}`}
+                                    className="group mb-2 flex items-center justify-between rounded-lg border border-slate-300 bg-white px-3 py-2.5 transition hover:border-indigo-400 hover:bg-indigo-50/30"
                                   >
-                                    <Pencil className="h-3.5 w-3.5" />
-                                  </button>
 
-                                  <button
-                                    onClick={() =>
-                                      deleteListValue(key, index, value)
-                                    }
-                                    className="rounded-lg p-1.5 text-red-500 hover:bg-red-50"
-                                    title="Delete"
-                                  >
-                                    <Trash2 className="h-3.5 w-3.5" />
-                                  </button>
-                                </div>
+                                    <div className="flex min-w-0 items-center gap-2">
+
+                                      <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-slate-100 text-[10px] font-bold text-slate-500">
+                                        {displayIndex + 1}
+                                      </span>
+
+                                      <div className="min-w-0">
+
+                                        <div className="truncate text-sm font-medium text-slate-700">
+                                          {value}
+                                        </div>
+
+                                        {/* EQUIPMENT CODE PATTERN */}
+                                        {key === "equipment" && (
+                                          <div className="mt-0.5 font-mono text-[11px] text-indigo-600">
+                                            {equipmentPattern ||
+                                              "No code pattern"}
+                                          </div>
+                                        )}
+
+                                      </div>
+
+                                    </div>
+
+                                    <div className="ml-2 flex shrink-0 gap-1 opacity-0 transition group-hover:opacity-100">
+
+                                      <button
+                                        onClick={() =>
+                                          openEditListValue(
+                                            key,
+                                            index,
+                                            value,
+                                          )
+                                        }
+                                        className="rounded-lg p-1.5 text-indigo-600 hover:bg-indigo-50"
+                                        title="Edit"
+                                      >
+                                        <Pencil className="h-3.5 w-3.5" />
+                                      </button>
+
+                                      <button
+                                        onClick={() =>
+                                          deleteListValue(
+                                            key,
+                                            index,
+                                            value,
+                                          )
+                                        }
+                                        className="rounded-lg p-1.5 text-red-500 hover:bg-red-50"
+                                        title="Delete"
+                                      >
+                                        <Trash2 className="h-3.5 w-3.5" />
+                                      </button>
+
+                                    </div>
+
+                                  </div>
+                                );
+                              },
+                            )}
+
+                            {values.length === 0 && (
+                              <div className="py-8 text-center text-xs text-slate-400">
+                                No values
                               </div>
-                            ),
-                          )}
+                            )}
 
-                          {values.length === 0 && (
-                            <div className="py-8 text-center text-xs text-slate-400">
-                              No values
-                            </div>
-                          )}
+                          </div>
+
                         </div>
-                      </div>
-                    ))}
+                      );
+                    })}
+
                   </div>
+
                 </div>
               )}
+
             </>
           )}
         </div>
@@ -802,24 +1101,37 @@ function Setting() {
 
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 p-4">
+
           <div className="w-full max-w-lg overflow-hidden rounded-xl bg-white shadow-xl">
+
             {/* MODAL HEADER */}
             <div className="flex items-center justify-between border-b border-slate-300 px-5 py-4">
+
               <div>
+
                 <h2 className="font-bold text-slate-800">
+
                   {modalType === "user" &&
-                    (editingItem ? "Edit User" : "Add User")}
+                    (editingItem
+                      ? "Edit User"
+                      : "Add User")}
 
                   {modalType === "vendor" &&
-                    (editingItem ? "Edit Vendor" : "Add Vendor")}
+                    (editingItem
+                      ? "Edit Vendor"
+                      : "Add Vendor")}
 
                   {modalType === "list" &&
-                    (editingItem ? "Edit List Value" : "Add List Value")}
+                    (editingItem
+                      ? `Edit ${selectedListKey === "equipment" ? "Equipment" : "List Value"}`
+                      : `Add ${selectedListKey === "equipment" ? "Equipment" : "List Value"}`)}
+
                 </h2>
 
                 <p className="mt-0.5 text-xs text-slate-400">
                   Update your system configuration
                 </p>
+
               </div>
 
               <button
@@ -828,11 +1140,16 @@ function Setting() {
               >
                 <X className="h-5 w-5" />
               </button>
+
             </div>
 
             {/* USER FORM */}
             {modalType === "user" && (
-              <form onSubmit={saveUser} className="space-y-4 p-5">
+              <form
+                onSubmit={saveUser}
+                className="space-y-4 p-5"
+              >
+
                 <InputField
                   label="Username"
                   value={userForm.username}
@@ -858,13 +1175,21 @@ function Setting() {
                   placeholder="Enter password"
                 />
 
-                <ModalButtons onCancel={closeModal} saving={saving} />
+                <ModalButtons
+                  onCancel={closeModal}
+                  saving={saving}
+                />
+
               </form>
             )}
 
             {/* VENDOR FORM */}
             {modalType === "vendor" && (
-              <form onSubmit={saveVendor} className="space-y-4 p-5">
+              <form
+                onSubmit={saveVendor}
+                className="space-y-4 p-5"
+              >
+
                 <InputField
                   label="Vendor ID"
                   value={vendorForm.vendorId}
@@ -914,6 +1239,7 @@ function Setting() {
                 />
 
                 <div>
+
                   <label className="mb-1.5 block text-xs font-semibold text-slate-600">
                     Address
                   </label>
@@ -930,50 +1256,116 @@ function Setting() {
                     placeholder="Enter vendor address"
                     className="w-full resize-none rounded-lg border border-slate-400 px-3 py-2.5 text-sm outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
                   />
+
                 </div>
 
-                <ModalButtons onCancel={closeModal} saving={saving} />
+                <ModalButtons
+                  onCancel={closeModal}
+                  saving={saving}
+                />
+
               </form>
             )}
 
             {/* LIST FORM */}
             {modalType === "list" && (
-              <form onSubmit={saveListValue} className="space-y-4 p-5">
+              <form
+                onSubmit={saveListValue}
+                className="space-y-4 p-5"
+              >
+
+                {/* List Type */}
                 <div>
+
                   <label className="mb-1.5 block text-xs font-semibold text-slate-600">
-                   Company Info
+                    Company Info
                   </label>
 
                   <div className="relative">
+
                     <select
                       value={selectedListKey}
-                      onChange={(e) => setSelectedListKey(e.target.value)}
+                      onChange={(e) => {
+
+                        const key = e.target.value;
+
+                        setSelectedListKey(key);
+                        setListValue("");
+                        setAssetCodePattern("");
+
+                      }}
                       disabled={!!editingItem}
                       className="w-full appearance-none rounded-lg border border-slate-400 bg-white px-3 py-2.5 pr-10 text-sm outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 disabled:bg-slate-50"
                     >
-                      <option value="">Select list</option>
+
+                      <option value="">
+                        Select list
+                      </option>
 
                       {listEntries.map(([key]) => (
-                        <option key={key} value={key}>
+                        <option
+                          key={key}
+                          value={key}
+                        >
                           {LIST_LABELS[key]}
                         </option>
                       ))}
+
                     </select>
 
                     <ChevronDown className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+
                   </div>
+
                 </div>
 
+                {/* VALUE */}
                 <InputField
-                  label="Value"
+                  label={
+                    selectedListKey === "equipment"
+                      ? "Equipment Name"
+                      : "Value"
+                  }
                   value={listValue}
                   onChange={setListValue}
-                  placeholder="Enter list value"
+                  placeholder={
+                    selectedListKey === "equipment"
+                      ? "Enter equipment name"
+                      : "Enter list value"
+                  }
                 />
 
-                <ModalButtons onCancel={closeModal} saving={saving} />
+                {/* ASSET CODE PATTERN */}
+                {selectedListKey === "equipment" && (
+                  <div>
+
+                    <InputField
+                      label="Asset Code Pattern"
+                      value={assetCodePattern}
+                      onChange={setAssetCodePattern}
+                      placeholder="e.g. 06-01-01-####"
+                    />
+
+                    <p className="mt-1.5 text-xs text-slate-400">
+                      Use <span className="font-semibold text-slate-600">#</span>{" "}
+                      for variable digits and{" "}
+                      <span className="font-semibold text-slate-600">
+                        ####
+                      </span>{" "}
+                      for the unique 4-digit asset number.
+                    </p>
+
+                  </div>
+                )}
+
+                <ModalButtons
+                  onCancel={closeModal}
+                  saving={saving}
+                />
+
               </form>
             )}
+
           </div>
         </div>
       )}
@@ -985,9 +1377,16 @@ function Setting() {
 // REUSABLE COMPONENTS
 // ======================================================
 
-function InputField({ label, value, onChange, placeholder, type = "text" }) {
+function InputField({
+  label,
+  value,
+  onChange,
+  placeholder,
+  type = "text",
+}) {
   return (
     <div>
+
       <label className="mb-1.5 block text-xs font-semibold text-slate-600">
         {label}
       </label>
@@ -999,6 +1398,7 @@ function InputField({ label, value, onChange, placeholder, type = "text" }) {
         placeholder={placeholder}
         className="w-full rounded-lg border border-slate-400 px-3 py-2.5 text-sm outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
       />
+
     </div>
   );
 }
@@ -1006,6 +1406,7 @@ function InputField({ label, value, onChange, placeholder, type = "text" }) {
 function ModalButtons({ onCancel, saving }) {
   return (
     <div className="flex justify-end gap-2 border-t border-slate-300 pt-4">
+
       <button
         type="button"
         onClick={onCancel}
@@ -1023,6 +1424,7 @@ function ModalButtons({ onCancel, saving }) {
 
         {saving ? "Saving..." : "Save Changes"}
       </button>
+
     </div>
   );
 }
