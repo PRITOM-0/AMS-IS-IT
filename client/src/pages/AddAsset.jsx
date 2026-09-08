@@ -40,6 +40,8 @@ export default function AddAsset() {
     model: "",
     serialNumber: "",
     specifications: "",
+    ecfNumber: "",
+    workOrderNumber:"",
     macAddress: "",
     company: "",
     location: "",
@@ -715,6 +717,32 @@ export default function AddAsset() {
                   readOnly
                   value={formData.warrantyEnd || "Auto calculated"}
                   className="w-full bg-slate-100 border  border-slate-700 text-slate-500 rounded-xl p-2.5 text-sm cursor-not-allowed"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+                  ECF Number
+                </label>
+                <input
+                  type="text"
+                  name="ecfNumber"
+                  value={formData.ecfNumber}
+                  onChange={handleChange}
+                  placeholder="e.g. 00-1A-2B-3C-4D-5E"
+                  className="w-full bg-white border  border-slate-700 rounded-xl p-2.5 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all shadow-sm"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+                  Work Order Number
+                </label>
+                <input
+                  type="text"
+                  name="workOrderNumber"
+                  value={formData.workOrderNumber}
+                  onChange={handleChange}
+                  placeholder="e.g. 00-1A-2B-3C-4D-5E"
+                  className="w-full bg-white border  border-slate-700 rounded-xl p-2.5 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all shadow-sm"
                 />
               </div>
 

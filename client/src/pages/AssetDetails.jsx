@@ -37,6 +37,48 @@ const AssetDetails = () => {
     fetchData();
   }, [id]);
 
+  const formatDate = (date) => {
+    if (!date) return "N/A";
+
+    const d = new Date(date);
+    if (isNaN(d.getTime())) return "N/A";
+
+    return d.toLocaleDateString("en-GB", {
+      day: "2-digit",
+      month: "long",
+      year: "numeric",
+    });
+  };
+
+  const getTimeInUse = (date) => {
+    if (!date) return "N/A";
+
+    const start = new Date(date);
+    const now = new Date();
+
+    if (isNaN(start.getTime()) || start > now) return "N/A";
+
+    let years = now.getFullYear() - start.getFullYear();
+    let months = now.getMonth() - start.getMonth();
+    let days = now.getDate() - start.getDate();
+
+    if (days < 0) {
+      months--;
+
+      const previousMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+
+      days += previousMonth.getDate();
+    }
+
+    if (months < 0) {
+      years--;
+      months += 12;
+    }
+
+    return `${years} year${years !== 1 ? "s" : ""} ${months} month${
+      months !== 1 ? "s" : ""
+    } ${days} day${days !== 1 ? "s" : ""}`;
+  };
   const fetchData = async () => {
     try {
       setLoading(true);
@@ -54,8 +96,7 @@ const AssetDetails = () => {
 
           const foundEmployee = employees.find(
             (employee) =>
-              String(employee.id || "") ===
-              String(assetData.employeeId || ""),
+              String(employee.id || "") === String(assetData.employeeId || ""),
           );
 
           setEmployeeInfo(foundEmployee || null);
@@ -203,8 +244,8 @@ const AssetDetails = () => {
         </div>
 
         <div className="bg-white rounded-xl border border-indigo-600 p-6 shadow-xl space-y-4">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-            <div className="flex items-start gap-4">
+          <div className="flex items-center justify-between gap-2">
+            <div className="flex items-start gap-2">
               <div className="p-3 bg-indigo-100 border border-indigo-600 rounded-xl text-indigo-700">
                 <HardDrive className="w-8 h-8" />
               </div>
@@ -227,8 +268,19 @@ const AssetDetails = () => {
                 </p>
               </div>
             </div>
+            <div className="bg-slate-50 border border-amber-600 px-4 py-2 rounded-lg shadow-xl">
+              <p className="text-xs font-bold text-amber-700">Asset Age</p>
+              <p className="text-sm font-black text-amber-900">
+                {getTimeInUse(
+                  asset.purchaseDate &&
+                    !isNaN(new Date(asset.purchaseDate).getTime())
+                    ? asset.purchaseDate
+                    : asset.createAt,
+                )}
+              </p>
+            </div>
 
-            <div className="flex flex-wrap gap-4">
+            <div className="flex gap-2">
               <div className="bg-slate-50 border border-slate-900 px-4 py-2 rounded-lg shadow-xl">
                 <p className="text-xs font-bold text-slate-500 ">
                   Brand & Model
@@ -388,49 +440,53 @@ const AssetDetails = () => {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-                <div>
-                  <p className="text-[11px] font-bold  text-slate-500">
-                    Purchase Date
-                  </p>
-                  <p className="font-bold text-slate-900 mt-1">
-                    {asset.purchaseDate || "N/A"}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-[11px] font-bold  text-slate-500">
-                    Purchase Price
-                  </p>
-                  <p className="font-bold text-emerald-600 mt-1">
-                    {asset.purchasePrice ? `$${asset.purchasePrice}` : "N/A"}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-[11px] font-bold  text-slate-500">
-                    Warranty Start
-                  </p>
-                  <p className="font-bold text-slate-900 mt-1">
-                    {asset.warrantyStart || "N/A"}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-[11px] font-bold  text-slate-500">
-                    Warranty End
-                  </p>
-                  <p className="font-bold text-slate-900 mt-1">
-                    {asset.warrantyEnd || "N/A"}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-[11px] font-bold  text-slate-500">
-                    Warranty Period
-                  </p>
-                  <p className="font-bold text-slate-900 mt-1">
-                    {asset.warrantyYears
-                      ? `${asset.warrantyYears} Year(s)`
-                      : "N/A"}
-                  </p>
-                </div>
-              </div>
+  <div>
+    <p className="text-[11px] font-bold text-slate-500">
+      Purchase Date
+    </p>
+    <p className="font-bold text-slate-900 mt-1">
+      {formatDate(asset.purchaseDate)}
+    </p>
+  </div>
+
+  <div>
+    <p className="text-[11px] font-bold text-slate-500">
+      Purchase Price
+    </p>
+    <p className="font-bold text-emerald-600 mt-1">
+      {asset.purchasePrice ? `$${asset.purchasePrice}` : "N/A"}
+    </p>
+  </div>
+
+  <div>
+    <p className="text-[11px] font-bold text-slate-500">
+      Warranty Start
+    </p>
+    <p className="font-bold text-slate-900 mt-1">
+      {formatDate(asset.warrantyStart)}
+    </p>
+  </div>
+
+  <div>
+    <p className="text-[11px] font-bold text-slate-500">
+      Warranty End
+    </p>
+    <p className="font-bold text-slate-900 mt-1">
+      {formatDate(asset.warrantyEnd)}
+    </p>
+  </div>
+
+  <div>
+    <p className="text-[11px] font-bold text-slate-500">
+      Warranty Period
+    </p>
+    <p className="font-bold text-slate-900 mt-1">
+      {asset.warrantyYears
+        ? `${asset.warrantyYears} Year(s)`
+        : "N/A"}
+    </p>
+  </div>
+</div>
 
               <div className="mt-4 bg-indigo-50 border border-indigo-200 rounded-lg p-3 text-sm">
                 <p className="text-[11px] font-bold  text-indigo-700">
@@ -537,6 +593,27 @@ const AssetDetails = () => {
                   </p>
                 </div>
 
+                {/* Assigned Date & Total Time in Use */}
+                <div className="col-span-2 grid grid-cols-2 gap-1.5">
+                  <div className="bg-slate-50 border border-slate-200 rounded-md px-2 py-1">
+                    <p className="text-[8px] uppercase font-bold text-slate-400">
+                      Assigned
+                    </p>
+                    <p className="text-[11px] font-black text-slate-900">
+                      {formatDate(asset.receivedDate)}
+                    </p>
+                  </div>
+
+                  <div className="bg-indigo-50 border border-indigo-200 rounded-md px-2 py-1">
+                    <p className="text-[8px] uppercase font-bold text-indigo-500">
+                      Time Used
+                    </p>
+                    <p className="text-[11px] font-black text-indigo-700">
+                      {getTimeInUse(asset.receivedDate)}
+                    </p>
+                  </div>
+                </div>
+
                 {/* Employee ID */}
                 <div>
                   <p className="text-[10px] uppercase tracking-wider font-bold text-slate-400">
@@ -586,7 +663,13 @@ const AssetDetails = () => {
                     {employeeInfo.department || "N/A"}
                   </p>
                 </div>
-                <ReleaseAsset employee={employeeInfo} asset={asset} onReleased={(updatedAsset) => { console.log("Asset released:", updatedAsset); }} />
+                <ReleaseAsset
+                  employee={employeeInfo}
+                  asset={asset}
+                  onReleased={(updatedAsset) => {
+                    console.log("Asset released:", updatedAsset);
+                  }}
+                />
               </div>
             ) : (
               <div className="rounded-lg border border-dashed border-slate-300 bg-slate-50 p-5 text-center">
@@ -600,50 +683,68 @@ const AssetDetails = () => {
               </div>
             )}
             {Array.isArray(asset?.oldUsers) && asset.oldUsers.length > 0 && (
-  <div className="mt-5 rounded-lg border border-gray-100 bg-white shadow-xs overflow-hidden">
-    <div className="flex items-center justify-between border-b border-gray-100 bg-gray-50/50 px-3 py-2">
-      <h3 className="text-xs font-medium text-gray-600">History</h3>
-      <span className="text-[10px] font-medium text-gray-400">
-        {asset.oldUsers.length} recorded
-      </span>
-    </div>
+              <div className="mt-5 rounded-lg border border-gray-100 bg-white shadow-xs overflow-hidden">
+                <div className="flex items-center justify-between border-b border-gray-100 bg-gray-50/50 px-3 py-2">
+                  <h3 className="text-xs font-medium text-gray-600">History</h3>
+                  <span className="text-[10px] font-medium text-gray-400">
+                    {asset.oldUsers.length} recorded
+                  </span>
+                </div>
 
-    <div className="divide-y divide-gray-100">
-      {[...asset.oldUsers]
-  .sort((a, b) => new Date(b.releaseDate) - new Date(a.releaseDate))
-  .map((oldUser, index) => (
-    <div
-      key={index}
-      className="px-3 py-2 hover:bg-gray-50/80 transition-colors space-y-1"
-    >
-      {/* Top Row: Employee Name + Release Date Badge */}
-      <div className="flex items-center justify-between gap-2">
-        <p className="truncate text-xs font-medium text-gray-800">
-          {oldUser.employeeName || "Unknown Employee"}{oldUser.employeeId ? ` (${oldUser.employeeId})` : ""}
-        </p>
+                <div className="divide-y divide-gray-100">
+                  {[...asset.oldUsers]
+                    .sort(
+                      (a, b) =>
+                        new Date(b.releaseDate) - new Date(a.releaseDate),
+                    )
+                    .map((oldUser, index) => (
+                      <div
+                        key={index}
+                        className="px-3 py-2 hover:bg-gray-50/80 transition-colors space-y-1"
+                      >
+                        {/* Top Row: Employee Name + Release Date Badge */}
+                        <div className="flex items-center justify-between gap-2">
+                          <p className="truncate text-xs font-medium text-gray-800">
+                            {oldUser.employeeName || "Unknown Employee"}
+                            {oldUser.employeeId
+                              ? ` (${oldUser.employeeId})`
+                              : ""}
+                          </p>
 
-        <span className="shrink-0 inline-block rounded bg-indigo-50 px-1.5 py-0.5 text-[10px] font-medium text-indigo-700">
-          Released {oldUser.releaseDate ? new Date(oldUser.releaseDate).toLocaleDateString() : "N/A"}
-        </span>
-      </div>
+                          <span className="shrink-0 inline-block rounded bg-indigo-50 px-1.5 py-0.5 text-[10px] font-medium text-indigo-700">
+                            Released{" "}
+                            {oldUser.releaseDate
+                              ? new Date(
+                                  oldUser.releaseDate,
+                                ).toLocaleDateString()
+                              : "N/A"}
+                          </span>
+                        </div>
 
-      {/* Middle Row: Assigned Date */}
-      <p className="text-[10px] text-gray-400">
-        Assigned: {oldUser.receivedDate ? new Date(oldUser.receivedDate).toLocaleDateString() : "N/A"}
-      </p>
+                        {/* Middle Row: Assigned Date */}
+                        <p className="text-[10px] text-gray-400">
+                          Assigned:{" "}
+                          {oldUser.receivedDate
+                            ? new Date(
+                                oldUser.receivedDate,
+                              ).toLocaleDateString()
+                            : "N/A"}
+                        </p>
 
-      {/* Bottom Row: Release Note in its own full line */}
-      {oldUser.releaseNote && (
-        <p className="text-[10px] italic text-gray-600 bg-gray-50 rounded px-2 py-1 border border-gray-100">
-          <span className="font-semibold non-italic text-gray-500">Note: </span>
-          {oldUser.releaseNote}
-        </p>
-      )}
-    </div>
-  ))}
-    </div>
-  </div>
-)}
+                        {/* Bottom Row: Release Note in its own full line */}
+                        {oldUser.releaseNote && (
+                          <p className="text-[10px] italic text-gray-600 bg-gray-50 rounded px-2 py-1 border border-gray-100">
+                            <span className="font-semibold non-italic text-gray-500">
+                              Note:{" "}
+                            </span>
+                            {oldUser.releaseNote}
+                          </p>
+                        )}
+                      </div>
+                    ))}
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
