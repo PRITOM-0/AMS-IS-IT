@@ -41,7 +41,7 @@ export default function AddAsset() {
     serialNumber: "",
     specifications: "",
     ecfNumber: "",
-    workOrderNumber:"",
+    workOrderNumber: "",
     macAddress: "",
     company: "",
     location: "",
@@ -177,18 +177,25 @@ export default function AddAsset() {
 
     // Asset code rules
     if (!formData.assetCode?.trim()) {
-      // Allow empty asset code when equipment has no validation pattern
       if (equipmentPattern) {
         newErrors.assetCode = "Asset code is required";
       }
     } else if (equipmentPattern) {
-      // Validate asset code only when a pattern exists
+      const equipment = formData.equipment?.trim();
+
+      const allowAhlPrefix = ["Printer", "Monitor", "CPU"].includes(equipment);
+
+      const pattern = equipmentPattern.replace(/#/g, "[0-9]");
+
+      // AHL- is optional for Printer, Monitor, and CPU
       const regexPattern = new RegExp(
-        "^" + equipmentPattern.replace(/#/g, "[0-9]") + "$",
+        `^${allowAhlPrefix ? "(?:AHL-)?" : ""}${pattern}$`,
       );
 
       if (!regexPattern.test(formData.assetCode.trim())) {
-        newErrors.assetCode = `Asset code must match ${equipmentPattern}`;
+        newErrors.assetCode = `Asset code must match ${
+          allowAhlPrefix ? "AHL-" : ""
+        }${equipmentPattern}`;
       }
     }
 

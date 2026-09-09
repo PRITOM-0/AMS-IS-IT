@@ -271,12 +271,9 @@ const AssetDetails = () => {
             <div className="bg-slate-50 border border-amber-600 px-4 py-2 rounded-lg shadow-xl">
               <p className="text-xs font-bold text-amber-700">Asset Age</p>
               <p className="text-sm font-black text-amber-900">
-                {getTimeInUse(
-                  asset.purchaseDate &&
-                    !isNaN(new Date(asset.purchaseDate).getTime())
-                    ? asset.purchaseDate
-                    : asset.createAt,
-                )}
+                {getTimeInUse(asset.purchaseDate) !== "N/A"
+                  ? getTimeInUse(asset.purchaseDate)
+                  : getTimeInUse(asset.createdAt)}
               </p>
             </div>
 
@@ -439,54 +436,72 @@ const AssetDetails = () => {
                 </h2>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-  <div>
-    <p className="text-[11px] font-bold text-slate-500">
-      Purchase Date
-    </p>
-    <p className="font-bold text-slate-900 mt-1">
-      {formatDate(asset.purchaseDate)}
-    </p>
-  </div>
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4 text-sm">
+                <div>
+                  <p className="text-[11px] font-bold text-slate-500">
+                    Purchase Date
+                  </p>
+                  <p className="font-bold text-slate-900 mt-1">
+                    {formatDate(asset.purchaseDate)}
+                  </p>
+                </div>
 
-  <div>
-    <p className="text-[11px] font-bold text-slate-500">
-      Purchase Price
-    </p>
-    <p className="font-bold text-emerald-600 mt-1">
-      {asset.purchasePrice ? `$${asset.purchasePrice}` : "N/A"}
-    </p>
-  </div>
+                <div>
+                  <p className="text-[11px] font-bold text-slate-500">
+                    Purchase Price
+                  </p>
+                  <p className="font-bold text-emerald-600 mt-1">
+                    {asset.purchasePrice ? `$${asset.purchasePrice}` : "N/A"}
+                  </p>
+                </div>
 
-  <div>
-    <p className="text-[11px] font-bold text-slate-500">
-      Warranty Start
-    </p>
-    <p className="font-bold text-slate-900 mt-1">
-      {formatDate(asset.warrantyStart)}
-    </p>
-  </div>
+                <div>
+                  <p className="text-[11px] font-bold text-slate-500">
+                    Warranty Start
+                  </p>
+                  <p className="font-bold text-slate-900 mt-1">
+                    {formatDate(asset.warrantyStart)}
+                  </p>
+                </div>
 
-  <div>
-    <p className="text-[11px] font-bold text-slate-500">
-      Warranty End
-    </p>
-    <p className="font-bold text-slate-900 mt-1">
-      {formatDate(asset.warrantyEnd)}
-    </p>
-  </div>
+                <div>
+                  <p className="text-[11px] font-bold text-slate-500">
+                    Warranty End
+                  </p>
+                  <p className="font-bold text-slate-900 mt-1">
+                    {formatDate(asset.warrantyEnd)}
+                  </p>
+                </div>
 
-  <div>
-    <p className="text-[11px] font-bold text-slate-500">
-      Warranty Period
-    </p>
-    <p className="font-bold text-slate-900 mt-1">
-      {asset.warrantyYears
-        ? `${asset.warrantyYears} Year(s)`
-        : "N/A"}
-    </p>
-  </div>
-</div>
+                <div>
+                  <p className="text-[11px] font-bold text-slate-500">
+                    Warranty Period
+                  </p>
+                  <p className="font-bold text-slate-900 mt-1">
+                    {asset.warrantyYears
+                      ? `${asset.warrantyYears} Year(s)`
+                      : "N/A"}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-[11px] font-bold text-slate-500">
+                    ECF Number
+                  </p>
+                  <p className="font-bold text-slate-900 mt-1">
+                    {asset.ecfNumber ? `${asset.ecfNumber} ` : "N/A"}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-[11px] font-bold text-slate-500">
+                    Work Order Number
+                  </p>
+                  <p className="font-bold text-slate-900 mt-1">
+                    {asset.workOrderNumber
+                      ? `${asset.workOrderNumber} `
+                      : "N/A"}
+                  </p>
+                </div>
+              </div>
 
               <div className="mt-4 bg-indigo-50 border border-indigo-200 rounded-lg p-3 text-sm">
                 <p className="text-[11px] font-bold  text-indigo-700">

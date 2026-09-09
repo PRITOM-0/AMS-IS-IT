@@ -1,4 +1,3 @@
- 
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -33,6 +32,8 @@ const EditAsset = () => {
     serialNumber: "",
     specifications: "",
     macAddress: "",
+    ecfNumber:"",
+    workOrderNumber:"",
     company: "",
     location: "",
     department: "",
@@ -85,8 +86,7 @@ const EditAsset = () => {
   const [newListItem, setNewListItem] = useState("");
 
   // NEW: Asset pattern for new equipment
-  const [newEquipmentPattern, setNewEquipmentPattern] =
-    useState("");
+  const [newEquipmentPattern, setNewEquipmentPattern] = useState("");
 
   // Modal for inline Vendor addition
   const [showVendorModal, setShowVendorModal] = useState(false);
@@ -116,13 +116,10 @@ const EditAsset = () => {
 
         if (!isNaN(dateObj.getTime())) {
           dateObj.setFullYear(
-            dateObj.getFullYear() +
-              parseInt(formData.warrantyYears, 10),
+            dateObj.getFullYear() + parseInt(formData.warrantyYears, 10),
           );
 
-          calculatedEnd = dateObj
-            .toISOString()
-            .split("T")[0];
+          calculatedEnd = dateObj.toISOString().split("T")[0];
         }
       }
 
@@ -140,13 +137,12 @@ const EditAsset = () => {
       setErrorMessage("");
 
       // Fetch base list options, users, vendors, and target assets concurrently
-      const [assetsRes, listRes, usersRes, vendorsRes] =
-        await Promise.all([
-          axios.get(`${API_BASE_URL}/assets`),
-          axios.get(`${API_BASE_URL}/list`),
-          axios.get(`${API_BASE_URL}/users`),
-          axios.get(`${API_BASE_URL}/vendors`),
-        ]);
+      const [assetsRes, listRes, usersRes, vendorsRes] = await Promise.all([
+        axios.get(`${API_BASE_URL}/assets`),
+        axios.get(`${API_BASE_URL}/list`),
+        axios.get(`${API_BASE_URL}/users`),
+        axios.get(`${API_BASE_URL}/vendors`),
+      ]);
 
       // 1. Find target asset by id from the assets array
       const assetsList = assetsRes.data || [];
@@ -154,65 +150,40 @@ const EditAsset = () => {
       const targetAsset =
         assetsList.find(
           (item) =>
-            String(item.id) === String(id) ||
-            String(item._id) === String(id),
+            String(item.id) === String(id) || String(item._id) === String(id),
         ) || null;
 
       // 2. Handle List Options
-      const rawList =
-        listRes.data?.list ||
-        listRes.data ||
-        {};
+      const rawList = listRes.data?.list || listRes.data || {};
 
       // Get equipment validation patterns
-      const validateMap = Array.isArray(
-        rawList.validateEquipments,
-      )
+      const validateMap = Array.isArray(rawList.validateEquipments)
         ? rawList.validateEquipments[0] || {}
         : rawList.validateEquipments || {};
 
       setAssetCodePatterns(validateMap);
 
       setlist({
-        company:
-          rawList.company ||
-          rawList.Company ||
-          [],
+        company: rawList.company || rawList.Company || [],
 
-        location:
-          rawList.location ||
-          rawList.Location ||
-          [],
+        location: rawList.location || rawList.Location || [],
 
-        department:
-          rawList.department ||
-          rawList.Department ||
-          [],
+        department: rawList.department || rawList.Department || [],
 
-        assetStatuses:
-          rawList.assetStatuses || [],
+        assetStatuses: rawList.assetStatuses || [],
 
-        surveyStatuses:
-          rawList.surveyStatuses || [],
+        surveyStatuses: rawList.surveyStatuses || [],
 
-        equipment:
-          rawList.equipment || [],
+        equipment: rawList.equipment || [],
 
-        brand:
-          rawList.brand || [],
+        brand: rawList.brand || [],
       });
 
       // 3. Handle Vendors & Users/Employees
-      const vendorList =
-        vendorsRes.data?.vendors ||
-        vendorsRes.data ||
-        [];
+      const vendorList = vendorsRes.data?.vendors || vendorsRes.data || [];
 
       const userList =
-        usersRes.data?.users ||
-        usersRes.data?.employees ||
-        usersRes.data ||
-        [];
+        usersRes.data?.users || usersRes.data?.employees || usersRes.data || [];
 
       setVendors(vendorList);
       setUsers(userList);
@@ -225,22 +196,15 @@ const EditAsset = () => {
 
         // Pre-fill vendor search text if vendor exists
         const currentVendor = vendorList.find(
-          (v) =>
-            String(v.vendorId) ===
-            String(targetAsset.vendorId),
+          (v) => String(v.vendorId) === String(targetAsset.vendorId),
         );
 
         if (currentVendor) {
-          setVendorSearch(
-            currentVendor.vendorName,
-          );
+          setVendorSearch(currentVendor.vendorName);
         }
       }
     } catch (err) {
-      console.error(
-        "Error loading asset edit data:",
-        err,
-      );
+      console.error("Error loading asset edit data:", err);
 
       setErrorMessage(
         "Failed to load asset data. Please verify the API connection.",
@@ -276,26 +240,26 @@ const EditAsset = () => {
   // FIELD CHANGE HANDLER
   // --------------------------------------------------
 
- const handleChange = (e) => {
-  const { name, value } = e.target;
+  const handleChange = (e) => {
+    const { name, value } = e.target;
 
-  if (name === "equipment") {
-    const pattern = getEquipmentPattern(value);
+    if (name === "equipment") {
+      const pattern = getEquipmentPattern(value);
+
+      setFormData((prev) => ({
+        ...prev,
+        equipment: value,
+        assetCode: pattern || "",
+      }));
+
+      return;
+    }
 
     setFormData((prev) => ({
       ...prev,
-      equipment: value,
-      assetCode: pattern || "",
+      [name]: value,
     }));
-
-    return;
-  }
-
-  setFormData((prev) => ({
-    ...prev,
-    [name]: value,
-  }));
-};
+  };
 
   // --------------------------------------------------
   // RESET FORM
@@ -306,16 +270,10 @@ const EditAsset = () => {
       setFormData(initialData);
 
       const matchedVendor = vendors.find(
-        (v) =>
-          String(v.vendorId) ===
-          String(initialData.vendorId),
+        (v) => String(v.vendorId) === String(initialData.vendorId),
       );
 
-      setVendorSearch(
-        matchedVendor
-          ? matchedVendor.vendorName
-          : "",
-      );
+      setVendorSearch(matchedVendor ? matchedVendor.vendorName : "");
     }
   };
 
@@ -324,46 +282,58 @@ const EditAsset = () => {
   // --------------------------------------------------
 
   const handleSubmit = (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  // Required fields: Equipment, Company, Status only
-  if (
-    !formData.equipment ||
-    !formData.company ||
-    !formData.status
-  ) {
-    alert("Please fill in all required fields marked with *");
+    // Required fields: Equipment, Company, Status only
+    if (!formData.equipment || !formData.company || !formData.status) {
+      alert("Please fill in all required fields marked with *");
+      return;
+    }
+
+   const pattern = getEquipmentPattern(formData.equipment);
+const assetCode = formData.assetCode?.trim() || "";
+
+// Validate Asset Code only when the selected equipment has a pattern
+if (pattern) {
+  if (!assetCode) {
+    alert(`Asset Code is required for ${formData.equipment}.`);
     return;
   }
 
-  const pattern = getEquipmentPattern(formData.equipment);
-  const assetCode = formData.assetCode?.trim() || "";
+  const equipment = formData.equipment?.trim();
 
-  // Validate Asset Code only when the selected equipment has a pattern
-  if (pattern) {
-    if (!assetCode) {
-      alert(`Asset Code is required for ${formData.equipment}.`);
-      return;
-    }
+  // Printer, Monitor, and CPU allow both:
+  // 12345
+  // AHL-12345
+  const allowAhlPrefix = ["Printer", "Monitor", "CPU"].includes(equipment);
 
-    const regex = new RegExp(
-      "^" + pattern.replace(/#/g, "[0-9]") + "$"
-    );
+  const numericPattern = pattern.replace(/#/g, "[0-9]");
 
-    if (!regex.test(assetCode)) {
-      alert(
-        `Invalid Asset Code.\n\n` +
+  const regex = new RegExp(
+    "^" + (allowAhlPrefix ? "(?:AHL-)?" : "") + numericPattern + "$",
+  );
+
+  if (!regex.test(assetCode)) {
+    alert(
+      `Invalid Asset Code.\n\n` +
         `Equipment: ${formData.equipment}\n` +
-        `Required Pattern: ${pattern}\n\n` +
-        `Example: ${pattern.replace(/#+$/, "0038")}`
-      );
-      return;
-    }
+        `Required Pattern: ${
+          allowAhlPrefix ? `[AHL-]${pattern}` : pattern
+        }\n\n` +
+        `Example: ${
+          allowAhlPrefix
+            ? `${pattern.replace(/#+$/, "0038")} or AHL-${pattern.replace(
+                /#+$/,
+                "0038",
+              )}`
+            : pattern.replace(/#+$/, "0038")
+        }`,
+    );
+    return;
   }
-
-  setShowConfirmModal(true);
-};
-
+}
+    setShowConfirmModal(true);
+  };
 
   // --------------------------------------------------
   // CONFIRM UPDATE
@@ -373,25 +343,18 @@ const EditAsset = () => {
     try {
       setSubmitting(true);
 
-      await axios.put(
-        `${API_BASE_URL}/assets/${id}`,
-        formData,
-      );
+      await axios.put(`${API_BASE_URL}/assets/${id}`, formData);
 
       setShowConfirmModal(false);
 
       navigate(`/asset/${id}`);
     } catch (err) {
-      console.error(
-        "Error updating asset:",
-        err,
-      );
+      console.error("Error updating asset:", err);
 
-      alert(
-        "Failed to update asset. Please check server logs.",
-      );
+      alert("Failed to update asset. Please check server logs.");
     } finally {
       setSubmitting(false);
+      navigate(`/assets/${id}`);
     }
   };
 
@@ -409,23 +372,17 @@ const EditAsset = () => {
     // ----------------------------------------------
 
     if (category === "equipment") {
-      const pattern =
-        newEquipmentPattern.trim();
+      const pattern = newEquipmentPattern.trim();
 
       if (!pattern) {
-        alert(
-          "Please enter Asset Code Pattern.",
-        );
+        alert("Please enter Asset Code Pattern.");
 
         return;
       }
 
       try {
         // Add equipment to existing equipment list
-        const updatedCategoryList = [
-          ...(list[category] || []),
-          itemName,
-        ];
+        const updatedCategoryList = [...(list[category] || []), itemName];
 
         // Create updated validation map
         const updatedValidateMap = {
@@ -434,36 +391,26 @@ const EditAsset = () => {
         };
 
         // Save both equipment and validation map
-        await axios.patch(
-          `${API_BASE_URL}/list`,
-          {
-            equipment:
-              updatedCategoryList,
+        await axios.patch(`${API_BASE_URL}/list`, {
+          equipment: updatedCategoryList,
 
-            validateEquipments: [
-              updatedValidateMap,
-            ],
-          },
-        );
+          validateEquipments: [updatedValidateMap],
+        });
 
         // Update local equipment list
         setlist((prev) => ({
           ...prev,
-          equipment:
-            updatedCategoryList,
+          equipment: updatedCategoryList,
         }));
 
         // Update local patterns
-        setAssetCodePatterns(
-          updatedValidateMap,
-        );
+        setAssetCodePatterns(updatedValidateMap);
 
         // Select new equipment
         setFormData((prev) => ({
           ...prev,
           equipment: itemName,
-          assetCode:
-            getAssetCodePrefix(pattern),
+          assetCode: getAssetCodePrefix(pattern),
         }));
 
         // Clear modal
@@ -471,14 +418,9 @@ const EditAsset = () => {
         setNewEquipmentPattern("");
         setActiveListModal(null);
       } catch (err) {
-        console.error(
-          "Error adding equipment:",
-          err,
-        );
+        console.error("Error adding equipment:", err);
 
-        alert(
-          "Failed to add equipment. Please check server connection.",
-        );
+        alert("Failed to add equipment. Please check server connection.");
       }
 
       return;
@@ -489,15 +431,11 @@ const EditAsset = () => {
     // ----------------------------------------------
 
     try {
-      const updatedCategoryList = [
-        ...(list[category] || []),
-        itemName,
-      ];
+      const updatedCategoryList = [...(list[category] || []), itemName];
 
       setlist((prev) => ({
         ...prev,
-        [category]:
-          updatedCategoryList,
+        [category]: updatedCategoryList,
       }));
 
       // Select newly added item in form
@@ -507,17 +445,14 @@ const EditAsset = () => {
         [category === "assetStatuses"
           ? "status"
           : category === "surveyStatuses"
-          ? "surveyStatus"
-          : category]: itemName,
+            ? "surveyStatus"
+            : category]: itemName,
       }));
 
       setNewListItem("");
       setActiveListModal(null);
     } catch (err) {
-      console.error(
-        "Error adding list item:",
-        err,
-      );
+      console.error("Error adding list item:", err);
     }
   };
 
@@ -530,9 +465,7 @@ const EditAsset = () => {
 
     if (!newVendor.vendorName.trim()) return;
 
-    const generatedId = `VND${String(
-      vendors.length + 1,
-    ).padStart(3, "0")}`;
+    const generatedId = `VND${String(vendors.length + 1).padStart(3, "0")}`;
 
     const vendorObject = {
       ...newVendor,
@@ -540,24 +473,16 @@ const EditAsset = () => {
     };
 
     try {
-      await axios.post(
-        `${API_BASE_URL}/vendors`,
-        vendorObject,
-      );
+      await axios.post(`${API_BASE_URL}/vendors`, vendorObject);
 
-      setVendors((prev) => [
-        ...prev,
-        vendorObject,
-      ]);
+      setVendors((prev) => [...prev, vendorObject]);
 
       setFormData((prev) => ({
         ...prev,
         vendorId: generatedId,
       }));
 
-      setVendorSearch(
-        vendorObject.vendorName,
-      );
+      setVendorSearch(vendorObject.vendorName);
 
       setShowVendorModal(false);
 
@@ -568,25 +493,17 @@ const EditAsset = () => {
         address: "",
       });
     } catch (err) {
-      console.error(
-        "Error creating vendor:",
-        err,
-      );
+      console.error("Error creating vendor:", err);
 
       // Fallback local update
-      setVendors((prev) => [
-        ...prev,
-        vendorObject,
-      ]);
+      setVendors((prev) => [...prev, vendorObject]);
 
       setFormData((prev) => ({
         ...prev,
         vendorId: generatedId,
       }));
 
-      setVendorSearch(
-        vendorObject.vendorName,
-      );
+      setVendorSearch(vendorObject.vendorName);
 
       setShowVendorModal(false);
     }
@@ -620,13 +537,9 @@ const EditAsset = () => {
         <div className="bg-white border border-red-600 rounded-xl p-8 max-w-md w-full text-center shadow-xl">
           <AlertCircle className="w-12 h-12 text-red-600 mx-auto mb-4" />
 
-          <h2 className="text-xl font-black text-slate-900 mb-2">
-            Error
-          </h2>
+          <h2 className="text-xl font-black text-slate-900 mb-2">Error</h2>
 
-          <p className="text-slate-600 mb-6 font-medium">
-            {errorMessage}
-          </p>
+          <p className="text-slate-600 mb-6 font-medium">{errorMessage}</p>
 
           <button
             onClick={() => navigate(-1)}
@@ -642,29 +555,17 @@ const EditAsset = () => {
 
   const filteredVendors = vendors.filter(
     (v) =>
-      v.vendorName
-        .toLowerCase()
-        .includes(
-          vendorSearch.toLowerCase(),
-        ) ||
+      v.vendorName.toLowerCase().includes(vendorSearch.toLowerCase()) ||
       (v.contactPerson &&
-        v.contactPerson
-          .toLowerCase()
-          .includes(
-            vendorSearch.toLowerCase(),
-          )),
+        v.contactPerson.toLowerCase().includes(vendorSearch.toLowerCase())),
   );
 
   // Current equipment pattern
-  const currentEquipmentPattern =
-    getEquipmentPattern(
-      formData.equipment,
-    );
+  const currentEquipmentPattern = getEquipmentPattern(formData.equipment);
 
   return (
     <div className="min-h-screen bg-white text-slate-900 p-4 sm:p-6 lg:p-8">
       <div className="max-w-6xl mx-auto space-y-6">
-
         {/* Navigation & Action Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-4 rounded-xl border border-slate-900 shadow-xl">
           <button
@@ -678,9 +579,7 @@ const EditAsset = () => {
 
           <h1 className="text-xl font-black text-slate-900 flex items-center gap-2">
             <HardDrive className="w-6 h-6 text-indigo-600" />
-
             Edit Asset:{" "}
-
             <span className="text-indigo-600 font-mono">
               {formData.assetCode}
             </span>
@@ -699,11 +598,7 @@ const EditAsset = () => {
         </div>
 
         {/* Main Form */}
-        <form
-          onSubmit={handleSubmit}
-          className="space-y-6"
-        >
-
+        <form onSubmit={handleSubmit} className="space-y-6">
           {/* Section 1: Basic & Technical Details */}
           <div className="bg-white rounded-xl border border-blue-600 p-5 shadow-xl space-y-4">
             <div className="flex items-center gap-2 text-blue-700 pb-2 border-b-2 border-blue-100">
@@ -715,14 +610,10 @@ const EditAsset = () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-
               {/* Equipment Dropdown */}
               <div>
                 <label className="block text-xs font-bold text-slate-700 uppercase mb-1">
-                  Equipment{" "}
-                  <span className="text-red-600">
-                    *
-                  </span>
+                  Equipment <span className="text-red-600">*</span>
                 </label>
 
                 <div className="flex items-center gap-2">
@@ -733,29 +624,18 @@ const EditAsset = () => {
                     className="w-full bg-slate-50 border border-slate-900 rounded-lg p-2 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-blue-600"
                     required
                   >
-                    <option value="">
-                      Select Equipment
-                    </option>
+                    <option value="">Select Equipment</option>
 
-                    {list.equipment.map(
-                      (item, i) => (
-                        <option
-                          key={i}
-                          value={item}
-                        >
-                          {item}
-                        </option>
-                      ),
-                    )}
+                    {list.equipment.map((item, i) => (
+                      <option key={i} value={item}>
+                        {item}
+                      </option>
+                    ))}
                   </select>
 
                   <button
                     type="button"
-                    onClick={() =>
-                      setActiveListModal(
-                        "equipment",
-                      )
-                    }
+                    onClick={() => setActiveListModal("equipment")}
                     className="bg-indigo-600 text-white border border-slate-900 p-2 rounded-lg font-bold shadow-xl hover:bg-indigo-700"
                   >
                     <Plus className="w-4 h-4" />
@@ -766,7 +646,6 @@ const EditAsset = () => {
                 {currentEquipmentPattern && (
                   <p className="mt-1 text-[10px] font-mono text-slate-500">
                     Pattern:{" "}
-
                     <span className="font-bold text-indigo-600">
                       {currentEquipmentPattern}
                     </span>
@@ -778,11 +657,8 @@ const EditAsset = () => {
               <div>
                 <label className="block text-xs font-bold text-slate-700 uppercase mb-1">
                   Asset Code
-
                   {currentEquipmentPattern && (
-                    <span className="text-red-600">
-                      {" "}*
-                    </span>
+                    <span className="text-red-600"> *</span>
                   )}
                 </label>
 
@@ -792,26 +668,22 @@ const EditAsset = () => {
                   value={formData.assetCode}
                   onChange={handleChange}
                   className="w-full bg-slate-50 border border-slate-900 rounded-lg p-2 text-sm font-mono font-bold text-indigo-600 focus:outline-none focus:ring-2 focus:ring-blue-600"
-                   
                 />
 
                 {getEquipmentPattern(formData.equipment) && (
-  <p className="mt-1 text-[11px] font-mono text-slate-500">
-    Pattern:{" "}
-    <span className="font-bold text-indigo-600">
-      {getEquipmentPattern(formData.equipment)}
-    </span>
-  </p>
-)}
+                  <p className="mt-1 text-[11px] font-mono text-slate-500">
+                    Pattern:{" "}
+                    <span className="font-bold text-indigo-600">
+                      {getEquipmentPattern(formData.equipment)}
+                    </span>
+                  </p>
+                )}
               </div>
 
               {/* Brand Dropdown */}
               <div>
                 <label className="block text-xs font-bold text-slate-700 uppercase mb-1">
-                  Brand{" "}
-                  <span className="text-red-600">
-                    *
-                  </span>
+                  Brand <span className="text-red-600">*</span>
                 </label>
 
                 <div className="flex items-center gap-2">
@@ -820,29 +692,19 @@ const EditAsset = () => {
                     value={formData.brand}
                     onChange={handleChange}
                     className="w-full bg-slate-50 border border-slate-900 rounded-lg p-2 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-blue-600"
-                  
                   >
-                    <option value="">
-                      Select Brand
-                    </option>
+                    <option value="">Select Brand</option>
 
-                    {list.brand.map(
-                      (item, i) => (
-                        <option
-                          key={i}
-                          value={item}
-                        >
-                          {item}
-                        </option>
-                      ),
-                    )}
+                    {list.brand.map((item, i) => (
+                      <option key={i} value={item}>
+                        {item}
+                      </option>
+                    ))}
                   </select>
 
                   <button
                     type="button"
-                    onClick={() =>
-                      setActiveListModal("brand")
-                    }
+                    onClick={() => setActiveListModal("brand")}
                     className="bg-indigo-600 text-white border border-slate-900 p-2 rounded-lg font-bold shadow-xl hover:bg-indigo-700"
                   >
                     <Plus className="w-4 h-4" />
@@ -874,9 +736,7 @@ const EditAsset = () => {
                 <input
                   type="text"
                   name="serialNumber"
-                  value={
-                    formData.serialNumber
-                  }
+                  value={formData.serialNumber}
                   onChange={handleChange}
                   className="w-full bg-slate-50 border border-slate-900 rounded-lg p-2 text-sm font-mono font-bold focus:outline-none focus:ring-2 focus:ring-blue-600"
                 />
@@ -891,9 +751,7 @@ const EditAsset = () => {
                 <input
                   type="text"
                   name="macAddress"
-                  value={
-                    formData.macAddress
-                  }
+                  value={formData.macAddress}
                   onChange={handleChange}
                   className="w-full bg-slate-50 border border-slate-900 rounded-lg p-2 text-sm font-mono font-bold focus:outline-none focus:ring-2 focus:ring-blue-600"
                 />
@@ -908,9 +766,7 @@ const EditAsset = () => {
 
               <textarea
                 name="specifications"
-                value={
-                  formData.specifications
-                }
+                value={formData.specifications}
                 onChange={handleChange}
                 rows={2}
                 className="w-full bg-slate-50 border border-slate-900 rounded-lg p-2 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-blue-600"
@@ -929,14 +785,10 @@ const EditAsset = () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-
               {/* Company Dropdown */}
               <div>
                 <label className="block text-xs font-bold text-slate-700 uppercase mb-1">
-                  Company{" "}
-                  <span className="text-red-600">
-                    *
-                  </span>
+                  Company <span className="text-red-600">*</span>
                 </label>
 
                 <div className="flex items-center gap-2">
@@ -947,29 +799,18 @@ const EditAsset = () => {
                     className="w-full bg-slate-50 border border-slate-900 rounded-lg p-2 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-emerald-600"
                     required
                   >
-                    <option value="">
-                      Select Company
-                    </option>
+                    <option value="">Select Company</option>
 
-                    {list.company.map(
-                      (item, i) => (
-                        <option
-                          key={i}
-                          value={item}
-                        >
-                          {item}
-                        </option>
-                      ),
-                    )}
+                    {list.company.map((item, i) => (
+                      <option key={i} value={item}>
+                        {item}
+                      </option>
+                    ))}
                   </select>
 
                   <button
                     type="button"
-                    onClick={() =>
-                      setActiveListModal(
-                        "company",
-                      )
-                    }
+                    onClick={() => setActiveListModal("company")}
                     className="bg-emerald-600 text-white border border-slate-900 p-2 rounded-lg font-bold shadow-xl hover:bg-emerald-700"
                   >
                     <Plus className="w-4 h-4" />
@@ -980,10 +821,7 @@ const EditAsset = () => {
               {/* Location Dropdown */}
               <div>
                 <label className="block text-xs font-bold text-slate-700 uppercase mb-1">
-                  Location{" "}
-                  <span className="text-red-600">
-                    *
-                  </span>
+                  Location <span className="text-red-600">*</span>
                 </label>
 
                 <div className="flex items-center gap-2">
@@ -992,31 +830,19 @@ const EditAsset = () => {
                     value={formData.location}
                     onChange={handleChange}
                     className="w-full bg-slate-50 border border-slate-900 rounded-lg p-2 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-emerald-600"
-                     
                   >
-                    <option value="">
-                      Select Location
-                    </option>
+                    <option value="">Select Location</option>
 
-                    {list.location.map(
-                      (item, i) => (
-                        <option
-                          key={i}
-                          value={item}
-                        >
-                          {item}
-                        </option>
-                      ),
-                    )}
+                    {list.location.map((item, i) => (
+                      <option key={i} value={item}>
+                        {item}
+                      </option>
+                    ))}
                   </select>
 
                   <button
                     type="button"
-                    onClick={() =>
-                      setActiveListModal(
-                        "location",
-                      )
-                    }
+                    onClick={() => setActiveListModal("location")}
                     className="bg-emerald-600 text-white border border-slate-900 p-2 rounded-lg font-bold shadow-xl hover:bg-emerald-700"
                   >
                     <Plus className="w-4 h-4" />
@@ -1033,35 +859,22 @@ const EditAsset = () => {
                 <div className="flex items-center gap-2">
                   <select
                     name="department"
-                    value={
-                      formData.department
-                    }
+                    value={formData.department}
                     onChange={handleChange}
                     className="w-full bg-slate-50 border border-slate-900 rounded-lg p-2 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-emerald-600"
                   >
-                    <option value="">
-                      Select Department
-                    </option>
+                    <option value="">Select Department</option>
 
-                    {list.department.map(
-                      (item, i) => (
-                        <option
-                          key={i}
-                          value={item}
-                        >
-                          {item}
-                        </option>
-                      ),
-                    )}
+                    {list.department.map((item, i) => (
+                      <option key={i} value={item}>
+                        {item}
+                      </option>
+                    ))}
                   </select>
 
                   <button
                     type="button"
-                    onClick={() =>
-                      setActiveListModal(
-                        "department",
-                      )
-                    }
+                    onClick={() => setActiveListModal("department")}
                     className="bg-emerald-600 text-white border border-slate-900 p-2 rounded-lg font-bold shadow-xl hover:bg-emerald-700"
                   >
                     <Plus className="w-4 h-4" />
@@ -1102,10 +915,7 @@ const EditAsset = () => {
               {/* Asset Status Dropdown */}
               <div>
                 <label className="block text-xs font-bold text-slate-700 uppercase mb-1">
-                  Status{" "}
-                  <span className="text-red-600">
-                    *
-                  </span>
+                  Status <span className="text-red-600">*</span>
                 </label>
 
                 <div className="flex items-center gap-2">
@@ -1116,29 +926,18 @@ const EditAsset = () => {
                     className="w-full bg-slate-50 border border-slate-900 rounded-lg p-2 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-emerald-600"
                     required
                   >
-                    <option value="">
-                      Select Status
-                    </option>
+                    <option value="">Select Status</option>
 
-                    {list.assetStatuses.map(
-                      (item, i) => (
-                        <option
-                          key={i}
-                          value={item}
-                        >
-                          {item}
-                        </option>
-                      ),
-                    )}
+                    {list.assetStatuses.map((item, i) => (
+                      <option key={i} value={item}>
+                        {item}
+                      </option>
+                    ))}
                   </select>
 
                   <button
                     type="button"
-                    onClick={() =>
-                      setActiveListModal(
-                        "assetStatuses",
-                      )
-                    }
+                    onClick={() => setActiveListModal("assetStatuses")}
                     className="bg-emerald-600 text-white border border-slate-900 p-2 rounded-lg font-bold shadow-xl hover:bg-emerald-700"
                   >
                     <Plus className="w-4 h-4" />
@@ -1159,25 +958,19 @@ const EditAsset = () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-
               {/* Purchase Date */}
               <div>
                 <label className="block text-xs font-bold text-slate-700 uppercase mb-1">
-                  Purchase Date{" "}
-                  <span className="text-red-600">
-                    *
-                  </span>
+                  Purchase Date
                 </label>
 
                 <input
                   type="date"
                   name="purchaseDate"
-                  value={
-                    formData.purchaseDate
-                  }
+                  value={formData.purchaseDate}
                   onChange={handleChange}
                   className="w-full bg-slate-50 border border-slate-900 rounded-lg p-2 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-indigo-600"
-                  required
+                  
                 />
               </div>
 
@@ -1190,9 +983,7 @@ const EditAsset = () => {
                 <input
                   type="number"
                   name="purchasePrice"
-                  value={
-                    formData.purchasePrice
-                  }
+                  value={formData.purchasePrice}
                   onChange={handleChange}
                   className="w-full bg-slate-50 border border-slate-900 rounded-lg p-2 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-indigo-600"
                 />
@@ -1206,27 +997,18 @@ const EditAsset = () => {
 
                 <select
                   name="warrantyYears"
-                  value={
-                    formData.warrantyYears
-                  }
+                  value={formData.warrantyYears}
                   onChange={handleChange}
                   className="w-full bg-slate-50 border border-slate-900 rounded-lg p-2 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-indigo-600"
                 >
-                  <option value="">
-                    Select Years
-                  </option>
+                  <option value="">Select Years</option>
 
-                  {[...Array(10)].map(
-                    (_, i) => (
-                      <option
-                        key={i + 1}
-                        value={i + 1}
-                      >
-                        {i + 1} Year
-                        {i > 0 ? "s" : ""}
-                      </option>
-                    ),
-                  )}
+                  {[...Array(10)].map((_, i) => (
+                    <option key={i + 1} value={i + 1}>
+                      {i + 1} Year
+                      {i > 0 ? "s" : ""}
+                    </option>
+                  ))}
                 </select>
               </div>
 
@@ -1239,9 +1021,7 @@ const EditAsset = () => {
                 <input
                   type="date"
                   name="warrantyStart"
-                  value={
-                    formData.warrantyStart
-                  }
+                  value={formData.warrantyStart}
                   readOnly
                   className="w-full bg-slate-200 border border-slate-400 rounded-lg p-2 text-sm font-bold text-slate-600 cursor-not-allowed"
                 />
@@ -1256,11 +1036,37 @@ const EditAsset = () => {
                 <input
                   type="date"
                   name="warrantyEnd"
-                  value={
-                    formData.warrantyEnd
-                  }
+                  value={formData.warrantyEnd}
                   readOnly
                   className="w-full bg-slate-200 border border-slate-400 rounded-lg p-2 text-sm font-bold text-slate-600 cursor-not-allowed"
+                />
+              </div>
+              {/* ECF number */}
+              <div>
+                <label className="block text-xs font-bold text-slate-700 uppercase mb-1">
+                  ECF Number
+                </label>
+
+                <input
+                  type="text"
+                  name="ecfNumber"
+                  value={formData.ecfNumber}
+                  onChange={handleChange}
+                  className="w-full bg-slate-50 border border-slate-900 rounded-lg p-2 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-slate-900"
+                />
+              </div>
+              {/* Work Order number */}
+              <div>
+                <label className="block text-xs font-bold text-slate-700 uppercase mb-1">
+                  Work Order Number
+                </label>
+
+                <input
+                  type="text"
+                  name="workOrderNumber"
+                  value={formData.workOrderNumber}
+                  onChange={handleChange}
+                  className="w-full bg-slate-50 border border-slate-900 rounded-lg p-2 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-slate-900"
                 />
               </div>
 
@@ -1275,70 +1081,42 @@ const EditAsset = () => {
                     <input
                       type="text"
                       placeholder="Search vendor..."
-                      value={
-                        vendorSearch
-                      }
-                      onChange={(e) =>
-                        setVendorSearch(
-                          e.target.value,
-                        )
-                      }
+                      value={vendorSearch}
+                      onChange={(e) => setVendorSearch(e.target.value)}
                       className="w-full bg-slate-50 border border-slate-900 rounded-lg p-2 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-indigo-600"
                     />
 
-                    {vendorSearch &&
-                      filteredVendors.length >
-                        0 && (
-                        <div className="absolute left-0 right-0 top-full mt-1 bg-white border border-slate-900 rounded-lg max-h-40 overflow-y-auto z-20 shadow-lg">
-                          {filteredVendors.map(
-                            (v) => (
-                              <div
-                                key={
-                                  v.vendorId
-                                }
-                                onClick={() => {
-                                  setFormData(
-                                    (prev) => ({
-                                      ...prev,
-                                      vendorId:
-                                        v.vendorId,
-                                    }),
-                                  );
+                    {vendorSearch && filteredVendors.length > 0 && (
+                      <div className="absolute left-0 right-0 top-full mt-1 bg-white border border-slate-900 rounded-lg max-h-40 overflow-y-auto z-20 shadow-lg">
+                        {filteredVendors.map((v) => (
+                          <div
+                            key={v.vendorId}
+                            onClick={() => {
+                              setFormData((prev) => ({
+                                ...prev,
+                                vendorId: v.vendorId,
+                              }));
 
-                                  setVendorSearch(
-                                    v.vendorName,
-                                  );
-                                }}
-                                className="p-2 hover:bg-indigo-50 cursor-pointer text-xs font-bold border-b border-slate-100 last:border-none"
-                              >
-                                <p className="text-slate-900">
-                                  {
-                                    v.vendorName
-                                  }
-                                </p>
+                              setVendorSearch(v.vendorName);
+                            }}
+                            className="p-2 hover:bg-indigo-50 cursor-pointer text-xs font-bold border-b border-slate-100 last:border-none"
+                          >
+                            <p className="text-slate-900">{v.vendorName}</p>
 
-                                {v.contactPerson && (
-                                  <p className="text-slate-500 text-[10px]">
-                                    Contact:{" "}
-                                    {
-                                      v.contactPerson
-                                    }
-                                  </p>
-                                )}
-                              </div>
-                            ),
-                          )}
-                        </div>
-                      )}
+                            {v.contactPerson && (
+                              <p className="text-slate-500 text-[10px]">
+                                Contact: {v.contactPerson}
+                              </p>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
 
                   <button
                     type="button"
-                    onClick={() =>
-                      setShowVendorModal(
-                        true,
-                      )
-                    }
+                    onClick={() => setShowVendorModal(true)}
                     className="bg-indigo-600 text-white border border-slate-900 p-2 rounded-lg font-bold shadow-xl hover:bg-indigo-700"
                   >
                     <Plus className="w-4 h-4" />
@@ -1359,7 +1137,6 @@ const EditAsset = () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-
               {/* Survey Status Dropdown */}
               <div>
                 <label className="block text-xs font-bold text-slate-700 uppercase mb-1">
@@ -1369,35 +1146,22 @@ const EditAsset = () => {
                 <div className="flex items-center gap-2">
                   <select
                     name="surveyStatus"
-                    value={
-                      formData.surveyStatus
-                    }
+                    value={formData.surveyStatus}
                     onChange={handleChange}
                     className="w-full bg-slate-50 border border-slate-900 rounded-lg p-2 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-slate-900"
                   >
-                    <option value="">
-                      Select Survey Status
-                    </option>
+                    <option value="">Select Survey Status</option>
 
-                    {list.surveyStatuses.map(
-                      (item, i) => (
-                        <option
-                          key={i}
-                          value={item}
-                        >
-                          {item}
-                        </option>
-                      ),
-                    )}
+                    {list.surveyStatuses.map((item, i) => (
+                      <option key={i} value={item}>
+                        {item}
+                      </option>
+                    ))}
                   </select>
 
                   <button
                     type="button"
-                    onClick={() =>
-                      setActiveListModal(
-                        "surveyStatuses",
-                      )
-                    }
+                    onClick={() => setActiveListModal("surveyStatuses")}
                     className="bg-slate-900 text-white border border-slate-900 p-2 rounded-lg font-bold shadow-xl hover:bg-slate-800"
                   >
                     <Plus className="w-4 h-4" />
@@ -1417,37 +1181,29 @@ const EditAsset = () => {
                   onChange={handleChange}
                   className="w-full bg-slate-50 border border-slate-900 rounded-lg p-2 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-slate-900"
                 >
-                  <option value="">
-                    Select User
-                  </option>
+                  <option value="">Select User</option>
 
                   {users.map((u) => (
-                    <option
-                      key={u.id}
-                      value={u.username}
-                    >
+                    <option key={u.id} value={u.username}>
                       {u.username}
                     </option>
                   ))}
                 </select>
               </div>
+              
+            </div>
+            {/* Upgrade Equipments */}
+            <div>
+              <label className="block text-xs font-bold text-slate-700 uppercase mb-1">
+                Upgrade Information
+              </label>
 
-              {/* Upgrade Equipments */}
-              <div>
-                <label className="block text-xs font-bold text-slate-700 uppercase mb-1">
-                  Upgrade Information
-                </label>
-
-                <input
-                  type="text"
-                  name="upgradeEquipments"
-                  value={
-                    formData.upgradeEquipments
-                  }
-                  onChange={handleChange}
-                  className="w-full bg-slate-50 border border-slate-900 rounded-lg p-2 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-slate-900"
-                />
-              </div>
+              <textarea
+                name="upgradeEquipments"
+                value={formData.upgradeEquipments}
+                onChange={handleChange}
+                className="w-full bg-slate-50 border border-slate-900 rounded-lg p-2 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-slate-900"
+              />
             </div>
 
             {/* Remarks */}
@@ -1494,7 +1250,6 @@ const EditAsset = () => {
       {showConfirmModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
           <div className="bg-white border border-slate-900 rounded-xl max-w-md w-full p-6 shadow-xl space-y-4">
-
             <div className="flex items-center gap-3 text-indigo-600">
               <CheckCircle2 className="w-6 h-6" />
 
@@ -1513,9 +1268,7 @@ const EditAsset = () => {
 
             {currentEquipmentPattern && (
               <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-3">
-                <p className="text-xs font-bold text-slate-500">
-                  Equipment
-                </p>
+                <p className="text-xs font-bold text-slate-500">Equipment</p>
 
                 <p className="text-sm font-black text-slate-900">
                   {formData.equipment}
@@ -1534,9 +1287,7 @@ const EditAsset = () => {
             <div className="flex justify-end gap-3 pt-4 border-t-2 border-slate-100">
               <button
                 type="button"
-                onClick={() =>
-                  setShowConfirmModal(false)
-                }
+                onClick={() => setShowConfirmModal(false)}
                 disabled={submitting}
                 className="bg-slate-100 hover:bg-slate-200 text-slate-900 border border-slate-900 px-4 py-2 rounded-lg text-sm font-bold transition shadow-xl"
               >
@@ -1554,7 +1305,6 @@ const EditAsset = () => {
                 ) : (
                   <Save className="w-4 h-4" />
                 )}
-
                 Confirm & Save
               </button>
             </div>
@@ -1569,7 +1319,6 @@ const EditAsset = () => {
       {activeListModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
           <div className="bg-white border border-slate-900 rounded-xl max-w-sm w-full p-6 shadow-xl space-y-4">
-
             <div className="flex items-center justify-between">
               <h3 className="text-md font-black text-slate-900 capitalize">
                 Add New {activeListModal}
@@ -1604,9 +1353,7 @@ const EditAsset = () => {
                     : `Enter new ${activeListModal}`
                 }
                 value={newListItem}
-                onChange={(e) =>
-                  setNewListItem(e.target.value)
-                }
+                onChange={(e) => setNewListItem(e.target.value)}
                 className="w-full bg-slate-50 border border-slate-900 rounded-lg p-2 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-indigo-600"
               />
             </div>
@@ -1615,21 +1362,14 @@ const EditAsset = () => {
             {activeListModal === "equipment" && (
               <div>
                 <label className="block text-xs font-bold text-slate-700 uppercase mb-1">
-                  Asset Code Pattern{" "}
-                  <span className="text-red-600">
-                    *
-                  </span>
+                  Asset Code Pattern <span className="text-red-600">*</span>
                 </label>
 
                 <input
                   type="text"
                   placeholder="e.g. 06-01-03-####"
                   value={newEquipmentPattern}
-                  onChange={(e) =>
-                    setNewEquipmentPattern(
-                      e.target.value,
-                    )
-                  }
+                  onChange={(e) => setNewEquipmentPattern(e.target.value)}
                   className="w-full bg-slate-50 border border-slate-900 rounded-lg p-2 text-sm font-mono font-bold focus:outline-none focus:ring-2 focus:ring-indigo-600"
                 />
 
@@ -1654,11 +1394,7 @@ const EditAsset = () => {
 
               <button
                 type="button"
-                onClick={() =>
-                  handleAddListItem(
-                    activeListModal,
-                  )
-                }
+                onClick={() => handleAddListItem(activeListModal)}
                 className="bg-indigo-600 text-white border border-slate-900 px-4 py-1.5 rounded-lg text-xs font-bold shadow-xl hover:bg-indigo-700"
               >
                 Add Option
@@ -1675,7 +1411,6 @@ const EditAsset = () => {
       {showVendorModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
           <div className="bg-white border border-indigo-600 rounded-xl max-w-md w-full p-6 shadow-xl space-y-4">
-
             <div className="flex items-center justify-between border-b-2 border-slate-100 pb-2">
               <h3 className="text-md font-black text-slate-900">
                 Add New Vendor
@@ -1683,38 +1418,27 @@ const EditAsset = () => {
 
               <button
                 type="button"
-                onClick={() =>
-                  setShowVendorModal(false)
-                }
+                onClick={() => setShowVendorModal(false)}
                 className="text-slate-500 hover:text-slate-900"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            <form
-              onSubmit={handleSaveVendor}
-              className="space-y-3"
-            >
+            <form onSubmit={handleSaveVendor} className="space-y-3">
               <div>
                 <label className="block text-xs font-bold text-slate-700 uppercase mb-1">
-                  Vendor Name{" "}
-                  <span className="text-red-600">
-                    *
-                  </span>
+                  Vendor Name <span className="text-red-600">*</span>
                 </label>
 
                 <input
                   type="text"
                   required
-                  value={
-                    newVendor.vendorName
-                  }
+                  value={newVendor.vendorName}
                   onChange={(e) =>
                     setNewVendor({
                       ...newVendor,
-                      vendorName:
-                        e.target.value,
+                      vendorName: e.target.value,
                     })
                   }
                   className="w-full bg-slate-50 border border-slate-900 rounded-lg p-2 text-sm font-bold focus:outline-none"
@@ -1728,14 +1452,11 @@ const EditAsset = () => {
 
                 <input
                   type="text"
-                  value={
-                    newVendor.contactPerson
-                  }
+                  value={newVendor.contactPerson}
                   onChange={(e) =>
                     setNewVendor({
                       ...newVendor,
-                      contactPerson:
-                        e.target.value,
+                      contactPerson: e.target.value,
                     })
                   }
                   className="w-full bg-slate-50 border border-slate-900 rounded-lg p-2 text-sm font-bold focus:outline-none"
@@ -1749,14 +1470,11 @@ const EditAsset = () => {
 
                 <input
                   type="text"
-                  value={
-                    newVendor.contact
-                  }
+                  value={newVendor.contact}
                   onChange={(e) =>
                     setNewVendor({
                       ...newVendor,
-                      contact:
-                        e.target.value,
+                      contact: e.target.value,
                     })
                   }
                   className="w-full bg-slate-50 border border-slate-900 rounded-lg p-2 text-sm font-bold focus:outline-none"
@@ -1770,14 +1488,11 @@ const EditAsset = () => {
 
                 <input
                   type="text"
-                  value={
-                    newVendor.address
-                  }
+                  value={newVendor.address}
                   onChange={(e) =>
                     setNewVendor({
                       ...newVendor,
-                      address:
-                        e.target.value,
+                      address: e.target.value,
                     })
                   }
                   className="w-full bg-slate-50 border border-slate-900 rounded-lg p-2 text-sm font-bold focus:outline-none"
@@ -1787,11 +1502,7 @@ const EditAsset = () => {
               <div className="flex justify-end gap-2 pt-3 border-t-2 border-slate-100">
                 <button
                   type="button"
-                  onClick={() =>
-                    setShowVendorModal(
-                      false,
-                    )
-                  }
+                  onClick={() => setShowVendorModal(false)}
                   className="bg-slate-100 text-slate-900 border border-slate-900 px-3 py-1.5 rounded-lg text-xs font-bold shadow-xl"
                 >
                   Cancel
@@ -1813,4 +1524,3 @@ const EditAsset = () => {
 };
 
 export default EditAsset;
- 
