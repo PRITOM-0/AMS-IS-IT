@@ -8,14 +8,11 @@ import {
   HardDrive,
   MapPin,
   ShieldCheck,
-  Tag,
-  Pencil,
-  UserPlus,
-  UserMinus,
   UserCheck,
   AlertCircle,
   FileText,
   Loader2,
+  Wrench
 } from "lucide-react";
 import { API_BASE_URL } from "../env";
 import ReleaseAsset from "../components/ReleaseAsset";
@@ -228,6 +225,13 @@ const AssetDetails = () => {
           </button>
 
           <div className="flex items-center gap-3">
+            <button
+  onClick={() => navigate(`/assets/repairservice/${asset.id}`)}
+  className="flex items-center gap-2 rounded-lg bg-yellow-100 hover:bg-yellow-200 text-yellow-700 border border-yellow-600 px-4 py-2 rounded-lg shadow-xl transition"
+>
+  <Wrench size={16} />
+  Repair / Service
+</button>
             <Link
               to={`/assets/editAsset/${asset.id}`}
               className="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white border border-slate-900 px-4 py-2 rounded-lg text-sm font-bold shadow-xl transition"

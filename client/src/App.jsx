@@ -1,4 +1,3 @@
- 
 import React, { useEffect, useState } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 
@@ -10,11 +9,12 @@ import Splash from "./pages/Splash";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Assets from "./pages/Assets";
- 
+
 import Requests from "./pages/Requests";
 import AssetDetails from "./pages/AssetDetails";
 import AddAsset from "./pages/AddAsset";
 import EditAsset from "./pages/EditAsset";
+import RepairService from "./pages/RepairService";
 import Employees from "./pages/Employees";
 import EmployeeDetails from "./pages/EmployeeDetails";
 import AddEmployee from "./pages/AddEmployee";
@@ -32,7 +32,7 @@ import Setting from "./pages/Setting";
 // Session Configuration
 // ==========================================
 
-const RefreshOn = 2 *60 * 60 * 1000; // 1 hour
+const RefreshOn = 2 * 60 * 60 * 1000; // 1 hour
 
 // ==========================================
 // Protected Route
@@ -78,8 +78,7 @@ function App() {
     }
 
     // Check if 1 hour has passed
-    const sessionExpired =
-      Date.now() - Number(loginTime) >= RefreshOn;
+    const sessionExpired = Date.now() - Number(loginTime) >= RefreshOn;
 
     if (sessionExpired) {
       localStorage.removeItem("isLoggedIn");
@@ -129,8 +128,7 @@ function App() {
       }
 
       // Check expiration
-      const sessionExpired =
-        Date.now() - Number(loginTime) >= RefreshOn;
+      const sessionExpired = Date.now() - Number(loginTime) >= RefreshOn;
 
       if (sessionExpired) {
         // Remove session
@@ -209,10 +207,7 @@ function App() {
         path="/"
         element={
           <ProtectedRoute isLoggedIn={isLoggedIn}>
-            <Layout
-              setIsLoggedIn={setIsLoggedIn}
-              onLogout={handleLogout}
-            />
+            <Layout setIsLoggedIn={setIsLoggedIn} onLogout={handleLogout} />
           </ProtectedRoute>
         }
       >
@@ -220,101 +215,49 @@ function App() {
         <Route index element={<Dashboard />} />
 
         {/* Category Search */}
-        <Route
-          path="category-search"
-          element={<CategorySearch />}
-        />
+        <Route path="category-search" element={<CategorySearch />} />
 
         {/* Assets */}
-        <Route
-          path="assets"
-          element={<Assets />}
-        />
+        <Route path="assets" element={<Assets />} />
 
-        <Route
-          path="assets/addAsset"
-          element={<AddAsset />}
-        />
+        <Route path="assets/addAsset" element={<AddAsset />} />
 
-        <Route
-          path="assets/editAsset/:id"
-          element={<EditAsset />}
-        />
+        <Route path="assets/editAsset/:id" element={<EditAsset />} />
 
-        <Route
-          path="assets/:id"
-          element={<AssetDetails />}
-        />
-
-       
+        <Route path="assets/:id" element={<AssetDetails />} />
+        <Route path="/assets/repairservice/:id" element={<RepairService />} />
 
         {/* Requests */}
-        <Route
-          path="requests"
-          element={<Requests />}
-        />
+        <Route path="requests" element={<Requests />} />
 
         {/* Settings */}
-        <Route
-          path="settings"
-          element={<Setting />}
-        />
+        <Route path="settings" element={<Setting />} />
 
         {/* Employees */}
-        <Route
-          path="employees"
-          element={<Employees />}
-        />
+        <Route path="employees" element={<Employees />} />
 
-        <Route
-          path="employees/add"
-          element={<AddEmployee />}
-        />
+        <Route path="employees/add" element={<AddEmployee />} />
 
-        <Route
-          path="employees/:id"
-          element={<EmployeeDetails />}
-        />
+        <Route path="employees/:id" element={<EmployeeDetails />} />
 
         {/* Assign Assets */}
-        <Route
-          path="assign-assets"
-          element={<AssetAssign />}
-        />
+        <Route path="assign-assets" element={<AssetAssign />} />
 
         {/* Tasks */}
-        <Route
-          path="tasks"
-          element={<Task />}
-        />
+        <Route path="tasks" element={<Task />} />
 
-        <Route
-          path="tasks/add"
-          element={<AddTask />}
-        />
+        <Route path="tasks/add" element={<AddTask />} />
 
-        <Route
-          path="tasks/:id"
-          element={<TaskDetails />}
-        />
+        <Route path="tasks/:id" element={<TaskDetails />} />
 
         {/* Import Assets */}
-        <Route
-          path="importassets"
-          element={<ImportAssets />}
-        />
+        <Route path="importassets" element={<ImportAssets />} />
 
         {/* Store Assets */}
-        <Route
-          path="assets/store"
-          element={<StoreAssets />}
-        />
+        <Route path="assets/store" element={<StoreAssets />} />
 
         {/* Export Assets */}
-        <Route
-          path="exportassets"
-          element={<ExportAssets />}
-        />
+        <Route path="exportassets" element={<ExportAssets />} />
       </Route>
 
       {/* ========================================
@@ -323,16 +266,10 @@ function App() {
 
       <Route
         path="*"
-        element={
-          <Navigate
-            to={isLoggedIn ? "/" : "/login"}
-            replace
-          />
-        }
+        element={<Navigate to={isLoggedIn ? "/" : "/login"} replace />}
       />
     </Routes>
   );
 }
 
 export default App;
- 

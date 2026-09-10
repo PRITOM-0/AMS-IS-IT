@@ -10470,6 +10470,61 @@
       "id": "n_OF0FSqbhw"
     }
   ],
+  "services": [
+    {
+      "assetId": "Llc600rpoms",
+      "type": "repair",
+      "vendorName": "Walton Service center",
+      "serviceCost": "50000",
+      "serviceWarranty": "1 year",
+      "remarks": "Have a crack on internal part",
+      "serviceDate": "2026-09-10",
+      "status": "Complete",
+      "createAt": "2026-09-10T06:20:19.919Z",
+      "updateAt": "2026-09-10T06:29:21.304Z",
+      "id": "N_DdwL4ebSI"
+    },
+    {
+      "assetId": "Llc600rpoms",
+      "type": "upgrade",
+      "equipment": "RAM DDR4",
+      "price": "32000",
+      "vendorName": "Golder Shop",
+      "equipmentWarranty": "2 y",
+      "remarks": "Need to replace previous one.",
+      "serviceDate": "2026-09-10",
+      "status": "Open",
+      "createAt": "2026-09-10T06:21:12.343Z",
+      "updateAt": "2026-09-10T06:21:12.343Z",
+      "id": "w0MZHiEnJG0"
+    },
+    {
+      "assetId": "Llc600rpoms",
+      "type": "repair",
+      "vendorName": "Golder Shop",
+      "serviceCost": "4500",
+      "serviceWarranty": "5 year",
+      "remarks": "Have a crack on internal part",
+      "serviceDate": "2026-09-09",
+      "status": "Ongoing",
+      "createAt": "2026-09-10T06:26:19.888Z",
+      "updateAt": "2026-09-10T06:26:19.888Z",
+      "id": "YrrKmtoaf9w"
+    },
+    {
+      "assetId": "Llc600rpoms",
+      "type": "repair",
+      "vendorName": "Walton Service center",
+      "serviceCost": "5464",
+      "serviceWarranty": "1 year",
+      "remarks": "Need to replace previous one.",
+      "serviceDate": "2026-09-24",
+      "status": "Ongoing",
+      "createAt": "2026-09-10T06:34:30.720Z",
+      "updateAt": "2026-09-10T06:34:30.720Z",
+      "id": "BPaXZN3hI_E"
+    }
+  ],
   "tasks": [
     {
       "taskId": "TSK-1787825154524",
