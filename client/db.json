@@ -568,7 +568,15 @@
       "status": "Active",
       "employeeId": "",
       "receivedDate": "",
-      "oldUsers": [],
+      "oldUsers": [
+        {
+          "employeeName": "Ainal Rahman",
+          "employeeId": "782833",
+          "receivedDate": "2026-09-14T06:53:57.519Z",
+          "releaseDate": "2026-09-14T06:55:22.800Z",
+          "releaseNote": "slow"
+        }
+      ],
       "purchaseDate": "",
       "purchasePrice": "",
       "warrantyStart": "",
@@ -580,7 +588,7 @@
       "upgradeEquipments": "",
       "surveyTakenBy": "",
       "createdAt": "2026-09-03T06:57:53.339Z",
-      "updatedAt": "2026-09-03T06:57:53.339Z",
+      "updatedAt": "2026-09-14T06:53:57.519Z",
       "id": "omaSa_LOhjM"
     },
     {
@@ -10049,6 +10057,39 @@
       "createdAt": "2026-09-09T07:35:05.104Z",
       "updatedAt": "2026-09-09T07:35:05.104Z",
       "id": "Llc600rpoms"
+    },
+    {
+      "equipment": "CPU",
+      "assetCode": "06-01-01-6786",
+      "brand": "Acer",
+      "model": "yyyyyyyyy",
+      "serialNumber": "",
+      "specifications": "uiyiy",
+      "ecfNumber": "gjug",
+      "workOrderNumber": "",
+      "macAddress": "",
+      "company": "SPL",
+      "location": "",
+      "department": "",
+      "floor": "",
+      "room": "",
+      "status": "Instock",
+      "employeeId": "",
+      "receivedDate": "",
+      "oldUsers": [],
+      "purchaseDate": "2026-09-14",
+      "purchasePrice": "7798",
+      "warrantyStart": "2026-09-14",
+      "warrantyEnd": "2029-09-14",
+      "warrantyYears": "3",
+      "vendorId": "VND005",
+      "remarks": "",
+      "surveyStatus": "Update",
+      "upgradeEquipments": "",
+      "surveyTakenBy": "Pritom Saha",
+      "createdAt": "2026-09-14T06:49:40.970Z",
+      "updatedAt": "2026-09-14T06:49:40.970Z",
+      "id": "pWJD4jnSCcc"
     }
   ],
   "list": {
@@ -10326,7 +10367,7 @@
       "location": "SRM",
       "department": "Faculty",
       "createdAt": "2026-09-06T04:00:11.316Z",
-      "updatedAt": "2026-09-07T03:30:42.757Z",
+      "updatedAt": "2026-09-14T06:53:57.519Z",
       "assetlist": [
         "MsrPZ1tv5aA",
         "Sh62lDqum2Y",
@@ -10523,6 +10564,19 @@
       "createAt": "2026-09-10T06:34:30.720Z",
       "updateAt": "2026-09-10T06:34:30.720Z",
       "id": "BPaXZN3hI_E"
+    },
+    {
+      "assetId": "pWJD4jnSCcc",
+      "type": "repair",
+      "vendorName": "hfghvfh",
+      "serviceCost": "7567678",
+      "serviceWarranty": "",
+      "remarks": "",
+      "serviceDate": "2026-09-14",
+      "status": "Ongoing",
+      "createAt": "2026-09-14T06:51:20.416Z",
+      "updateAt": "2026-09-14T06:51:20.416Z",
+      "id": "26SrlAv_jv8"
     }
   ],
   "tasks": [

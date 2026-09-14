@@ -249,11 +249,11 @@ function AssetAssign() {
           </div>
         )}
 
-        <div className="grid gap-6 xl:grid-cols-[1.05fr_0.95fr]">
+        <div className="grid gap-4 grid-cols-[1.05fr_0.95fr]">
           {/* =====================================================
               EMPLOYEE SECTION
           ====================================================== */}
-          <div className="rounded-3xl border border-slate-400 border-indigo-200 bg-gradient-to-br from-indigo-100 via-white to-violet-100 p-6 text-indigo-700 shadow-lg shadow-slate-100">
+          <div className="rounded-3xl border border-slate-400 border-indigo-200 bg-gradient-to-br from-indigo-100 via-white to-violet-100 p-6 text-indigo-700 shadow-2xl shadow-slate-100">
             <div className="mb-5 flex items-center gap-3">
               <div className="rounded-2xl bg-blue-100 p-2.5 text-blue-600">
                 <UserCheck size={20} />
@@ -406,7 +406,7 @@ function AssetAssign() {
           {/* =====================================================
               ASSET SECTION
           ====================================================== */}
-          <div className="rounded-3xl border border-slate-400 border-indigo-200 bg-gradient-to-br from-indigo-100 via-white to-violet-100 p-6 text-indigo-700 shadow-lg shadow-slate-100">
+          <div className="rounded-3xl border border-slate-400 border-indigo-200 bg-gradient-to-br from-indigo-100 via-white to-violet-100 p-6 text-indigo-700 shadow-2xl shadow-slate-100">
             <div className="mb-5 flex items-center gap-3">
               <div className="rounded-2xl bg-emerald-100 p-2.5 text-emerald-600">
                 <PackagePlus size={20} />

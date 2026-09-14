@@ -77,75 +77,80 @@ function Sidebar() {
   ];
 
   return (
-    <aside
-      className="fixed top-16 left-0 h-[calc(100vh-4rem)] w-50
-      bg-white/15 border-r border-indigo-500
-      text-black z-40 flex flex-col justify-between select-none shadow-2xl"
-    >
-      {/* Navigation Links */}
-      <div className="mt-5 px-3 space-y-6 overflow-y-auto scrollbar-none">
-        {menuSections.map((section, idx) => (
-          <div key={idx} className="space-y-1.5">
-            {section.title && (
-              <h3 className="px-3 text-[11px] font-bold tracking-wider text-slate-500 uppercase">
-                {section.title}
-              </h3>
-            )}
+  <aside
+    className="fixed top-16 left-0 h-[calc(100vh-4rem)] w-50
+    bg-white/15 border-r border-indigo-500
+    text-black z-40 flex flex-col justify-between
+    select-none shadow-2xl text-xs"
+  >
+    {/* Navigation Links */}
+    <div className="mt-5 px-3 space-y-6 overflow-y-auto scrollbar-none">
+      {menuSections.map((section, idx) => (
+        <div key={idx} className="space-y-1.5">
+          {section.title && (
+            <h3 className="px-3 text-[9px] font-bold tracking-wider text-slate-500 uppercase">
+              {section.title}
+            </h3>
+          )}
 
-            <ul className="space-y-1">
-              {section.items.map((item) => {
-                const isActive = location.pathname === item.path;
+          <ul className="space-y-1">
+            {section.items.map((item) => {
+              const isActive = location.pathname === item.path;
 
-                return (
-                  <li key={item.label}>
-                    <Link
-                      to={item.path}
-                      className={`relative flex items-center gap-3 px-3.5 py-2.5 rounded-xl
-                      text-sm font-medium transition-all duration-500 group
-                      ${
+              return (
+                <li key={item.label}>
+                  <Link
+                    to={item.path}
+                    className={`relative flex items-center gap-2 px-3 py-2 rounded-xl
+                    text-[11px] font-medium transition-all duration-500 group
+                    ${
+                      isActive
+                        ? "bg-indigo-600 text-white font-semibold scale-105"
+                        : "text-black hover:bg-slate-900 hover:text-slate-200 hover:scale-105"
+                    }`}
+                  >
+                    {/* Active Indicator */}
+                    {isActive && (
+                      <span className="absolute left-0 top-2 bottom-2 w-1 bg-white rounded-r-full shadow-[0_0_10px_rgba(99,102,241,0.7)]" />
+                    )}
+
+                    {/* Icon */}
+                    <span
+                      className={`text-sm transition-colors duration-900 ${
                         isActive
-                          ? "bg-indigo-600 text-white font-semibold scale-105"
-                          : "text-black hover:bg-slate-900 hover:text-slate-200 hover:scale-105"
+                          ? "text-white animate-[spin_0.5s_ease-in-out_1]"
+                          : "text-slate-400 group-hover:text-slate-200"
                       }`}
                     >
-                      {/* Active Indicator Bar & Glow */}
-                      {isActive && (
-                        <span className="absolute left-0 top-2 bottom-2 w-1 bg-white rounded-r-full shadow-[0_0_10px_rgba(99,102,241,0.7)]" />
-                      )}
+                      {item.icon}
+                    </span>
 
-                      {/* Icon */}
-                      <span
-                        className={`transition-colors duration-900 ${
-                          isActive
-                            ? "text-white animate-[spin_0.5s_ease-in-out_1]"
-                            : "text-slate-400 group-hover:text-slate-200"
-                        }`}
-                      >
-                        {item.icon}
-                      </span>
-
-                      {/* Label */}
-                      <span className="truncate">{item.label}</span>
-                    </Link>
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
-        ))}
-      </div>
-
-      {/* Footer Badge */}
-      <div className="p-3 m-3 rounded-xl bg-slate-900 border border-slate-800">
-        <div className="flex items-center justify-between text-xs text-slate-400 font-mono">
-          <span>Asset Manager</span>
-          <span className="px-1.5 py-0.5 rounded bg-indigo-500/10 text-indigo-400 font-semibold border border-indigo-500/20">
-            v1.0
-          </span>
+                    {/* Label */}
+                    <span className="truncate text-[11px]">
+                      {item.label}
+                    </span>
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
         </div>
+      ))}
+    </div>
+
+    {/* Footer Badge */}
+    <div className="p-2 m-3 rounded-xl bg-slate-900 border border-slate-800">
+      <div className="flex items-center justify-between text-[9px] text-slate-400 font-mono">
+        <span>Asset Manager</span>
+
+        <span className="px-1 py-0.5 rounded bg-indigo-500/10 text-indigo-400 font-semibold border border-indigo-500/20">
+          v1.0
+        </span>
       </div>
-    </aside>
-  );
+    </div>
+  </aside>
+);
+
 }
 
 export default Sidebar;

@@ -82,7 +82,7 @@ function Employees() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 p-4 md:p-6">
+    <div className="min-h-screen  p-4 md:p-6">
       {/* HEADER */}
       <div className="mb-5 rounded-[28px] border border-indigo-200 bg-gradient-to-br from-indigo-100 via-white to-violet-100 p-6 shadow-[0_20px_45px_-20px_rgba(79,70,229,0.45)]">
         <div className="flex flex-col gap-5">
