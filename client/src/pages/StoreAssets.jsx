@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { API_BASE_URL } from "../env";
 import {
   Database,
   ArrowLeft,
@@ -35,7 +36,7 @@ const StoreAssets = () => {
   const [isCheckingDb, setIsCheckingDb] = useState(false);
   const [actualDbCount, setActualDbCount] = useState(0);
 
-  const API_BASE_URL = "http://localhost:3000";
+ 
 
   const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
@@ -115,23 +116,23 @@ const StoreAssets = () => {
         if (response.ok) {
           const savedData = await response.json();
 
-          if (savedData && savedData.id !== undefined) {
+          if (savedData && savedData._id !== undefined) {
             setStatusMessage(
-              `Verifying DB write for ID ${savedData.id}...`
+              `Verifying DB write for ID ${savedData._id}...`
             );
 
-            const exists = await checkAssetExists(savedData.id);
+            const exists = await checkAssetExists(savedData._id);
 
             if (exists) {
               setStatusMessage(
-                `Verified ID ${savedData.id} in DB!`
+                `Verified ID ${savedData._id} in DB!`
               );
 
               return savedData;
             }
 
             setStatusMessage(
-              `DB check failed for ID ${savedData.id}. Retrying...`
+              `DB check failed for ID ${savedData._id}. Retrying...`
             );
           }
         }
@@ -218,7 +219,7 @@ const StoreAssets = () => {
         const savedData =
           await saveAndVerifyAssetReliable(asset);
 
-        actualCreatedIds.push(savedData.id);
+        actualCreatedIds.push(savedData._id);
       } catch (err) {
         console.error(
           `Critical import failure for ${codeLabel}:`,
@@ -748,7 +749,7 @@ const StoreAssets = () => {
 
                 {assetsToStore.map((asset, index) => (
                   <tr
-                    key={asset.id || index}
+                    key={asset._id || index}
                     className="hover:bg-indigo-50/30 transition-colors"
                   >
 

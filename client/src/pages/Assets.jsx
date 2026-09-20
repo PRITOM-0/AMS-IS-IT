@@ -512,7 +512,7 @@ const AssetGrid = ({ assets, loading }) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
       {assets.map((asset) => (
-        <AssetCard key={asset.id || asset._id} asset={asset} />
+        <AssetCard key={asset._id } asset={asset} />
       ))}
     </div>
   );

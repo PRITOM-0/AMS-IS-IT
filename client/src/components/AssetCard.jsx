@@ -6,7 +6,7 @@ const AssetCard = ({ asset }) => {
   if (!asset) return null;
 
   const {
-    id,
+    _id,
     assetCode,
     equipment,
     brand,
@@ -36,7 +36,7 @@ const AssetCard = ({ asset }) => {
 
   return (
     <Link
-      to={`/assets/${id}`}
+      to={`/assets/${_id}`}
       className="block rounded-[24px] border border-indigo-300 bg-gradient-to-br from-white via-indigo-50/40 to-slate-50/80 p-5 text-slate-800 shadow-[0_20px_45px_-25px_rgba(15,23,42,0.25)] backdrop-blur-sm transition-all duration-200 border-t-4 hover:border-indigo-600 hover:shadow-[0_25px_50px_-20px_rgba(79,70,229,0.35)] min-w-0"
     >
       <div className="flex items-start justify-between gap-2 mb-3 min-w-0">

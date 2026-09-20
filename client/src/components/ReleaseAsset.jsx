@@ -35,12 +35,12 @@ const ReleaseAsset = ({ employee, asset, onReleased }) => {
   // ==========================================
 
   const handleRelease = async () => {
-    if (!asset?.id) {
+    if (!asset?._id) {
       setError("Asset information is missing.");
       return;
     }
 
-    if (!employee?.id) {
+    if (!employee?._id) {
       setError("Employee information is missing.");
       return;
     }
@@ -83,7 +83,7 @@ const ReleaseAsset = ({ employee, asset, onReleased }) => {
         : [];
 
       const updatedAssetList = currentAssetList.filter(
-        (assetId) => String(assetId) !== String(asset.id)
+        (assetId) => String(assetId) !== String(asset._id)
       );
 
       const updatedEmployee = {
@@ -93,12 +93,12 @@ const ReleaseAsset = ({ employee, asset, onReleased }) => {
 
       // 3. Fire BOTH PUT requests concurrently
       const [assetRes, employeeRes] = await Promise.all([
-        fetch(`${API_BASE_URL}/assets/${asset.id}`, {
+        fetch(`${API_BASE_URL}/assets/${asset._id}`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(updatedAsset),
         }),
-        fetch(`${API_BASE_URL}/employees/${employee.id}`, {
+        fetch(`${API_BASE_URL}/employees/${employee._id}`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(updatedEmployee),

@@ -160,7 +160,7 @@ function Setting() {
 
       if (editingItem) {
         await axios.patch(
-          `${API_BASE_URL}/users/${editingItem.id}`,
+          `${API_BASE_URL}/users/${editingItem._id}`,
           userForm,
         );
       } else {
@@ -188,7 +188,7 @@ function Setting() {
     if (!confirmed) return;
 
     try {
-      await axios.delete(`${API_BASE_URL}/users/${user.id}`);
+      await axios.delete(`${API_BASE_URL}/users/${user._id}`);
       await fetchData();
     } catch (error) {
       console.error("Failed to delete user:", error);
@@ -240,7 +240,7 @@ function Setting() {
 
       if (editingItem) {
         await axios.patch(
-          `${API_BASE_URL}/vendors/${editingItem.id}`,
+          `${API_BASE_URL}/vendors/${editingItem._id}`,
           vendorForm,
         );
       } else {
@@ -267,7 +267,7 @@ function Setting() {
     if (!confirmed) return;
 
     try {
-      await axios.delete(`${API_BASE_URL}/vendors/${vendor.id}`);
+      await axios.delete(`${API_BASE_URL}/vendors/${vendor._id}`);
       await fetchData();
     } catch (error) {
       console.error("Failed to delete vendor:", error);
@@ -545,7 +545,7 @@ function Setting() {
     if (!query) return users;
 
     return users.filter((user) =>
-      `${user.username} ${user.id}`
+      `${user.username} ${user._id}`
         .toLowerCase()
         .includes(query),
     );
@@ -669,13 +669,13 @@ function Setting() {
 
           {tabs.map((tab) => {
             const Icon = tab.icon;
-            const active = activeTab === tab.id;
+            const active = activeTab === tab._id;
 
             return (
               <button
-                key={tab.id}
+                key={tab._id}
                 onClick={() => {
-                  setActiveTab(tab.id);
+                  setActiveTab(tab._id);
                   setSearch("");
                 }}
                 className={`group flex min-w-36 items-center gap-2 border-b-2 px-4 py-3 text-left text-sm transition ${
@@ -778,13 +778,13 @@ function Setting() {
                     <tbody>
                       {filteredUsers.map((user) => (
                         <tr
-                          key={user.id}
+                          key={user._id}
                           className="border-b border-slate-200 transition hover:bg-slate-50"
                         >
 
                           <td className="px-5 py-4">
                             <span className="rounded-lg bg-slate-100 px-2.5 py-1 font-mono text-xs text-slate-600">
-                              {user.id}
+                              {user._id}
                             </span>
                           </td>
 
@@ -878,7 +878,7 @@ function Setting() {
                     <tbody>
                       {filteredVendors.map((vendor) => (
                         <tr
-                          key={vendor.id}
+                          key={vendor._id}
                           className="border-b border-slate-200 transition hover:bg-slate-50"
                         >
 

@@ -80,7 +80,7 @@ export default function Task() {
       {/* GRID */}
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
         {filteredTasks.length > 0 ? (
-          filteredTasks.map((task) => <TaskCard key={task.id || task.taskId} task={task} />)
+          filteredTasks.map((task) => <TaskCard key={task._id || task.taskId} task={task} />)
         ) : (
           <div className="col-span-full text-center py-10 text-gray-500 border rounded-xl bg-gray-50">
             No tasks found.

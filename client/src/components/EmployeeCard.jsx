@@ -13,7 +13,7 @@ const EmployeeCard = ({ employee }) => {
 
   return (
     <tr
-      onClick={() => navigate(`/employees/${employee.id}`)}
+      onClick={() => navigate(`/employees/${employee._id}`)}
       className="border-b border-indigo-200 bg-gradient-to-r from-indigo-100 via-white to-violet-100 hover:shadow-sm hover:brightness-[0.98] transition-all duration-200 cursor-pointer"
     >
       {/* EMPLOYEE NAME & ID */}

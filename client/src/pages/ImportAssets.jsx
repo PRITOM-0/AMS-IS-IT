@@ -932,7 +932,7 @@ const ImportAssets = () => {
                     (asset, index) => (
 
                       <tr
-                        key={asset.id || index}
+                        key={asset._id || index}
                         className="hover:bg-indigo-50/30 transition-colors"
                       >
 

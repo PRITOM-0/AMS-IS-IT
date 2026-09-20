@@ -604,8 +604,8 @@ const ExportAssets = () => {
                   const hasDate = isValidDate(asset.purchaseDate);
                   return (
                     <Link
-                      to={`/assets/${asset.id}`}
-                      key={asset.id || index}
+                      to={`/assets/${asset._id}`}
+                      key={asset._id || index}
                       className="grid grid-cols-8 items-center hover:bg-slate-200 transition-colors"
                     >
                       {/* Asset Code */}

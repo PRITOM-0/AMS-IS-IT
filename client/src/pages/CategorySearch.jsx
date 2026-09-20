@@ -408,7 +408,7 @@ export default function CategorySearch() {
         ) : (
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-3 lg:grid-cols-4">
             {visibleAssets.map((asset) => (
-              <AssetCard key={asset.id} asset={asset} />
+              <AssetCard key={asset._id} asset={asset} />
             ))}
           </div>
         )}

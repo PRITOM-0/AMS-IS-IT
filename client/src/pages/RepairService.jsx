@@ -141,7 +141,7 @@ const RepairService = () => {
   const handleReset = () => {
     if (editId) {
       const service = services.find(
-        (item) => item.id === editId
+        (item) => item._id === editId
       );
 
       if (service) {
@@ -165,7 +165,7 @@ const RepairService = () => {
 
   const handleEdit = (service) => {
     setType(service.type);
-    setEditId(service.id);
+    setEditId(service._id);
 
     setForm({
       ...service,
@@ -197,7 +197,7 @@ const RepairService = () => {
 
       // New service
       if (!editId) {
-        payload.id = `SRV-${Date.now()}`;
+        payload._id = `SRV-${Date.now()}`;
         payload.createAt = now;
 
         await axios.post(
@@ -209,10 +209,10 @@ const RepairService = () => {
       // Update existing service
       else {
         const oldService = services.find(
-          (service) => service.id === editId
+          (service) => service._id === editId
         );
 
-        payload.id = editId;
+        payload._id = editId;
 
         // Keep original creation date
         payload.createAt =
@@ -248,7 +248,7 @@ const RepairService = () => {
       );
 
       setServices((prev) =>
-        prev.filter((service) => service.id !== serviceId)
+        prev.filter((service) => service._id !== serviceId)
       );
     } catch (error) {
       console.error("Failed to delete service:", error);
@@ -622,7 +622,7 @@ const ServiceTable = ({
         ) : (
           data.map((service) => (
             <div
-              key={service.id}
+              key={service._id}
               className="flex flex-col rounded-lg border border-slate-300 p-2.5 shadow-xl transition-all hover:shadow-md"
             >
               {/* TOP SECTION: Icon, Colored Single-Row Stats, Actions */}
@@ -691,7 +691,7 @@ const ServiceTable = ({
                       <Pencil size={14} strokeWidth={2.5} />
                     </button>
                     <button
-                      onClick={() => onDelete(service.id)}
+                      onClick={() => onDelete(service._id)}
                       className="rounded border border-slate-500 p-1 text-slate-600 transition-colors hover:border-red-500 hover:bg-red-50 hover:text-red-700"
                       title="Delete"
                     >

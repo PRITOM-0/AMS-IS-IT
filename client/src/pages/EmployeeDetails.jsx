@@ -71,7 +71,7 @@ function EmployeeDetails() {
   }, [id]);
 
   const getAsset = (assetId) => {
-    return assets.find((asset) => String(asset.id) === String(assetId));
+    return assets.find((asset) => String(asset._id) === String(assetId));
   };
 
   const handleEdit = () => {
@@ -352,48 +352,48 @@ function EmployeeDetails() {
             No assets assigned
           </div>
         ) : (
-          <div className="space-y-2">
-            {employee.assetlist.map((assetId) => {
-              const asset = getAsset(assetId);
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-5">
+  {employee.assetlist.map((assetId) => {
+    const asset = getAsset(assetId);
 
-              return (
-                <Link
-                  to={`/assets/${assetId}`}
-                  key={assetId}
-                  className="block border rounded-xl p-4 shadow-sm hover:shadow-md hover:border-indigo-300 transition bg-white"
-                >
-                  <div className="flex justify-between items-center gap-4">
-                    <div className="min-w-0">
-                      <p className="font-semibold text-indigo-600 truncate">
-                        {asset?.equipment || "Asset"}
-                      </p>
+    return (
+      <Link
+        to={`/assets/${assetId}`}
+        key={assetId}
+        className="block border rounded-xl p-4 shadow-sm hover:shadow-md hover:border-indigo-300 transition bg-white"
+      >
+        <div className="flex flex-col justify-between h-full gap-4">
+          <div className="min-w-0">
+            <p className="font-semibold text-indigo-600 truncate">
+              {asset?.equipment || "Asset"}
+            </p>
 
-                      <div className="mt-1 space-y-1 text-xs text-gray-500">
-                        <p>
-                          <span className="font-medium">Asset Code:</span>{" "}
-                          {asset?.assetCode || assetId}
-                        </p>
+            <div className="mt-2 space-y-1.5 text-xs text-gray-500">
+              <p>
+                <span className="font-medium text-gray-700">Asset Code:</span>{" "}
+                {asset?.assetCode || assetId}
+              </p>
 
-                        <p>
-                          <span className="font-medium">Brand:</span>{" "}
-                          {asset?.brand || "N/A"}
-                        </p>
+              <p>
+                <span className="font-medium text-gray-700">Brand:</span>{" "}
+                {asset?.brand || "N/A"}
+              </p>
 
-                        <p>
-                          <span className="font-medium">Model:</span>{" "}
-                          {asset?.model || "N/A"}
-                        </p>
-                      </div>
-                    </div>
-
-                    <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded whitespace-nowrap">
-                      Assigned
-                    </span>
-                  </div>
-                </Link>
-              );
-            })}
+              <p>
+                <span className="font-medium text-gray-700">Model:</span>{" "}
+                {asset?.model || "N/A"}
+              </p>
+            </div>
           </div>
+
+          <span className="w-fit text-xs bg-green-100 text-green-700 px-2.5 py-1 rounded-md">
+            Assigned
+          </span>
+        </div>
+      </Link>
+    );
+  })}
+</div>
         )}
       </div>
 

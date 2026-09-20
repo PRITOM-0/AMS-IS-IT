@@ -17,12 +17,11 @@ import { API_BASE_URL } from "../env";
 import { DashboardCategoryTree } from "../components/DashboardCategoryTree";
 
 export default function Dashboard() {
-  const [data, setData] = useState({
-    assets: [],
-    tasks: [],
-    users: [],
-    admins: [],
-  });
+ 
+  const [assets, setAssets] = useState([]);
+  const [tasks, setTasks] = useState([]);
+  const [users, setUsers] = useState([]);
+ 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -31,37 +30,32 @@ export default function Dashboard() {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const [assetsRes, tasksRes, usersRes, adminsRes] =
+        const [assetsRes, tasksRes, usersRes] =
           await Promise.all([
             fetch(`${API_BASE_URL}/assets`),
             fetch(`${API_BASE_URL}/tasks`),
-            fetch(`${API_BASE_URL}/users`),
-            fetch(`${API_BASE_URL}/admins`),
+            fetch(`${API_BASE_URL}/users`)
           ]);
 
         if (
           !assetsRes.ok ||
           !tasksRes.ok ||
-          !usersRes.ok ||
-          !adminsRes.ok
+          !usersRes.ok 
         ) {
+          console.error("Failed to fetch data from JSON Server");
           throw new Error("Failed to fetch data from JSON Server");
         }
 
-        const [assets, tasks, users, admins] = await Promise.all([
+        const [assets, tasks, users] = await Promise.all([
           assetsRes.json(),
           tasksRes.json(),
-          usersRes.json(),
-          adminsRes.json(),
+          usersRes.json()
         ]);
 
-        // Sort assets by updatedAt in descending order
-        assets.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
-        tasks.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
-        users.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
-        admins.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
+        setAssets(assets);
+        setTasks(tasks);
+        setUsers(users);
 
-        setData({ assets, tasks, users, admins });
       } catch (err) {
         setError(err.message);
       } finally {
@@ -107,25 +101,24 @@ export default function Dashboard() {
   }
 
   // Summary Statistics
-  const totalAssets = data.assets.length;
-  const activeAssets = data.assets.filter((a) => a.status === "Active").length;
-  const instoreAssets = data.assets.filter(
+  const totalAssets = assets.length;
+  const activeAssets = assets.filter((a) => a.status === "Active").length;
+  const instoreAssets = assets.filter(
     (a) => a.status === "Instore" || a.status === "",
   ).length;
-  const inactiveAssets = data.assets.filter(
+  const inactiveAssets = assets.filter(
     (a) => a.status === "Inactive",
   ).length;
-  const maintenanceAssets = data.assets.filter(
+  const maintenanceAssets = assets.filter(
     (a) => a.status === "Maintenance",
   ).length;
-  const deathAssets = data.assets.filter((a) => a.status === "Death").length;
+  const deathAssets = assets.filter((a) => a.status === "Death").length;
 
-  const totaltasks = data.tasks.length;
-  const totalUsers = data.users.length;
-  const totalAdmins = data.admins.length;
+  const totaltasks = tasks.length;
+  const totalUsers = users.length;
 
   // Calculate Total Financial Value
-  const totalValue = data.assets.reduce((sum, asset) => {
+  const totalValue = assets.reduce((sum, asset) => {
     if (!asset.purchasePrice) return sum;
 
     const cleanedString = String(asset.purchasePrice).replace(/[^0-9.-]+/g, "");
@@ -139,7 +132,7 @@ export default function Dashboard() {
   }, 0);
 
   // equipment Breakdown
-  const equipmentCounts = data.assets.reduce((acc, asset) => {
+  const equipmentCounts = assets.reduce((acc, asset) => {
     const cat = asset.equipment || "Uncategorized";
     acc[cat] = (acc[cat] || 0) + 1;
     return acc;
@@ -150,7 +143,7 @@ export default function Dashboard() {
   const getEquipmentTree = () => {
   const tree = {};
 
-  data.assets.forEach((asset) => {
+  assets.forEach((asset) => {
     const company = asset.company || "Unknown";
     const location = asset.location || "Unknown";
     const department = asset.department || "Unknown";
@@ -223,7 +216,7 @@ export default function Dashboard() {
           <StatCard
             title="Total Task"
             value={totaltasks}
-            subtext={`${totalUsers} standard users / ${totalAdmins} admins`}
+            subtext={`${totalUsers} standard users`}
             icon={<Users size={18} />}
             color="sky"
           />

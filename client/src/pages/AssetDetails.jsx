@@ -93,7 +93,7 @@ const AssetDetails = () => {
 
           const foundEmployee = employees.find(
             (employee) =>
-              String(employee.id || "") === String(assetData.employeeId || ""),
+              String(employee._id || "") === String(assetData.employeeId || ""),
           );
 
           setEmployeeInfo(foundEmployee || null);
@@ -121,7 +121,7 @@ const AssetDetails = () => {
         const relatedTasks = (tasksRes.data || []).filter((task) => {
           if (!task) return false;
           return (
-            String(task.assetId || "") === String(assetData?.id || "") ||
+            String(task.assetId || "") === String(assetData?._id || "") ||
             String(task.assetCode || "") ===
               String(assetData?.assetCode || "") ||
             String(task.assetName || "") === String(assetData?.equipment || "")
@@ -226,14 +226,14 @@ const AssetDetails = () => {
 
           <div className="flex items-center gap-3">
             <button
-  onClick={() => navigate(`/assets/repairservice/${asset.id}`)}
+  onClick={() => navigate(`/assets/repairservice/${asset._id}`)}
   className="flex items-center gap-2 rounded-lg bg-yellow-100 hover:bg-yellow-200 text-yellow-700 border border-yellow-600 px-4 py-2 rounded-lg shadow-xl transition"
 >
   <Wrench size={16} />
   Repair / Service
 </button>
             <Link
-              to={`/assets/editAsset/${asset.id}`}
+              to={`/assets/editAsset/${asset._id}`}
               className="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white border border-slate-900 px-4 py-2 rounded-lg text-sm font-bold shadow-xl transition"
             >
               <Edit className="w-4 h-4" /> Edit Asset
@@ -782,7 +782,7 @@ const AssetDetails = () => {
             <div className="space-y-3">
               {tasks.map((task) => (
                 <div
-                  key={task.id || task.taskId}
+                  key={task._id || task.taskId}
                   className="border border-slate-200 rounded-lg p-4 bg-slate-50"
                 >
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">

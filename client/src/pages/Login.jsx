@@ -41,12 +41,14 @@ const Login = ({ setIsLoggedIn }) => {
     const fetchUsers = async () => {
       try {
         const response = await fetch(`${API_BASE_URL}/users`);
+      
 
         if (!response.ok) {
           throw new Error("Unable to load users.");
         }
 
         const data = await response.json();
+        
         setUsers(data);
       } catch (error) {
         console.error("Failed to load users:", error);
@@ -94,7 +96,6 @@ const Login = ({ setIsLoggedIn }) => {
       }
 
       const usersList = await response.json();
-
       const matchedUser = usersList.find(
         (user) =>
           user.username?.toLowerCase() ===
@@ -238,7 +239,7 @@ const Login = ({ setIsLoggedIn }) => {
                       {users.length === 0 ? "Loading users..." : "Select username"}
                     </option>
                     {users.map((user) => (
-                      <option key={user.id} value={user.username}>
+                      <option key={user._id} value={user.username}>
                         {user.username}
                       </option>
                     ))}

@@ -20,7 +20,7 @@ import {
 import { API_BASE_URL } from "../env";
 
 const EditAsset = () => {
-  const { id } = useParams();
+  const {id } = useParams();
   const navigate = useNavigate();
 
   // Initial Form State
@@ -150,7 +150,7 @@ const EditAsset = () => {
       const targetAsset =
         assetsList.find(
           (item) =>
-            String(item.id) === String(id) || String(item._id) === String(id),
+            String(item._id) === String(id) || String(item._id) === String(id),
         ) || null;
 
       // 2. Handle List Options
@@ -1184,7 +1184,7 @@ if (pattern) {
                   <option value="">Select User</option>
 
                   {users.map((u) => (
-                    <option key={u.id} value={u.username}>
+                    <option key={u._id} value={u.username}>
                       {u.username}
                     </option>
                   ))}

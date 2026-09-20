@@ -107,7 +107,7 @@ function AssetAssign() {
     return isUnassigned && matchesSearch;
   });
 
-  const selectedAsset = assets.find((asset) => asset.id === selectedAssetId);
+  const selectedAsset = assets.find((asset) => asset._id === selectedAssetId);
 
   // --------------------------------------------------
   // Assign employee to asset
@@ -136,7 +136,7 @@ function AssetAssign() {
         ...selectedAsset,
 
         // Current employee relationship
-        employeeId: selectedEmployee.id,
+        employeeId: selectedEmployee._id,
         receivedDate: now,
         // Keep asset active when assigned
         status: "Active",
@@ -154,7 +154,7 @@ function AssetAssign() {
       const updatedEmployee = {
         ...selectedEmployee,
 
-        assetlist: [...new Set([...existingAssetList, selectedAsset.id])],
+        assetlist: [...new Set([...existingAssetList, selectedAsset._id])],
 
         updatedAt: now,
       };
@@ -163,7 +163,7 @@ function AssetAssign() {
       // Save both endpoints
       // ----------------------------------------------
       const [assetResponse, employeeResponse] = await Promise.all([
-        fetch(`${API_BASE_URL}/assets/${selectedAsset.id}`, {
+        fetch(`${API_BASE_URL}/assets/${selectedAsset._id}`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
@@ -171,7 +171,7 @@ function AssetAssign() {
           body: JSON.stringify(updatedAsset),
         }),
 
-        fetch(`${API_BASE_URL}/employees/${selectedEmployee.id}`, {
+        fetch(`${API_BASE_URL}/employees/${selectedEmployee._id}`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
@@ -308,11 +308,11 @@ function AssetAssign() {
               ) : (
                 filteredEmployees.map((emp) => (
                   <button
-                    key={emp.id}
+                    key={emp._id}
                     type="button"
                     onClick={() => setSelectedEmployee(emp)}
                     className={`w-full rounded-xl border p-2.5 text-left transition ${
-                      selectedEmployee?.id === emp.id
+                      selectedEmployee?._id === emp._id
                         ? "border-blue-600 bg-blue-500 text-white shadow-sm"
                         : "border-slate-300 bg-white text-slate-700 hover:border-blue-300 hover:shadow-xs"
                     }`}
@@ -326,7 +326,7 @@ function AssetAssign() {
                           </h2>
                           <span
                             className={`text-[12px] font-mono px-1.5 py-0.5 rounded ${
-                              selectedEmployee?.id === emp.id
+                              selectedEmployee?._id === emp._id
                                 ? "bg-white/20 text-white"
                                 : "bg-slate-100 text-slate-600"
                             }`}
@@ -337,7 +337,7 @@ function AssetAssign() {
 
                         <p
                           className={`mt-0.5 truncate text-[11px] ${
-                            selectedEmployee?.id === emp.id
+                            selectedEmployee?._id === emp._id
                               ? "text-blue-100"
                               : "text-slate-500"
                           }`}
@@ -357,7 +357,7 @@ function AssetAssign() {
                       <div className="shrink-0 text-right">
                         <span
                           className={`inline-block rounded-full px-2 py-0.5 text-[10px] font-bold ${
-                            selectedEmployee?.id === emp.id
+                            selectedEmployee?._id === emp._id
                               ? "bg-white/20 text-white"
                               : "bg-blue-100 text-blue-700"
                           }`}
@@ -370,7 +370,7 @@ function AssetAssign() {
                           <div className="mt-1 space-y-0.5 text-right">
                             {emp.assetlist.map((assetId) => {
                               const asset = assets.find(
-                                (item) => String(item.id) === String(assetId),
+                                (item) => String(item._id) === String(assetId),
                               );
                               if (!asset) return null;
 
@@ -378,7 +378,7 @@ function AssetAssign() {
                                 <div
                                   key={assetId}
                                   className={`text-[12px] leading-tight ${
-                                    selectedEmployee?.id === emp.id
+                                    selectedEmployee?._id === emp._id
                                       ? "text-blue-100"
                                       : "text-slate-500"
                                   }`}
@@ -461,11 +461,11 @@ function AssetAssign() {
               ) : (
                 unassignedAssets.map((asset) => (
                   <button
-                    key={asset.id}
+                    key={asset._id}
                     type="button"
-                    onClick={() => setSelectedAssetId(asset.id)}
+                    onClick={() => setSelectedAssetId(asset._id)}
                     className={`w-full rounded-2xl border p-4 text-left transition ${
-                      selectedAssetId === asset.id
+                      selectedAssetId === asset._id
                         ? "border-blue-600 bg-blue-500 text-white shadow-md"
                         : "border-slate-400 border-emerald-200 bg-gradient-to-br from-emerald-100 via-white to-teal-100 text-slate-700 hover:border-emerald-300 hover:shadow-sm"
                     }`}
@@ -478,7 +478,7 @@ function AssetAssign() {
 
                         <p
                           className={`text-sm ${
-                            selectedAssetId === asset.id
+                            selectedAssetId === asset._id
                               ? "text-blue-100"
                               : "text-slate-500"
                           }`}
@@ -488,7 +488,7 @@ function AssetAssign() {
 
                         <p
                           className={`text-xs ${
-                            selectedAssetId === asset.id
+                            selectedAssetId === asset._id
                               ? "text-blue-100"
                               : "text-slate-400"
                           }`}
@@ -502,7 +502,7 @@ function AssetAssign() {
                       <div className="text-right">
                         <span
                           className={`rounded-full px-3 py-1 text-xs font-bold ${
-                            selectedAssetId === asset.id
+                            selectedAssetId === asset._id
                               ? "bg-white/20 text-white"
                               : "bg-emerald-100 text-emerald-700"
                           }`}

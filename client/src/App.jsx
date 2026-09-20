@@ -10,7 +10,7 @@ import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Assets from "./pages/Assets";
 
-import Requests from "./pages/Requests";
+
 import AssetDetails from "./pages/AssetDetails";
 import AddAsset from "./pages/AddAsset";
 import EditAsset from "./pages/EditAsset";
@@ -227,8 +227,7 @@ function App() {
         <Route path="assets/:id" element={<AssetDetails />} />
         <Route path="/assets/repairservice/:id" element={<RepairService />} />
 
-        {/* Requests */}
-        <Route path="requests" element={<Requests />} />
+   
 
         {/* Settings */}
         <Route path="settings" element={<Setting />} />

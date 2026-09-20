@@ -90,7 +90,7 @@ export default function AddTask() {
     const nowIso = new Date().toISOString().slice(0, 16);
     setForm({
       ...form,
-      assetId: a.id || "",
+      assetId: a._id || "",
       assetCode: a.assetCode || "",
       assetName: a.equipment || "",
       equipment: a.equipment || "",
@@ -170,7 +170,7 @@ export default function AddTask() {
                 {filteredAssets.length > 0 ? (
                   filteredAssets.map((a) => (
                     <div
-                      key={a.id}
+                      key={a._id}
                       onClick={() => handleSelectAsset(a)}
                       className="p-2.5 hover:bg-emerald-50 cursor-pointer border-b text-sm flex flex-col gap-0.5"
                     >

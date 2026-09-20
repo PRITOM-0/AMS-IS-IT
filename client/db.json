@@ -318,8 +318,8 @@
       "floor": "Ground Floor",
       "room": "",
       "status": "Active",
-      "employeeId": "",
-      "receivedDate": "",
+      "employeeId": "VIpPYncKJKw",
+      "receivedDate": "2026-09-16T03:56:37.436Z",
       "oldUsers": [],
       "purchaseDate": "",
       "purchasePrice": "",
@@ -332,7 +332,7 @@
       "upgradeEquipments": "",
       "surveyTakenBy": "",
       "createdAt": "2026-09-03T06:57:53.339Z",
-      "updatedAt": "2026-09-03T06:57:53.339Z",
+      "updatedAt": "2026-09-16T03:56:37.436Z",
       "id": "bPhxELcEFdM"
     },
     {
@@ -442,8 +442,8 @@
       "floor": "1st Floor",
       "room": "",
       "status": "Active",
-      "employeeId": "",
-      "receivedDate": "",
+      "employeeId": "VIpPYncKJKw",
+      "receivedDate": "2026-09-16T03:56:42.964Z",
       "oldUsers": [],
       "purchaseDate": "",
       "purchasePrice": "",
@@ -456,7 +456,7 @@
       "upgradeEquipments": "",
       "surveyTakenBy": "",
       "createdAt": "2026-09-03T06:57:53.339Z",
-      "updatedAt": "2026-09-03T06:57:53.339Z",
+      "updatedAt": "2026-09-16T03:56:42.964Z",
       "id": "ylxNX352aj4"
     },
     {
@@ -474,8 +474,16 @@
       "room": "",
       "status": "Active",
       "employeeId": "VIpPYncKJKw",
-      "receivedDate": "2026-09-06T04:14:50.397Z",
-      "oldUsers": [],
+      "receivedDate": "2026-09-16T03:56:48.140Z",
+      "oldUsers": [
+        {
+          "employeeName": "Riyadul Islam",
+          "employeeId": "687700",
+          "receivedDate": "2026-09-06T04:14:50.397Z",
+          "releaseDate": "2026-09-16T03:54:00.316Z",
+          "releaseNote": "none"
+        }
+      ],
       "purchaseDate": "",
       "purchasePrice": "",
       "warrantyStart": "",
@@ -487,7 +495,7 @@
       "upgradeEquipments": "",
       "surveyTakenBy": "",
       "createdAt": "2026-09-03T06:57:53.339Z",
-      "updatedAt": "2026-09-06T04:14:50.397Z",
+      "updatedAt": "2026-09-16T03:56:48.140Z",
       "id": "K5OU3Zrgcks"
     },
     {
@@ -504,8 +512,8 @@
       "floor": "1st Floor",
       "room": "",
       "status": "Active",
-      "employeeId": "",
-      "receivedDate": "",
+      "employeeId": "VIpPYncKJKw",
+      "receivedDate": "2026-09-16T03:56:54.268Z",
       "oldUsers": [],
       "purchaseDate": "",
       "purchasePrice": "",
@@ -518,7 +526,7 @@
       "upgradeEquipments": "",
       "surveyTakenBy": "",
       "createdAt": "2026-09-03T06:57:53.339Z",
-      "updatedAt": "2026-09-03T06:57:53.339Z",
+      "updatedAt": "2026-09-16T03:56:54.268Z",
       "id": "3hK_BQCOKMc"
     },
     {
@@ -535,8 +543,8 @@
       "floor": "1st Floor",
       "room": "",
       "status": "Active",
-      "employeeId": "",
-      "receivedDate": "",
+      "employeeId": "VIpPYncKJKw",
+      "receivedDate": "2026-09-16T03:57:00.596Z",
       "oldUsers": [],
       "purchaseDate": "",
       "purchasePrice": "",
@@ -549,7 +557,7 @@
       "upgradeEquipments": "",
       "surveyTakenBy": "",
       "createdAt": "2026-09-03T06:57:53.339Z",
-      "updatedAt": "2026-09-03T06:57:53.339Z",
+      "updatedAt": "2026-09-16T03:57:00.596Z",
       "id": "EBhoySzP5PQ"
     },
     {
@@ -605,8 +613,8 @@
       "floor": "3rd Floor",
       "room": "",
       "status": "Active",
-      "employeeId": "",
-      "receivedDate": "",
+      "employeeId": "VIpPYncKJKw",
+      "receivedDate": "2026-09-16T03:57:05.996Z",
       "oldUsers": [],
       "purchaseDate": "",
       "purchasePrice": "",
@@ -619,7 +627,7 @@
       "upgradeEquipments": "",
       "surveyTakenBy": "",
       "createdAt": "2026-09-03T06:57:53.339Z",
-      "updatedAt": "2026-09-03T06:57:53.339Z",
+      "updatedAt": "2026-09-16T03:57:05.996Z",
       "id": "v7WyA3hpphM"
     },
     {
@@ -10351,11 +10359,16 @@
       "location": "Gulshan-02",
       "department": "HR",
       "createdAt": "2026-09-06T03:56:10.541Z",
-      "updatedAt": "2026-09-06T04:14:50.397Z",
+      "updatedAt": "2026-09-16T03:57:05.996Z",
       "assetlist": [
         "lJ2xTviCuKY",
         "xBcCDYV95Qg",
-        "K5OU3Zrgcks"
+        "bPhxELcEFdM",
+        "ylxNX352aj4",
+        "K5OU3Zrgcks",
+        "3hK_BQCOKMc",
+        "EBhoySzP5PQ",
+        "v7WyA3hpphM"
       ]
     },
     {

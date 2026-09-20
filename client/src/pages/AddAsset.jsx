@@ -807,7 +807,7 @@ export default function AddAsset() {
                 >
                   <option value="">Select Survey taken by</option>
                   {users.map((u) => (
-                    <option key={u.id} value={u.username}>
+                    <option key={u._id} value={u.username}>
                       {u.username}
                     </option>
                   ))}

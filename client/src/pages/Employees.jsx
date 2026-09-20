@@ -231,7 +231,7 @@ function Employees() {
     </thead>
     <tbody className="divide-y divide-indigo-100">
       {filteredEmployees.map((emp) => (
-        <EmployeeCard key={emp.id} employee={emp} />
+        <EmployeeCard key={emp._id} employee={emp} />
       ))}
     </tbody>
   </table>
