@@ -1,9 +1,5 @@
 import Vendor from "../models/Vendor.js";
 
-const generateVendorId = () => {
-  return `VND-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
-};
-
 // GET /api/vendors
 export const getVendors = async (req, res) => {
   try {
@@ -25,8 +21,9 @@ export const getVendors = async (req, res) => {
 // GET /api/vendors/:id
 export const getVendorById = async (req, res) => {
   try {
+    console.log(req.params);
     const vendor = await Vendor.findOne({
-      id: req.params.id
+      _id: req.params.id
     });
 
     if (!vendor) {
@@ -51,7 +48,6 @@ export const createVendor = async (req, res) => {
   try {
     const vendor = await Vendor.create({
       ...req.body,
-      id: req.body.id || generateVendorId(),
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
     });
@@ -75,7 +71,7 @@ export const updateVendor = async (req, res) => {
     updateData.updatedAt = new Date().toISOString();
 
     const vendor = await Vendor.findOneAndUpdate(
-      { id: req.params.id },
+      { _id: req.params.id },
       updateData,
       {
         new: true,
@@ -108,7 +104,7 @@ export const patchVendor = async (req, res) => {
     updateData.updatedAt = new Date().toISOString();
 
     const vendor = await Vendor.findOneAndUpdate(
-      { id: req.params.id },
+      { _id: req.params.id },
       { $set: updateData },
       {
         new: true,
@@ -137,7 +133,7 @@ export const patchVendor = async (req, res) => {
 export const deleteVendor = async (req, res) => {
   try {
     const vendor = await Vendor.findOneAndDelete({
-      id: req.params.id
+      _id: req.params.id
     });
 
     if (!vendor) {

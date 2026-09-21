@@ -26,7 +26,7 @@ export const getServices = async (req, res) => {
 export const getServiceById = async (req, res) => {
   try {
     const service = await Service.findOne({
-      id: req.params.id
+      _id: req.params.id
     });
 
     if (!service) {
@@ -50,10 +50,10 @@ export const getServiceById = async (req, res) => {
 export const createService = async (req, res) => {
   try {
     const now = new Date().toISOString();
+    
 
     const service = await Service.create({
       ...req.body,
-      id: req.body.id || generateServiceId(),
       createAt: req.body.createAt || now,
       updateAt: now
     });
@@ -72,15 +72,15 @@ export const createService = async (req, res) => {
 // PUT /api/services/:id
 export const updateService = async (req, res) => {
   try {
-    const { id, createAt, ...updateData } = req.body;
+    const {createAt, ...updateData } = req.body;
 
     updateData.updateAt = new Date().toISOString();
 
     const service = await Service.findOneAndUpdate(
-      { id: req.params.id },
+      { _id: req.params.id },
       updateData,
       {
-        new: true,
+        returnDocument: "after",
         runValidators: true
       }
     );

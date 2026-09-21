@@ -12,7 +12,7 @@ import {
   AlertCircle,
   FileText,
   Loader2,
-  Wrench
+  Wrench,
 } from "lucide-react";
 import { API_BASE_URL } from "../env";
 import ReleaseAsset from "../components/ReleaseAsset";
@@ -106,14 +106,19 @@ const AssetDetails = () => {
       }
       if (assetData?.vendorId) {
         try {
-          const vendorsRes = await axios.get(`${API_BASE_URL}/vendors`);
-          const foundVendor = vendorsRes.data?.find(
-            (v) => String(v.vendorId) === String(assetData.vendorId),
+          
+          const vendorsRes = await axios.get(
+            `${API_BASE_URL}/vendors/${assetData.vendorId}`,
           );
-          setVendorInfo(foundVendor || null);
+
+          setVendorInfo(vendorsRes.data || null);
+          
         } catch (vErr) {
           console.warn("Could not fetch vendor details:", vErr);
+          setVendorInfo(null);
         }
+      } else {
+        setVendorInfo(null);
       }
 
       try {
@@ -226,12 +231,12 @@ const AssetDetails = () => {
 
           <div className="flex items-center gap-3">
             <button
-  onClick={() => navigate(`/assets/repairservice/${asset._id}`)}
-  className="flex items-center gap-2 rounded-lg bg-yellow-100 hover:bg-yellow-200 text-yellow-700 border border-yellow-600 px-4 py-2 rounded-lg shadow-xl transition"
->
-  <Wrench size={16} />
-  Repair / Service
-</button>
+              onClick={() => navigate(`/assets/repairservice/${asset._id}`)}
+              className="flex items-center gap-2 rounded-lg bg-yellow-100 hover:bg-yellow-200 text-yellow-700 border border-yellow-600 px-4 py-2 rounded-lg shadow-xl transition"
+            >
+              <Wrench size={16} />
+              Repair / Service
+            </button>
             <Link
               to={`/assets/editAsset/${asset._id}`}
               className="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white border border-slate-900 px-4 py-2 rounded-lg text-sm font-bold shadow-xl transition"
@@ -513,7 +518,6 @@ const AssetDetails = () => {
                 </p>
                 <p className="font-bold text-indigo-900 mt-1">
                   {vendorInfo?.vendorName ||
-                    asset.vendorId ||
                     "No Vendor Assigned"}
                 </p>
 

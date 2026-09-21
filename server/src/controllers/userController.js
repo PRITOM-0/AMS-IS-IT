@@ -1,10 +1,6 @@
 import bcrypt from "bcryptjs";
 import User from "../models/User.js";
 
-const generateUserId = () => {
-  return `USR-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
-};
-
 // GET /api/users
 export const getUsers = async (req, res) => {
   try {
@@ -25,7 +21,7 @@ export const getUsers = async (req, res) => {
 export const getUserById = async (req, res) => {
   try {
     const user = await User.findOne({
-      id: req.params.id
+      _id: req.params.id
     }).select("-password");
 
     if (!user) {
@@ -52,9 +48,6 @@ export const createUser = async (req, res) => {
       username,
       password,
       role = "user",
-      email = "",
-      employeeCode = "",
-      designation = "",
       approvallist = []
     } = req.body;
 
@@ -87,9 +80,6 @@ export const createUser = async (req, res) => {
       username,
       password: hashedPassword,
       role,
-      email,
-      employeeCode,
-      designation,
       approvallist,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
@@ -138,7 +128,7 @@ export const updateUser = async (req, res) => {
     updateData.updatedAt = new Date().toISOString();
 
     const user = await User.findOneAndUpdate(
-      { id: req.params.id },
+      { _id: req.params.id },
       updateData,
       {
         new: true,

@@ -197,7 +197,6 @@ const RepairService = () => {
 
       // New service
       if (!editId) {
-        payload._id = `SRV-${Date.now()}`;
         payload.createAt = now;
 
         await axios.post(
@@ -212,7 +211,7 @@ const RepairService = () => {
           (service) => service._id === editId
         );
 
-        payload._id = editId;
+    
 
         // Keep original creation date
         payload.createAt =

@@ -19,7 +19,7 @@ export const getAssets = async (req, res) => {
 // GET /api/assets/:id
 export const getAssetById = async (req, res) => {
   try {
-    console.log("hi");
+     
     const asset = await Asset.findOne({
       _id: req.params.id
     });
@@ -66,19 +66,19 @@ export const createAsset = async (req, res) => {
 // PUT /api/assets/:id
 export const updateAsset = async (req, res) => {
   try {
-    const {createdAt, ...updateData } = req.body;
+    const {_id,createdAt, ...updateData } = req.body;
 
     updateData.updatedAt = new Date().toISOString();
-    console.log(updateData);
-
+    
     const asset = await Asset.findOneAndUpdate(
-      { _id: req.params._id },
+      { _id: req.params.id },
       updateData,
       {
         returnDocument: "after",
         runValidators: true
       }
     );
+    
 
     if (!asset) {
       return res.status(404).json({

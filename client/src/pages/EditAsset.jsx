@@ -20,7 +20,7 @@ import {
 import { API_BASE_URL } from "../env";
 
 const EditAsset = () => {
-  const {id } = useParams();
+  const { id } = useParams();
   const navigate = useNavigate();
 
   // Initial Form State
@@ -32,8 +32,8 @@ const EditAsset = () => {
     serialNumber: "",
     specifications: "",
     macAddress: "",
-    ecfNumber:"",
-    workOrderNumber:"",
+    ecfNumber: "",
+    workOrderNumber: "",
     company: "",
     location: "",
     department: "",
@@ -52,7 +52,7 @@ const EditAsset = () => {
     remarks: "",
     surveyStatus: "",
     upgradeEquipments: "",
-    surveyer: "",
+    surveyTakenBy: "",
   };
 
   const [formData, setFormData] = useState(initialFormState);
@@ -290,48 +290,48 @@ const EditAsset = () => {
       return;
     }
 
-   const pattern = getEquipmentPattern(formData.equipment);
-const assetCode = formData.assetCode?.trim() || "";
+    const pattern = getEquipmentPattern(formData.equipment);
+    const assetCode = formData.assetCode?.trim() || "";
 
-// Validate Asset Code only when the selected equipment has a pattern
-if (pattern) {
-  if (!assetCode) {
-    alert(`Asset Code is required for ${formData.equipment}.`);
-    return;
-  }
+    // Validate Asset Code only when the selected equipment has a pattern
+    if (pattern) {
+      if (!assetCode) {
+        alert(`Asset Code is required for ${formData.equipment}.`);
+        return;
+      }
 
-  const equipment = formData.equipment?.trim();
+      const equipment = formData.equipment?.trim();
 
-  // Printer, Monitor, and CPU allow both:
-  // 12345
-  // AHL-12345
-  const allowAhlPrefix = ["Printer", "Monitor", "CPU"].includes(equipment);
+      // Printer, Monitor, and CPU allow both:
+      // 12345
+      // AHL-12345
+      const allowAhlPrefix = ["Printer", "Monitor", "CPU"].includes(equipment);
 
-  const numericPattern = pattern.replace(/#/g, "[0-9]");
+      const numericPattern = pattern.replace(/#/g, "[0-9]");
 
-  const regex = new RegExp(
-    "^" + (allowAhlPrefix ? "(?:AHL-)?" : "") + numericPattern + "$",
-  );
+      const regex = new RegExp(
+        "^" + (allowAhlPrefix ? "(?:AHL-)?" : "") + numericPattern + "$",
+      );
 
-  if (!regex.test(assetCode)) {
-    alert(
-      `Invalid Asset Code.\n\n` +
-        `Equipment: ${formData.equipment}\n` +
-        `Required Pattern: ${
-          allowAhlPrefix ? `[AHL-]${pattern}` : pattern
-        }\n\n` +
-        `Example: ${
-          allowAhlPrefix
-            ? `${pattern.replace(/#+$/, "0038")} or AHL-${pattern.replace(
-                /#+$/,
-                "0038",
-              )}`
-            : pattern.replace(/#+$/, "0038")
-        }`,
-    );
-    return;
-  }
-}
+      if (!regex.test(assetCode)) {
+        alert(
+          `Invalid Asset Code.\n\n` +
+            `Equipment: ${formData.equipment}\n` +
+            `Required Pattern: ${
+              allowAhlPrefix ? `[AHL-]${pattern}` : pattern
+            }\n\n` +
+            `Example: ${
+              allowAhlPrefix
+                ? `${pattern.replace(/#+$/, "0038")} or AHL-${pattern.replace(
+                    /#+$/,
+                    "0038",
+                  )}`
+                : pattern.replace(/#+$/, "0038")
+            }`,
+        );
+        return;
+      }
+    }
     setShowConfirmModal(true);
   };
 
@@ -465,11 +465,9 @@ if (pattern) {
 
     if (!newVendor.vendorName.trim()) return;
 
-    const generatedId = `VND${String(vendors.length + 1).padStart(3, "0")}`;
-
+  
     const vendorObject = {
       ...newVendor,
-      vendorId: generatedId,
     };
 
     try {
@@ -478,8 +476,7 @@ if (pattern) {
       setVendors((prev) => [...prev, vendorObject]);
 
       setFormData((prev) => ({
-        ...prev,
-        vendorId: generatedId,
+        ...prev
       }));
 
       setVendorSearch(vendorObject.vendorName);
@@ -499,8 +496,7 @@ if (pattern) {
       setVendors((prev) => [...prev, vendorObject]);
 
       setFormData((prev) => ({
-        ...prev,
-        vendorId: generatedId,
+        ...prev
       }));
 
       setVendorSearch(vendorObject.vendorName);
@@ -970,7 +966,6 @@ if (pattern) {
                   value={formData.purchaseDate}
                   onChange={handleChange}
                   className="w-full bg-slate-50 border border-slate-900 rounded-lg p-2 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-indigo-600"
-                  
                 />
               </div>
 
@@ -1082,7 +1077,16 @@ if (pattern) {
                       type="text"
                       placeholder="Search vendor..."
                       value={vendorSearch}
-                      onChange={(e) => setVendorSearch(e.target.value)}
+                      onChange={(e) => {
+                        const value = e.target.value;
+
+                        setVendorSearch(value);
+
+                        setFormData((prev) => ({
+                          ...prev,
+                          vendorId: "",
+                        }));
+                      }}
                       className="w-full bg-slate-50 border border-slate-900 rounded-lg p-2 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-indigo-600"
                     />
 
@@ -1090,11 +1094,11 @@ if (pattern) {
                       <div className="absolute left-0 right-0 top-full mt-1 bg-white border border-slate-900 rounded-lg max-h-40 overflow-y-auto z-20 shadow-lg">
                         {filteredVendors.map((v) => (
                           <div
-                            key={v.vendorId}
+                            key={v._id}
                             onClick={() => {
                               setFormData((prev) => ({
                                 ...prev,
-                                vendorId: v.vendorId,
+                                vendorId: v._id,
                               }));
 
                               setVendorSearch(v.vendorName);
@@ -1176,21 +1180,31 @@ if (pattern) {
                 </label>
 
                 <select
-                  name="surveyer"
-                  value={formData.surveyer}
+                  name="surveyTakenBy"
+                  value={formData.surveyTakenBy}
                   onChange={handleChange}
                   className="w-full bg-slate-50 border border-slate-900 rounded-lg p-2 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-slate-900"
                 >
-                  <option value="">Select User</option>
+                  {/* Current selected value */}
+                  <option value={formData.surveyTakenBy}>
+                    {formData.surveyTakenBy || "None"}
+                  </option>
 
-                  {users.map((u) => (
-                    <option key={u._id} value={u.username}>
-                      {u.username}
-                    </option>
-                  ))}
+                  {/* None */}
+                  {formData.surveyTakenBy !== "None" && (
+                    <option value="None">None</option>
+                  )}
+
+                  {/* Other users only */}
+                  {users
+                    .filter((u) => u.username !== formData.surveyTakenBy)
+                    .map((u) => (
+                      <option key={u._id} value={u.username}>
+                        {u.username}
+                      </option>
+                    ))}
                 </select>
               </div>
-              
             </div>
             {/* Upgrade Equipments */}
             <div>

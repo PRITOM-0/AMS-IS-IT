@@ -361,7 +361,7 @@ export default function AddAsset() {
     }
 
     setVendors(updatedVendors);
-    setFormData((prev) => ({ ...prev, vendorId: newVendor.vendorId }));
+    setFormData((prev) => ({ ...prev, vendorId: newVendor._id }));
     setNewVendorInput({
       vendorName: "",
       contactPerson: "",
@@ -1219,7 +1219,7 @@ function VendorSearchSelect({
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
 
-  const selectedVendor = vendors.find((v) => v.vendorId === selectedVendorId);
+  const selectedVendor = vendors.find((v) => v._id === selectedVendorId);
 
   const filteredVendors = useMemo(() => {
     return vendors.filter(
@@ -1282,13 +1282,13 @@ function VendorSearchSelect({
             {filteredVendors.length > 0 ? (
               filteredVendors.map((v) => (
                 <div
-                  key={v.vendorId}
+                  key={v._id}
                   onClick={() => {
-                    onSelect(v.vendorId);
+                    onSelect(v._id);
                     setIsOpen(false);
                     setSearchTerm("");
                   }}
-                  className={`p-2.5 text-xs text-slate-700 hover:bg-emerald-50 cursor-pointer transition-colors border-b  border-slate-700 ${selectedVendorId === v.vendorId ? "bg-emerald-50 text-emerald-800 font-semibold" : ""}`}
+                  className={`p-2.5 text-xs text-slate-700 hover:bg-emerald-50 cursor-pointer transition-colors border-b  border-slate-700 ${selectedVendorId === v._id ? "bg-emerald-50 text-emerald-800 font-semibold" : ""}`}
                 >
                   <div className="font-semibold text-slate-800">
                     {v.vendorName}
