@@ -1258,7 +1258,7 @@ function VendorSearchSelect({
         <button
           type="button"
           onClick={onAddVendorClick}
-          className="p-2.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-600 border border-emerald-200 rounded-xl transition-colors flex items-center justify-center shrink-0 shadow-sm"
+          className="p-2.5 bg-indigo-600 text-white border border-slate-900 p-2 rounded-lg font-bold shadow-xl hover:bg-indigo-700"
           title="Add new vendor"
         >
           <Plus className="w-4 h-4" />

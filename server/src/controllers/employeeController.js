@@ -1,8 +1,6 @@
 import Employee from "../models/Employee.js";
+import Asset from "../models/Asset.js";
 
-const generateEmployeeId = () => {
-  return `EMP-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
-};
 
 // GET /api/employees
 export const getEmployees = async (req, res) => {
@@ -26,7 +24,7 @@ export const getEmployees = async (req, res) => {
 export const getEmployeeById = async (req, res) => {
   try {
     const employee = await Employee.findOne({
-      id: req.params.id
+      _id: req.params.id
     });
 
     if (!employee) {
@@ -51,7 +49,6 @@ export const createEmployee = async (req, res) => {
   try {
     const employee = await Employee.create({
       ...req.body,
-      id: req.body.id || generateEmployeeId(),
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
       assetlist: req.body.assetlist || [],
@@ -72,15 +69,15 @@ export const createEmployee = async (req, res) => {
 // PUT /api/employees/:id
 export const updateEmployee = async (req, res) => {
   try {
-    const { id, createdAt, ...updateData } = req.body;
+    const {createdAt, ...updateData } = req.body;
 
     updateData.updatedAt = new Date().toISOString();
 
     const employee = await Employee.findOneAndUpdate(
-      { id: req.params.id },
+      { _id: req.params.id },
       updateData,
       {
-        new: true,
+        returnDocument: "after",
         runValidators: true
       }
     );
@@ -105,12 +102,12 @@ export const updateEmployee = async (req, res) => {
 // PATCH /api/employees/:id
 export const patchEmployee = async (req, res) => {
   try {
-    const { id, createdAt, ...updateData } = req.body;
+    const {createdAt, ...updateData } = req.body;
 
     updateData.updatedAt = new Date().toISOString();
 
     const employee = await Employee.findOneAndUpdate(
-      { id: req.params.id },
+      { _id: req.params.id },
       { $set: updateData },
       {
         new: true,
@@ -138,26 +135,43 @@ export const patchEmployee = async (req, res) => {
 // DELETE /api/employees/:id
 export const deleteEmployee = async (req, res) => {
   try {
-    const employee = await Employee.findOneAndDelete({
-      id: req.params.id
-    });
+    const employee = await Employee.findById(req.params.id);
 
     if (!employee) {
       return res.status(404).json({
-        message: "Employee not found"
+        message: "Employee not found",
       });
     }
 
+    // Remove this employee from all assigned assets
+    if (Array.isArray(employee.assetlist) && employee.assetlist.length > 0) {
+      await Asset.updateMany(
+        {
+          _id: { $in: employee.assetlist },
+          employeeId: employee._id,
+        },
+        {
+          $set: {
+            employeeId: null,
+            receivedDate: null,
+          },
+        }
+      );
+    }
+
+    // Delete employee
+    await Employee.findByIdAndDelete(employee._id);
+
     res.status(200).json({
       message: "Employee deleted successfully",
-      employee
+      employee,
     });
   } catch (error) {
     console.error("Delete employee error:", error);
 
     res.status(500).json({
       message: "Failed to delete employee",
-      error: error.message
+      error: error.message,
     });
   }
 };

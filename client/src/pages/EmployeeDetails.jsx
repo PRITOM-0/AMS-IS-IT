@@ -1,102 +1,104 @@
+ 
 import React, { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import {
   ArrowLeft,
   Edit,
   Save,
   RotateCcw,
+  Trash2,
   User,
   Hash,
   Briefcase,
   Building2,
   MapPin,
   Layers,
-  ChevronDown,
   Package,
   History,
+  X,
+  AlertTriangle,
+  ChevronDown,
 } from "lucide-react";
 import axios from "axios";
 import { API_BASE_URL } from "../env";
 
+const fields = [
+  ["employeeName", "Employee Name", User],
+  ["employeeId", "Employee ID", Hash],
+  ["designation", "Designation", Briefcase],
+  ["company", "Company", Building2],
+  ["location", "Location", MapPin],
+  ["department", "Department", Layers],
+];
+
 function EmployeeDetails() {
   const { id } = useParams();
+  const navigate = useNavigate();
 
   const [employee, setEmployee] = useState(null);
-  const [originalEmployee, setOriginalEmployee] = useState(null);
   const [formData, setFormData] = useState(null);
   const [assets, setAssets] = useState([]);
-  const [list, setList] = useState({
-    company: [],
-    Location: [],
-    department: [],
-  });
-  const [isEdit, setIsEdit] = useState(false);
+  const [lists, setLists] = useState({});
+  const [edit, setEdit] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [listLoading, setListLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+  const [showDelete, setShowDelete] = useState(false);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-
-        const [employeeResponse, assetsResponse, listResponse] =
-          await Promise.all([
-            axios.get(`${API_BASE_URL}/employees/${id}`),
-            axios.get(`${API_BASE_URL}/assets`),
-            axios.get(`${API_BASE_URL}/list`),
-          ]);
-
-        const employeeData = employeeResponse.data;
-        const assetData = assetsResponse.data || [];
-
-        setEmployee(employeeData);
-        setOriginalEmployee(employeeData);
-        setFormData(employeeData ? { ...employeeData } : null);
-        setAssets(assetData);
-        setList({
-          company: listResponse.data?.company || [],
-          Location: listResponse.data?.Location || [],
-          department: listResponse.data?.department || [],
-        });
-      } catch (error) {
-        console.error("Error fetching employee data:", error);
-      } finally {
-        setLoading(false);
-        setListLoading(false);
-      }
-    };
-
-    fetchData();
+    loadData();
   }, [id]);
 
-  const getAsset = (assetId) => {
-    return assets.find((asset) => String(asset._id) === String(assetId));
-  };
+  const loadData = async () => {
+    try {
+      setLoading(true);
 
-  const handleEdit = () => {
-    if (employee) {
-      setFormData({ ...employee });
-      setIsEdit(true);
+      const [employeeRes, assetsRes, listRes] = await Promise.all([
+        axios.get(`${API_BASE_URL}/employees/${id}`),
+        axios.get(`${API_BASE_URL}/assets`),
+        axios.get(`${API_BASE_URL}/list`),
+      ]);
+
+      setEmployee(employeeRes.data);
+      setFormData({ ...employeeRes.data });
+      setAssets(assetsRes.data || []);
+
+      setLists({
+        company: listRes.data?.company || [],
+        location: listRes.data?.Location || [],
+        department: listRes.data?.department || [],
+      });
+    } catch (error) {
+      console.error("Failed to load employee:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
+  const getAsset = (assetId) =>
+    assets.find((asset) => String(asset._id) === String(assetId));
 
+  const handleChange = (e) =>
     setFormData((prev) => ({
       ...prev,
-      [name]: value,
+      [e.target.name]: e.target.value,
     }));
+
+  const handleEdit = () => {
+    setFormData({ ...employee });
+    setEdit(true);
+  };
+
+  const handleReset = () => {
+    setFormData({ ...employee });
+    setEdit(false);
   };
 
   const handleUpdate = async () => {
-    if (!formData) return;
-
     try {
       setSaving(true);
 
-      const updatedEmployee = {
+      const data = {
         ...formData,
         employeeName: formData.employeeName?.trim() || "",
         employeeId: formData.employeeId?.trim() || "",
@@ -106,58 +108,81 @@ function EmployeeDetails() {
         department: formData.department?.trim() || "",
         updatedAt: new Date().toISOString(),
 
-        // Preserve asset relationships
-        assetlist: employee?.assetlist || [],
-        assethistory: employee?.assethistory || [],
+        assetlist: employee.assetlist || [],
+        assethistory: employee.assethistory || [],
       };
 
       const response = await axios.put(
         `${API_BASE_URL}/employees/${id}`,
-        updatedEmployee,
+        data
       );
 
       setEmployee(response.data);
-      setOriginalEmployee(response.data);
       setFormData({ ...response.data });
-      setIsEdit(false);
+      setEdit(false);
     } catch (error) {
-      console.error("Error updating employee:", error);
+      console.error("Update failed:", error);
 
       alert(
         error.response?.data?.message ||
-          "Failed to update employee. Please try again.",
+          "Failed to update employee. Please try again."
       );
     } finally {
       setSaving(false);
     }
   };
 
-  const handleReset = () => {
-    if (originalEmployee) {
-      setFormData({ ...originalEmployee });
-    }
+  const handleDelete = async () => {
+    try {
+      setDeleting(true);
+      await axios.delete(`${API_BASE_URL}/employees/${id}`);
 
-    setIsEdit(false);
+      navigate("/employees", {
+        replace: true,
+        state: {
+          message: "Employee deleted successfully.",
+        },
+      });
+    } catch (error) {
+      console.error("Delete failed:", error);
+
+      alert(
+        error.response?.data?.message ||
+          "Failed to delete employee. Please try again."
+      );
+    } finally {
+      setDeleting(false);
+      setShowDelete(false);
+    }
   };
 
   if (loading) {
     return (
-      <div className="p-6 flex items-center justify-center min-h-[300px]">
-        <div className="text-gray-500">Loading employee...</div>
+      <div className="min-h-[400px] flex items-center justify-center">
+        <div className="flex items-center gap-3 text-gray-500">
+          <div className="h-5 w-5 animate-spin rounded-full border-2 border-indigo-600 border-t-transparent" />
+          Loading employee...
+        </div>
       </div>
     );
   }
 
   if (!employee) {
     return (
-      <div className="p-6 text-center">
-        <p className="text-red-500 font-medium">Employee not found</p>
+      <div className="min-h-[400px] flex flex-col items-center justify-center p-6">
+        <div className="flex h-14 w-14 items-center justify-center rounded-full bg-red-100 text-red-600">
+          <AlertTriangle size={28} />
+        </div>
+
+        <h2 className="mt-4 text-xl font-semibold text-gray-800">
+          Employee not found
+        </h2>
 
         <Link
           to="/employees"
-          className="inline-flex items-center gap-2 mt-4 text-indigo-600 hover:underline"
+          className="mt-4 inline-flex items-center gap-2 text-indigo-600 hover:underline"
         >
-          <ArrowLeft size={18} />
+          <ArrowLeft size={17} />
           Back to Employees
         </Link>
       </div>
@@ -165,381 +190,322 @@ function EmployeeDetails() {
   }
 
   return (
-    <div className="p-6 space-y-6">
-      {/* TOP BAR */}
-      <div className="flex justify-between items-center gap-4">
-        <button
-          onClick={() => window.history.back()}
-          className="inline-flex items-center gap-2 text-indigo-600 hover:text-indigo-800 font-medium transition"
-        >
-          <ArrowLeft size={20} />
-          Back
-        </button>
-
-        {!isEdit ? (
+    <div className="min-h-screen bg-gray-50 p-4 md:p-6">
+      <div className="mx-auto max-w-7xl space-y-6">
+        {/* TOP BAR */}
+        <div className="flex flex-wrap items-center justify-between gap-3">
           <button
-            onClick={handleEdit}
-            className="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg transition"
+            onClick={() => navigate(-1)}
+            className="inline-flex items-center gap-2 font-medium text-gray-600 transition hover:text-indigo-600"
           >
-            <Edit size={17} />
-            Edit
+            <ArrowLeft size={19} />
+            Back
           </button>
-        ) : (
+
           <div className="flex gap-2">
-            <button
-              onClick={handleUpdate}
-              disabled={saving}
-              className="inline-flex items-center gap-2 bg-green-600 hover:bg-green-700 disabled:opacity-60 text-white px-4 py-2 rounded-lg transition"
-            >
-              <Save size={17} />
-              {saving ? "Updating..." : "Update"}
-            </button>
+            {!edit ? (
+              <>
+                <button
+                  onClick={handleEdit}
+                  className="inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-medium text-white shadow-sm transition hover:bg-indigo-700"
+                >
+                  <Edit size={16} />
+                  Edit
+                </button>
 
-            <button
-              onClick={handleReset}
-              disabled={saving}
-              className="inline-flex items-center gap-2 bg-gray-500 hover:bg-gray-600 disabled:opacity-60 text-white px-4 py-2 rounded-lg transition"
-            >
-              <RotateCcw size={17} />
-              Reset
-            </button>
+                <button
+                  onClick={() => setShowDelete(true)}
+                  className="inline-flex items-center gap-2 rounded-xl bg-red-600 px-4 py-2.5 text-sm font-medium text-white shadow-sm transition hover:bg-red-700"
+                >
+                  <Trash2 size={16} />
+                  Delete
+                </button>
+              </>
+            ) : (
+              <>
+                <button
+                  onClick={handleUpdate}
+                  disabled={saving}
+                  className="inline-flex items-center gap-2 rounded-xl bg-green-600 px-4 py-2.5 text-sm font-medium text-white shadow-sm transition hover:bg-green-700 disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  <Save size={16} />
+                  {saving ? "Saving..." : "Save Changes"}
+                </button>
+
+                <button
+                  onClick={handleReset}
+                  disabled={saving}
+                  className="inline-flex items-center gap-2 rounded-xl border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  <RotateCcw size={16} />
+                  Cancel
+                </button>
+              </>
+            )}
           </div>
-        )}
-      </div>
+        </div>
 
-      {/* EMPLOYEE INFORMATION */}
-      <div className="bg-white border shadow-lg rounded-2xl overflow-hidden">
-        {/* HEADER */}
-        <div className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-6">
-          <div className="flex justify-between items-center gap-4">
-            <div className="flex items-center gap-4 min-w-0">
-              <div className="w-14 h-14 rounded-xl bg-white/20 flex items-center justify-center shrink-0">
-                <User size={28} />
+        {/* EMPLOYEE PROFILE */}
+        <section className="overflow-hidden rounded-2xl border border-indigo-700 bg-white shadow-sm">
+          {/* HEADER */}
+          <div className="bg-gradient-to-r from-indigo-600 via-blue-600 to-cyan-500 p-6 text-white md:p-8">
+            <div className="flex flex-col gap-5 md:flex-row md:items-center">
+              <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl bg-white/20 shadow-inner backdrop-blur">
+                <User size={38} />
               </div>
 
-              <div className="min-w-0">
-                <h1 className="text-2xl font-bold truncate">
+              <div className="min-w-0 flex-1">
+                <p className="mb-1 text-sm text-blue-100">
+                  Employee Profile
+                </p>
+
+                <h1 className="truncate text-2xl font-bold md:text-3xl">
                   {employee.employeeName || "Unnamed Employee"}
                 </h1>
 
-                <p className="text-sm text-blue-100 mt-1">
-                  {employee.designation || "No Designation"}
+                <p className="mt-1 text-blue-100">
+                  {employee.designation || "No designation"}
                 </p>
               </div>
-            </div>
 
-            <span className="bg-white/20 px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap">
-              {employee.employeeId || "N/A"}
-            </span>
+              <span className="inline-flex w-fit items-center gap-2 rounded-full border border-white/20 bg-white/15 px-4 py-2 text-sm font-medium">
+                <Hash size={15} />
+                {employee.employeeId || "N/A"}
+              </span>
+            </div>
           </div>
-        </div>
 
-        {/* DETAILS */}
-        <div className="p-6">
-          {isEdit ? (
-            <div className="space-y-4">
-              <EditableField
-                label="Employee Name"
-                icon={<User size={16} />}
-                name="employeeName"
-                value={formData?.employeeName || ""}
-                onChange={handleChange}
-              />
+          {/* DETAILS */}
+          <div className="p-5 md:p-7">
+            {edit ? (
+              <div className="grid gap-5 md:grid-cols-2">
+                {fields.map(([name, label, Icon]) =>
+                  ["company", "location", "department"].includes(name) ? (
+                    <SelectField
+                      key={name}
+                      name={name}
+                      label={label}
+                      icon={Icon}
+                      value={formData?.[name] || ""}
+                      options={lists[name] || []}
+                      onChange={handleChange}
+                    />
+                  ) : (
+                    <InputField
+                      key={name}
+                      name={name}
+                      label={label}
+                      icon={Icon}
+                      value={formData?.[name] || ""}
+                      onChange={handleChange}
+                    />
+                  )
+                )}
+              </div>
+            ) : (
+              <div className="grid gap-4 md:grid-cols-2">
+                {fields.map(([name, label, Icon]) => (
+                  <InfoRow
+                    key={name}
+                    label={label}
+                    value={employee[name]}
+                    icon={<Icon size={17} />}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+        </section>
 
-              <EditableField
-                label="Employee ID"
-                icon={<Hash size={16} />}
-                name="employeeId"
-                value={formData?.employeeId || ""}
-                onChange={handleChange}
-              />
+        {/* ASSIGNED ASSETS */}
+        <section>
+          <SectionTitle
+            title="Assigned Assets"
+            icon={<Package size={19} />}
+            count={employee.assetlist?.length || 0}
+          />
 
-              <EditableField
-                label="Designation"
-                icon={<Briefcase size={16} />}
-                name="designation"
-                value={formData?.designation || ""}
-                onChange={handleChange}
-              />
-
-              <SelectField
-                label="Company"
-                icon={<Building2 size={16} />}
-                name="company"
-                value={formData?.company || ""}
-                onChange={handleChange}
-                options={list.company}
-                loading={listLoading}
-              />
-
-              <SelectField
-                label="Location"
-                icon={<MapPin size={16} />}
-                name="location"
-                value={formData?.location || ""}
-                onChange={handleChange}
-                options={list.Location}
-                loading={listLoading}
-              />
-
-              <SelectField
-                label="Department"
-                icon={<Layers size={16} />}
-                name="department"
-                value={formData?.department || ""}
-                onChange={handleChange}
-                options={list.department}
-                loading={listLoading}
-              />
-            </div>
+          {!employee.assetlist?.length ? (
+            <EmptyState text="No assets currently assigned." />
           ) : (
-            <div className="space-y-3">
-              <InfoRow
-                label="Employee Name"
-                value={employee.employeeName}
-                icon={<User size={16} />}
-              />
-
-              <InfoRow
-                label="Employee ID"
-                value={employee.employeeId}
-                icon={<Hash size={16} />}
-              />
-
-              <InfoRow
-                label="Designation"
-                value={employee.designation}
-                icon={<Briefcase size={16} />}
-              />
-
-              <InfoRow
-                label="Company"
-                value={employee.company}
-                icon={<Building2 size={16} />}
-              />
-
-              <InfoRow
-                label="Location"
-                value={employee.location}
-                icon={<MapPin size={16} />}
-              />
-
-              <InfoRow
-                label="Department"
-                value={employee.department}
-                icon={<Layers size={16} />}
-              />
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              {employee.assetlist.map((assetId) => (
+                <AssetCard
+                  key={assetId}
+                  assetId={assetId}
+                  asset={getAsset(assetId)}
+                />
+              ))}
             </div>
           )}
-        </div>
-      </div>
+        </section>
 
-      {/* ASSIGNED ASSETS */}
-      <div>
-        <div className="flex items-center gap-2 mb-3">
-          <Package size={20} className="text-indigo-600" />
-          <h2 className="font-semibold text-lg text-gray-800">
-            Assigned Assets
-          </h2>
+        {/* ASSET HISTORY */}
+        <section>
+          <SectionTitle
+            title="Asset History"
+            icon={<History size={19} />}
+            count={employee.assethistory?.length || 0}
+          />
 
-          <span className="text-xs bg-indigo-100 text-indigo-600 px-2 py-1 rounded-full">
-            {employee.assetlist?.length || 0}
-          </span>
-        </div>
+          {!employee.assethistory?.length ? (
+            <EmptyState text="No asset history available." />
+          ) : (
+            <div className="space-y-3">
+              {employee.assethistory.map((entry, index) => {
+                const asset = getAsset(entry.assetId);
 
-        {!employee.assetlist || employee.assetlist.length === 0 ? (
-          <div className="text-gray-500 text-sm bg-gray-50 border rounded-lg p-4 text-center">
-            No assets assigned
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-5">
-  {employee.assetlist.map((assetId) => {
-    const asset = getAsset(assetId);
+                return (
+                  <Link
+                    key={`${entry.assetId}-${index}`}
+                    to={`/assets/${entry.assetId}`}
+                    className="block rounded-xl border border-gray-200 bg-white p-4 shadow-sm transition hover:border-indigo-300 hover:shadow-md"
+                  >
+                    <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
+                      <div className="min-w-0">
+                        <p className="truncate font-semibold text-indigo-600">
+                          {asset?.equipment ||
+                            entry.assetId ||
+                            "Asset"}
+                        </p>
 
-    return (
-      <Link
-        to={`/assets/${assetId}`}
-        key={assetId}
-        className="block border rounded-xl p-4 shadow-sm hover:shadow-md hover:border-indigo-300 transition bg-white"
-      >
-        <div className="flex flex-col justify-between h-full gap-4">
-          <div className="min-w-0">
-            <p className="font-semibold text-indigo-600 truncate">
-              {asset?.equipment || "Asset"}
-            </p>
+                        <p className="mt-1 text-xs text-gray-500">
+                          Asset Code: {asset?.assetCode || "N/A"}
+                        </p>
+                      </div>
 
-            <div className="mt-2 space-y-1.5 text-xs text-gray-500">
-              <p>
-                <span className="font-medium text-gray-700">Asset Code:</span>{" "}
-                {asset?.assetCode || assetId}
-              </p>
+                      <div className="flex flex-wrap gap-2">
+                        <Badge color="yellow">
+                          {entry.issue || "Asset"}
+                        </Badge>
 
-              <p>
-                <span className="font-medium text-gray-700">Brand:</span>{" "}
-                {asset?.brand || "N/A"}
-              </p>
+                        <Badge
+                          color={
+                            entry.returnedDate ? "gray" : "green"
+                          }
+                        >
+                          {entry.returnedDate ? "Returned" : "In Use"}
+                        </Badge>
+                      </div>
+                    </div>
 
-              <p>
-                <span className="font-medium text-gray-700">Model:</span>{" "}
-                {asset?.model || "N/A"}
-              </p>
+                    <div className="my-4 border-t border-gray-100" />
+
+                    <div className="grid gap-2 text-sm text-gray-600 sm:grid-cols-2">
+                      <p>
+                        <span className="font-medium text-gray-800">
+                          Assigned:
+                        </span>{" "}
+                        {entry.assignedDate || "—"}
+                      </p>
+
+                      <p>
+                        <span className="font-medium text-gray-800">
+                          Returned:
+                        </span>{" "}
+                        {entry.returnedDate || "—"}
+                      </p>
+                    </div>
+                  </Link>
+                );
+              })}
             </div>
-          </div>
-
-          <span className="w-fit text-xs bg-green-100 text-green-700 px-2.5 py-1 rounded-md">
-            Assigned
-          </span>
-        </div>
-      </Link>
-    );
-  })}
-</div>
-        )}
+          )}
+        </section>
       </div>
 
-      {/* ASSET HISTORY */}
-      <div>
-        <div className="flex items-center gap-2 mb-3">
-          <History size={20} className="text-indigo-600" />
-          <h2 className="font-semibold text-lg text-gray-800">Asset History</h2>
-
-          <span className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">
-            {employee.assethistory?.length || 0}
-          </span>
-        </div>
-
-        {!employee.assethistory || employee.assethistory.length === 0 ? (
-          <div className="text-gray-500 text-sm bg-gray-50 border rounded-lg p-4 text-center">
-            No asset history available
-          </div>
-        ) : (
-          <div className="space-y-2">
-            {employee.assethistory.map((entry, index) => {
-              const asset = getAsset(entry.assetId);
-
-              return (
-                <Link
-                  to={`/assets/${entry.assetId}`}
-                  key={`${entry.assetId}-${index}`}
-                  className="block border rounded-xl p-4 shadow-sm bg-white hover:shadow-md hover:border-indigo-300 transition"
-                >
-                  <div className="flex justify-between items-start gap-4">
-                    <div className="min-w-0">
-                      <p className="font-semibold text-indigo-600 truncate">
-                        {asset?.equipment || entry.assetId || "Asset"}
-                      </p>
-
-                      <p className="text-xs text-gray-500 mt-1">
-                        <span className="font-medium">Asset Code:</span>{" "}
-                        {asset?.assetCode || "N/A"}
-                      </p>
-                    </div>
-
-                    <div className="flex flex-col items-end gap-1 shrink-0">
-                      <span className="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded">
-                        {entry?.issue || "Asset"}
-                      </span>
-
-                      <span
-                        className={`text-xs px-2 py-1 rounded ${
-                          entry.returnedDate
-                            ? "bg-gray-100 text-gray-600"
-                            : "bg-green-100 text-green-700"
-                        }`}
-                      >
-                        {entry.returnedDate ? "Returned" : "In Use"}
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="my-3 border-t" />
-
-                  <div className="text-sm text-gray-600 space-y-1">
-                    <p>
-                      <span className="font-medium">Assigned:</span>{" "}
-                      {entry.assignedDate || "—"}
-                    </p>
-
-                    <p>
-                      <span className="font-medium">Returned:</span>{" "}
-                      {entry.returnedDate || "—"}
-                    </p>
-                  </div>
-                </Link>
-              );
-            })}
-          </div>
-        )}
-      </div>
+      {/* DELETE CONFIRMATION MODAL */}
+      {showDelete && (
+        <DeleteModal
+          employee={employee}
+          deleting={deleting}
+          onCancel={() => !deleting && setShowDelete(false)}
+          onConfirm={handleDelete}
+        />
+      )}
     </div>
   );
 }
 
-export default EmployeeDetails;
-
-/* -------------------------------- */
-/* INFO ROW */
-/* -------------------------------- */
+/* ---------------- INFO ROW ---------------- */
 
 function InfoRow({ label, value, icon }) {
   return (
-    <div className="flex items-center border-b border-gray-100 pb-3 last:border-b-0 last:pb-0">
-      <div className="w-40 flex items-center gap-2 text-gray-500 shrink-0">
-        <span className="text-indigo-500">{icon}</span>
-        <span className="font-medium">{label}</span>
-      </div>
+    <div className="flex items-start gap-3 rounded-xl bg-gray-50 p-4">
+      <span className="mt-0.5 shrink-0 text-indigo-600">
+        {icon}
+      </span>
 
-      <span className="text-gray-800 font-medium">: {value || "N/A"}</span>
+      <div className="min-w-0">
+        <p className="text-xs font-medium uppercase tracking-wide text-gray-400">
+          {label}
+        </p>
+
+        <p className="mt-1 break-words font-medium text-gray-800">
+          {value || "N/A"}
+        </p>
+      </div>
     </div>
   );
 }
 
-/* -------------------------------- */
-/* EDITABLE FIELD */
-/* -------------------------------- */
+/* ---------------- INPUT ---------------- */
 
-function EditableField({ label, name, value, onChange, icon, type = "text" }) {
+function InputField({
+  label,
+  name,
+  value,
+  onChange,
+  icon: Icon,
+}) {
   return (
-    <label className="flex items-center gap-4 text-sm">
-      <div className="w-40 flex items-center gap-2 text-gray-500 shrink-0">
-        <span className="text-indigo-500">{icon}</span>
-        <span className="font-medium">{label}</span>
-      </div>
+    <label className="block">
+      <span className="mb-2 flex items-center gap-2 text-sm font-medium text-gray-600">
+        <Icon size={16} className="text-indigo-500" />
+        {label}
+      </span>
 
       <input
         name={name}
-        type={type}
         value={value}
         onChange={onChange}
-        className="flex-1 rounded-lg border border-gray-300 px-3 py-2 text-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400"
+        className="w-full rounded-xl border border-gray-300 bg-white px-4 py-2.5 text-gray-800 outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
       />
     </label>
   );
 }
 
-function SelectField({ label, name, value, onChange, icon, options, loading }) {
+/* ---------------- SELECT ---------------- */
+
+function SelectField({
+  label,
+  name,
+  value,
+  onChange,
+  options = [],
+  icon: Icon,
+}) {
   const availableOptions =
-    value && !options.includes(value) ? [value, ...options] : options;
+    value && !options.includes(value)
+      ? [value, ...options]
+      : options;
 
   return (
-    <label className="flex items-center gap-4 text-sm">
-      <div className="flex w-40 shrink-0 items-center gap-2 text-gray-500">
-        <span className="text-indigo-500">{icon}</span>
-        <span className="font-medium">{label}</span>
-      </div>
+    <label className="block">
+      <span className="mb-2 flex items-center gap-2 text-sm font-medium text-gray-600">
+        <Icon size={16} className="text-indigo-500" />
+        {label}
+      </span>
 
-      <div className="relative flex-1">
+      <div className="relative">
         <select
           name={name}
           value={value}
           onChange={onChange}
-          disabled={loading}
-          className="w-full appearance-none rounded-lg border border-gray-300 bg-white px-3 py-2 pr-9 text-gray-800 focus:border-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-400 disabled:bg-gray-100"
+          className="w-full appearance-none rounded-xl border border-gray-300 bg-white px-4 py-2.5 pr-10 text-gray-800 outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
         >
           <option value="">
-            {loading
-              ? `Loading ${label.toLowerCase()}...`
-              : `Select ${label.toLowerCase()}`}
+            Select {label.toLowerCase()}
           </option>
 
           {availableOptions.map((option) => (
@@ -549,8 +515,195 @@ function SelectField({ label, name, value, onChange, icon, options, loading }) {
           ))}
         </select>
 
-        <ChevronDown className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+        <ChevronDown
+          size={17}
+          className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"
+        />
       </div>
     </label>
   );
 }
+
+/* ---------------- SECTION TITLE ---------------- */
+
+function SectionTitle({ title, icon, count }) {
+  return (
+    <div className="mb-3 flex items-center gap-2">
+      <span className="text-indigo-600">{icon}</span>
+
+      <h2 className="text-lg font-semibold text-gray-800">
+        {title}
+      </h2>
+
+      <span className="rounded-full bg-indigo-50 px-2.5 py-1 text-xs font-medium text-indigo-600">
+        {count}
+      </span>
+    </div>
+  );
+}
+
+/* ---------------- EMPTY STATE ---------------- */
+
+function EmptyState({ text }) {
+  return (
+    <div className="rounded-xl border border-dashed border-gray-300 bg-white p-7 text-center text-sm text-gray-500">
+      {text}
+    </div>
+  );
+}
+
+/* ---------------- ASSET CARD ---------------- */
+
+function AssetCard({ asset, assetId }) {
+  return (
+    <Link
+      to={`/assets/${assetId}`}
+      className="group rounded-xl border border-gray-500 bg-white p-4 shadow-sm transition hover:border-indigo-300 hover:shadow-md"
+    >
+      <div className="flex items-start justify-between gap-3">
+        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-50 text-indigo-600">
+          <Package size={19} />
+        </div>
+
+        <Badge color="green">Assigned</Badge>
+      </div>
+
+      <h3 className="mt-4 truncate font-semibold text-gray-800 transition group-hover:text-indigo-600">
+        {asset?.equipment || "Asset"}
+      </h3>
+
+      <div className="mt-2 space-y-1 text-xs text-gray-500">
+        <p>
+          <span className="font-medium text-gray-700">
+            Code:
+          </span>{" "}
+          {asset?.assetCode || assetId}
+        </p>
+
+        <p>
+          <span className="font-medium text-gray-700">
+            Brand:
+          </span>{" "}
+          {asset?.brand || "N/A"}
+        </p>
+
+        <p>
+          <span className="font-medium text-gray-700">
+            Model:
+          </span>{" "}
+          {asset?.model || "N/A"}
+        </p>
+      </div>
+    </Link>
+  );
+}
+
+/* ---------------- BADGE ---------------- */
+
+function Badge({ children, color }) {
+  const styles = {
+    green: "bg-green-100 text-green-700",
+    yellow: "bg-yellow-100 text-yellow-800",
+    gray: "bg-gray-100 text-gray-600",
+  };
+
+  return (
+    <span
+      className={`rounded-md px-2.5 py-1 text-xs font-medium ${styles[color]}`}
+    >
+      {children}
+    </span>
+  );
+}
+
+/* ---------------- DELETE MODAL ---------------- */
+
+function DeleteModal({
+  employee,
+  deleting,
+  onCancel,
+  onConfirm,
+}) {
+  const assetCount = employee.assetlist?.length || 0;
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm">
+      <div className="w-full max-w-md overflow-hidden rounded-2xl bg-white shadow-2xl">
+        <div className="p-6">
+          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-red-100 text-red-600">
+            <AlertTriangle size={28} />
+          </div>
+
+          <h2 className="mt-4 text-center text-xl font-bold text-gray-900">
+            Delete Employee?
+          </h2>
+
+          <p className="mt-2 text-center text-sm leading-6 text-gray-500">
+            Are you sure you want to permanently delete{" "}
+            <span className="font-semibold text-gray-800">
+              {employee.employeeName || "this employee"}
+            </span>
+            ?
+          </p>
+
+          {assetCount > 0 && (
+            <div className="mt-5 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm leading-6 text-amber-800">
+              <div className="flex gap-3">
+                <AlertTriangle
+                  size={18}
+                  className="mt-0.5 shrink-0"
+                />
+
+                <p>
+                  This employee currently has{" "}
+                  <strong>{assetCount}</strong> assigned{" "}
+                  {assetCount === 1 ? "asset" : "assets"}.
+                  Their <code>employeeId</code> will be cleared
+                  from those assets before deletion.
+                </p>
+              </div>
+            </div>
+          )}
+
+          <p className="mt-4 text-center text-xs text-gray-400">
+            This action cannot be undone.
+          </p>
+        </div>
+
+        <div className="flex gap-3 border-t border-gray-100 bg-gray-50 p-4">
+          <button
+            onClick={onCancel}
+            disabled={deleting}
+            className="flex-1 rounded-xl border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            <span className="inline-flex items-center justify-center gap-2">
+              <X size={16} />
+              Cancel
+            </span>
+          </button>
+
+          <button
+            onClick={onConfirm}
+            disabled={deleting}
+            className="flex-1 rounded-xl bg-red-600 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            {deleting ? (
+              <span className="inline-flex items-center justify-center gap-2">
+                <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                Deleting...
+              </span>
+            ) : (
+              <span className="inline-flex items-center justify-center gap-2">
+                <Trash2 size={16} />
+                Delete
+              </span>
+            )}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default EmployeeDetails;
+ 

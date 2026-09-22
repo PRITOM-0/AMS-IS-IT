@@ -14,11 +14,6 @@ import {
 } from "lucide-react";
 import { API_BASE_URL } from "../env";
 
-// ======================================================
-// INPUT COMPONENT
-// IMPORTANT: Keep this OUTSIDE RepairService
-// so input does not lose focus while typing.
-// ======================================================
 
 const Input = ({ label, name, type = "text", value, onChange }) => (
   <div>

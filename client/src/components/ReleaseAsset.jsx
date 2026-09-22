@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+ 
 import { X, PackageCheck, Loader2, AlertTriangle, FileText } from "lucide-react";
 import { API_BASE_URL } from "../env";
 
@@ -7,6 +8,7 @@ const ReleaseAsset = ({ employee, asset, onReleased }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [releaseNote, setReleaseNote] = useState("");
+ 
 
   // ==========================================
   // Open Confirmation Modal
@@ -72,6 +74,7 @@ const ReleaseAsset = ({ employee, asset, onReleased }) => {
       // 1. Prepare updated Asset payload
       const updatedAsset = {
         ...asset,
+        status: "Inactive",
         employeeId: "",
         receivedDate: "",
         oldUsers: [...oldUsers, oldUser],
@@ -124,7 +127,7 @@ const ReleaseAsset = ({ employee, asset, onReleased }) => {
 
       // 6. Complete flow
       handleCloseModal();
-
+      
       if (onReleased) {
         onReleased({
           asset: savedAsset,

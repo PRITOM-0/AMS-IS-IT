@@ -12,7 +12,16 @@ const serviceSchema = new mongoose.Schema(
       default: "",
     },
 
+    equipment: {
+      type: String,
+      default: "",
+    },
+
     vendorName: {
+      type: String,
+      default: "",
+    },
+    price: {
       type: String,
       default: "",
     },
@@ -23,6 +32,10 @@ const serviceSchema = new mongoose.Schema(
     },
 
     serviceWarranty: {
+      type: String,
+      default: "",
+    },
+    equipmentWarranty: {
       type: String,
       default: "",
     },

@@ -1,10 +1,9 @@
-import bcrypt from "bcryptjs";
 import User from "../models/User.js";
 
 // GET /api/users
 export const getUsers = async (req, res) => {
   try {
-    const users = await User.find().sort({ createdAt: -1 });
+    const users = await User.find();
 
     res.status(200).json(users);
   } catch (error) {
@@ -47,8 +46,7 @@ export const createUser = async (req, res) => {
     const {
       username,
       password,
-      role = "user",
-      approvallist = []
+      role
     } = req.body;
 
     if (!username || !password) {
@@ -57,9 +55,9 @@ export const createUser = async (req, res) => {
       });
     }
 
-    if (!["user", "admin"].includes(role)) {
+    if (!["User", "Admin"].includes(role)) {
       return res.status(400).json({
-        message: "Role must be user or admin"
+        message: "Role must be User or Admin"
       });
     }
 
@@ -73,14 +71,10 @@ export const createUser = async (req, res) => {
       });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
-
     const user = await User.create({
-      id: req.body.id || generateUserId(),
       username,
-      password: hashedPassword,
+      password,
       role,
-      approvallist,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
     });
@@ -104,25 +98,21 @@ export const createUser = async (req, res) => {
 export const updateUser = async (req, res) => {
   try {
     const {
-      id,
       password,
       createdAt,
       ...updateData
     } = req.body;
 
     if (updateData.role) {
-      if (!["user", "admin"].includes(updateData.role)) {
+      if (!["User", "Admin"].includes(updateData.role)) {
         return res.status(400).json({
-          message: "Role must be user or admin"
+          message: "Role must be User or Admin"
         });
       }
     }
 
     if (password) {
-      updateData.password = await bcrypt.hash(
-        password,
-        10
-      );
+      updateData.password = password;
     }
 
     updateData.updatedAt = new Date().toISOString();
@@ -164,7 +154,7 @@ export const patchUser = async (req, res) => {
     } = req.body;
 
     if (updateData.role) {
-      if (!["user", "admin"].includes(updateData.role)) {
+      if (!["User", "Admin"].includes(updateData.role)) {
         return res.status(400).json({
           message: "Role must be user or admin"
         });
@@ -172,16 +162,13 @@ export const patchUser = async (req, res) => {
     }
 
     if (password) {
-      updateData.password = await bcrypt.hash(
-        password,
-        10
-      );
+      updateData.password = password;
     }
 
     updateData.updatedAt = new Date().toISOString();
 
     const user = await User.findOneAndUpdate(
-      { id: req.params.id },
+      { _id: req.params.id },
       { $set: updateData },
       {
         new: true,
@@ -210,7 +197,7 @@ export const patchUser = async (req, res) => {
 export const deleteUser = async (req, res) => {
   try {
     const user = await User.findOneAndDelete({
-      id: req.params.id
+      _id: req.params.id
     });
 
     if (!user) {

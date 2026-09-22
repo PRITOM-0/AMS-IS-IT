@@ -109,8 +109,8 @@ app.listen(PORT, "0.0.0.0", () => {
   console.log("=================================");
   console.log("         AMS IS-IT API");
   console.log("=================================");
-  console.log(`Server : http://localhost:${PORT}`);
-  console.log(`API    : http://localhost:${PORT}/api`);
+  console.log(`Server : http://ServerIP:${PORT}`);
+  console.log(`API    : http://ServerIP:${PORT}/api`);
   console.log("Database: MongoDB Local");
   console.log("=================================");
   console.log("");

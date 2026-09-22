@@ -21,7 +21,6 @@ export const getVendors = async (req, res) => {
 // GET /api/vendors/:id
 export const getVendorById = async (req, res) => {
   try {
-    console.log(req.params);
     const vendor = await Vendor.findOne({
       _id: req.params.id
     });

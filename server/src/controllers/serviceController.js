@@ -139,7 +139,7 @@ export const patchService = async (req, res) => {
 export const deleteService = async (req, res) => {
   try {
     const service = await Service.findOneAndDelete({
-      id: req.params.id
+      _id: req.params.id
     });
 
     if (!service) {

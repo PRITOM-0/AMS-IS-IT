@@ -1,4 +1,6 @@
 import Asset from "../models/Asset.js";
+import Employee from "../models/Employee.js";
+import Service from "../models/Service.js";
 
 // GET /api/assets
 export const getAssets = async (req, res) => {
@@ -133,26 +135,51 @@ export const patchAsset = async (req, res) => {
 // DELETE /api/assets/:id
 export const deleteAsset = async (req, res) => {
   try {
-    const asset = await Asset.findOneAndDelete({
-      _id: req.params._id
-    });
+    const asset = await Asset.findById(req.params.id);
 
     if (!asset) {
       return res.status(404).json({
-        message: "Asset not found"
+        message: "Asset not found",
       });
     }
 
+    const assetId = asset._id;
+
+    // 1. Remove asset from employee assetlist
+    if (asset.employeeId) {
+      await Employee.updateOne(
+        { _id: asset.employeeId },
+        {
+          $pull: {
+            assetlist: assetId,
+          },
+        }
+      );
+    }
+
+    // 2. Remove asset reference from services
+    await Service.updateMany(
+      { assetId: assetId },
+      {
+        $unset: {
+          assetId: "",
+        },
+      }
+    );
+
+    // 3. Delete asset
+    await Asset.findByIdAndDelete(assetId);
+
     res.status(200).json({
       message: "Asset deleted successfully",
-      asset
+      asset,
     });
   } catch (error) {
     console.error("Delete asset error:", error);
 
     res.status(500).json({
       message: "Failed to delete asset",
-      error: error.message
+      error: error.message,
     });
   }
 };

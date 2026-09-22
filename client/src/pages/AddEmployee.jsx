@@ -103,7 +103,6 @@ function AddEmployee() {
       const now = new Date().toISOString();
 
       const newEmployee = {
-        id:now+"",
         employeeName: formData.employeeName.trim(),
         employeeId: formData.employeeId.trim(),
         designation: formData.designation.trim(),

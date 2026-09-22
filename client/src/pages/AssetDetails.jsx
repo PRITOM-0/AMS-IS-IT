@@ -126,10 +126,7 @@ const AssetDetails = () => {
         const relatedTasks = (tasksRes.data || []).filter((task) => {
           if (!task) return false;
           return (
-            String(task.assetId || "") === String(assetData?._id || "") ||
-            String(task.assetCode || "") ===
-              String(assetData?.assetCode || "") ||
-            String(task.assetName || "") === String(assetData?.equipment || "")
+            false
           );
         });
         setTasks(
@@ -148,6 +145,9 @@ const AssetDetails = () => {
       setLoading(false);
     }
   };
+  const handleAssetReleased = async () => {
+  await fetchData();
+};
 
   const handleDelete = async () => {
     setIsDeleting(true);
@@ -689,9 +689,7 @@ const AssetDetails = () => {
                 <ReleaseAsset
                   employee={employeeInfo}
                   asset={asset}
-                  onReleased={(updatedAsset) => {
-                    console.log("Asset released:", updatedAsset);
-                  }}
+                  onReleased={handleAssetReleased}
                 />
               </div>
             ) : (

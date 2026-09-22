@@ -504,7 +504,7 @@ function AssetAssign() {
                           className={`rounded-full px-3 py-1 text-xs font-bold ${
                             selectedAssetId === asset._id
                               ? "bg-white/20 text-white"
-                              : "bg-emerald-100 text-emerald-700"
+                              : "bg-indigo-100 text-indigo-700"
                           }`}
                         >
                           {asset.status || "N/A"}
