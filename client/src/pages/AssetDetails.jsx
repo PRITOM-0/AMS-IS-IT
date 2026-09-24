@@ -460,7 +460,7 @@ const AssetDetails = () => {
                     Purchase Price
                   </p>
                   <p className="font-bold text-emerald-600 mt-1">
-                    {asset.purchasePrice ? `$${asset.purchasePrice}` : "N/A"}
+                    {asset.purchasePrice ? `${asset.purchasePrice} TK` : "N/A"}
                   </p>
                 </div>
 

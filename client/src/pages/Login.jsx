@@ -40,7 +40,7 @@ const Login = ({ setIsLoggedIn }) => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await fetch(`${API_BASE_URL}/users`);
+        const response = await fetch(`${API_BASE_URL}/auth/usersInfo`);
       
 
         if (!response.ok) {
@@ -48,7 +48,7 @@ const Login = ({ setIsLoggedIn }) => {
         }
 
         const data = await response.json();
-        
+        console.log("Fetched users:", data.users);
         setUsers(data);
       } catch (error) {
         console.error("Failed to load users:", error);
@@ -89,28 +89,23 @@ const Login = ({ setIsLoggedIn }) => {
     try {
       setLoading(true);
 
-      const response = await fetch(`${API_BASE_URL}/users`);
+      const response = await fetch(`${API_BASE_URL}/auth/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
 
       if (!response.ok) {
-        throw new Error("Unable to connect to server.");
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Login failed. Please try again.");
       }
 
-      const usersList = await response.json();
-      const matchedUser = usersList.find(
-        (user) =>
-          user.username?.toLowerCase() ===
-            formData.username.trim().toLowerCase() &&
-          user.password === formData.password
-      );
-
-      if (!matchedUser) {
-        setError("Invalid username or password.");
-        setLoading(false);
-        return;
-      }
+      const userData = await response.json();
 
       localStorage.setItem("isLoggedIn", "true");
-      localStorage.setItem("loggedInUser", JSON.stringify(matchedUser));
+      localStorage.setItem("loggedInUser", JSON.stringify(userData.user));
       localStorage.setItem("loginTime", Date.now().toString());
 
       setIsLoggedIn(true);
@@ -236,8 +231,10 @@ const Login = ({ setIsLoggedIn }) => {
                     className="w-full h-12 rounded-xl border border-gray-200 bg-gray-50/50 pl-10 pr-10 text-sm text-gray-800 outline-none transition-all focus:border-indigo-600 focus:bg-white focus:ring-4 focus:ring-indigo-100 disabled:bg-gray-100 appearance-none cursor-pointer"
                   >
                     <option value="">
-                      {users.length === 0 ? "Loading users..." : "Select username"}
+                      {users.length === 0 ? "Loading users..." : "Select username"
+                      }
                     </option>
+                    
                     {users.map((user) => (
                       <option key={user._id} value={user.username}>
                         {user.username}

@@ -11,6 +11,7 @@ import serviceRoutes from "./src/routes/serviceRoutes.js";
 import taskRoutes from "./src/routes/taskRoutes.js";
 import userRoutes from "./src/routes/userRoutes.js";
 import listRoutes from "./src/routes/listRoutes.js";
+import loginRoutes from "./src/routes/loginRoutes.js";
 
 dotenv.config();
 
@@ -59,6 +60,8 @@ app.get("/", (req, res) => {
 // ==============================
 // API ROUTES
 // ==============================
+
+app.use("/api/auth", loginRoutes);
 
 app.use("/api/assets", assetRoutes);
 

@@ -1,348 +1,457 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   BriefcaseBusiness,
-  HardDrive,
   CircleDollarSign,
   Users,
-  Sparkles,
-  MonitorSmartphone,
-  Warehouse,
-  CircleAlert,
-  Boxes,
   Wrench,
-  MapPin,
-  Building2,
+  CheckCircle2,
+  Clock3,
+  Warehouse,
+  UserCheck,
+  UserRound,
+  Settings2,
+  CircleAlert,
+  ShieldCheck,
+  Layers,
+  Activity,
+  RefreshCw,
+  AlertTriangle,
 } from "lucide-react";
+
 import { API_BASE_URL } from "../env";
 import { DashboardCategoryTree } from "../components/DashboardCategoryTree";
 
 export default function Dashboard() {
- 
   const [assets, setAssets] = useState([]);
-  const [tasks, setTasks] = useState([]);
+  const [services, setServices] = useState([]);
   const [users, setUsers] = useState([]);
- 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        const [assetsRes, tasksRes, usersRes] =
-          await Promise.all([
-            fetch(`${API_BASE_URL}/assets`),
-            fetch(`${API_BASE_URL}/tasks`),
-            fetch(`${API_BASE_URL}/users`)
-          ]);
-
-        if (
-          !assetsRes.ok ||
-          !tasksRes.ok ||
-          !usersRes.ok 
-        ) {
-          console.error("Failed to fetch data from JSON Server");
-          throw new Error("Failed to fetch data from JSON Server");
-        }
-
-        const [assets, tasks, users] = await Promise.all([
-          assetsRes.json(),
-          tasksRes.json(),
-          usersRes.json()
-        ]);
-
-        setAssets(assets);
-        setTasks(tasks);
-        setUsers(users);
-
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
+    Promise.all([
+      fetch(`${API_BASE_URL}/assets`).then(r => r.json()),
+      fetch(`${API_BASE_URL}/services`).then(r => r.json()),
+      fetch(`${API_BASE_URL}/users`).then(r => r.json()),
+    ])
+      .then(([a, s, u]) => {
+        setAssets(Array.isArray(a) ? a : []);
+        setServices(Array.isArray(s) ? s : []);
+        setUsers(Array.isArray(u) ? u : []);
+      })
+      .catch(err => setError(err.message))
+      .finally(() => setLoading(false));
   }, []);
 
-  if (loading) {
+  if (loading)
     return (
-      <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,_rgba(79,70,229,0.12),_transparent_35%),linear-gradient(135deg,_#f8fafc_0%,_#eef2ff_100%)] text-slate-700 flex items-center justify-center px-4">
-        <div className="flex items-center space-x-3 bg-white/90 backdrop-blur-sm px-6 py-4 rounded-2xl shadow-lg border border-slate-500">
-          <div className="w-6 h-6 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin"></div>
-          <span className="text-sm font-semibold text-slate-700">
-            Loading dashboard data...
-          </span>
+      <div className="flex min-h-screen items-center justify-center bg-slate-900/10 backdrop-blur-sm">
+        <div className="flex items-center gap-3 rounded-2xl bg-white px-6 py-4 shadow-xl border border-slate-100">
+          <div className="h-5 w-5 animate-spin rounded-full border-2 border-indigo-600 border-t-transparent" />
+          <span className="font-semibold text-slate-700">Loading dashboard...</span>
         </div>
       </div>
     );
-  }
 
-  if (error) {
+  if (error)
     return (
-      <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,_rgba(248,113,113,0.14),_transparent_35%),linear-gradient(135deg,_#f8fafc_0%,_#fef2f2_100%)] text-slate-700 flex items-center justify-center p-6">
-        <div className="bg-white/90 border border-red-500 text-red-800 px-6 py-5 rounded-2xl max-w-md w-full text-center shadow-lg backdrop-blur-sm">
-          <h2 className="text-xl font-bold mb-2">Error loading data</h2>
-          <p className="text-sm text-red-600">{error}</p>
-          <p className="text-xs text-red-500 mt-3">
-            Make sure{" "}
-            <code className="bg-red-100 px-1.5 py-0.5 rounded font-mono text-red-700">
-              json-server
-            </code>{" "}
-            is running at{" "}
-            <code className="bg-red-100 px-1.5 py-0.5 rounded font-mono text-red-700">
-              {API_BASE_URL}
-            </code>
-          </p>
+      <div className="flex min-h-screen items-center justify-center bg-slate-50 p-5">
+        <div className="max-w-md rounded-2xl border border-rose-100 bg-white p-6 text-center shadow-xl">
+          <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-rose-50 text-rose-500">
+            <CircleAlert size={24} />
+          </div>
+          <h3 className="font-bold text-slate-900">Error loading data</h3>
+          <p className="mt-1 text-sm text-slate-500">{error}</p>
         </div>
       </div>
     );
-  }
 
-  // Summary Statistics
+  // ---------------- ASSETS ----------------
+  const assetStatus = status =>
+    assets.filter(a => a.status?.toLowerCase() === status).length;
+
   const totalAssets = assets.length;
-  const activeAssets = assets.filter((a) => a.status === "Active").length;
-  const instoreAssets = assets.filter(
-    (a) => a.status === "Instore" || a.status === "",
-  ).length;
-  const inactiveAssets = assets.filter(
-    (a) => a.status === "Inactive",
-  ).length;
-  const maintenanceAssets = assets.filter(
-    (a) => a.status === "Maintenance",
-  ).length;
-  const deathAssets = assets.filter((a) => a.status === "Death").length;
+  const active = assetStatus("active");
+  const instock = assetStatus("instock") + assetStatus("instore");
+  const inactive = assetStatus("inactive");
+  const removal = assetStatus("removal");
 
-  const totaltasks = tasks.length;
-  const totalUsers = users.length;
+  const assigned = assets.filter(a => a.employeeId).length;
+  const unassigned = totalAssets - assigned;
 
-  // Calculate Total Financial Value
-  const totalValue = assets.reduce((sum, asset) => {
-    if (!asset.purchasePrice) return sum;
-
-    const cleanedString = String(asset.purchasePrice).replace(/[^0-9.-]+/g, "");
-    const numericVal = Number(cleanedString);
-
-    if (isNaN(numericVal) || numericVal > 100000000) {
-      return sum;
-    }
-
-    return sum + numericVal;
+  const assetValue = assets.reduce((sum, a) => {
+    const value = Number(
+      String(a.purchasePrice || 0).replace(/[^0-9.-]/g, "")
+    );
+    return Number.isNaN(value) ? sum : sum + value;
   }, 0);
 
-  // equipment Breakdown
-  const equipmentCounts = assets.reduce((acc, asset) => {
-    const cat = asset.equipment || "Uncategorized";
-    acc[cat] = (acc[cat] || 0) + 1;
-    return acc;
-  }, {});
+  // ---------------- EMPLOYEES ----------------
+  const totalEmployees = users.length;
+  const employeesWithAssets = users.filter(
+    u => Array.isArray(u.assetlist) && u.assetlist.length
+  ).length;
+  const employeesWithoutAssets = totalEmployees - employeesWithAssets;
 
-  // treee
+  // ---------------- SERVICES HELPERS ----------------
+  const totalServices = services.length;
 
-  const getEquipmentTree = () => {
-  const tree = {};
+  // Helper to filter and calculate metrics by Type and optional Status
+  const getServiceMetrics = (type, status = null) => {
+    const filtered = services.filter(s => {
+      const matchType = s.type?.toLowerCase() === type.toLowerCase();
+      const matchStatus = status ? s.status?.toLowerCase() === status.toLowerCase() : true;
+      return matchType && matchStatus;
+    });
 
-  assets.forEach((asset) => {
+    const count = filtered.length;
+    const cost = filtered.reduce((sum, s) => {
+      const val = Number(String(s.serviceCost || 0).replace(/[^0-9.-]/g, ""));
+      return Number.isNaN(val) ? sum : sum + val;
+    }, 0);
+
+    return { count, cost };
+  };
+
+  // General Status totals & costs
+  const overallStatusMetrics = (status) => {
+    const filtered = services.filter(s => s.status?.toLowerCase() === status.toLowerCase());
+    const count = filtered.length;
+    const cost = filtered.reduce((sum, s) => {
+      const val = Number(String(s.serviceCost || 0).replace(/[^0-9.-]/g, ""));
+      return Number.isNaN(val) ? sum : sum + val;
+    }, 0);
+    return { count, cost };
+  };
+
+  const completedStats = overallStatusMetrics("completed");
+  const ongoingStats = overallStatusMetrics("on process").count > 0 ? overallStatusMetrics("on process") : overallStatusMetrics("ongoing");
+  const pendingStats = overallStatusMetrics("pending");
+
+  const repairCompleted = getServiceMetrics("repair", "completed");
+  const repairOngoing = getServiceMetrics("repair", "ongoing");
+  const repairTotal = getServiceMetrics("repair");
+
+  const updateCompleted = getServiceMetrics("update", "completed");
+  const updateOngoing = getServiceMetrics("update", "ongoing");
+  const updateTotal = getServiceMetrics("update");
+
+  const totalServiceCost = services.reduce((sum, s) => {
+    const value = Number(String(s.serviceCost || 0).replace(/[^0-9.-]/g, ""));
+    return Number.isNaN(value) ? sum : sum + value;
+  }, 0);
+
+  // ---------------- TREE ----------------
+  const equipmentTree = {};
+  assets.forEach(asset => {
     const company = asset.company || "Unknown";
     const location = asset.location || "Unknown";
     const department = asset.department || "Unknown";
     const equipment = asset.equipment || "Unknown";
 
-    tree[company] ??= {};
-    tree[company][location] ??= {};
-    tree[company][location][department] ??= {};
+    equipmentTree[company] ??= {};
+    equipmentTree[company][location] ??= {};
+    equipmentTree[company][location][department] ??= {};
 
-    tree[company][location][department][equipment] =
-      (tree[company][location][department][equipment] || 0) +
+    equipmentTree[company][location][department][equipment] =
+      (equipmentTree[company][location][department][equipment] || 0) +
       Number(asset.quantity || 1);
   });
 
-  return tree;
-};
-
-  const equipmentTree = getEquipmentTree();
-
-  const handleUp = () => setDrag(null);
-
   return (
-    <div className="min-h-screen text-slate-800 p-4 sm:p-6 lg:p-8">
-      <div className="max-w-7xl mx-auto space-y-6">
-        {/* Header */}
-        <div className="rounded-[28px] border border-indigo-500 bg-gradient-to-r from-white via-indigo-50/80 to-emerald-50/80 p-6 shadow-[0_20px_45px_-20px_rgba(79,70,229,0.45)] backdrop-blur-sm">
-          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+    <div className="min-h-screen bg-gradient-to-br from-indigo-50/40 via-purple-50/20 to-sky-50/40 p-4 text-slate-800 sm:p-8">
+      <div className="mx-auto max-w-7xl space-y-6">
+
+        {/* HEADER */}
+        <header className="relative overflow-hidden rounded-3xl border border-indigo-100 bg-gradient-to-r from-indigo-600 to-violet-600 p-6 text-white shadow-xl">
+          <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-white/10 blur-2xl pointer-events-none" />
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 relative z-10">
             <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.25em] text-indigo-600">
-                Overview
-              </p>
-              <h1 className="mt-2 text-3xl font-extrabold tracking-tight text-slate-900">
-                Asset Overview
+              <div className="flex items-center gap-2 mb-1">
+                <span className="flex h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
+                <span className="text-xs font-bold uppercase tracking-wider text-indigo-200">
+                  System Live & Connected
+                </span>
+              </div>
+              <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
+                Asset & Operations Command Center
               </h1>
-              <p className="mt-2 text-sm text-slate-500">
-                Real-time status of company hardware, inventory, and staff
-                access.
+              <p className="text-sm text-indigo-100 mt-1">
+                Colorful structured overview of assets, personnel allocations, and categorized services.
               </p>
             </div>
-            <div className="flex items-center space-x-3 rounded-2xl border border-emerald-400 bg-gradient-to-r from-emerald-500 to-teal-500 px-4 py-2.5 text-sm font-semibold text-white shadow-sm">
-              <span className="h-2.5 w-2.5 animate-pulse rounded-full bg-white"></span>
-              <span>JSON Server Connected</span>
+
+            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2 rounded-2xl bg-white/10 px-4 py-2 border border-white/20 text-white text-xs font-bold backdrop-blur-md shadow-sm">
+                <ShieldCheck size={16} className="text-emerald-400" />
+                API Connected
+              </div>
             </div>
           </div>
-        </div>
+        </header>
 
-        {/* Top Stat Cards */}
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          <StatCard
-            title="Total Assets"
-            value={totalAssets}
-            subtext={`${instoreAssets} available in store`}
-            icon={<BriefcaseBusiness size={18} />}
-            color="indigo"
-          />
-          <StatCard
-            title="Active Assets"
-            value={activeAssets}
-            subtext={`${Math.round((activeAssets / (totalAssets || 1)) * 100)}% utilization rate`}
-            icon={<Sparkles size={18} />}
-            color="emerald"
-          />
-          <StatCard
-            title="Total Asset Value"
-            value={`${totalValue} TK`}
-            subtext="Estimated capital hardware value"
-            icon={<CircleDollarSign size={18} />}
-            color="amber"
-          />
-          <StatCard
-            title="Total Task"
-            value={totaltasks}
-            subtext={`${totalUsers} standard users`}
-            icon={<Users size={18} />}
-            color="sky"
-          />
-        </div>
+        {/* THREE MAIN CARDS (EACH CARD IN FULL ROW) */}
+        <div className="space-y-6">
 
-        {/* Middle Section: Status & Categories */}
-        <div className="">
-          {/* Asset Status Overview */}
-          <div className="my-5 rounded-3xl border rounded-xl shadow-sm p-4 hover:shadow-md transition duration-200 border-green-500 text-indigo-700 bg-gradient-to-br from-green-200 via-white to-violet-200 shadow-[0_20px_45px_-25px_rgba(15,23,42,0.30)]">
-            <div className="mb-5 flex items-center justify-between">
-              <h2 className="text-lg font-bold text-slate-900">
-                Status Overview
-              </h2>
-              <span className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">
-                Inventory Distribution
-              </span>
+          {/* 1. ASSETS CARD */}
+          <DashboardCard
+            title="Assets Management"
+            subtitle="Inventory health, assignment ratios, and valuation"
+            icon={<BriefcaseBusiness size={22} />}
+            headerBg="bg-indigo-500"
+            badgeColor="bg-indigo-50 text-indigo-700 border-indigo-200"
+            totalLabel="Total Assets"
+            totalValue={totalAssets}
+          >
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 mb-4">
+              <StructuredStat label="Active" status="Operational" count={active} cost="—" color="green" />
+              <StructuredStat label="In Stock" status="Available" count={instock} cost="—" color="blue" />
+              <StructuredStat label="Inactive" status="Offline" count={inactive} cost="—" color="amber" />
+              <StructuredStat label="Removal" status="Disposed" count={removal} cost="—" color="red" />
+              <StructuredStat label="Assigned" status="Allocated" count={assigned} cost="—" color="purple" />
+              <StructuredStat label="Unassigned" status="Free" count={unassigned} cost="—" color="slate" />
             </div>
+
+            <div className="flex items-center justify-between rounded-2xl bg-indigo-50/60 border border-indigo-100 p-4">
+              <div className="flex items-center gap-3">
+                <span className="rounded-xl bg-indigo-500 p-2.5 text-white shadow-sm">
+                  <CircleDollarSign size={18} />
+                </span>
+                <div>
+                  <p className="text-xs font-bold uppercase text-indigo-900">Total Valuation</p>
+                  <p className="text-xs text-indigo-700">Calculated across all registered equipment</p>
+                </div>
+              </div>
+              <span className="text-lg font-black text-indigo-900">{assetValue.toLocaleString()} TK</span>
+            </div>
+          </DashboardCard>
+
+          {/* 2. SERVICES CARD (Separated Type: Repair & Update with Status, Count, Cost) */}
+          <DashboardCard
+            title="Services & Maintenance Operations"
+            subtitle="Breakdown by Repair and Update categories with status, count, and expenditure"
+            icon={<Wrench size={22} />}
+            headerBg="bg-emerald-600"
+            badgeColor="bg-emerald-50 text-emerald-700 border-emerald-200"
+            totalLabel="Total Service Tickets"
+            totalValue={totalServices}
+          >
+            {/* General Status Overview Rows */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-5">
+              <SummaryBadge label="Completed" count={completedStats.count} cost={`${completedStats.cost.toLocaleString()} TK`} color="green" icon={<CheckCircle2 size={16} />} />
+              <SummaryBadge label="On Process / Ongoing" count={ongoingStats.count} cost={`${ongoingStats.cost.toLocaleString()} TK`} color="amber" icon={<Activity size={16} />} />
+              <SummaryBadge label="Pending" count={pendingStats.count} cost={`${pendingStats.cost.toLocaleString()} TK`} color="rose" icon={<AlertTriangle size={16} />} />
+            </div>
+
+            {/* Structured Type Rows: Repair vs Update */}
             <div className="space-y-4">
-              <StatusProgressBar
-                label="Instore / Warehouse"
-                count={instoreAssets}
-                total={totalAssets}
-                color="bg-indigo-600"
-              />
-              <StatusProgressBar
-                label="Active / Assigned"
-                count={activeAssets}
-                total={totalAssets}
-                color="bg-emerald-500"
-              />
-              <StatusProgressBar
-                label="Inactive / Retired"
-                count={inactiveAssets}
-                total={totalAssets}
-                color="bg-rose-500"
-              />
-              {/* <StatusProgressBar
-                label="Maintenance"
-                count={maintenanceAssets}
-                total={totalAssets}
-                color="bg-indigo-600"
-              />
-              <StatusProgressBar
-                label="Death"
-                count={deathAssets}
-                total={totalAssets}
-                color="bg-indigo-600"
-              /> */}
+              {/* REPAIR ROW */}
+              <div className="rounded-2xl border border-blue-200 bg-blue-50/40 p-4 shadow-sm">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3 pb-2 border-b border-blue-100">
+                  <div className="flex items-center gap-2">
+                    <span className="rounded-lg bg-blue-500 p-1.5 text-white">
+                      <Wrench size={14} />
+                    </span>
+                    <h3 className="font-bold text-blue-900 uppercase text-xs tracking-wider">Type: Repair</h3>
+                  </div>
+                  <div className="flex items-center gap-4 text-xs font-bold text-blue-900">
+                    <span>Total Count: {repairTotal.count}</span>
+                    <span className="bg-blue-100 px-3 py-1 rounded-full text-blue-800">Cost: {repairTotal.cost.toLocaleString()} TK</span>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <TypeSubStat label="Completed Repairs" count={repairCompleted.count} cost={`${repairCompleted.cost.toLocaleString()} TK`} color="blue" />
+                  <TypeSubStat label="Active/Ongoing Repairs" count={repairOngoing.count} cost={`${repairOngoing.cost.toLocaleString()} TK`} color="indigo" />
+                </div>
+              </div>
+
+              {/* UPDATE ROW */}
+              <div className="rounded-2xl border border-purple-200 bg-purple-50/40 p-4 shadow-sm">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3 pb-2 border-b border-purple-100">
+                  <div className="flex items-center gap-2">
+                    <span className="rounded-lg bg-purple-500 p-1.5 text-white">
+                      <RefreshCw size={14} />
+                    </span>
+                    <h3 className="font-bold text-purple-900 uppercase text-xs tracking-wider">Type: Update</h3>
+                  </div>
+                  <div className="flex items-center gap-4 text-xs font-bold text-purple-900">
+                    <span>Total Count: {updateTotal.count}</span>
+                    <span className="bg-purple-100 px-3 py-1 rounded-full text-purple-800">Cost: {updateTotal.cost.toLocaleString()} TK</span>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <TypeSubStat label="Completed Updates" count={updateCompleted.count} cost={`${updateCompleted.cost.toLocaleString()} TK`} color="purple" />
+                  <TypeSubStat label="Active/Ongoing Updates" count={updateOngoing.count} cost={`${updateOngoing.cost.toLocaleString()} TK`} color="pink" />
+                </div>
+              </div>
+            </div>
+
+            {/* Footer Total Cost */}
+            <div className="mt-4 flex items-center justify-between rounded-2xl bg-emerald-50/60 border border-emerald-100 p-4">
+              <div className="flex items-center gap-3">
+                <span className="rounded-xl bg-emerald-600 p-2.5 text-white shadow-sm">
+                  <CircleDollarSign size={18} />
+                </span>
+                <div>
+                  <p className="text-xs font-bold uppercase text-emerald-900">Total Service Expenditure</p>
+                  <p className="text-xs text-emerald-700">Combined cost for all repair and update jobs</p>
+                </div>
+              </div>
+              <span className="text-lg font-black text-emerald-900">{totalServiceCost.toLocaleString()} TK</span>
+            </div>
+          </DashboardCard>
+
+          {/* 3. EMPLOYEES CARD */}
+          <DashboardCard
+            title="Personnel & Allocations"
+            subtitle="Staff database and asset assignment distribution"
+            icon={<Users size={22} />}
+            headerBg="bg-sky-500"
+            badgeColor="bg-sky-50 text-sky-700 border-sky-200"
+            totalLabel="Total Employees"
+            totalValue={totalEmployees}
+          >
+            <div className="grid grid-cols-1 sm:grid-cols-4 gap-3 mb-4">
+              <StructuredStat label="With Assets" status="Assigned" count={employeesWithAssets} cost="—" color="green" />
+              <StructuredStat label="Without Assets" status="Unallocated" count={employeesWithoutAssets} cost="—" color="amber" />
+              <StructuredStat label="Assigned Assets" status="Distributed" count={assigned} cost="—" color="indigo" />
+              <StructuredStat label="Unassigned Assets" status="In Store" count={unassigned} cost="—" color="slate" />
+            </div>
+
+            <div className="flex items-center justify-between rounded-2xl bg-sky-50/60 border border-sky-100 p-4">
+              <div className="flex items-center gap-3">
+                <span className="rounded-xl bg-sky-500 p-2.5 text-white shadow-sm">
+                  <UserCheck size={18} />
+                </span>
+                <div>
+                  <p className="text-xs font-bold uppercase text-sky-900">Asset Holder Reach</p>
+                  <p className="text-xs text-sky-700">Active employees holding company property</p>
+                </div>
+              </div>
+              <span className="text-lg font-black text-sky-900">{employeesWithAssets} personnel</span>
+            </div>
+          </DashboardCard>
+
+        </div>
+
+        {/* EQUIPMENT TREE */}
+        <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-xl">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="rounded-xl bg-slate-900 p-2 text-white shadow-md">
+              <Layers size={18} />
+            </div>
+            <div>
+              <h2 className="text-base font-bold text-slate-900">Equipment Architecture Tree</h2>
+              <p className="text-xs text-slate-500">Hierarchical layout structured by company, location, and department</p>
             </div>
           </div>
-          {/* Place the tree component directly inside your layout */}
           <DashboardCategoryTree equipmentTree={equipmentTree} />
         </div>
+
       </div>
     </div>
   );
 }
 
-/* Helper Component: Stat Card */
-function StatCard({ title, value, subtext, icon, color }) {
-  const colorMap = {
-    indigo:
-      "border-indigo-500 text-indigo-700 bg-gradient-to-br from-indigo-100 via-white to-violet-100",
-    emerald:
-      "border-emerald-500 text-emerald-700 bg-gradient-to-br from-emerald-100 via-white to-teal-100",
-    amber:
-      "border-amber-500 text-amber-700 bg-gradient-to-br from-amber-100 via-white to-orange-100",
-    sky: "border-sky-500 text-sky-700 bg-gradient-to-br from-sky-100 via-white to-cyan-100",
+// --------------------------------------------------
+// REUSABLE COMPONENTS WITH COLORFUL & STRUCTURED UI
+// --------------------------------------------------
+
+function DashboardCard({ title, subtitle, icon, headerBg, badgeColor, totalLabel, totalValue, children }) {
+  return (
+    <section className="rounded-3xl border border-slate-200 bg-white shadow-xl overflow-hidden transition-all duration-300 hover:shadow-2xl">
+      {/* Colorful Header Strip */}
+      <div className={`px-6 py-4 text-white flex flex-col sm:flex-row sm:items-center justify-between gap-3 ${headerBg}`}>
+        <div className="flex items-center gap-3">
+          <div className="rounded-2xl bg-white/20 p-2.5 backdrop-blur-md shadow-inner text-white">
+            {icon}
+          </div>
+          <div>
+            <h2 className="text-lg font-black tracking-tight">{title}</h2>
+            <p className="text-xs text-white/80">{subtitle}</p>
+          </div>
+        </div>
+
+        <div className={`rounded-2xl px-4 py-2 border backdrop-blur-md shadow-sm font-bold text-xs flex items-center gap-2 ${badgeColor}`}>
+          <span>{totalLabel}:</span>
+          <span className="text-sm font-black">{totalValue}</span>
+        </div>
+      </div>
+
+      {/* Card Content Body */}
+      <div className="p-6 bg-slate-50/50">
+        {children}
+      </div>
+    </section>
+  );
+}
+
+function StructuredStat({ label, status, count, cost, color = "slate" }) {
+  const colors = {
+    green: "bg-emerald-50 border-emerald-200 text-emerald-900",
+    blue: "bg-blue-50 border-blue-200 text-blue-900",
+    amber: "bg-amber-50 border-amber-200 text-amber-900",
+    red: "bg-rose-50 border-rose-200 text-rose-900",
+    purple: "bg-purple-50 border-purple-200 text-purple-900",
+    indigo: "bg-indigo-50 border-indigo-200 text-indigo-900",
+    slate: "bg-slate-100 border-slate-200 text-slate-900",
   };
 
   return (
-    <div
-      className={`flex flex-col justify-between rounded-[24px] border border-slate-300 p-5 shadow-[0_20px_45px_-25px_rgba(15,23,42,0.30)] transition-transform duration-200 hover:-translate-y-1 ${colorMap[color]}`}
-    >
-      <div className="flex items-center justify-between">
-        <span className="text-xs font-bold uppercase tracking-[0.24em] text-slate-400">
-          {title}
-        </span>
-        <span className={`rounded-2xl border p-2.5 ${colorMap[color]}`}>
-          {icon}
-        </span>
+    <div className={`rounded-2xl p-3.5 border shadow-sm transition-transform duration-200 hover:scale-[1.02] ${colors[color]}`}>
+      <div className="flex items-center justify-between mb-1">
+        <span className="text-[10px] font-extrabold tracking-wider uppercase opacity-70">{label}</span>
+        <span className="rounded-full bg-white/80 px-2 py-0.5 text-[9px] font-bold shadow-2xs">{status}</span>
       </div>
-      <div className="mt-4">
-        <div className=" font-extrabold text-slate-900">{value}</div>
-        <p className="mt-1 text-xs text-slate-500">{subtext}</p>
+      <div className="flex items-baseline justify-between mt-2">
+        <span className="text-xl font-black">{count}</span>
+        <span className="text-[11px] font-semibold opacity-65">{cost}</span>
       </div>
     </div>
   );
 }
 
-/* Helper Component: Progress Bar */
-function StatusProgressBar({ label, count, total, color }) {
-  const percentage = total > 0 ? Math.round((count / total) * 100) : 0;
+function SummaryBadge({ label, count, cost, color, icon }) {
+  const styles = {
+    green: "bg-emerald-50 border-emerald-200 text-emerald-900",
+    amber: "bg-amber-50 border-amber-200 text-amber-900",
+    rose: "bg-rose-50 border-rose-200 text-rose-900",
+  };
+
   return (
-    <div>
-      <div className="mb-1 flex justify-between text-xs font-semibold">
-        <span className="text-slate-600">{label}</span>
-        <span className="text-slate-400">
-          {count} ({percentage}%)
-        </span>
+    <div className={`rounded-2xl p-3 border flex items-center justify-between shadow-xs ${styles[color]}`}>
+      <div className="flex items-center gap-2">
+        <div className="p-2 rounded-xl bg-white shadow-xs">{icon}</div>
+        <div>
+          <p className="text-[10px] font-bold uppercase opacity-70">{label}</p>
+          <p className="text-lg font-black">{count}</p>
+        </div>
       </div>
-      <div className="h-2.5 w-full overflow-hidden rounded-full border border-slate-500/60 bg-slate-100">
-        <div
-          className={`h-full ${color} transition-all duration-500`}
-          style={{ width: `${percentage}%` }}
-        ></div>
+      <div className="text-right">
+        <span className="text-[10px] uppercase font-semibold opacity-60 block">Cost</span>
+        <span className="text-xs font-black">{cost}</span>
       </div>
     </div>
   );
 }
 
-/* Helper Component: Status Badge */
-function StatusBadge({ status }) {
-  let badgeStyle = "bg-slate-100 text-slate-600 border-slate-500";
-  if (status === "Active")
-    badgeStyle = "bg-emerald-100 text-emerald-800 border-emerald-300 shadow-sm";
-  if (status === "Instore")
-    badgeStyle = "bg-indigo-100 text-indigo-800 border-indigo-300 shadow-sm";
-  if (status === "Inactive")
-    badgeStyle = "bg-rose-100 text-rose-800 border-rose-300 shadow-sm";
+function TypeSubStat({ label, count, cost, color }) {
+  const styles = {
+    blue: "bg-white border-blue-100 text-blue-900",
+    indigo: "bg-white border-indigo-100 text-indigo-900",
+    purple: "bg-white border-purple-100 text-purple-900",
+    pink: "bg-white border-pink-100 text-pink-900",
+  };
 
   return (
-    <span
-      className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold ${badgeStyle}`}
-    >
-      {status || "Unknown"}
-    </span>
+    <div className={`rounded-xl p-3 border flex items-center justify-between shadow-2xs ${styles[color]}`}>
+      <span className="text-xs font-semibold text-slate-600">{label}</span>
+      <div className="flex items-center gap-3">
+        <span className="text-xs font-bold bg-slate-100 px-2.5 py-1 rounded-lg">Count: {count}</span>
+        <span className="text-xs font-black text-slate-900">{cost}</span>
+      </div>
+    </div>
   );
 }
