@@ -9,8 +9,6 @@ import Splash from "./pages/Splash";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Assets from "./pages/Assets";
-
-
 import AssetDetails from "./pages/AssetDetails";
 import AddAsset from "./pages/AddAsset";
 import EditAsset from "./pages/EditAsset";
@@ -26,13 +24,15 @@ import ImportAssets from "./pages/ImportAssets";
 import StoreAssets from "./pages/StoreAssets";
 import ExportAssets from "./pages/ExportAssets";
 import CategorySearch from "./pages/CategorySearch";
-import Setting from "./pages/Setting";
+import UserSetting from "./pages/UserSetting";
+import VendorSetting from "./pages/VendorSetting";
+import CompanyInfoSetting from "./pages/CompanyInfoSetting";
 
 // ==========================================
-// Session Configuration
+// API
 // ==========================================
 
-const RefreshOn = 2 * 60 * 60 * 1000; // 1 hour
+import { API_BASE_URL } from "./env";
 
 // ==========================================
 // Protected Route
@@ -52,122 +52,74 @@ const ProtectedRoute = ({ isLoggedIn, children }) => {
 
 function App() {
   // ==========================================
-  // Splash State
-  // ==========================================
-  //
-  // IMPORTANT:
-  // false = no splash
-  // true  = show splash
-  //
-  // So refreshing the browser will NOT show splash.
-  // Logout will manually set this to true.
+  // Splash
   // ==========================================
 
   const [loading, setLoading] = useState(true);
 
   // ==========================================
-  // Login Session
+  // Authentication
   // ==========================================
 
-  const [isLoggedIn, setIsLoggedIn] = useState(() => {
-    const loggedIn = localStorage.getItem("isLoggedIn");
-    const loginTime = localStorage.getItem("loginTime");
-
-    if (loggedIn !== "true" || !loginTime) {
-      return false;
-    }
-
-    // Check if 1 hour has passed
-    const sessionExpired = Date.now() - Number(loginTime) >= RefreshOn;
-
-    if (sessionExpired) {
-      localStorage.removeItem("isLoggedIn");
-      localStorage.removeItem("loggedInUser");
-      localStorage.removeItem("loginTime");
-
-      return false;
-    }
-
-    return true;
-  });
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   // ==========================================
-  // Splash Timer
+  // Check Authentication
   // ==========================================
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
-    if (!loading) {
-      return;
-    }
+  const checkAuth = async () => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/auth/me`, {
+        method: "GET",
+        credentials: "include",
+      });
 
-    // Show splash for 2 seconds
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 2000);
-
-    return () => clearTimeout(timer);
-  }, [loading]);
-
-  // ==========================================
-  // Session Check
-  // ==========================================
-
-  useEffect(() => {
-    if (!isLoggedIn) {
-      return;
-    }
-
-    const checkSession = () => {
-      const loginTime = localStorage.getItem("loginTime");
-      const loggedIn = localStorage.getItem("isLoggedIn");
-
-      // Session information missing
-      if (loggedIn !== "true" || !loginTime) {
+      if (!response.ok) {
         setIsLoggedIn(false);
+        setUser(null);
         return;
       }
 
-      // Check expiration
-      const sessionExpired = Date.now() - Number(loginTime) >= RefreshOn;
+      const data = await response.json();
 
-      if (sessionExpired) {
-        // Remove session
-        localStorage.removeItem("isLoggedIn");
-        localStorage.removeItem("loggedInUser");
-        localStorage.removeItem("loginTime");
+      setUser(data.user);
+      setIsLoggedIn(true);
+    } catch (error) {
+      console.error("Authentication check failed:", error);
+      setIsLoggedIn(false);
+      setUser(null);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-        // Show splash before login
-        setLoading(true);
-
-        // Logout user
-        setIsLoggedIn(false);
-      }
-    };
-
-    // Check immediately
-    checkSession();
-
-    // Check every second
-    const interval = setInterval(checkSession, 1000);
-
-    return () => clearInterval(interval);
-  }, [isLoggedIn]);
+  checkAuth();
+}, []);
 
   // ==========================================
   // Logout
   // ==========================================
 
-  const handleLogout = () => {
-    // Remove session
-    localStorage.removeItem("isLoggedIn");
-    localStorage.removeItem("loggedInUser");
-    localStorage.removeItem("loginTime");
+  const handleLogout = async () => {
+    try {
+      await fetch(`${API_BASE_URL}/auth/logout`, {
+        method: "POST",
+        credentials: "include",
+      });
+    } catch (error) {
+      console.error("Logout error:", error);
+    } finally {
+      setIsLoggedIn(false);
 
-    // Logout
-    setIsLoggedIn(false);
+      // Show splash after logout
+      setLoading(true);
 
-    // Show splash
-    setLoading(true);
+      setTimeout(() => {
+        setLoading(false);
+      }, 2000);
+    }
   };
 
   // ==========================================
@@ -194,7 +146,7 @@ function App() {
           isLoggedIn ? (
             <Navigate to="/" replace />
           ) : (
-            <Login setIsLoggedIn={setIsLoggedIn} />
+            <Login setIsLoggedIn={setIsLoggedIn} setUser={setUser} />
           )
         }
       />
@@ -207,7 +159,11 @@ function App() {
         path="/"
         element={
           <ProtectedRoute isLoggedIn={isLoggedIn}>
-            <Layout setIsLoggedIn={setIsLoggedIn} onLogout={handleLogout} />
+            <Layout
+              user={user}
+              setIsLoggedIn={setIsLoggedIn}
+              onLogout={handleLogout}
+            />
           </ProtectedRoute>
         }
       >
@@ -225,12 +181,15 @@ function App() {
         <Route path="assets/editAsset/:id" element={<EditAsset />} />
 
         <Route path="assets/:id" element={<AssetDetails />} />
-        <Route path="/assets/repairservice/:id" element={<RepairService />} />
 
-   
+        <Route path="assets/repairservice/:id" element={<RepairService />} />
 
         {/* Settings */}
-        <Route path="settings" element={<Setting />} />
+        <Route path="settings/users" element={<UserSetting />} />
+
+        <Route path="settings/vendors" element={<VendorSetting />} />
+
+        <Route path="settings/company-info" element={<CompanyInfoSetting />} />
 
         {/* Employees */}
         <Route path="employees" element={<Employees />} />

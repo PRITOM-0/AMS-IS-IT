@@ -83,11 +83,11 @@ function Setting() {
     try {
       setLoading(true);
 
-      const [usersResponse, vendorsResponse, listResponse] = await Promise.all([
-        axios.get(`${API_BASE_URL}/users`),
-        axios.get(`${API_BASE_URL}/vendors`),
-        axios.get(`${API_BASE_URL}/list`),
+      const [vendorsResponse, listResponse] = await Promise.all([
+        axios.get(`${API_BASE_URL}/vendors`, { withCredentials: true }),
+        axios.get(`${API_BASE_URL}/list`, { withCredentials: true }),
       ]);
+      const usersResponse = await axios.get(`${API_BASE_URL}/users`, { withCredentials: true });
 
       setUsers(usersResponse.data || []);
       setVendors(vendorsResponse.data || []);
@@ -163,11 +163,11 @@ function Setting() {
       setSaving(true);
 
       if (editingItem) {
-        await axios.patch(`${API_BASE_URL}/users/${editingItem._id}`, userForm);
+        await axios.patch(`${API_BASE_URL}/users/${editingItem._id}`, userForm, { withCredentials: true });
       } else {
         await axios.post(`${API_BASE_URL}/users`, {
           ...userForm,
-        });
+        }, { withCredentials: true });
       }
 
       closeModal();
@@ -188,7 +188,7 @@ function Setting() {
     if (!confirmed) return;
 
     try {
-      await axios.delete(`${API_BASE_URL}/users/${user._id}`);
+      await axios.delete(`${API_BASE_URL}/users/${user._id}`, { withCredentials: true });
       await fetchData();
     } catch (error) {
       console.error("Failed to delete user:", error);
@@ -240,11 +240,12 @@ function Setting() {
         await axios.patch(
           `${API_BASE_URL}/vendors/${editingItem._id}`,
           vendorForm,
+          { withCredentials: true }
         );
       } else {
         await axios.post(`${API_BASE_URL}/vendors`, {
           ...vendorForm,
-        });
+        }, { withCredentials: true });
       }
 
       closeModal();
@@ -265,7 +266,7 @@ function Setting() {
     if (!confirmed) return;
 
     try {
-      await axios.delete(`${API_BASE_URL}/vendors/${vendor._id}`);
+      await axios.delete(`${API_BASE_URL}/vendors/${vendor._id}`, { withCredentials: true });
       await fetchData();
     } catch (error) {
       console.error("Failed to delete vendor:", error);
@@ -413,7 +414,7 @@ function Setting() {
         await axios.patch(`${API_BASE_URL}/list`, {
           equipment: updatedEquipment,
           validateEquipments: [updatedValidation],
-        });
+        }, { withCredentials: true });
 
         closeModal();
         await fetchData();
@@ -452,7 +453,7 @@ function Setting() {
 
       await axios.patch(`${API_BASE_URL}/list`, {
         [selectedListKey]: currentValues,
-      });
+      }, { withCredentials: true });
 
       closeModal();
       await fetchData();
@@ -499,7 +500,7 @@ function Setting() {
         await axios.patch(`${API_BASE_URL}/list`, {
           equipment: currentValues,
           validateEquipments: [updatedValidation],
-        });
+        }, { withCredentials: true });
       }
 
       // ==================================================
@@ -508,7 +509,7 @@ function Setting() {
       else {
         await axios.patch(`${API_BASE_URL}/list`, {
           [key]: currentValues,
-        });
+        }, { withCredentials: true });
       }
 
       await fetchData();
@@ -731,6 +732,7 @@ function Setting() {
                     </thead>
 
                     <tbody>
+                      {console.log(filteredUsers)}
                       {filteredUsers.map((user) => (
                         <tr
                           key={user._id}

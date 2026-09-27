@@ -1,22 +1,23 @@
+ 
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import {
-  FaTachometerAlt,
   FaBoxOpen,
   FaPlusCircle,
   FaFileExport,
-  FaUsers,
-  FaClipboardList,
   FaCog,
   FaUserTie,
   FaShareSquare,
-  FaExclamationCircle,
+  FaUserCog,
+  FaBuilding,
 } from "react-icons/fa";
 import { LuImport } from "react-icons/lu";
-import { LayoutDashboard, AlarmClockCheck } from "lucide-react";
+import { LayoutDashboard } from "lucide-react";
 
-function Sidebar() {
+function Sidebar({ user }) {
   const location = useLocation();
+
+  const isAdmin = user?.role?.toLowerCase() === "admin";
 
   const menuSections = [
     {
@@ -27,7 +28,11 @@ function Sidebar() {
           icon: <LayoutDashboard size={17} strokeWidth={3} />,
           path: "/",
         },
-        { label: "Assets", icon: <FaBoxOpen size={17} />, path: "/assets" },
+        {
+          label: "Assets",
+          icon: <FaBoxOpen size={17} />,
+          path: "/assets",
+        },
         {
           label: "Add Asset",
           icon: <FaPlusCircle size={17} />,
@@ -38,119 +43,111 @@ function Sidebar() {
           icon: <FaShareSquare size={17} />,
           path: "/assign-assets",
         },
-        // { label: "Tasks", icon: <AlarmClockCheck size={17} strokeWidth={3} />, path: "/tasks" },
         {
           label: "Employees",
           icon: <FaUserTie size={17} />,
           path: "/employees",
         },
-        // {
-        //   label: "Add Employee",
-        //   icon: <FaPlusCircle size={17} />,
-        //   path: "/employees/add",
-        // },
       ],
     },
+
     {
       title: "Management",
       items: [
-        {
-          label: "Import Assets",
-          icon: <LuImport size={17} />,
-          path: "/importassets",
-        },
+        ...(isAdmin
+          ? [
+              {
+                label: "Import Assets",
+                icon: <LuImport size={17} />,
+                path: "/importassets",
+              },
+            ]
+          : []),
+
         {
           label: "Export Assets",
           icon: <FaFileExport size={17} />,
           path: "/exportassets",
         },
-        // { label: "Assign Assets", icon: <FaShareSquare size={17} />, path: "/assign-assets" },
-        // { label: "Requests", icon: <FaClipboardList size={17} />, path: "/requests" },
       ],
     },
+
     {
       title: "System",
       items: [
-        { label: "Settings", icon: <FaCog size={17} />, path: "/settings" },
+        // Admin only
+        ...(isAdmin
+          ? [
+              {
+                label: "User Settings",
+                icon: <FaUserCog size={17} />,
+                path: "/settings/users",
+              },
+            ]
+          : []),
+
+        // All users
+        {
+          label: "Vendor Settings",
+          icon: <FaBuilding size={17} />,
+          path: "/settings/vendors",
+        },
+
+        // All users
+        {
+          label: "Company Info",
+          icon: <FaCog size={17} />,
+          path: "/settings/company-info",
+        },
       ],
     },
   ];
 
   return (
-  <aside
-    className="fixed top-16 left-0 h-[calc(100vh-4rem)] w-50
-    bg-white/15 border-r border-indigo-500
-    text-black z-40 flex flex-col justify-between
-    select-none shadow-2xl text-xs"
-  >
-    {/* Navigation Links */}
-    <div className="mt-5 px-3 space-y-6 overflow-y-auto scrollbar-none">
-      {menuSections.map((section, idx) => (
-        <div key={idx} className="space-y-1.5">
-          {section.title && (
-            <h3 className="px-3 text-[9px] font-bold tracking-wider text-slate-500 uppercase">
+    <aside className="fixed left-0 top-16 bottom-0 w-50 bg-white border-r border-gray-200 shadow-sm z-40 overflow-y-auto">
+      <nav className="p-3">
+        {menuSections.map((section) => (
+          <div key={section.title} className="mb-5">
+            <h3 className="px-3 mb-2 text-xs font-bold text-gray-400 uppercase tracking-wider">
               {section.title}
             </h3>
-          )}
 
-          <ul className="space-y-1">
-            {section.items.map((item) => {
-              const isActive = location.pathname === item.path;
+            <div className="space-y-1">
+              {section.items.map((item) => {
+                const isActive =
+                  location.pathname === item.path ||
+                  (item.path !== "/" &&
+                    location.pathname.startsWith(item.path));
 
-              return (
-                <li key={item.label}>
+                return (
                   <Link
+                    key={item.path}
                     to={item.path}
-                    className={`relative flex items-center gap-2 px-3 py-2 rounded-xl
-                    text-[11px] font-medium transition-all duration-500 group
-                    ${
+                    className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 ${
                       isActive
-                        ? "bg-indigo-600 text-white font-semibold scale-105"
-                        : "text-black hover:bg-slate-900 hover:text-slate-200 hover:scale-105"
+                        ? "bg-indigo-100 text-indigo-700"
+                        : "text-gray-600 hover:bg-gray-100 hover:text-indigo-600"
                     }`}
                   >
-                    {/* Active Indicator */}
-                    {isActive && (
-                      <span className="absolute left-0 top-2 bottom-2 w-1 bg-white rounded-r-full shadow-[0_0_10px_rgba(99,102,241,0.7)]" />
-                    )}
-
-                    {/* Icon */}
                     <span
-                      className={`text-sm transition-colors duration-900 ${
-                        isActive
-                          ? "text-white animate-[spin_0.5s_ease-in-out_1]"
-                          : "text-slate-400 group-hover:text-slate-200"
-                      }`}
+                      className={
+                        isActive ? "text-indigo-600" : "text-gray-500"
+                      }
                     >
                       {item.icon}
                     </span>
 
-                    {/* Label */}
-                    <span className="truncate text-[11px]">
-                      {item.label}
-                    </span>
+                    <span>{item.label}</span>
                   </Link>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-      ))}
-    </div>
-
-    {/* Footer Badge */}
-    <div className="p-2 m-3 rounded-xl bg-slate-900 border border-slate-800">
-      <div className="flex items-center justify-between text-[9px] text-slate-400 font-mono">
-        <span>Asset Manager</span>
-
-        <span className="px-1 py-0.5 rounded bg-indigo-500/10 text-indigo-400 font-semibold border border-indigo-500/20">
-          v1.0
-        </span>
-      </div>
-    </div>
-  </aside>
-);
-
+                );
+              })}
+            </div>
+          </div>
+        ))}
+      </nav>
+    </aside>
+  );
 }
 
 export default Sidebar;
+ 

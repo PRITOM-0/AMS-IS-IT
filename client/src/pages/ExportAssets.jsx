@@ -101,7 +101,9 @@ const ExportAssets = () => {
   useEffect(() => {
     const fetchAssets = async () => {
       try {
-        const res = await fetch(`${API_BASE_URL}/assets`);
+        const res = await fetch(`${API_BASE_URL}/assets`, {
+          credentials: "include",
+        });
         const data = await res.json();
         setAssets(data || []);
       } catch (error) {

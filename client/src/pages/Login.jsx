@@ -15,7 +15,7 @@ import {
 } from "lucide-react";
 import { API_BASE_URL } from "../env";
 
-const Login = ({ setIsLoggedIn }) => {
+const Login = ({ setIsLoggedIn, setUser }) => {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -40,15 +40,15 @@ const Login = ({ setIsLoggedIn }) => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await fetch(`${API_BASE_URL}/auth/usersInfo`);
-      
+        const response = await fetch(`${API_BASE_URL}/auth/userslist`, {
+          credentials: "include",
+        });
 
         if (!response.ok) {
           throw new Error("Unable to load users.");
         }
 
         const data = await response.json();
-        console.log("Fetched users:", data.users);
         setUsers(data);
       } catch (error) {
         console.error("Failed to load users:", error);
@@ -94,20 +94,16 @@ const Login = ({ setIsLoggedIn }) => {
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include",
         body: JSON.stringify(formData),
       });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "Login failed. Please try again.");
-      }
-
       const userData = await response.json();
 
-      localStorage.setItem("isLoggedIn", "true");
-      localStorage.setItem("loggedInUser", JSON.stringify(userData.user));
-      localStorage.setItem("loginTime", Date.now().toString());
-
+      if (!response.ok) {
+        throw new Error(userData.message || "Login failed. Please try again.");
+      }
+      setUser(userData.user);
       setIsLoggedIn(true);
       navigate("/", { replace: true });
     } catch (error) {
@@ -119,24 +115,33 @@ const Login = ({ setIsLoggedIn }) => {
   };
 
   const highlights = [
-    { title: "Real-time Tracking", desc: "Monitor lifecycle and deployment status instantly", icon: Activity },
-    { title: "Enterprise Security", desc: "Role-based authorization and encrypted access", icon: ShieldCheck },
-    { title: "Smart Inventory", desc: "Automated audit logs and hardware allocation", icon: Cpu },
+    {
+      title: "Real-time Tracking",
+      desc: "Monitor lifecycle and deployment status instantly",
+      icon: Activity,
+    },
+    {
+      title: "Enterprise Security",
+      desc: "Role-based authorization and encrypted access",
+      icon: ShieldCheck,
+    },
+    {
+      title: "Smart Inventory",
+      desc: "Automated audit logs and hardware allocation",
+      icon: Cpu,
+    },
   ];
 
   return (
     <div className="min-h-screen w-full flex items-center justify-center bg-gradient-to-br from-blue-600 via-indigo-700 to-slate-900 px-6 py-8 relative overflow-hidden">
-      
       {/* Background Decorative Glow Elements */}
       <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] rounded-full bg-blue-400/20 blur-[120px] pointer-events-none animate-pulse"></div>
       <div className="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] rounded-full bg-indigo-400/20 blur-[120px] pointer-events-none animate-pulse"></div>
 
       {/* Main Split Container */}
       <div className="w-full max-w-6xl grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-16 items-center relative z-10 animate-fadeIn">
-        
         {/* Left Side: Large Interactive Logo, Tagline & Feature Pills */}
         <div className="flex flex-col items-center justify-center md:items-start text-center md:text-left ">
-          
           {/* Much Larger Logo Container with Interactive Hover & Glow */}
           <div className="relative group cursor-pointer">
             <div className="absolute -inset-1.5 bg-gradient-to-r from-cyan-400 to-indigo-400 rounded-[2.5rem] blur opacity-30 group-hover:opacity-75 transition duration-500"></div>
@@ -162,7 +167,8 @@ const Login = ({ setIsLoggedIn }) => {
               Asset Management System
             </h2>
             <p className="text-white/80 text-sm md:text-base font-normal max-w-md leading-relaxed">
-              Streamline, track, and manage your organization's digital and physical assets with maximum efficiency and security.
+              Streamline, track, and manage your organization's digital and
+              physical assets with maximum efficiency and security.
             </p>
           </div>
 
@@ -181,22 +187,31 @@ const Login = ({ setIsLoggedIn }) => {
                       : "bg-white/5 border-white/10 hover:bg-white/10 opacity-70"
                   }`}
                 >
-                  <IconComp size={20} className={isActive ? "text-cyan-300 mb-2" : "text-white/70 mb-2"} />
-                  <span className="text-[11px] font-bold text-white leading-tight line-clamp-1">{item.title}</span>
+                  <IconComp
+                    size={20}
+                    className={
+                      isActive ? "text-cyan-300 mb-2" : "text-white/70 mb-2"
+                    }
+                  />
+                  <span className="text-[11px] font-bold text-white leading-tight line-clamp-1">
+                    {item.title}
+                  </span>
                 </div>
               );
             })}
           </div>
-
         </div>
 
         {/* Right Side: Login Card (Glassmorphism) */}
         <div className="w-full max-w-md mx-auto">
           <div className="bg-white/95 backdrop-blur-2xl rounded-3xl shadow-2xl border border-white/50 p-8 md:p-10 transition-all duration-300">
-            
             <div className="mb-6">
-              <h3 className="text-2xl font-bold text-gray-900 tracking-tight">Welcome Back</h3>
-              <p className="text-gray-500 text-xs mt-1">Please sign in to your authorized account</p>
+              <h3 className="text-2xl font-bold text-gray-900 tracking-tight">
+                Welcome Back
+              </h3>
+              <p className="text-gray-500 text-xs mt-1">
+                Please sign in to your authorized account
+              </p>
             </div>
 
             {/* Error Message */}
@@ -208,7 +223,6 @@ const Login = ({ setIsLoggedIn }) => {
             )}
 
             <form onSubmit={handleLogin} className="space-y-4">
-              
               {/* Username Selection */}
               <div>
                 <label
@@ -231,10 +245,11 @@ const Login = ({ setIsLoggedIn }) => {
                     className="w-full h-12 rounded-xl border border-gray-200 bg-gray-50/50 pl-10 pr-10 text-sm text-gray-800 outline-none transition-all focus:border-indigo-600 focus:bg-white focus:ring-4 focus:ring-indigo-100 disabled:bg-gray-100 appearance-none cursor-pointer"
                   >
                     <option value="">
-                      {users.length === 0 ? "Loading users..." : "Select username"
-                      }
+                      {users.length === 0
+                        ? "Loading users..."
+                        : "Select username"}
                     </option>
-                    
+
                     {users.map((user) => (
                       <option key={user._id} value={user.username}>
                         {user.username}
@@ -305,12 +320,12 @@ const Login = ({ setIsLoggedIn }) => {
             {/* Footer Information */}
             <div className="mt-6 pt-4 border-t border-gray-100 text-center">
               <p className="text-[11px] text-gray-400 font-medium">
-                &copy; {new Date().getFullYear()} IS-IT, Scholastica Private Limited. All rights reserved.
+                &copy; {new Date().getFullYear()} IS-IT, Scholastica Private
+                Limited. All rights reserved.
               </p>
             </div>
           </div>
         </div>
-
       </div>
 
       {/* Custom Keyframe Animations */}

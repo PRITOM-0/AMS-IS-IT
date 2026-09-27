@@ -53,7 +53,7 @@ const RepairService = () => {
 
   const getServices = async () => {
     try {
-      const res = await axios.get(`${API_BASE_URL}/services`);
+      const res = await axios.get(`${API_BASE_URL}/services`, { withCredentials: true });
       setServices(res.data);
     } catch (error) {
       console.error("Failed to load services:", error);
@@ -196,7 +196,8 @@ const RepairService = () => {
 
         await axios.post(
           `${API_BASE_URL}/services`,
-          payload
+          payload,
+          { withCredentials: true }
         );
       }
 
@@ -214,7 +215,8 @@ const RepairService = () => {
 
         await axios.put(
           `${API_BASE_URL}/services/${editId}`,
-          payload
+          payload,
+          { withCredentials: true }
         );
       }
 
@@ -238,7 +240,8 @@ const RepairService = () => {
 
     try {
       await axios.delete(
-        `${API_BASE_URL}/services/${serviceId}`
+        `${API_BASE_URL}/services/${serviceId}`,
+        { withCredentials: true }
       );
 
       setServices((prev) =>

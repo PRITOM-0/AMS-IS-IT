@@ -61,6 +61,7 @@ const getTimeElapsed = (dateString) => {
       onClick={() => navigate(`/tasks/${task._id || task.taskId}`)}
       className="group bg-white border border-indigo-300 hover:border-indigo-500 rounded-2xl p-5 shadow-xs hover:shadow-md transition-all duration-200 cursor-pointer flex flex-col justify-between space-y-4 relative overflow-hidden"
     >
+     
       {/* Top Hover Accent Bar */}
       <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-indigo-500 to-blue-500 opacity-0 group-hover:opacity-100 transition-opacity" />
 

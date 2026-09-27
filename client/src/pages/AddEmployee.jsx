@@ -47,7 +47,7 @@ function AddEmployee() {
       try {
         setListLoading(true);
 
-        const response = await axios.get(`${API_BASE_URL}/list`);
+        const response = await axios.get(`${API_BASE_URL}/list`, { withCredentials: true });
 
         setList({
           company: response.data?.company || [],
@@ -114,7 +114,7 @@ function AddEmployee() {
         updatedAt: now,
       };
 
-      await axios.post(`${API_BASE_URL}/employees`, newEmployee);
+      await axios.post(`${API_BASE_URL}/employees`, newEmployee, { withCredentials: true });
 
       navigate("/employees");
     } catch (error) {

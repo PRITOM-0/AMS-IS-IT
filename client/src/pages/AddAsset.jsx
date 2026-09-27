@@ -88,9 +88,9 @@ export default function AddAsset() {
     setIsFetchingData(true);
     try {
       const [usersResponse, vendorsResponse, listResponse] = await Promise.all([
-        axios.get(`${API_BASE_URL}/users`),
-        axios.get(`${API_BASE_URL}/vendors`),
-        axios.get(`${API_BASE_URL}/list`),
+        axios.get(`${API_BASE_URL}/users`, { withCredentials: true }),
+        axios.get(`${API_BASE_URL}/vendors`, { withCredentials: true }),
+        axios.get(`${API_BASE_URL}/list`, { withCredentials: true }),
       ]);
 
       setUsers(usersResponse.data || []);
@@ -224,7 +224,7 @@ export default function AddAsset() {
     };
 
     try {
-      const res = await axios.post(`${API_BASE_URL}/assets`, payload);
+      const res = await axios.post(`${API_BASE_URL}/assets`, payload, { withCredentials: true });
 
       setSuccessModal({
         title: "Asset Successfully Added!",
@@ -355,7 +355,7 @@ export default function AddAsset() {
     const updatedVendors = [...vendors, newVendor];
 
     try {
-      await axios.post(`${API_BASE_URL}/vendors`, newVendor);
+      await axios.post(`${API_BASE_URL}/vendors`, newVendor, { withCredentials: true });
     } catch (err) {
       console.warn("API vendor create warning (updating local state):", err);
     }

@@ -1,4 +1,5 @@
 import express from "express";
+import cookieParser from "cookie-parser";
 import cors from "cors";
 import dotenv from "dotenv";
 
@@ -11,11 +12,13 @@ import serviceRoutes from "./src/routes/serviceRoutes.js";
 import taskRoutes from "./src/routes/taskRoutes.js";
 import userRoutes from "./src/routes/userRoutes.js";
 import listRoutes from "./src/routes/listRoutes.js";
-import loginRoutes from "./src/routes/loginRoutes.js";
+import authRoutes from "./src/routes/authRoutes.js";
 
 dotenv.config();
 
 const app = express();
+app.use(cookieParser());
+
 
 const PORT = process.env.PORT || 5000;
 
@@ -61,7 +64,7 @@ app.get("/", (req, res) => {
 // API ROUTES
 // ==============================
 
-app.use("/api/auth", loginRoutes);
+app.use("/api/auth", authRoutes);
 
 app.use("/api/assets", assetRoutes);
 

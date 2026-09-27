@@ -25,8 +25,8 @@ function AssetAssign() {
       setLoading(true);
 
       const [empRes, assetRes] = await Promise.all([
-        fetch(`${API_BASE_URL}/employees`),
-        fetch(`${API_BASE_URL}/assets`),
+        fetch(`${API_BASE_URL}/employees`, { credentials: "include" }),
+        fetch(`${API_BASE_URL}/assets`, { credentials: "include" }),
       ]);
 
       if (!empRes.ok || !assetRes.ok) {
@@ -169,6 +169,7 @@ function AssetAssign() {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(updatedAsset),
+          credentials: "include",
         }),
 
         fetch(`${API_BASE_URL}/employees/${selectedEmployee._id}`, {
@@ -177,6 +178,7 @@ function AssetAssign() {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(updatedEmployee),
+          credentials: "include",
         }),
       ]);
 

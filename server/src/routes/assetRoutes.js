@@ -8,17 +8,19 @@ import {
   patchAsset,
   deleteAsset
 } from "../controllers/assetController.js";
+import { protect } from "../middleware/authMiddleware.js";
+import { authorizeRoles } from "../middleware/roleMiddleware.js";
 
 const router = express.Router();
 
-router.get("/", getAssets);
-router.get("/:id", getAssetById);
+router.get("/", protect, getAssets);
+router.get("/:id", protect, getAssetById);
 
 router.post("/", createAsset);
 
 router.put("/:id", updateAsset);
 router.patch("/:id", patchAsset);
 
-router.delete("/:id", deleteAsset);
+router.delete("/:id",authorizeRoles("Admin") ,deleteAsset);
 
 export default router;

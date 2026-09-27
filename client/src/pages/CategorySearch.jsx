@@ -75,7 +75,7 @@ export default function CategorySearch() {
         setLoading(true);
         setError(null);
 
-        const res = await fetch(`${API_BASE_URL}/assets`);
+        const res = await fetch(`${API_BASE_URL}/assets`, { credentials: "include" });
         if (!res.ok) throw new Error("Failed to fetch assets");
 
         const data = await res.json();

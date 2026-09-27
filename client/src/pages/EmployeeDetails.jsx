@@ -54,9 +54,9 @@ function EmployeeDetails() {
       setLoading(true);
 
       const [employeeRes, assetsRes, listRes] = await Promise.all([
-        axios.get(`${API_BASE_URL}/employees/${id}`),
-        axios.get(`${API_BASE_URL}/assets`),
-        axios.get(`${API_BASE_URL}/list`),
+        axios.get(`${API_BASE_URL}/employees/${id}`, { withCredentials: true }),
+        axios.get(`${API_BASE_URL}/assets`, { withCredentials: true }),
+        axios.get(`${API_BASE_URL}/list`, { withCredentials: true }),
       ]);
 
       setEmployee(employeeRes.data);
@@ -114,7 +114,8 @@ function EmployeeDetails() {
 
       const response = await axios.put(
         `${API_BASE_URL}/employees/${id}`,
-        data
+        data,
+        { withCredentials: true }
       );
 
       setEmployee(response.data);
@@ -135,7 +136,9 @@ function EmployeeDetails() {
   const handleDelete = async () => {
     try {
       setDeleting(true);
-      await axios.delete(`${API_BASE_URL}/employees/${id}`);
+      await axios.delete(`${API_BASE_URL}/employees/${id}`, {
+        withCredentials: true
+      });
 
       navigate("/employees", {
         replace: true,

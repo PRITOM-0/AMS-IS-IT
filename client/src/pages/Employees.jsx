@@ -32,7 +32,9 @@ function Employees() {
         setLoading(true);
         setError("");
 
-        const response = await axios.get(`${API_BASE_URL}/employees`);
+        const response = await axios.get(`${API_BASE_URL}/employees`, {
+          withCredentials: true
+        });
 
         setEmployees(response.data || []);
       } catch (error) {

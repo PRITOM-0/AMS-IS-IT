@@ -27,21 +27,36 @@ export default function Dashboard() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+ 
+ 
 
-  useEffect(() => {
-    Promise.all([
-      fetch(`${API_BASE_URL}/assets`).then(r => r.json()),
-      fetch(`${API_BASE_URL}/services`).then(r => r.json()),
-      fetch(`${API_BASE_URL}/users`).then(r => r.json()),
-    ])
-      .then(([a, s, u]) => {
-        setAssets(Array.isArray(a) ? a : []);
-        setServices(Array.isArray(s) ? s : []);
-        setUsers(Array.isArray(u) ? u : []);
-      })
-      .catch(err => setError(err.message))
-      .finally(() => setLoading(false));
-  }, []);
+ useEffect(() => {
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+
+      const assetsRes = await fetch(`${API_BASE_URL}/assets`, {
+        credentials: "include",
+      });
+      const assetsData = await assetsRes.json();
+      setAssets(Array.isArray(assetsData) ? assetsData : []);
+
+      const servicesRes = await fetch(`${API_BASE_URL}/services`, {
+        credentials: "include",
+      });
+      const servicesData = await servicesRes.json();
+      setServices(Array.isArray(servicesData) ? servicesData : []);
+
+      
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchData();
+}, []);
 
   if (loading)
     return (

@@ -55,7 +55,7 @@ const StoreAssets = () => {
 
     for (const id of idsToCheck) {
       try {
-        const response = await fetch(`${API_BASE_URL}/assets/${id}`);
+        const response = await fetch(`${API_BASE_URL}/assets/${id}`, { credentials: "include" });
 
         if (response.ok) {
           existCount++;
@@ -82,7 +82,7 @@ const StoreAssets = () => {
   // ============================================================
   const checkAssetExists = async (id) => {
     try {
-      const response = await fetch(`${API_BASE_URL}/assets/${id}`);
+      const response = await fetch(`${API_BASE_URL}/assets/${id}`, { credentials: "include" });
       return response.ok;
     } catch {
       return false;
@@ -111,6 +111,7 @@ const StoreAssets = () => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(cleanData),
+          credentials: "include"
         });
 
         if (response.ok) {
@@ -165,6 +166,7 @@ const StoreAssets = () => {
           `${API_BASE_URL}/assets/${id}`,
           {
             method: "DELETE",
+            credentials: "include"
           }
         );
 

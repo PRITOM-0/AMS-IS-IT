@@ -27,7 +27,7 @@ export default function TaskDetails() {
   const [isEditMode, setIsEditMode] = useState(false);
 
   useEffect(() => {
-    fetch(`${API_BASE_URL}/tasks/${id}`)
+    fetch(`${API_BASE_URL}/tasks/${id}`, { credentials: "include" })
       .then((res) => res.json())
       .then((data) => {
         setOriginalData(data);
@@ -83,6 +83,7 @@ export default function TaskDetails() {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
+        credentials: "include"
       });
 
       if (res.ok) {
@@ -114,6 +115,7 @@ export default function TaskDetails() {
     try {
       const res = await fetch(`${API_BASE_URL}/tasks/${id}`, {
         method: "DELETE",
+        credentials: "include"
       });
 
       if (res.ok) {

@@ -43,12 +43,12 @@ export default function AddTask() {
   const [showAssetDropdown, setShowAssetDropdown] = useState(false);
 
   useEffect(() => {
-    fetch(`${API_BASE_URL}/assets`)
+    fetch(`${API_BASE_URL}/assets`, { credentials: "include" })
       .then((res) => res.json())
       .then((data) => setAssets(data))
       .catch((err) => console.error("Error loading assets:", err));
 
-    fetch(`${API_BASE_URL}/tasks`)
+    fetch(`${API_BASE_URL}/tasks`, { credentials: "include" })
       .then((res) => res.json())
       .then((data) => setTasksCount(data.length))
       .catch((err) => console.error("Error loading tasks count:", err));
@@ -131,6 +131,7 @@ export default function AddTask() {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
+      credentials: "include",
     });
 
     navigate("/tasks");

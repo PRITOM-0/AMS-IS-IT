@@ -118,8 +118,12 @@ export const useAssets = () => {
         setLoading(true);
 
         const [resAssets, resEmp] = await Promise.all([
-          fetch(`${API_BASE_URL}/assets`),
-          fetch(`${API_BASE_URL}/employees`),
+          fetch(`${API_BASE_URL}/assets`, {
+            credentials: "include",
+          }),
+          fetch(`${API_BASE_URL}/employees`, {
+            credentials: "include",
+          }),
         ]);
 
         const [assetsData, empData] = await Promise.all([
@@ -512,7 +516,7 @@ const AssetGrid = ({ assets, loading }) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
       {assets.map((asset) => (
-        <AssetCard key={asset._id } asset={asset} />
+        <AssetCard key={asset._id} asset={asset} />
       ))}
     </div>
   );
@@ -665,8 +669,6 @@ const Assets = () => {
       />
 
       <AssetGrid assets={assets} loading={loading} />
-
-      
     </div>
   );
 };

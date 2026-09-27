@@ -138,10 +138,10 @@ const EditAsset = () => {
 
       // Fetch base list options, users, vendors, and target assets concurrently
       const [assetsRes, listRes, usersRes, vendorsRes] = await Promise.all([
-        axios.get(`${API_BASE_URL}/assets`),
-        axios.get(`${API_BASE_URL}/list`),
-        axios.get(`${API_BASE_URL}/users`),
-        axios.get(`${API_BASE_URL}/vendors`),
+        axios.get(`${API_BASE_URL}/assets`, { withCredentials: true }),
+        axios.get(`${API_BASE_URL}/list`, { withCredentials: true }),
+        axios.get(`${API_BASE_URL}/users`, { withCredentials: true }),
+        axios.get(`${API_BASE_URL}/vendors`, { withCredentials: true }),
       ]);
 
       // 1. Find target asset by id from the assets array
@@ -343,7 +343,9 @@ const EditAsset = () => {
     try {
       setSubmitting(true);
 
-      await axios.put(`${API_BASE_URL}/assets/${id}`, formData);
+      await axios.put(`${API_BASE_URL}/assets/${id}`, formData, {
+        withCredentials: true
+      });
 
       setShowConfirmModal(false);
 
@@ -393,8 +395,9 @@ const EditAsset = () => {
         // Save both equipment and validation map
         await axios.patch(`${API_BASE_URL}/list`, {
           equipment: updatedCategoryList,
-
           validateEquipments: [updatedValidateMap],
+        }, {
+          withCredentials: true
         });
 
         // Update local equipment list
@@ -471,7 +474,9 @@ const EditAsset = () => {
     };
 
     try {
-      await axios.post(`${API_BASE_URL}/vendors`, vendorObject);
+      await axios.post(`${API_BASE_URL}/vendors`, vendorObject, {
+        withCredentials: true
+      });
 
       setVendors((prev) => [...prev, vendorObject]);
 

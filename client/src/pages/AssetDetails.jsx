@@ -81,13 +81,13 @@ const AssetDetails = () => {
       setLoading(true);
       setError(null);
 
-      const assetRes = await axios.get(`${API_BASE_URL}/assets/${id}`);
+      const assetRes = await axios.get(`${API_BASE_URL}/assets/${id}`, { withCredentials: true });
       const assetData = assetRes.data;
       setAsset(assetData);
       // Fetch employee information based on asset.employeeId
       if (assetData?.employeeId) {
         try {
-          const employeesRes = await axios.get(`${API_BASE_URL}/employees`);
+          const employeesRes = await axios.get(`${API_BASE_URL}/employees`, { withCredentials: true });
 
           const employees = employeesRes.data || [];
 
@@ -109,6 +109,7 @@ const AssetDetails = () => {
           
           const vendorsRes = await axios.get(
             `${API_BASE_URL}/vendors/${assetData.vendorId}`,
+            { withCredentials: true }
           );
 
           setVendorInfo(vendorsRes.data || null);
@@ -122,7 +123,7 @@ const AssetDetails = () => {
       }
 
       try {
-        const tasksRes = await axios.get(`${API_BASE_URL}/tasks`);
+        const tasksRes = await axios.get(`${API_BASE_URL}/tasks`, { withCredentials: true });
         const relatedTasks = (tasksRes.data || []).filter((task) => {
           if (!task) return false;
           return (
@@ -152,7 +153,7 @@ const AssetDetails = () => {
   const handleDelete = async () => {
     setIsDeleting(true);
     try {
-      await axios.delete(`${API_BASE_URL}/assets/${id}`);
+      await axios.delete(`${API_BASE_URL}/assets/${id}`, { withCredentials: true });
       navigate("/assets", {
         state: { message: "Asset deleted successfully!" },
       });

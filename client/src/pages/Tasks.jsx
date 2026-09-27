@@ -11,7 +11,7 @@ export default function Task() {
   const [filter, setFilter] = useState("All");
 
   useEffect(() => {
-    fetch(`${API_BASE_URL}/tasks`)
+    fetch(`${API_BASE_URL}/tasks`, { credentials: "include" })
       .then((res) => res.json())
       .then((data) => setTasks(data))
       .catch((err) => console.error("Failed to load tasks:", err));
