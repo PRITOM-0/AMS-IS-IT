@@ -90,7 +90,7 @@ export const updateTask = async (req, res) => {
       { id: req.params.id },
       updateData,
       {
-        new: true,
+        returnDocument: "after",
         runValidators: true
       }
     );

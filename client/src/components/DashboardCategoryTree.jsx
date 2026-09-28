@@ -90,11 +90,11 @@ export function DashboardCategoryTree({ equipmentTree }) {
   }, [categoryBreakdown]);
 
   return (
-    <div className="space-y-4">
+    <div className="">
       {/* =====================================================
           EQUIPMENT HIERARCHY
       ====================================================== */}
-      <div className="rounded-3xl border rounded-xl shadow-sm p-4 hover:shadow-md transition duration-200 border-green-200 text-indigo-700 bg-gradient-to-br from-green-200 via-white to-violet-200 shadow-[0_20px_45px_-25px_rgba(15,23,42,0.30)]">
+      <div className="border shadow-sm hover:shadow-md transition duration-200 border-green-200 text-indigo-700 bg-gradient-to-br from-green-200 via-white to-violet-200 shadow-[0_20px_45px_-25px_rgba(15,23,42,0.30)]">
         {/* Header */}
         <div className="mb-3 border-b border-slate-800 pb-2.5">
           <h2 className="text-base font-bold text-slate-900">
@@ -138,7 +138,7 @@ export function DashboardCategoryTree({ equipmentTree }) {
               return (
                 <div
                   key={company}
-                  className="overflow-hidden rounded-xl border border-slate-700/80 bg-gradient-to-r from-slate-100 via-indigo-50/20 to-slate-100 shadow-2xs transition-all duration-200 hover:border-slate-900"
+                  className="overflow-hidden border border-slate-700/80 bg-gradient-to-r from-slate-100 via-indigo-50/20 to-slate-100 shadow-2xs transition-all duration-200 hover:border-slate-900"
                 >
                   {/* =================================================
                       COMPANY HEADER

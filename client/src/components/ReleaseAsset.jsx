@@ -1,6 +1,12 @@
 import React, { useState } from "react";
- 
-import { X, PackageCheck, Loader2, AlertTriangle, FileText } from "lucide-react";
+
+import {
+  X,
+  PackageCheck,
+  Loader2,
+  AlertTriangle,
+  FileText,
+} from "lucide-react";
 import { API_BASE_URL } from "../env";
 
 const ReleaseAsset = ({ employee, asset, onReleased }) => {
@@ -8,7 +14,6 @@ const ReleaseAsset = ({ employee, asset, onReleased }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [releaseNote, setReleaseNote] = useState("");
- 
 
   // ==========================================
   // Open Confirmation Modal
@@ -86,7 +91,7 @@ const ReleaseAsset = ({ employee, asset, onReleased }) => {
         : [];
 
       const updatedAssetList = currentAssetList.filter(
-        (assetId) => String(assetId) !== String(asset._id)
+        (assetId) => String(assetId) !== String(asset._id),
       );
 
       const updatedEmployee = {
@@ -98,12 +103,19 @@ const ReleaseAsset = ({ employee, asset, onReleased }) => {
       const [assetRes, employeeRes] = await Promise.all([
         fetch(`${API_BASE_URL}/assets/${asset._id}`, {
           method: "PUT",
-          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
           body: JSON.stringify(updatedAsset),
         }),
+
         fetch(`${API_BASE_URL}/employees/${employee._id}`, {
           method: "PUT",
-          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
           body: JSON.stringify(updatedEmployee),
         }),
       ]);
@@ -118,7 +130,8 @@ const ReleaseAsset = ({ employee, asset, onReleased }) => {
       if (!employeeRes.ok) {
         const responseText = await employeeRes.text();
         throw new Error(
-          responseText || "Asset was updated, but failed to remove asset from employee."
+          responseText ||
+            "Asset was updated, but failed to remove asset from employee.",
         );
       }
 
@@ -127,7 +140,7 @@ const ReleaseAsset = ({ employee, asset, onReleased }) => {
 
       // 6. Complete flow
       handleCloseModal();
-      
+
       if (onReleased) {
         onReleased({
           asset: savedAsset,
@@ -137,11 +150,7 @@ const ReleaseAsset = ({ employee, asset, onReleased }) => {
     } catch (err) {
       console.error("Release asset error:", err);
 
-      setError(
-        err instanceof Error
-          ? err.message
-          : "Failed to release asset."
-      );
+      setError(err instanceof Error ? err.message : "Failed to release asset.");
     } finally {
       setLoading(false);
     }

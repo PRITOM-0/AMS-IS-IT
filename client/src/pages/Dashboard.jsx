@@ -70,7 +70,7 @@ export default function Dashboard() {
 
   if (error)
     return (
-      <div className="flex min-h-screen items-center justify-center bg-slate-50 p-5">
+      <div className="flex min-h-screen items-center justify-center bg-slate-50">
         <div className="max-w-md rounded-2xl border border-rose-100 bg-white p-6 text-center shadow-xl">
           <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-rose-50 text-rose-500">
             <CircleAlert size={24} />
@@ -175,10 +175,10 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50/40 via-purple-50/20 to-sky-50/40 p-4 text-slate-800 sm:p-8">
-      <div className="mx-auto max-w-7xl space-y-6">
+      <div className="mx-auto max-w-7xl space-y-2">
 
         {/* HEADER */}
-        <header className="relative overflow-hidden rounded-3xl border border-indigo-100 bg-gradient-to-r from-indigo-600 to-violet-600 p-6 text-white shadow-xl">
+        <header className="relative overflow-hidden  border border-indigo-100 bg-gradient-to-r from-indigo-600 to-violet-600 p-6 text-white shadow-xl">
           <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-white/10 blur-2xl pointer-events-none" />
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 relative z-10">
             <div>

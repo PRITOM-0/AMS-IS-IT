@@ -118,7 +118,7 @@ export const updateUser = async (req, res) => {
       { _id: req.params.id },
       updateData,
       {
-        new: true,
+        returnDocument: "after",
         runValidators: true
       }
     ).select("-password");

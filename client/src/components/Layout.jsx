@@ -5,24 +5,33 @@ import Sidebar from "./Sidebar";
 
 function Layout({ children, setIsLoggedIn, onLogout, user }) {
   return (
-    <div className="h-screen w-full flex flex-col bg-gray-100">
-      {/* 🔝 Header */}
-      <Header
-        user={user}
-        onLogout={onLogout}
-        setIsLoggedIn={setIsLoggedIn}
-      />
+    <div className="min-h-screen w-full bg-slate-100">
+  {/* Fixed Header */}
+  <header className="fixed top-0 left-0 right-0 z-50 h-16 border-b border-slate-200 bg-white shadow-sm">
+    <Header
+      user={user}
+      onLogout={onLogout}
+      setIsLoggedIn={setIsLoggedIn}
+    />
+  </header>
 
-      <div className="flex flex-1 overflow-hidden pt-16">
-        {/* 📚 Sidebar */}
-        <Sidebar user={user} />
+  {/* Main Area */}
+  <div className="min-h-screen mt-16 ">
+    
+    {/* Fixed Sidebar - 20% */}
+    <aside className=" fixed left-0 top-16 bottom-0 z-40 w-[15%] overflow-y-auto border-r border-indigo-500 bg-white">
+      <Sidebar user={user} />
+    </aside>
 
-        {/* 📄 Main Content */}
-        <main className="flex-1 bg-gradient-to-br from-indigo-100 via-white to-violet-100 p-6 shadow-[0_20px_45px_-20px_rgba(79,70,229,0.45)] overflow-y-auto transition-all duration-300 ml-50">
-          {children || <Outlet />}
-        </main>
+    {/* Main Content - 80% */}
+    <main className="ml-[15%] min-h-[calc(100vh-4rem)] overflow-y-auto bg-gradient-to-br from-slate-50 via-white to-indigo-50">
+      <div className="w-full">
+        {children || <Outlet />}
       </div>
-    </div>
+    </main>
+
+  </div>
+</div>
   );
 }
 

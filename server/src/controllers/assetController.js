@@ -51,7 +51,6 @@ export const createAsset = async (req, res) => {
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
     };
-
     const asset = await Asset.create(assetData);
 
     res.status(201).json(asset);
@@ -135,6 +134,7 @@ export const patchAsset = async (req, res) => {
 // DELETE /api/assets/:id
 export const deleteAsset = async (req, res) => {
   try {
+    
     const asset = await Asset.findById(req.params.id);
 
     if (!asset) {
@@ -171,9 +171,11 @@ export const deleteAsset = async (req, res) => {
     await Asset.findByIdAndDelete(assetId);
 
     res.status(200).json({
+      success:true,
       message: "Asset deleted successfully",
       asset,
     });
+    
   } catch (error) {
     console.error("Delete asset error:", error);
 

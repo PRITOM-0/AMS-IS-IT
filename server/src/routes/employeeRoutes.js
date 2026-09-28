@@ -8,17 +8,19 @@ import {
   patchEmployee,
   deleteEmployee
 } from "../controllers/employeeController.js";
+import { protect } from "../middleware/authMiddleware.js";
+import { authorizeRoles } from "../middleware/roleMiddleware.js";
 
 const router = express.Router();
 
-router.get("/", getEmployees);
-router.get("/:id", getEmployeeById);
+router.get("/",protect, getEmployees);
+router.get("/:id",protect, getEmployeeById);
 
-router.post("/", createEmployee);
+router.post("/",protect, createEmployee);
 
-router.put("/:id", updateEmployee);
-router.patch("/:id", patchEmployee);
+router.put("/:id",protect, updateEmployee);
+router.patch("/:id",protect, patchEmployee);
 
-router.delete("/:id", deleteEmployee);
+router.delete("/:id",protect,authorizeRoles("Admin"), deleteEmployee);
 
 export default router;

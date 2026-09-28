@@ -8,17 +8,18 @@ import {
   patchVendor,
   deleteVendor
 } from "../controllers/vendorController.js";
-
+import { protect } from "../middleware/authMiddleware.js";
+import { authorizeRoles } from "../middleware/roleMiddleware.js";
 const router = express.Router();
 
-router.get("/", getVendors);
-router.get("/:id", getVendorById);
+router.get("/",protect, getVendors);
+router.get("/:id",protect, getVendorById);
 
-router.post("/", createVendor);
+router.post("/",protect, createVendor);
 
-router.put("/:id", updateVendor);
-router.patch("/:id", patchVendor);
+router.put("/:id",protect, updateVendor);
+router.patch("/:id",protect, patchVendor);
 
-router.delete("/:id", deleteVendor);
+router.delete("/:id",protect,authorizeRoles("Admin"), deleteVendor);
 
 export default router;

@@ -1,5 +1,4 @@
- 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import EmployeeCard from "../components/EmployeeCard";
 import {
@@ -8,6 +7,8 @@ import {
   MapPin,
   RotateCcw,
   Users,
+  Building2,
+  BriefcaseBusiness,
 } from "lucide-react";
 import axios from "axios";
 import { API_BASE_URL } from "../env";
@@ -15,9 +16,13 @@ import { API_BASE_URL } from "../env";
 function Employees() {
   const [employees, setEmployees] = useState([]);
 
-  const [searchName, setSearchName] = useState("");
-  const [searchId, setSearchId] = useState("");
+  // Search
+  const [search, setSearch] = useState("");
+
+  // Dropdown filters
   const [searchLocation, setSearchLocation] = useState("");
+  const [searchCompany, setSearchCompany] = useState("");
+  const [searchDepartment, setSearchDepartment] = useState("");
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -32,9 +37,12 @@ function Employees() {
         setLoading(true);
         setError("");
 
-        const response = await axios.get(`${API_BASE_URL}/employees`, {
-          withCredentials: true
-        });
+        const response = await axios.get(
+          `${API_BASE_URL}/employees`,
+          {
+            withCredentials: true,
+          }
+        );
 
         setEmployees(response.data || []);
       } catch (error) {
@@ -49,27 +57,112 @@ function Employees() {
   }, []);
 
   // --------------------------------------------------
+  // DROPDOWN OPTIONS
+  // Get unique values from existing employees
+  // --------------------------------------------------
+
+  const locations = useMemo(() => {
+    return [
+      ...new Set(
+        employees
+          .map((emp) => emp.location)
+          .filter(Boolean)
+          .map((value) => String(value).trim())
+      ),
+    ].sort();
+  }, [employees]);
+
+  const companies = useMemo(() => {
+    return [
+      ...new Set(
+        employees
+          .map((emp) => emp.company)
+          .filter(Boolean)
+          .map((value) => String(value).trim())
+      ),
+    ].sort();
+  }, [employees]);
+
+  const departments = useMemo(() => {
+    return [
+      ...new Set(
+        employees
+          .map((emp) => emp.department)
+          .filter(Boolean)
+          .map((value) => String(value).trim())
+      ),
+    ].sort();
+  }, [employees]);
+
+  // --------------------------------------------------
   // SORT
   // Newest employee first
   // --------------------------------------------------
 
   const sortedEmployees = [...employees].sort(
-    (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
+    (a, b) =>
+      new Date(b.createdAt || 0) -
+      new Date(a.createdAt || 0)
   );
 
   // --------------------------------------------------
   // FILTER
+  // Search: Name + Designation + Employee ID
+  // Dropdown: Location + Company + Department
   // --------------------------------------------------
 
   const filteredEmployees = sortedEmployees.filter((emp) => {
-    const employeeName = String(emp.employeeName || "").toLowerCase();
-    const employeeId = String(emp.employeeId || "").toLowerCase();
-    const location = String(emp.location || "").toLowerCase();
+    const searchText = search.trim().toLowerCase();
+
+    const employeeName = String(
+      emp.employeeName || ""
+    ).toLowerCase();
+
+    const employeeId = String(
+      emp.employeeId || ""
+    ).toLowerCase();
+
+    const designation = String(
+      emp.designation || ""
+    ).toLowerCase();
+
+    const location = String(
+      emp.location || ""
+    ).toLowerCase();
+
+    const company = String(
+      emp.company || ""
+    ).toLowerCase();
+
+    const department = String(
+      emp.department || ""
+    ).toLowerCase();
+
+    // Search one input across name, ID and designation
+    const matchesSearch =
+      !searchText ||
+      employeeName.includes(searchText) ||
+      employeeId.includes(searchText) ||
+      designation.includes(searchText);
+
+    // Dropdown filters
+    const matchesLocation =
+      !searchLocation ||
+      location === searchLocation.toLowerCase();
+
+    const matchesCompany =
+      !searchCompany ||
+      company === searchCompany.toLowerCase();
+
+    const matchesDepartment =
+      !searchDepartment ||
+      department === searchDepartment.toLowerCase();
 
     return (
-      employeeName.includes(searchName.toLowerCase()) &&
-      employeeId.includes(searchId.toLowerCase()) &&
-      location.includes(searchLocation.toLowerCase())
+      matchesSearch &&
+      matchesLocation &&
+      matchesCompany &&
+      matchesDepartment
     );
   });
 
@@ -78,13 +171,14 @@ function Employees() {
   // --------------------------------------------------
 
   const handleReset = () => {
-    setSearchName("");
-    setSearchId("");
+    setSearch("");
     setSearchLocation("");
+    setSearchCompany("");
+    setSearchDepartment("");
   };
 
   return (
-    <div className="min-h-screen  p-4 md:p-6">
+    <div className="min-h-screen p-4 md:p-6">
       {/* HEADER */}
       <div className="mb-5 rounded-[28px] border border-indigo-200 bg-gradient-to-br from-indigo-100 via-white to-violet-100 p-6 shadow-[0_20px_45px_-20px_rgba(79,70,229,0.45)]">
         <div className="flex flex-col gap-5">
@@ -123,6 +217,8 @@ function Employees() {
 
           {/* SEARCH FILTERS */}
           <div className="rounded-2xl border border-slate-200 bg-white/90 p-4 shadow-sm backdrop-blur-sm">
+
+            {/* FILTER HEADER */}
             <div className="mb-3 flex items-center gap-2">
               <Search className="h-4 w-4 text-indigo-500" />
 
@@ -135,52 +231,88 @@ function Employees() {
               </span>
             </div>
 
-            <div className="grid grid-cols-1 gap-3 md:grid-cols-4">
+            <div className="grid grid-cols-1 gap-3 md:grid-cols-5">
 
-              {/* NAME */}
-              <div className="relative">
+              {/* SEARCH: NAME / DESIGNATION / ID */}
+              <div className="relative md:col-span-2">
                 <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
 
                 <input
                   type="text"
-                  placeholder="Search by Employee Name"
-                  value={searchName}
-                  onChange={(e) => setSearchName(e.target.value)}
-                  className="h-[42px] w-full rounded-xl border border-slate-200 bg-white pl-9 pr-3 text-sm outline-none transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100 placeholder:text-slate-400"
-                />
-              </div>
-
-              {/* EMPLOYEE ID */}
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
-
-                <input
-                  type="text"
-                  placeholder="Search by Employee ID"
-                  value={searchId}
-                  onChange={(e) => setSearchId(e.target.value)}
+                  placeholder="Search name, designation or ID"
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
                   className="h-[42px] w-full rounded-xl border border-slate-200 bg-white pl-9 pr-3 text-sm outline-none transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100 placeholder:text-slate-400"
                 />
               </div>
 
               {/* LOCATION */}
               <div className="relative">
-                <MapPin className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+                <MapPin className="pointer-events-none absolute left-3 top-1/2 z-10 h-4 w-4 -translate-y-1/2 text-slate-400" />
 
-                <input
-                  type="text"
-                  placeholder="Search by Location"
+                <select
                   value={searchLocation}
                   onChange={(e) => setSearchLocation(e.target.value)}
-                  className="h-[42px] w-full rounded-xl border border-slate-200 bg-white pl-9 pr-3 text-sm outline-none transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100 placeholder:text-slate-400"
-                />
+                  className="h-[42px] w-full appearance-none rounded-xl border border-slate-200 bg-white pl-9 pr-3 text-sm text-slate-600 outline-none transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100"
+                >
+                  <option value="">All Locations</option>
+
+                  {locations.map((location) => (
+                    <option key={location} value={location}>
+                      {location}
+                    </option>
+                  ))}
+                </select>
               </div>
 
-              {/* RESET */}
+              {/* COMPANY */}
+              <div className="relative">
+                <Building2 className="pointer-events-none absolute left-3 top-1/2 z-10 h-4 w-4 -translate-y-1/2 text-slate-400" />
+
+                <select
+                  value={searchCompany}
+                  onChange={(e) => setSearchCompany(e.target.value)}
+                  className="h-[42px] w-full appearance-none rounded-xl border border-slate-200 bg-white pl-9 pr-3 text-sm text-slate-600 outline-none transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100"
+                >
+                  <option value="">All Companies</option>
+
+                  {companies.map((company) => (
+                    <option key={company} value={company}>
+                      {company}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* DEPARTMENT */}
+              <div className="relative">
+                <BriefcaseBusiness className="pointer-events-none absolute left-3 top-1/2 z-10 h-4 w-4 -translate-y-1/2 text-slate-400" />
+
+                <select
+                  value={searchDepartment}
+                  onChange={(e) =>
+                    setSearchDepartment(e.target.value)
+                  }
+                  className="h-[42px] w-full appearance-none rounded-xl border border-slate-200 bg-white pl-9 pr-3 text-sm text-slate-600 outline-none transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100"
+                >
+                  <option value="">All Departments</option>
+
+                  {departments.map((department) => (
+                    <option key={department} value={department}>
+                      {department}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+            </div>
+
+            {/* RESET */}
+            <div className="mt-3 flex justify-end">
               <button
                 type="button"
                 onClick={handleReset}
-                className="flex h-[42px] items-center justify-center gap-2 rounded-xl border border-slate-300 bg-slate-100 px-4 text-sm font-semibold text-slate-600 transition hover:bg-slate-200"
+                className="flex h-[38px] items-center justify-center gap-2 rounded-xl border border-slate-300 bg-slate-100 px-4 text-sm font-semibold text-slate-600 transition hover:bg-slate-200"
               >
                 <RotateCcw className="h-4 w-4" />
                 Reset
@@ -219,29 +351,32 @@ function Employees() {
         </div>
       ) : (
         /* EMPLOYEE LIST */
-        <div className="overflow-x-auto border border-indigo-200 rounded-xl shadow-sm">
-  <table className="w-full text-left border-collapse bg-white">
-    <thead className="bg-gradient-to-r from-indigo-100 via-white to-violet-100 border-b border-indigo-200 text-xs font-semibold text-indigo-700 uppercase">
-      <tr>
-        <th className="px-4 py-3">Employee</th>
-        <th className="px-4 py-3">Designation</th>
-        <th className="px-4 py-3">Company</th>
-        <th className="px-4 py-3">Location</th>
-        <th className="px-4 py-3">Department</th>
-        <th className="px-4 py-3 text-right">Assets</th>
-      </tr>
-    </thead>
-    <tbody className="divide-y divide-indigo-100">
-      {filteredEmployees.map((emp) => (
-        <EmployeeCard key={emp._id} employee={emp} />
-      ))}
-    </tbody>
-  </table>
-</div>
+        <div className="overflow-x-auto rounded-xl border border-indigo-200 shadow-sm">
+          <table className="w-full border-collapse bg-white text-left">
+            <thead className="border-b border-indigo-200 bg-gradient-to-r from-indigo-100 via-white to-violet-100 text-xs font-semibold uppercase text-indigo-700">
+              <tr>
+                <th className="px-4 py-3">Employee</th>
+                <th className="px-4 py-3">Designation</th>
+                <th className="px-4 py-3">Company</th>
+                <th className="px-4 py-3">Location</th>
+                <th className="px-4 py-3">Department</th>
+                <th className="px-4 py-3 text-right">Assets</th>
+              </tr>
+            </thead>
+
+            <tbody className="divide-y divide-indigo-100">
+              {filteredEmployees.map((emp) => (
+                <EmployeeCard
+                  key={emp._id}
+                  employee={emp}
+                />
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
     </div>
   );
 }
 
 export default Employees;
- 

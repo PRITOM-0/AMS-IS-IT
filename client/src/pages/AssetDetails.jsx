@@ -111,11 +111,11 @@ const AssetDetails = () => {
             `${API_BASE_URL}/vendors/${assetData.vendorId}`,
             { withCredentials: true }
           );
+          console.log(vendorsRes.json());
 
           setVendorInfo(vendorsRes.data || null);
           
         } catch (vErr) {
-          console.warn("Could not fetch vendor details:", vErr);
           setVendorInfo(null);
         }
       } else {
@@ -151,20 +151,30 @@ const AssetDetails = () => {
 };
 
   const handleDelete = async () => {
-    setIsDeleting(true);
-    try {
-      await axios.delete(`${API_BASE_URL}/assets/${id}`, { withCredentials: true });
-      navigate("/assets", {
-        state: { message: "Asset deleted successfully!" },
-      });
-    } catch (err) {
-      console.error("Error deleting asset:", err);
-      alert("Failed to delete the asset. Please try again.");
-    } finally {
-      setIsDeleting(false);
-      setShowDeleteModal(false);
+  setIsDeleting(true);
+
+  try {
+    const response = await axios.delete(
+      `${API_BASE_URL}/assets/${id}`,
+      { withCredentials: true }
+    );
+
+    if (!response.data.success) {
+      alert(response.data.message);
+      return;
     }
-  };
+
+    navigate("/assets");
+
+  } catch (err) {
+    console.error("Error deleting asset:", err);
+    alert("Failed to delete the asset. Please try again.");
+  } finally {
+    setIsDeleting(false);
+    setShowDeleteModal(false);
+  }
+};
+
 
   if (loading) {
     return (

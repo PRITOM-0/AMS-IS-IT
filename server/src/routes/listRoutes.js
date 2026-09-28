@@ -5,12 +5,14 @@ import {
   updateList,
   patchList
 } from "../controllers/listController.js";
+import { protect } from "../middleware/authMiddleware.js";
+import { authorizeRoles } from "../middleware/roleMiddleware.js";
 
 const router = express.Router();
 
-router.get("/", getList);
+router.get("/",protect, getList);
 
-router.put("/", updateList);
-router.patch("/", patchList);
+router.put("/",protect, updateList);
+router.patch("/",protect, patchList);
 
 export default router;

@@ -3,6 +3,7 @@ import User from "../models/User.js";
 
 export const protect = async (req, res, next) => {
   try {
+   
     // Get JWT from cookie
     const token = req.cookies.token;
     
@@ -28,11 +29,8 @@ export const protect = async (req, res, next) => {
         message: "User not found",
       });
     }
-
     // Attach user to request
     req.user = user;
-    
-
     next();
 
   } catch (error) {

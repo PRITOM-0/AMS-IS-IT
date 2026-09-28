@@ -16,11 +16,11 @@ const router = express.Router();
 router.get("/", protect, getAssets);
 router.get("/:id", protect, getAssetById);
 
-router.post("/", createAsset);
+router.post("/",protect, createAsset);
 
-router.put("/:id", updateAsset);
-router.patch("/:id", patchAsset);
+router.put("/:id",protect, updateAsset);
+router.patch("/:id",protect, patchAsset);
 
-router.delete("/:id",authorizeRoles("Admin") ,deleteAsset);
+router.delete("/:id",protect,authorizeRoles("Admin") ,deleteAsset);
 
 export default router;
