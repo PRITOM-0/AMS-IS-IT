@@ -106,9 +106,10 @@ const assetSchema = new mongoose.Schema(
     },
 
     employeeId: {
-      type: String,
-      default: "",
-    },
+  type: mongoose.Schema.Types.ObjectId,
+  ref: "Employee",
+  default: null,
+},
 
     receivedDate: {
       type: String,
@@ -146,9 +147,10 @@ const assetSchema = new mongoose.Schema(
     },
 
     vendorId: {
-      type: String,
-      default: "",
-    },
+  type: mongoose.Schema.Types.ObjectId,
+  ref: "Vendor",
+  default: null,
+},
 
     remarks: {
       type: String,

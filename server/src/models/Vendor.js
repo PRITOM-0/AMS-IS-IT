@@ -6,6 +6,10 @@ const vendorSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
+    vendorId: {
+  type: String,
+  default: "",
+},
 
     contactPerson: {
       type: String,

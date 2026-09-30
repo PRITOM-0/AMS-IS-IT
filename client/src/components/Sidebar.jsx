@@ -59,7 +59,7 @@ function Sidebar({ user }) {
               {
                 label: "Import Assets",
                 icon: <LuImport size={17} />,
-                path: "/importassets",
+                path: "/importData",
               },
             ]
           : []),

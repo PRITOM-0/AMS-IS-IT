@@ -20,7 +20,7 @@ import AssetAssign from "./pages/AssetAssign";
 import Task from "./pages/Tasks";
 import AddTask from "./pages/AddTask";
 import TaskDetails from "./pages/TaskDetails";
-import ImportAssets from "./pages/ImportAssets";
+import ImportData from "./pages/ImportData";
 import StoreAssets from "./pages/StoreAssets";
 import ExportAssets from "./pages/ExportAssets";
 import CategorySearch from "./pages/CategorySearch";
@@ -209,7 +209,7 @@ function App() {
         <Route path="tasks/:id" element={<TaskDetails />} />
 
         {/* Import Assets */}
-        <Route path="importassets" element={<ImportAssets />} />
+        <Route path="importData" element={<ImportData />} />
 
         {/* Store Assets */}
         <Route path="assets/store" element={<StoreAssets />} />

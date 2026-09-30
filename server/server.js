@@ -13,6 +13,9 @@ import taskRoutes from "./src/routes/taskRoutes.js";
 import userRoutes from "./src/routes/userRoutes.js";
 import listRoutes from "./src/routes/listRoutes.js";
 import authRoutes from "./src/routes/authRoutes.js";
+import importRoutes from "./src/routes/importRoutes.js"
+
+
 
 dotenv.config();
 
@@ -79,6 +82,26 @@ app.use("/api/tasks", taskRoutes);
 app.use("/api/users", userRoutes);
 
 app.use("/api/list", listRoutes);
+app.use(
+  "/api/import",
+  (req, res, next) => {
+    console.info("[Import API] Request received", {
+      method: req.method,
+      url: req.originalUrl,
+    });
+
+    res.on("finish", () => {
+      console.info("[Import API] Request finished", {
+        method: req.method,
+        url: req.originalUrl,
+        status: res.statusCode,
+      });
+    });
+
+    next();
+  },
+  importRoutes
+);
 
 // ==============================
 // 404

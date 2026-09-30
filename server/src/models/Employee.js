@@ -32,6 +32,16 @@ const employeeSchema = new mongoose.Schema(
       default: "",
     },
 
+    floor: {
+      type: String,
+      default: "",
+    },
+
+    room: {
+      type: String,
+      default: "",
+    },
+
     createdAt: {
       type: String,
       default: () => new Date().toISOString(),
