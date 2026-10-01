@@ -47,10 +47,6 @@ const EXCEL_COLUMNS = [
   "purchasePrice",
   "warrantyStart",
   "warrantyEnd",
-
-  "assetEmployeeId",
-  "vendorId",
-
   "warrantyYears",
   "remarks",
   "surveyStatus",
@@ -61,12 +57,43 @@ const EXCEL_COLUMNS = [
 const PREVIEW_COLUMNS = [
   "employeeName",
   "employeeId",
-  "assetEmployeeId",
-  "vendorId",
+  "designation",
+
   "vendorName",
+  "contactPerson",
+  "contact",
+  "address",
+
+  "company",
+  "location",
+  "department",
+  "floor",
+  "room",
+
   "equipment",
   "assetCode",
+  "brand",
+  "model",
+  "serialNumber",
+  "specifications",
+  "macAddress",
+  "ecfNumber",
+  "workOrderNumber",
   "status",
+
+  "old-employeeName",
+  "old-employeeId",
+
+  "receivedDate",
+  "purchaseDate",
+  "purchasePrice",
+  "warrantyStart",
+  "warrantyEnd",
+  "warrantyYears",
+  "remarks",
+  "surveyStatus",
+  "upgradeEquipments",
+  "surveyTakenBy",
 ];
 
 export default function ImportData() {
@@ -162,26 +189,7 @@ export default function ImportData() {
         );
       }
 
-      /*
-      |--------------------------------------------------------------------------
-      | Validate required headers
-      |--------------------------------------------------------------------------
-      */
-
-      const missingColumns = EXCEL_COLUMNS.filter(
-        (column) => !actualHeaders.includes(column),
-      );
-
-      console.info("[ImportData] Headers validated", {
-        fileName: selectedFile.name,
-        headerCount: actualHeaders.length,
-        requiredColumnCount: EXCEL_COLUMNS.length,
-      });
-
-      if (missingColumns.length > 0) {
-        throw new Error(`Missing Excel columns: ${missingColumns.join(", ")}`);
-      }
-
+      
       /*
       |--------------------------------------------------------------------------
       | Normalize all values

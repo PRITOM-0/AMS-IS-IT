@@ -225,6 +225,7 @@ export default function AddAsset() {
 
     try {
       const res = await axios.post(`${API_BASE_URL}/assets`, payload, { withCredentials: true });
+      
 
       setSuccessModal({
         title: "Asset Successfully Added!",

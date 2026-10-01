@@ -111,7 +111,6 @@ const AssetDetails = () => {
             `${API_BASE_URL}/vendors/${assetData.vendorId}`,
             { withCredentials: true }
           );
-          console.log(vendorsRes.json());
 
           setVendorInfo(vendorsRes.data || null);
           

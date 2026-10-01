@@ -196,7 +196,7 @@ const EditAsset = () => {
 
         // Pre-fill vendor search text if vendor exists
         const currentVendor = vendorList.find(
-          (v) => String(v.vendorId) === String(targetAsset.vendorId),
+          (v) => String(v._id) === String(targetAsset.vendorId),
         );
 
         if (currentVendor) {
@@ -270,7 +270,7 @@ const EditAsset = () => {
       setFormData(initialData);
 
       const matchedVendor = vendors.find(
-        (v) => String(v.vendorId) === String(initialData.vendorId),
+        (v) => String(v._id) === String(initialData.vendorId),
       );
 
       setVendorSearch(matchedVendor ? matchedVendor.vendorName : "");
@@ -1083,14 +1083,8 @@ const EditAsset = () => {
                       placeholder="Search vendor..."
                       value={vendorSearch}
                       onChange={(e) => {
-                        const value = e.target.value;
-
-                        setVendorSearch(value);
-
-                        setFormData((prev) => ({
-                          ...prev,
-                          vendorId: "",
-                        }));
+                        setVendorSearch(e.target.value);
+                        
                       }}
                       className="w-full bg-slate-50 border border-slate-900 rounded-lg p-2 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-indigo-600"
                     />

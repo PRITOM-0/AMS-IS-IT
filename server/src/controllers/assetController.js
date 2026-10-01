@@ -43,6 +43,7 @@ export const getAssetById = async (req, res) => {
   }
 };
 
+
 // POST /api/assets
 export const createAsset = async (req, res) => {
   try {
@@ -51,6 +52,7 @@ export const createAsset = async (req, res) => {
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
     };
+    console.log("Creating asset with data:", assetData);
     const asset = await Asset.create(assetData);
 
     res.status(201).json(asset);
