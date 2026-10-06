@@ -7,6 +7,8 @@ export const getAssets = async (req, res) => {
   try {
     const assets = await Asset.find().sort({ createdAt: -1 });
 
+    console.log(`assets equipment ${assets.map(a => a.equipment)} assets`);
+
     res.status(200).json(assets);
   } catch (error) {
     console.error("Get assets error:", error);

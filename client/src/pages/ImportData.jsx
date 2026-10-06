@@ -39,8 +39,8 @@ const EXCEL_COLUMNS = [
   "workOrderNumber",
   "status",
 
-  "old-employeeName",
-  "old-employeeId",
+  "oldEmployeeName",
+  "oldEmployeeId",
 
   "receivedDate",
   "purchaseDate",
@@ -56,44 +56,19 @@ const EXCEL_COLUMNS = [
 
 const PREVIEW_COLUMNS = [
   "employeeName",
-  "employeeId",
-  "designation",
-
   "vendorName",
-  "contactPerson",
-  "contact",
-  "address",
-
   "company",
   "location",
   "department",
-  "floor",
-  "room",
-
   "equipment",
   "assetCode",
   "brand",
-  "model",
-  "serialNumber",
-  "specifications",
-  "macAddress",
-  "ecfNumber",
-  "workOrderNumber",
   "status",
-
-  "old-employeeName",
-  "old-employeeId",
-
-  "receivedDate",
   "purchaseDate",
   "purchasePrice",
-  "warrantyStart",
-  "warrantyEnd",
   "warrantyYears",
   "remarks",
   "surveyStatus",
-  "upgradeEquipments",
-  "surveyTakenBy",
 ];
 
 export default function ImportData() {
@@ -121,12 +96,6 @@ export default function ImportData() {
       return;
     }
 
-    console.info("[ImportData] File selected", {
-      name: selectedFile.name,
-      size: selectedFile.size,
-      type: selectedFile.type,
-    });
-
     setFile(selectedFile);
     setRows([]);
     setError("");
@@ -149,33 +118,31 @@ export default function ImportData() {
 
       const sheetName = workbook.SheetNames[0];
 
-      console.info("[ImportData] Workbook opened", {
-        fileName: selectedFile.name,
-        sheetNames: workbook.SheetNames,
-      });
-
       const worksheet = workbook.Sheets[sheetName];
 
       const excelRows = XLSX.utils.sheet_to_json(worksheet, {
         defval: "",
         raw: false,
       });
+      console.log("Excel rows:", excelRows);
 
       if (!excelRows.length) {
         throw new Error("Excel file does not contain any data rows.");
       }
 
       /*
-      |--------------------------------------------------------------------------
-      | Check duplicate Excel headers
-      |--------------------------------------------------------------------------
-      */
+|--------------------------------------------------------------------------
+| Check duplicate Excel headers
+|--------------------------------------------------------------------------
+*/
 
-      const actualHeaders = XLSX.utils.sheet_to_json(worksheet, {
-        header: 1,
-        defval: "",
-        blankrows: false,
-      })[0];
+      const actualHeaders = XLSX.utils
+        .sheet_to_json(worksheet, {
+          header: 1,
+          defval: "",
+          blankrows: false,
+        })[0]
+        .map((header) => String(header).trim());
 
       const duplicateHeaders = actualHeaders.filter(
         (header, index) => header && actualHeaders.indexOf(header) !== index,
@@ -189,7 +156,6 @@ export default function ImportData() {
         );
       }
 
-      
       /*
       |--------------------------------------------------------------------------
       | Normalize all values
@@ -198,6 +164,7 @@ export default function ImportData() {
 
       const normalizedRows = excelRows.map((row) => {
         const normalized = {};
+        console.log("Normalized row:", row);
 
         for (const column of EXCEL_COLUMNS) {
           const cell = row[column];
@@ -210,12 +177,6 @@ export default function ImportData() {
       });
 
       setRows(normalizedRows);
-
-      console.info("[ImportData] Rows loaded", {
-        fileName: selectedFile.name,
-        sheetName,
-        rowCount: normalizedRows.length,
-      });
 
       setSuccess(
         `${normalizedRows.length} row${
@@ -254,11 +215,6 @@ export default function ImportData() {
 
     const endpoint = `${API_BASE_URL}/import/assets-employees-vendors`;
 
-    console.info("[ImportData] Import request started", {
-      endpoint,
-      rowCount: rows.length,
-    });
-
     try {
       const response = await axios.post(
         endpoint,
@@ -277,14 +233,6 @@ export default function ImportData() {
       );
 
       const data = response.data;
-
-      console.info("[ImportData] Import request succeeded", {
-        status: response.status,
-        totalRows: data.totalRows,
-        assetsCreated: data.assetsCreated,
-        employeesCreated: data.employeesCreated,
-        vendorsCreated: data.vendorsCreated,
-      });
 
       setResult(data);
 
@@ -336,6 +284,16 @@ export default function ImportData() {
           <p className="text-sm text-gray-500 mt-1">
             Import employees, vendors and assets from Excel.
           </p>
+          <div className="flex flex-wrap gap-2">
+            {EXCEL_COLUMNS.map((column) => (
+              <div
+                key={column}
+                className="shrink-0 px-3 py-2 bg-gray-100 border border-gray-200 rounded-md text-sm font-medium"
+              >
+                {column}
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* Upload */}
@@ -546,7 +504,7 @@ export default function ImportData() {
                   </thead>
 
                   <tbody>
-                    {rows.slice(0, 20).map((row, index) => (
+                    {rows.slice(0, 10).map((row, index) => (
                       <tr key={index} className="border-t border-gray-100">
                         <td className="px-4 py-3">{index + 1}</td>
 
