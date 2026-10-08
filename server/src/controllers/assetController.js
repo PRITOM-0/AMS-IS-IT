@@ -7,7 +7,7 @@ export const getAssets = async (req, res) => {
   try {
     const assets = await Asset.find().sort({ createdAt: -1 });
 
-    console.log(`assets equipment ${assets.map(a => a.equipment)} assets`);
+   
 
     res.status(200).json(assets);
   } catch (error) {
@@ -54,7 +54,7 @@ export const createAsset = async (req, res) => {
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
     };
-    console.log("Creating asset with data:", assetData);
+     
     const asset = await Asset.create(assetData);
 
     res.status(201).json(asset);

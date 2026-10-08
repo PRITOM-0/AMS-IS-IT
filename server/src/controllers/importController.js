@@ -27,7 +27,7 @@ export const importAssetsEmployeesVendors = async (req, res) => {
   let vendorsExisting = 0;
   let assetsCreated = 0;
 
-  console.log(`[Import] Started: ${rows.length} rows`);
+  
 
   try {
     for (let i = 0; i < rows.length; i++) {
@@ -133,6 +133,9 @@ export const importAssetsEmployeesVendors = async (req, res) => {
         employeeId: store.employeeId,
         vendorId: store.vendorId,
       };
+      if (newAssetData.equipment.trim() === "" && newAssetData.company.trim() === "") {
+        continue; // Skip this row if both assetCode and equipment are empty
+      }
 
       const createdAsset = await Asset.create(newAssetData);
       assetsCreated++;

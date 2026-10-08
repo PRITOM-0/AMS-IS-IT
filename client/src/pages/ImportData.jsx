@@ -124,7 +124,7 @@ export default function ImportData() {
         defval: "",
         raw: false,
       });
-      console.log("Excel rows:", excelRows);
+      
 
       if (!excelRows.length) {
         throw new Error("Excel file does not contain any data rows.");
@@ -164,7 +164,7 @@ export default function ImportData() {
 
       const normalizedRows = excelRows.map((row) => {
         const normalized = {};
-        console.log("Normalized row:", row);
+         
 
         for (const column of EXCEL_COLUMNS) {
           const cell = row[column];
@@ -184,10 +184,7 @@ export default function ImportData() {
         } loaded successfully.`,
       );
     } catch (err) {
-      console.error("[ImportData] Excel read failed", {
-        fileName: selectedFile.name,
-        message: err.message,
-      });
+       
 
       setError(err.message || "Failed to read Excel file.");
     } finally {
@@ -238,12 +235,7 @@ export default function ImportData() {
 
       setSuccess(data.message || "Import completed successfully.");
     } catch (err) {
-      console.error("[ImportData] Import request failed", {
-        endpoint,
-        status: err.response?.status,
-        code: err.code,
-        message: err.message,
-      });
+       
 
       setResult(err.response?.data || null);
 
