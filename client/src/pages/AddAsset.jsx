@@ -88,11 +88,10 @@ export default function AddAsset() {
     setIsFetchingData(true);
     try {
       const [usersResponse, vendorsResponse, listResponse] = await Promise.all([
-        axios.get(`${API_BASE_URL}/users`, { withCredentials: true }),
+        axios.get(`${API_BASE_URL}/auth/userslist`, { withCredentials: true }),
         axios.get(`${API_BASE_URL}/vendors`, { withCredentials: true }),
         axios.get(`${API_BASE_URL}/list`, { withCredentials: true }),
       ]);
-
       setUsers(usersResponse.data || []);
       setVendors(vendorsResponse.data || []);
       setList(listResponse.data || []);
@@ -225,6 +224,7 @@ export default function AddAsset() {
 
     try {
       const res = await axios.post(`${API_BASE_URL}/assets`, payload, { withCredentials: true });
+      
 
       setSuccessModal({
         title: "Asset Successfully Added!",

@@ -178,7 +178,10 @@ const RepairService = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    if (!form.remarks) {
+      alert("Please provide remarks for this service.");
+      return;
+    }
     try {
       const now = new Date().toISOString();
 

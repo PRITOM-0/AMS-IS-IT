@@ -106,12 +106,11 @@ const AssetDetails = () => {
       }
       if (assetData?.vendorId) {
         try {
-          
+          console.log(assetData.vendorId);
           const vendorsRes = await axios.get(
             `${API_BASE_URL}/vendors/${assetData.vendorId}`,
             { withCredentials: true }
           );
-          console.log(vendorsRes.json());
 
           setVendorInfo(vendorsRes.data || null);
           
@@ -527,6 +526,7 @@ const AssetDetails = () => {
                 <p className="text-[11px] font-bold  text-indigo-700">
                   Vendor Details
                 </p>
+                
                 <p className="font-bold text-indigo-900 mt-1">
                   {vendorInfo?.vendorName ||
                     "No Vendor Assigned"}

@@ -7,10 +7,7 @@ export const getUsers = async (req, res) => {
   try {
     const users = await User.find();
 
-    
-   console.log("Get users response:", users);
     res.status(200).json(users);
-   
   } catch (error) {
     console.error("Get users error:", error);
   }

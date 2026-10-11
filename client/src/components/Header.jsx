@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { FaUserCircle, FaSignOutAlt } from "react-icons/fa";
 
 function Header({ onLogout, user }) {
