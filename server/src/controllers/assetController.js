@@ -7,6 +7,8 @@ export const getAssets = async (req, res) => {
   try {
     const assets = await Asset.find().sort({ createdAt: -1 });
 
+   
+
     res.status(200).json(assets);
   } catch (error) {
     console.error("Get assets error:", error);
@@ -43,6 +45,7 @@ export const getAssetById = async (req, res) => {
   }
 };
 
+
 // POST /api/assets
 export const createAsset = async (req, res) => {
   try {
@@ -51,6 +54,7 @@ export const createAsset = async (req, res) => {
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
     };
+     
     const asset = await Asset.create(assetData);
 
     res.status(201).json(asset);

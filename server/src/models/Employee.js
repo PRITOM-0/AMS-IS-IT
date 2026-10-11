@@ -9,7 +9,7 @@ const employeeSchema = new mongoose.Schema(
 
     employeeId: {
       type: String,
-      required: true,
+      default: "",
     },
 
     designation: {
@@ -28,6 +28,16 @@ const employeeSchema = new mongoose.Schema(
     },
 
     department: {
+      type: String,
+      default: "",
+    },
+
+    floor: {
+      type: String,
+      default: "",
+    },
+
+    room: {
       type: String,
       default: "",
     },

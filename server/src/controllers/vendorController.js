@@ -26,6 +26,7 @@ export const getVendorById = async (req, res) => {
     const vendor = await Vendor.findOne({
       _id: req.params.id
     });
+     
    
     if (!vendor) {
       return res.status(200).json({

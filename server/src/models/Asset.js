@@ -108,7 +108,7 @@ const assetSchema = new mongoose.Schema(
     employeeId: {
       type: String,
       default: "",
-    },
+},
 
     receivedDate: {
       type: String,
@@ -148,7 +148,7 @@ const assetSchema = new mongoose.Schema(
     vendorId: {
       type: String,
       default: "",
-    },
+},
 
     remarks: {
       type: String,
