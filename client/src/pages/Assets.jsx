@@ -108,7 +108,7 @@ export const useAssets = () => {
   const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState(INITIAL_FILTERS);
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(50);
+  const [itemsPerPage, setItemsPerPage] = useState(100);
 
   useEffect(() => {
     let isMounted = true;
@@ -133,9 +133,6 @@ export const useAssets = () => {
 
         if (isMounted) {
           setAssets(assetsData);
-
-         
-           
 
           setEmployees(empData);
         }
@@ -519,7 +516,6 @@ const AssetGrid = ({ assets, loading }) => {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-      
       {assets.map((asset) => (
         <AssetCard key={asset._id} asset={asset} />
       ))}
@@ -537,7 +533,7 @@ const Pagination = ({
   if (totalPages <= 1 && !itemsPerPage) return null;
 
   return (
-    <div className="flex flex-col sm:flex-row items-center justify-between gap-4 my-4 px-4 py-3 bg-white border border-indigo-500 rounded-xl shadow-sm">
+    <div className="flex flex-col sm:flex-row items-center justify-between gap-5 my-4 px-4 py-3 bg-white border border-indigo-500 rounded-xl shadow-sm">
       {/* Items Per Page */}
       <div className="flex items-center gap-2">
         <span className="text-sm font-semibold text-slate-600">Show</span>
@@ -562,12 +558,12 @@ const Pagination = ({
 
       {/* Page Navigation */}
       {totalPages > 1 && (
-        <div className="flex items-center gap-1">
+        <div className="flex flex-wrap items-center gap-1 max-w-full min-w-0">
           {/* Previous */}
           <button
             onClick={() => onPageChange(currentPage - 1)}
             disabled={currentPage === 1}
-            className="px-3 py-1.5 rounded-lg border border-slate-300 bg-white text-sm font-bold text-slate-600 hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed transition"
+            className="shrink-0 px-3 py-1.5 rounded-lg border border-slate-300 bg-white text-sm font-bold text-slate-600 hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed transition"
           >
             ←
           </button>
@@ -580,7 +576,7 @@ const Pagination = ({
               <button
                 key={pageNumber}
                 onClick={() => onPageChange(pageNumber)}
-                className={`min-w-[36px] px-3 py-1.5 rounded-lg text-sm font-bold border transition ${
+                className={`shrink-0 min-w-[36px] px-3 py-1.5 rounded-lg text-sm font-bold border transition ${
                   currentPage === pageNumber
                     ? "bg-indigo-600 text-white border-indigo-600 shadow-sm"
                     : "bg-white text-slate-600 border-slate-300 hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-300"
@@ -595,7 +591,7 @@ const Pagination = ({
           <button
             onClick={() => onPageChange(currentPage + 1)}
             disabled={currentPage === totalPages}
-            className="px-3 py-1.5 rounded-lg border border-slate-300 bg-white text-sm font-bold text-slate-600 hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed transition"
+            className="shrink-0 px-3 py-1.5 rounded-lg border border-slate-300 bg-white text-sm font-bold text-slate-600 hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed transition"
           >
             →
           </button>

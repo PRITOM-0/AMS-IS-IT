@@ -14,6 +14,7 @@ import userRoutes from "./src/routes/userRoutes.js";
 import listRoutes from "./src/routes/listRoutes.js";
 import authRoutes from "./src/routes/authRoutes.js";
 import importRoutes from "./src/routes/importRoutes.js"
+import readingRoutes from "./src/routes/readingRoutes.js";
 
 
 
@@ -71,6 +72,7 @@ app.get("/", (req, res) => {
 app.use("/api/auth", authRoutes);
 
 app.use("/api/assets", assetRoutes);
+app.use("/api/readings", readingRoutes);
 
 app.use("/api/employees", employeeRoutes);
 

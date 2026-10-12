@@ -17,7 +17,7 @@ const getPeriod = (value) => {
 };
 
 export const getReadings = async (req, res) => {
-  try {
+    try {
     const query = {};
     if (req.query.assetId) {
       if (!mongoose.Types.ObjectId.isValid(req.query.assetId)) {
