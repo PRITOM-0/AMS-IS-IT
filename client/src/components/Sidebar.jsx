@@ -11,7 +11,7 @@ import {
   FaUserCog,
   FaBuilding,
 } from "react-icons/fa";
-import { LuImport } from "react-icons/lu";
+import { LuImport,LuPrinter  } from "react-icons/lu";
 import { LayoutDashboard } from "lucide-react";
 
 function Sidebar({ user }) {
@@ -48,6 +48,11 @@ function Sidebar({ user }) {
           icon: <FaUserTie size={17} />,
           path: "/employees",
         },
+        {
+          label: "Printer readings",
+          icon: <LuPrinter size={17} />,
+          path: "/printer-readings",  
+        }
       ],
     },
 

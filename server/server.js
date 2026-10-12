@@ -13,16 +13,15 @@ import taskRoutes from "./src/routes/taskRoutes.js";
 import userRoutes from "./src/routes/userRoutes.js";
 import listRoutes from "./src/routes/listRoutes.js";
 import authRoutes from "./src/routes/authRoutes.js";
-import importRoutes from "./src/routes/importRoutes.js"
-
-
+import importRoutes from "./src/routes/importRoutes.js";
+import readingRoutes from "./src/routes/readingRoutes.js";
 
 dotenv.config();
 
 const app = express();
 
 const PORT = process.env.PORT || 5000;
-const HOST ="localhost";
+const HOST = "localhost";
 
 // ==============================
 // DATABASE
@@ -70,6 +69,8 @@ app.use("/api/auth", authRoutes);
 
 app.use("/api/assets", assetRoutes);
 
+app.use("/api/readings", readingRoutes);
+
 app.use("/api/employees", employeeRoutes);
 
 app.use("/api/vendors", vendorRoutes);
@@ -99,7 +100,7 @@ app.use(
 
     next();
   },
-  importRoutes
+  importRoutes,
 );
 
 // ==============================

@@ -24,6 +24,8 @@ import ImportData from "./pages/ImportData";
 import StoreAssets from "./pages/StoreAssets";
 import ExportAssets from "./pages/ExportAssets";
 import CategorySearch from "./pages/CategorySearch";
+import PrinterReading from "./pages/PrinterReading";
+import ReadingPage from "./pages/ReadingPage";
 import UserSetting from "./pages/UserSetting";
 import VendorSetting from "./pages/VendorSetting";
 import CompanyInfoSetting from "./pages/CompanyInfoSetting";
@@ -69,12 +71,10 @@ function App() {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-  setTimeout(() => {
-    setLoading(false);
-  }, 3000);
-
-   
-}, []);
+    setTimeout(() => {
+      setLoading(false);
+    }, 3000);
+  }, []);
 
   // ==========================================
   // Logout
@@ -150,6 +150,10 @@ function App() {
 
         {/* Category Search */}
         <Route path="category-search" element={<CategorySearch />} />
+
+        {/* Printer readings */}
+        <Route path="printer-readings" element={<PrinterReading />} />
+        <Route path="printer-readings/:assetId" element={<ReadingPage />} />
 
         {/* Assets */}
         <Route path="assets" element={<Assets />} />
