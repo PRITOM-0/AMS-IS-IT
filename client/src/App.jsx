@@ -71,9 +71,33 @@ function App() {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    setTimeout(() => {
+    const checkAuth = async () => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/auth/me`, {
+        method: "GET",
+        credentials: "include",
+      });
+
+      if (!response.ok) {
+        setIsLoggedIn(false);
+        setUser(null);
+        return;
+      }
+
+      const data = await response.json();
+
+      setUser(data.user);
+      setIsLoggedIn(true);
+    } catch (error) {
+      console.error("Authentication check failed:", error);
+      setIsLoggedIn(false);
+      setUser(null);
+    } finally {
       setLoading(false);
-    }, 3000);
+    }
+  };
+
+  checkAuth();
   }, []);
 
   // ==========================================
