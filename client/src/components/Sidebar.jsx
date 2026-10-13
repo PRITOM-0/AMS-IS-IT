@@ -51,7 +51,7 @@ function Sidebar({ user }) {
         {
           label: "Printer readings",
           icon: <LuPrinter size={17} />,
-          path: "/printer-readings",  
+          path: "/printer-reading",  
         }
       ],
     },

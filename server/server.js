@@ -69,7 +69,7 @@ app.use("/api/auth", authRoutes);
 
 app.use("/api/assets", assetRoutes);
 
-app.use("/api/readings", readingRoutes);
+app.use("/api/printer-reading", readingRoutes);
 
 app.use("/api/employees", employeeRoutes);
 
