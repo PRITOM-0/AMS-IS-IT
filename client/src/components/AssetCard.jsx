@@ -171,9 +171,11 @@ const AssetCard = ({ asset }) => {
               : "border-sky-200 bg-sky-100/70 text-sky-800"
           }`}
         >
-          {lifeCategory}
+          {lifeCategory}<span className="ml-1 text-[9px] font-normal text-slate-500">
+            {purchaseDate}
+          </span>
         </span>
-        <span>{purchaseDate}</span>
+        
       </div>
 
       {/* Equipment details */}
