@@ -43,7 +43,8 @@ export const createUser = async (req, res) => {
     const {
       username,
       password,
-      role
+      role,
+      locations
     } = req.body;
 
     if (!username || !password) {
@@ -72,6 +73,7 @@ export const createUser = async (req, res) => {
       username,
       password,
       role,
+      locations,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
     });
@@ -97,6 +99,7 @@ export const updateUser = async (req, res) => {
     const {
       password,
       createdAt,
+      locations,
       ...updateData
     } = req.body;
 

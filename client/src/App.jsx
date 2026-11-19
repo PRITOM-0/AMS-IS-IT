@@ -29,6 +29,7 @@ import ReadingPage from "./pages/ReadingPage";
 import UserSetting from "./pages/UserSetting";
 import VendorSetting from "./pages/VendorSetting";
 import CompanyInfoSetting from "./pages/CompanyInfoSetting";
+import Log from "./pages/log";
 
 // ==========================================
 // API
@@ -197,6 +198,7 @@ function App() {
         <Route path="settings/vendors" element={<VendorSetting />} />
 
         <Route path="settings/company-info" element={<CompanyInfoSetting />} />
+        <Route path="settings/logs" element={<Log />} />
 
         {/* Employees */}
         <Route path="employees" element={<Employees />} />

@@ -13,6 +13,7 @@ import { API_BASE_URL } from "../env";
 const EMPTY_USER = {
   username: "",
   role: "",
+  locations: [],
   password: "",
 };
 
@@ -70,6 +71,7 @@ function UserSetting() {
       username: user.username || "",
       password: user.password || "",
       role: user.role || "",
+      locations: user.locations || [],
     });
 
     setShowModal(true);
@@ -218,6 +220,9 @@ function UserSetting() {
                     <th className="px-5 py-3 text-xs font-bold uppercase text-slate-500">
                       Role
                     </th>
+                    <th className="px-5 py-3 text-xs font-bold uppercase text-slate-500">
+                      Locations
+                    </th>
 
                     <th className="px-5 py-3 text-xs font-bold uppercase text-slate-500">
                       Password
@@ -243,6 +248,11 @@ function UserSetting() {
 
                       <td className="px-5 py-4 font-semibold text-slate-700">
                         {user.role}
+                      </td>
+                      <td className="px-5 py-4">
+                        <span className="rounded-lg bg-slate-100 px-2.5 py-1 font-mono text-xs text-slate-600">
+                          {user.locations.join(", ")}
+                        </span>
                       </td>
 
                       <td className="px-5 py-4 font-mono text-sm text-slate-500">
@@ -348,6 +358,19 @@ function UserSetting() {
                   }))
                 }
                 placeholder="Enter password"
+              />
+
+              <InputField
+                label="Locations"
+                type="text"
+                value={userForm.locations.join(", ")}
+                onChange={(value) =>
+                  setUserForm((prev) => ({
+                    ...prev,
+                    locations: value.split(",").map((v) => v.trim()),
+                  }))
+                }
+                placeholder="Enter locations (comma-separated)"
               />
 
               <ModalButtons

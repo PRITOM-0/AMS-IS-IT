@@ -140,7 +140,7 @@ const EditAsset = () => {
       const [assetsRes, listRes, usersRes, vendorsRes] = await Promise.all([
         axios.get(`${API_BASE_URL}/assets`, { withCredentials: true }),
         axios.get(`${API_BASE_URL}/list`, { withCredentials: true }),
-        axios.get(`${API_BASE_URL}/users`, { withCredentials: true }),
+        axios.get(`${API_BASE_URL}/auth/userslist`, { withCredentials: true }),
         axios.get(`${API_BASE_URL}/vendors`, { withCredentials: true }),
       ]);
 
@@ -187,6 +187,7 @@ const EditAsset = () => {
 
       setVendors(vendorList);
       setUsers(userList);
+      console.log("Fetched Users:", userList);
 
       // 4. Set Form & Pre-fill Vendor Search
       if (targetAsset) {

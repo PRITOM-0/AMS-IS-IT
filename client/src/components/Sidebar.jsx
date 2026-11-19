@@ -10,6 +10,7 @@ import {
   FaShareSquare,
   FaUserCog,
   FaBuilding,
+  FaHistory
 } from "react-icons/fa";
 import { LuImport,LuPrinter  } from "react-icons/lu";
 import { LayoutDashboard } from "lucide-react";
@@ -104,6 +105,11 @@ function Sidebar({ user }) {
           icon: <FaCog size={17} />,
           path: "/settings/company-info",
         },
+        {
+          label: "Logs",
+          icon: <FaHistory size={17} />,
+          path: "/settings/logs",
+        }
       ],
     },
   ];

@@ -15,14 +15,16 @@ import listRoutes from "./src/routes/listRoutes.js";
 import authRoutes from "./src/routes/authRoutes.js";
 import importRoutes from "./src/routes/importRoutes.js";
 import readingRoutes from "./src/routes/readingRoutes.js";
+import logRoutes from "./src/routes/logRoute.js";
+
 
 dotenv.config();
 
 const app = express();
 
 const PORT = process.env.PORT;
-const HOST = "127.0.0.1";
-// const HOST = "0.0.0.0";
+// const HOST = "127.0.0.1";
+const HOST = "localhost";
 
 // ==============================
 // DATABASE
@@ -83,6 +85,9 @@ app.use("/api/tasks", taskRoutes);
 app.use("/api/users", userRoutes);
 
 app.use("/api/list", listRoutes);
+
+app.use("/api/logs", logRoutes);
+
 app.use(
   "/api/import",
   (req, res, next) => {
@@ -103,11 +108,9 @@ app.use(
   },
   importRoutes,
 );
+console.log("Import routes registered");
 
-// ==============================
-// 404
-// ==============================
-
+// 404 HANDLER
 app.use((req, res) => {
   res.status(404).json({
     message: `Route not found: ${req.method} ${req.originalUrl}`,

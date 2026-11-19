@@ -18,6 +18,10 @@ const userSchema = new mongoose.Schema(
       enum: ["User", "Admin"],
       default: "User",
     },
+    locations: {
+      type: [String],
+      default: []
+    },
 
     createdAt: {
       type: String,
